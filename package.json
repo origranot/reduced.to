@@ -2,7 +2,7 @@
   "name": "url-shortner",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/origranot/url-shortner#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "pug": "^2.0.4"
   }
 }

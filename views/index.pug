@@ -1,0 +1,28 @@
+doctype html
+html(lang="en")
+    head
+        title Just a title
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description' content='Just a small description')
+        meta(name='author' content='OriG')
+
+        // Loads CSS files
+        link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
+        link(rel='stylesheet' href='/css/index.css')
+
+        // Loads JS files
+        script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
+        script(src='/js/index.js')
+
+    body
+        .container
+            h1.p-3 Hello World
+            .alert.alert-primary(role='alert').
+                A simple primary alert check it out!
+            .input-group.mb-3
+                input#urlInput.form-control(type='text' placeholder="Very long url.." aria-label="url" aria-describedby='shortnerBtn')
+                .input-group-append
+                    button#shortnerBtn.btn.btn-outline-secondary(type='button' onclick='handleShortnerClick()') Make me sexy!
+
+
