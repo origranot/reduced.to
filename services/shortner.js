@@ -12,7 +12,7 @@ const generateShortUrl = () => {
  * @param {String} shortUrl - The shorten url.
  */
 const isShortUrlAvailable = (shortUrl) => { 
-    return (global.URL_DICT.shortUrl === null)
+    return (global.URL_DICT[shortUrl] === undefined)
 }
 
 /**
@@ -21,7 +21,7 @@ const isShortUrlAvailable = (shortUrl) => {
  * @param {String} shortUrl - The shorten url.
  */
 const addUrl = (originalUrl, shortUrl) => { 
-    global.URL_DICT[originalUrl] = shortUrl;
+    global.URL_DICT[shortUrl] = originalUrl;
 }
 
 module.exports.generateShortUrl = generateShortUrl;
