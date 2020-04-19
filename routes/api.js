@@ -4,13 +4,21 @@ const router = express.Router()
 const shortnerService = require('../services/shortner');
 
 router.post('/shortner', (req, res) => {
-    let shortUrl = shortnerService.generateShortUrl();
-    console.log(shortnerService.isShortUrlAvailable(shortUrl));
-    shortnerService.addUrl(req.body.originalUrl, shortUrl);
-    console.log(shortnerService.isShortUrlAvailable(shortUrl));
+    let { originalUrl } = req.body;
 
-    console.log(global.URL_DICT);
-    res.status(200).json({ newUrl: req.body.originalUrl })
+    let shortUrl = shortnerService.getShortUrl(originalUrl);
+
+    if (shortUrl !== null) {
+        res.status(200).json({ newUrl: shortUrl });
+        return;
+    }
+
+    do {
+        shortUrl = shortnerService.generateShortUrl();
+    } while (!shortnerService.isShortUrlAvailable(shortUrl));
+
+    shortnerService.addUrl(originalUrl, shortUrl);
+    res.status(200).json({ newUrl: shortUrl })
 })
 
 module.exports = router;
