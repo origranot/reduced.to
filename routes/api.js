@@ -9,8 +9,7 @@ router.post('/shortner', (req, res) => {
     let shortUrl = shortnerService.getShortUrl(originalUrl);
 
     if (shortUrl !== null) {
-        res.status(200).json({ newUrl: shortUrl });
-        return;
+        return res.status(200).json({ newUrl: shortUrl });
     }
 
     do {
@@ -18,7 +17,7 @@ router.post('/shortner', (req, res) => {
     } while (!shortnerService.isShortUrlAvailable(shortUrl));
 
     shortnerService.addUrl(originalUrl, shortUrl);
-    res.status(200).json({ newUrl: shortUrl })
+    return res.status(200).json({ newUrl: shortUrl })
 })
 
 module.exports = router;

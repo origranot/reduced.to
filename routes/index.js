@@ -9,7 +9,7 @@ router.use((req, res, next) => {
 
     let originalUrl = global.URL_DICT[path.substring(1)];
     if (originalUrl !== undefined) {
-        res.status(301).redirect(originalUrl)
+        return res.status(301).redirect(originalUrl)
     }
     next();
 })
