@@ -1,7 +1,7 @@
 doctype html
 html(lang="en")
     head
-        title Just a title
+        title Url Shortener
         meta(charset='utf-8')
         meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
         meta(name='description' content='Just a small description')
@@ -23,6 +23,5 @@ html(lang="en")
             .input-group.mb-3
                 input#urlInput.form-control(type='text' placeholder="Very long url.." aria-label="url" aria-describedby='shortnerBtn')
                 .input-group-append
-                    button#shortnerBtn.btn.btn-outline-secondary(type='button' onclick='handleShortnerClick()') Make me sexy!
-
-
+                    button#shortnerBtn.btn.btn-outline-secondary(type='button' onclick='handleShortnerClick()') Go!
+            #result
