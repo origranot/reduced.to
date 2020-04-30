@@ -5,8 +5,8 @@
  */
 const handleShortnerClick = async () => {
     let originalUrl = document.getElementById('urlInput').value;
-    let result = await getShortenUrl(originalUrl);
-    alert(result.newUrl);
+    let { newUrl } = await getShortenUrl(originalUrl);
+    document.getElementById('result').textContent = window.location.href + newUrl;
 }
 
 /**
