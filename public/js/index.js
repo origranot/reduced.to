@@ -5,7 +5,14 @@
  */
 const handleShortnerClick = async () => {
     let originalUrl = document.getElementById('urlInput').value;
-    let { newUrl } = await getShortenUrl(originalUrl);
+    let shortenInfo = await getShortenUrl(originalUrl);
+
+    if (shortenInfo === null) {
+        document.getElementById('result').textContent = "This url is invalid..";
+        return;
+    }
+
+    let { newUrl } = shortenInfo;
     document.getElementById('result').textContent = window.location.href + newUrl;
 }
 
@@ -14,8 +21,13 @@ const handleShortnerClick = async () => {
  * @param {String} originalUrl - The original url we want to shorten.
  */
 const getShortenUrl = async (originalUrl) => {
-    let result = await axios.post('/api/shortner', {
-        originalUrl
-    })
+    let result;
+    try {
+        result = await axios.post('/api/shortner', {
+            originalUrl
+        })
+    } catch (err) {
+        return null;
+    }
     return result.data;
 }

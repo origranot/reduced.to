@@ -9,7 +9,7 @@ router.use((req, res, next) => {
 
     let originalUrl = global.URL_DICT[path.substring(1)];
     if (originalUrl !== undefined) {
-        return res.status(301).redirect(originalUrl)
+        return res.status(301).redirect(originalUrl);
     }
     next();
 })
@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 })
 
 router.get('*', (req, res) => {
-    res.status(404).send('Its 404 you fucker!')
+    res.status(404).send('Its 404 you fucker!');
 })
 
 module.exports = router;
