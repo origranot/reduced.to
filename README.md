@@ -1,4 +1,4 @@
-## URL Shortner
+## URL Shortener
 
 <div align="center">
 <img src="/docs/url.gif">
