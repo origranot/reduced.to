@@ -1,3 +1,29 @@
+:root{
+    --primary-background:rgba(245, 245, 245, 0.371);
+    --primary-accent:rgb(0, 118, 228);
+
+}
+
 body {
     text-align: center;
+    background-image: url("background.jpg");
+    background-position: center 18%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 6vh;
+}
+
+.parentDiv{
+    display: flexbox;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 6px;
+    background: var(--primary-background);
+    border-radius: 4px;
+}
+
+.btn{
+    background-color: var(--primary-accent);
+    color:whitesmoke;
 }
