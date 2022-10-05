@@ -1,6 +1,6 @@
 ## Hacktoberfest 2022 🎃?
 <div align="center">
-<img src="/images/hacktober.png">
+<img src="/docs/hacktober.png">
 </div>
 
 ### About:
@@ -14,6 +14,8 @@
 - Better UI
 - Add some tests
 - Typescript?
+- Better Contribute guide?
+- Add more ideas..
 - Just create a PR already :)
 
 
