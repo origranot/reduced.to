@@ -1,7 +1,7 @@
 ## URL Shortener
 
 <div align="center">
-<img src="/docs/url.gif">
+<img src="/docs/gif.gif">
 </div>
 
 ### About:
