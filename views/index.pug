@@ -16,12 +16,12 @@ html(lang="en")
         script(src='/js/index.js')
 
     body
-        .container
-            h1.p-3 Hello World
+        .container.p-3
+            h1.p-3 Url Shortner
             .alert.alert-primary(role='alert').
                 A simple primary alert check it out!
             .input-group.mb-3
                 input#urlInput.form-control(type='text' placeholder="Very long url.." aria-label="url" aria-describedby='shortnerBtn')
                 .input-group-append
                     button#shortnerBtn.btn.btn-outline-secondary(type='button' onclick='handleShortnerClick()') Go!
-            #result
+            #result.card.border-success.mb-3
