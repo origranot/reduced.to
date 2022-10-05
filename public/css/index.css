@@ -1,7 +1,7 @@
 :root{
     --primary-background:rgba(245, 245, 245, 0.371);
     --primary-accent:rgb(0, 118, 228);
-
+    	text-align: center;
 }
 
 body {
@@ -11,10 +11,11 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     padding-top: 6vh;
+    text-align: center;
 }
 
 .parentDiv{
-    display: flexbox;
+    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -26,4 +27,10 @@ body {
 .btn{
     background-color: var(--primary-accent);
     color:whitesmoke;
+}
+
+#result {
+	margin-bottom: 1rem;
+	cursor: pointer;
+	font-weight: bold;
 }
