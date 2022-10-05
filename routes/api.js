@@ -1,30 +1,30 @@
-const express = require('express')
-const url = require('url')
-const router = express.Router()
+const express = require('express');
+const url = require('url');
+const router = express.Router();
 
-const shortnerService = require('../services/shortner');
+const shortenerService = require('../services/shortener');
 
-router.post('/shortner', (req, res) => {
-    let { originalUrl } = req.body;
+router.post('/shortener', (req, res) => {
+	let { originalUrl } = req.body;
 
-    try { 
-        originalUrl = new URL({ toString: () => originalUrl })
-    } catch (err) { 
-        return res.status(404).json({ error: "Invalid url" });
-    }
+	try {
+		originalUrl = new URL({ toString: () => originalUrl });
+	} catch (err) {
+		return res.status(404).json({ error: 'Invalid url' });
+	}
 
-    let shortUrl = shortnerService.getShortUrl(originalUrl.href);
+	let shortUrl = shortenerService.getShortUrl(originalUrl.href);
 
-    if (shortUrl !== null) {
-        return res.status(200).json({ newUrl: shortUrl });
-    }
+	if (shortUrl !== null) {
+		return res.status(200).json({ newUrl: shortUrl });
+	}
 
-    do {
-        shortUrl = shortnerService.generateShortUrl();
-    } while (!shortnerService.isShortUrlAvailable(shortUrl));
+	do {
+		shortUrl = shortenerService.generateShortUrl();
+	} while (!shortenerService.isShortUrlAvailable(shortUrl));
 
-    shortnerService.addUrl(originalUrl.href, shortUrl);
-    return res.status(200).json({ newUrl: shortUrl })
-})
+	shortenerService.addUrl(originalUrl.href, shortUrl);
+	return res.status(200).json({ newUrl: shortUrl });
+});
 
 module.exports = router;

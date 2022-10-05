@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Handles shortner button click.
+ * Handles shortener button click.
  */
-const handleShortnerClick = async () => {
+const handleShortenerClick = async () => {
 	let originalUrl = document.getElementById('urlInput').value;
 	let shortenInfo = await getShortenUrl(originalUrl);
 
@@ -24,7 +24,7 @@ const handleShortnerClick = async () => {
 const getShortenUrl = async (originalUrl) => {
 	let result;
 	try {
-		result = await axios.post('/api/shortner', {
+		result = await axios.post('/api/shortener', {
 			originalUrl,
 		});
 	} catch (err) {
