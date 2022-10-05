@@ -1,7 +1,8 @@
 'use strict';
 
 /**
- * Returns a random 5 characters url.
+ * Generating the short url
+ * @returns {String} Returns a random 5 characters url
  */
 const generateShortUrl = () => {
     return Math.random().toString(36).substring(2, 7);
