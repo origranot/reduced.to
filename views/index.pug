@@ -21,7 +21,7 @@ html(lang="en")
             .alert.alert-primary(role='alert').
                 Add your very long url in the input bellow and click on the button to make it shorter
             .input-group.mb-3
-                input#urlInput.border-secondary.form-control(type='text' placeholder="Very long url.." aria-label="url" aria-describedby='shortnerBtn')
+                input#urlInput.border-primary.text-light.bg-dark.form-control(type='text' placeholder="Very long url.." aria-label="url" aria-describedby='shortnerBtn')
                 .input-group-append
                     button#shortnerBtn.btn.btn-primary(type='button' onclick='handleShortnerClick()') Shorten URL
             #result.text-light(onclick='copyUrl(this)')
