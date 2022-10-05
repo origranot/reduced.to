@@ -18,7 +18,6 @@
   "homepage": "https://github.com/origranot/url-shortner#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "pug": "^3.0.1"
   }
