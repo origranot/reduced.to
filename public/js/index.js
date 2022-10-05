@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Handles shortner button click.
+ * Handles shortener button click.
  */
 const handleShortenerClick = async () => {
 	let originalUrl = document.getElementById('urlInput').value;
