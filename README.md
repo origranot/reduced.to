@@ -1,14 +1,12 @@
-## Hacktoberfest 2022 🎃?
+## URL Shortner
 <div align="center">
-<img src="/docs/hacktober.png">
+<img src="/docs/ugly-ui-preview.png">
 </div>
 
-### About:
- Hacktoberfest is a month-long celebration of open source software run by DigitalOcean in partnership with GitHub and Twilio. Hacktoberfest is open to everyone in our global community!
- [Official Website](https://hacktoberfest.com)
- 
+### About: 
  I created this repo a long time ago (more than 3 years), made this public for Hacktoberfest!
- Feel free to contribute!
+ This is a very good opportunity for beginners to start their journey with open source.
+ All PR's are welcome!
  
 ## Ideas for contributing
 - Better UI
@@ -18,6 +16,14 @@
 - Add more ideas..
 - Just create a PR already :)
 
+## How to install?
+```
+npm install
+```
+
+```
+node app.js
+```
 
 ## License
 [MIT](https://choosealicense.com/licenses/)
