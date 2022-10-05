@@ -1,4 +1,9 @@
 body {
-    text-align: center;
-    background-color: #D4D4D4;
+	text-align: center;
+}
+
+#result {
+	margin-bottom: 1rem;
+	cursor: pointer;
+	font-weight: bold;
 }

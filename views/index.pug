@@ -24,4 +24,6 @@ html(lang="en")
                 input#urlInput.form-control(type='text' placeholder="Very long url.." aria-label="url" aria-describedby='shortnerBtn')
                 .input-group-append
                     button#shortnerBtn.btn.btn-outline-secondary(type='button' onclick='handleShortnerClick()') Go!
-            #result.card.border-success.mb-3
+            #result(onclick='copyUrl(this)')
+            #urlAlert.alert.alert-success.collapse(role='alert').
+                Link has been copied to the clipboard
