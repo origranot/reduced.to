@@ -24,7 +24,7 @@ const handleShortenerClick = async () => {
 const getShortenUrl = async (originalUrl) => {
 	let result;
 	try {
-		result = await axios.post('/api/shortner', {
+		result = await axios.post('/api/shortener', {
 			originalUrl,
 		});
 	} catch (err) {

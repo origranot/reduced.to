@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const shortenerService = require('../services/shortner');
+const shortenerService = require('../services/shortener');
 
 router.use((req, res, next) => {
 	let { path } = req;
