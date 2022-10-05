@@ -17,11 +17,11 @@ html(lang="en")
 
     body
         .container
-            h1.p-3 Hello World
+            h1.p-3.text-light URL Shortener
             .alert.alert-primary(role='alert').
-                A simple primary alert check it out!
+                Add your very long url in the input bellow and click on the button to make it shorter
             .input-group.mb-3
-                input#urlInput.form-control(type='text' placeholder="Very long url.." aria-label="url" aria-describedby='shortnerBtn')
+                input#urlInput.border-secondary.form-control(type='text' placeholder="Very long url.." aria-label="url" aria-describedby='shortnerBtn')
                 .input-group-append
-                    button#shortnerBtn.btn.btn-outline-secondary(type='button' onclick='handleShortnerClick()') Go!
-            #result
+                    button#shortnerBtn.btn.btn-primary(type='button' onclick='handleShortnerClick()') Shorten URL
+            #result.text-light
