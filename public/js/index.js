@@ -3,7 +3,7 @@
 /**
  * Handles shortner button click.
  */
-const handleShortnerClick = async () => {
+const handleShortenerClick = async () => {
 	let originalUrl = document.getElementById('urlInput').value;
 	let shortenInfo = await getShortenUrl(originalUrl);
 
