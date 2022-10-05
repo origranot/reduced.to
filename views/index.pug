@@ -10,7 +10,8 @@ html(lang="en")
         // Loads CSS files
         link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
         link(rel='stylesheet' href='/css/index.css')
-
+        link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css')
+        link(type='image/png', sizes='16x16', rel='icon', href='/css/icons8-internet-96.png')
         // Loads JS files
         script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
         script(src='/js/index.js')
@@ -27,3 +28,13 @@ html(lang="en")
             #result.text-light(onclick='copyUrl(this)')
             #urlAlert.alert.alert-success.collapse(role='alert').
                 Link has been copied to the clipboard
+            .waves-div
+                svg.waves(xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', viewbox='0 24 150 28', preserveaspectratio='none', shape-rendering='auto')
+                    defs
+                        path#gentle-wave(d='M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z')
+                    g.parallax
+                        use(xlink:href='#gentle-wave', x='48', y='0', fill='rgba(255,255,255,0.7')
+                        use(xlink:href='#gentle-wave', x='48', y='3', fill='rgba(255,255,255,0.5)')
+                        use(xlink:href='#gentle-wave', x='48', y='5', fill='rgba(255,255,255,0.3)')
+                        use(xlink:href='#gentle-wave', x='48', y='7', fill='#fff')
+
