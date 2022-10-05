@@ -14,6 +14,7 @@ const handleShortnerClick = async () => {
 
 	let { newUrl } = shortenInfo;
 	document.getElementById('result').textContent = window.location.href + newUrl;
+	document.getElementById('urlAlert').classList.add('collapse');
 };
 
 /**
