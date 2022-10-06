@@ -25,6 +25,8 @@ html(lang="en")
                 input#urlInput.border-primary.text-light.bg-dark.form-control(type='text' placeholder="Very long url.." aria-label="url" aria-describedby='shortenerBtn')
                 .input-group-append
                     button#shortenerBtn.btn.btn-primary(type='button' onclick='handleShortenerClick()') Shorten URL
+            #loading
+                .lds-dual-ring
             #result.text-light(onclick='copyUrl(this)')
             #urlAlert.alert.alert-success.collapse(role='alert').
                 Link has been copied to the clipboard
@@ -37,4 +39,3 @@ html(lang="en")
                         use(xlink:href='#gentle-wave', x='48', y='3', fill='rgba(255,255,255,0.5)')
                         use(xlink:href='#gentle-wave', x='48', y='5', fill='rgba(255,255,255,0.3)')
                         use(xlink:href='#gentle-wave', x='48', y='7', fill='#fff')
-
