@@ -8,4 +8,4 @@ const routes: Routes = [...shortenerRoutes];
   imports: [RouterModule.register(routes)],
   exports: [RouterModule],
 })
-export class AppRouterModule {}
+export class AppRoutingModule {}
