@@ -4,15 +4,10 @@
  * Handles shortener button click.
  */
 const handleShortenerClick = async () => {
-<<<<<<< HEAD
   const result = document.getElementById('result');
   const loader = document.getElementById('loading');
   const urlInput = document.getElementById('urlInput');
   const urlAlert = document.getElementById('urlAlert');
-=======
-	document.getElementById("loading").style.display = "flex"
-	const originalUrl = document.getElementById('urlInput').value;
->>>>>>> af5a3945a9ff99b93df32f455c2f62ef6b4435fe
 
   loader.style.display = 'flex';
   result.style.display = 'none';
