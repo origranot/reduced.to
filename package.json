@@ -4,8 +4,10 @@
 	"description": "",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
+		"postinstall": "nest build",
 		"start": "nest start",
-		"start:dev": "nest start --watch"
+		"start:dev": "nest start --watch",
+		"start:prod": "node dist/main"
 	},
 	"repository": {
 		"type": "git",
@@ -18,9 +20,11 @@
 	},
 	"homepage": "https://github.com/origranot/url-shortener#readme",
 	"dependencies": {
+		"@nestjs/cli": "^9.1.4",
 		"@nestjs/common": "^9.1.4",
 		"@nestjs/core": "^9.1.4",
 		"@nestjs/platform-express": "^9.1.4",
+		"@nestjs/schematics": "^9.0.3",
 		"body-parser": "^1.19.0",
 		"express": "^4.17.1",
 		"pug": "^3.0.1"
