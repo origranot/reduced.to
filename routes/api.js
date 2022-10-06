@@ -1,33 +1,50 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const shortenerService = require('../services/shortener');
+const shortenerService = require("../services/shortener");
 
-router.post('/shortener', (req, res) => {
-	let { originalUrl } = req.body;
+function removeHttp(url) {
+  if (url.startsWith("https://")) {
+    const https = "https://";
+    return url.slice(https.length);
+  }
 
-	if (!(originalUrl.startsWith("http://")) || originalUrl.startsWith("https://")) {
-		originalUrl = "https://" + originalUrl
-	}
+  if (url.startsWith("http://")) {
+    const http = "http://";
+    return url.slice(http.length);
+  }
 
-	try {
-		originalUrl = new URL({ toString: () => originalUrl });
-	} catch (err) {
-		return res.status(404).json({ error: 'Invalid url' });
-	}
+  return url;
+}
 
-	let shortUrl = shortenerService.getShortUrl(originalUrl.href);
+router.post("/shortener", (req, res) => {
+  let { originalUrl } = req.body;
 
-	if (shortUrl !== null) {
-		return res.status(200).json({ newUrl: shortUrl });
-	}
+  if (
+    !originalUrl.startsWith("http://") ||
+    originalUrl.startsWith("https://")
+  ) {
+    originalUrl = "https://" + removeHttp(originalUrl);
+  }
 
-	do {
-		shortUrl = shortenerService.generateShortUrl();
-	} while (!shortenerService.isShortUrlAvailable(shortUrl));
+  try {
+    originalUrl = new URL({ toString: () => originalUrl });
+  } catch (err) {
+    return res.status(404).json({ error: "Invalid url" });
+  }
 
-	shortenerService.addUrl(originalUrl.href, shortUrl);
-	return res.status(200).json({ newUrl: shortUrl });
+  let shortUrl = shortenerService.getShortUrl(originalUrl.href);
+
+  if (shortUrl !== null) {
+    return res.status(200).json({ newUrl: shortUrl });
+  }
+
+  do {
+    shortUrl = shortenerService.generateShortUrl();
+  } while (!shortenerService.isShortUrlAvailable(shortUrl));
+
+  shortenerService.addUrl(originalUrl.href, shortUrl);
+  return res.status(200).json({ newUrl: shortUrl });
 });
 
 module.exports = router;
