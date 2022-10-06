@@ -1,9 +1,12 @@
 @import url('./animations.css');
 @import url('./loader.css');
-
+*{
+  margin: 0;
+  padding: 0;
+}
 body {
   text-align: center;
-  background-color: rgb(20, 20, 20);
+  background-color: rgb(73, 65, 65);
   overflow: hidden;
 }
 
