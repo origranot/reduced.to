@@ -12,9 +12,14 @@ export class ShortenerController {
   @Post()
   requestHandler(@Body() body: ShortenerDTO) {
     let parsedUrl: URL;
+    let potentialUrl: string = body.originalUrl;
+
+    if (!(potentialUrl.startsWith("http://")) || potentialUrl.startsWith("https://")) {
+		  potentialUrl = "https://" + potentialUrl
+	  }
 
     try {
-      parsedUrl = new URL(body.originalUrl);
+      parsedUrl = new URL(potentialUrl);
     } catch (err: any) {
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,

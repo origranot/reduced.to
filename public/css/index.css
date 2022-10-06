@@ -1,9 +1,10 @@
-@import url("./animations.css");
-@import url("./loader.css");
+@import url('./animations.css');
+@import url('./loader.css');
 
 body {
   text-align: center;
   background-color: rgb(20, 20, 20);
+  overflow: hidden;
 }
 
 #result {
