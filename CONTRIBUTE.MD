@@ -6,7 +6,7 @@ Thank you for taking the time to open an issue.
 <br>
 Before opening an issue, please be sure that your issue hasn't already been asked by someone.
 <br><br>
-Here are a few things that will help us help resolve your issues:
+Here are a few things that will help us resolve your issues:
 
 - A descriptive title that gives an idea of what your issue refers to
 - A thorough description of the issue, (one word descriptions are very hard to understand)
@@ -22,7 +22,7 @@ Follow the below mentioned steps to open a pull request(PR):
 
 ## Fork this repository
 
-Fork this repository by clicking on the fork button on the top of this page.
+Fork this repository by clicking on the fork button at the top of this page.
 This will create a copy of this repository in your account.
 
 ## Clone the repository
@@ -97,7 +97,7 @@ If you go to your repository on GitHub, you'll see a `Compare & pull request` bu
 
 Now submit the pull request.
 
-Soon reviewer will be merging all your changes into the main branch of this project. You will get a notification email once the changes have been merged.
+Soon a reviewer will be merging all your changes into the main branch of this project. You will get a notification email once the changes have been merged.
 
 ## Note:
 
