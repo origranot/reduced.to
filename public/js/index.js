@@ -7,6 +7,7 @@ const handleShortenerClick = async () => {
 	const result = document.getElementById("result");
 	const loader = document.getElementById("loading");
 	const urlInput = document.getElementById("urlInput");
+	const urlAlert = document.getElementById("urlAlert");
 	
 	loader.style.display = "block";
 	result.style.display = "none";
@@ -19,7 +20,13 @@ const handleShortenerClick = async () => {
 
 	if (shortenInfo === null) {
 		result.textContent = 'This url is invalid..';
+		result.style.cursor = "auto";
+		urlAlert.style.display = "none";
 		return;
+	}
+	else {
+		result.style.cursor = '';
+		urlAlert.style.display = '';
 	}
 
 	const { newUrl } = shortenInfo;
@@ -55,7 +62,6 @@ const copyUrl = () => {
 };
 
 const toastAlert = (timeoutInMiliseconds = 2000) => {
-	const urlAlert = document.getElementById("urlAlert");
 
 	urlAlert.classList.add('fade-in');
 	urlAlert.classList.remove('collapse');
