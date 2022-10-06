@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppRouterModule } from './routes';
-import { ShortenerModule } from './shortener';
+import { AppRoutingModule } from './routes/app-routing.module';
+import { ShortenerModule } from './shortener/shortener.module';
 
 @Module({
   imports: [
     ShortenerModule,
-    AppRouterModule
+    AppRoutingModule
   ],
   controllers: [AppController]
 })
