@@ -33,15 +33,15 @@ const handleShortenerClick = async () => {
  * @param {String} originalUrl - The original url we want to shorten.
  */
 const getShortenUrl = async (originalUrl) => {
-	let result;
-	try {
-		result = await axios.post('/api/shortener', {
-			originalUrl,
-		});
-	} catch (err) {
-		return null;
-	}
-	return result.data;
+  let result;
+  try {
+    result = await axios.post('/api/shortener', {
+      originalUrl,
+    });
+  } catch (err) {
+    return null;
+  }
+  return result.data;
 };
 
 /**
