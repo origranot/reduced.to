@@ -14,14 +14,14 @@ async function bootstrap() {
     defaultVersion: '1',
     prefix: 'api/v',
   });
-  
-  app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
+
+  app.useStaticAssets(join(__dirname, 'public'));
+  app.setBaseViewsDir(join(__dirname, 'views'));
   app.setViewEngine('pug');
   
   // Declare Globals
   global.URL_DICT = {}
   
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
