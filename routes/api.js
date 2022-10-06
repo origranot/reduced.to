@@ -6,6 +6,10 @@ const shortenerService = require('../services/shortener');
 router.post('/shortener', (req, res) => {
 	let { originalUrl } = req.body;
 
+	if (!(originalUrl.startsWith("http://")) || originalUrl.startsWith("https://")) {
+		originalUrl = "https://" + originalUrl
+	}
+
 	try {
 		originalUrl = new URL({ toString: () => originalUrl });
 	} catch (err) {
