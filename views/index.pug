@@ -25,9 +25,9 @@ html(lang="en")
                 input#urlInput.border-primary.text-light.bg-dark.form-control(type='text' placeholder="Very long url.." aria-label="url" aria-describedby='shortenerBtn')
                 .input-group-append
                     button#shortenerBtn.btn.btn-primary(type='button' onclick='handleShortenerClick()') Shorten URL
-            #loading
+            #loading.fade-in
                 .lds-dual-ring
-            #result.text-light(onclick='copyUrl(this)')
+            #result.text-light.fade-in(onclick='copyUrl()')
             #urlAlert.alert.alert-success.collapse(role='alert').
                 Link has been copied to the clipboard
             .waves-div
