@@ -11,12 +11,7 @@ COPY package*.json ./
 RUN npm install
 
 # Bundle app source
-COPY docs/ docs/
-COPY public/ public/
-COPY routes/ routes/
-COPY services/ services/
-COPY views/ views/
-COPY app.js .
+COPY . .
 
 
 EXPOSE 3000
