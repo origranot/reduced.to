@@ -4,22 +4,28 @@
  * Handles shortener button click.
  */
 const handleShortenerClick = async () => {
-	document.getElementById("loading").style.display = "block"
-	const originalUrl = document.getElementById('urlInput').value;
+	const result = document.getElementById("result");
+	const loader = document.getElementById("loading");
+	const urlInput = document.getElementById("urlInput");
+	const urlAlert = document.getElementById("urlAlert");
+	
+	loader.style.display = "block";
+	result.style.display = "none";
 
-	const shortenInfo = await getShortenUrl(originalUrl);
+	const shortenInfo = await getShortenUrl(urlInput.value);
 
 	// Remove the loader from the screen
-	document.getElementById("loading").style.display = "none"
+	loader.style.display = "none";
+	result.style.display = "block";
 
 	if (shortenInfo === null) {
-		document.getElementById('result').textContent = 'This url is invalid..';
+		result.textContent = 'This url is invalid..';
 		return;
 	}
 
 	const { newUrl } = shortenInfo;
-	document.getElementById('result').textContent = window.location.href + newUrl;
-	document.getElementById('urlAlert').classList.add('collapse');
+	result.textContent = window.location.href + newUrl;
+	urlAlert.classList.add('collapse');
 };
 
 /**
