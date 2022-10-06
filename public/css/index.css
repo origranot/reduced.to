@@ -1,26 +1,6 @@
 @import url("./animations.css");
 @import url("./loader.css");
 
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-out {
-  0% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
-
 body {
   text-align: center;
   background-color: rgb(20, 20, 20);
@@ -30,12 +10,4 @@ body {
   margin-bottom: 1rem;
   cursor: pointer;
   font-weight: bold;
-}
-
-.fade-in {
-  animation: fade-in .5s;
-}
-
-.fade-out {
-  animation: fade-out .5s;
 }
