@@ -1,4 +1,35 @@
 doctype html
+html(lang='en')
+  head
+    title Url Shortener
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description', content='Just a small shortener for a long url')
+    meta(name='author', content='OriG')
+    // Loads CSS files
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css', integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh', crossorigin='anonymous')
+    link(rel='stylesheet', href='/css/index.css')
+     link(rel='stylesheet', href='/css/togglebtn.css')
+    // Loads JS files
+    script(src='/js/index.js')
+  body
+    .container
+      .upper-body
+        h1.p-3.font-weight-bold.upper-body-txt URL Shortener
+        #toggle(onclick='toggleMode()')
+          i.indicator
+      .alert.alert-primary(role='alert')
+        | Add your very long 
+        b URL
+        |  in the input bellow and click on the button to make it shorter
+      .input-group.mb-3
+        input#urlInput.border-primary.form-control(type='text', placeholder='Very long url..', aria-label='url', aria-describedby='shortenerBtn')
+        .input-group-append
+          button#shortenerBtn.btn.btn-primary(type='button', onclick='handleShortenerClick()') Shorten URL
+      #result.text-light(onclick='copyUrl(this)')
+      #urlAlert.alert.alert-success.collapse(role='alert') Link has been copied to the clipboard
+
+    script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
 html(lang="en")
     head
         title Url Shortener
@@ -13,16 +44,18 @@ html(lang="en")
         link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css')
         link(type='image/png', sizes='16x16', rel='icon', href='/assets/favicon.png')
         // Loads JS files
-        script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
         script(src='/js/index.js')
 
     body
         .container
-            h1.p-3.text-light.font-weight-bold URL Shortener
+            .upper-body
+        				h1.p-3.font-weight-bold.upper-body-txt URL Shortener
+        				#toggle(onclick='toggleMode()')
+          				i.indicator
             .alert.alert-primary(role='alert').
                 Add your very long <b>URL</b> in the input bellow and click on the button to make it shorter
             .input-group.mb-3
-                input#urlInput.border-primary.text-light.bg-dark.form-control(type='text' placeholder="Very long url.." aria-label="url" aria-describedby='shortenerBtn')
+                input#urlInput.border-primary.form-control(type='text' placeholder="Very long url.." aria-label="url" aria-describedby='shortenerBtn')
                 .input-group-append
                     button#shortenerBtn.btn.btn-primary(type='button' onclick='handleShortenerClick()') Shorten URL
             #loading
@@ -39,3 +72,5 @@ html(lang="en")
                         use(xlink:href='#gentle-wave', x='48', y='3', fill='rgba(255,255,255,0.5)')
                         use(xlink:href='#gentle-wave', x='48', y='5', fill='rgba(255,255,255,0.3)')
                         use(xlink:href='#gentle-wave', x='48', y='7', fill='#fff')
+ 			script(src='/js/toggle.js')
+    	script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
