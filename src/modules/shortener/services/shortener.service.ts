@@ -8,7 +8,7 @@ export class ShortenerService {
    * @returns {String} Returns the key or null
    */
   getShortUrl(originalUrl: string): string {
-    const urlIndex = Object.values(global.URL_DICT).indexOf(originalUrl);
+    const urlIndex: number = Object.values(global.URL_DICT).indexOf(originalUrl);
     return urlIndex !== -1 ? Object.keys(global.URL_DICT)[urlIndex] : null;
   };
 
