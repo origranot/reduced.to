@@ -4,22 +4,28 @@
  * Handles shortener button click.
  */
 const handleShortenerClick = async () => {
-	document.getElementById("loading").style.display = "block"
-	const originalUrl = document.getElementById('urlInput').value;
+	const result = document.getElementById("result");
+	const loader = document.getElementById("loading");
+	const urlInput = document.getElementById("urlInput");
+	
+	loader.style.display = "block";
+	result.style.display = "none";
 
-	const shortenInfo = await getShortenUrl(originalUrl);
+	const shortenInfo = await getShortenUrl(urlInput.value);
 
 	// Remove the loader from the screen
-	document.getElementById("loading").style.display = "none"
+	loader.style.display = "none";
+	result.style.display = "block";
 
 	if (shortenInfo === null) {
-		document.getElementById('result').textContent = 'This url is invalid..';
+		result.textContent = 'This url is invalid..';
 		return;
 	}
 
 	const { newUrl } = shortenInfo;
-	document.getElementById('result').textContent = window.location.href + newUrl;
-	document.getElementById('urlAlert').classList.add('collapse');
+	result.textContent = window.location.href + newUrl;
+
+	copyUrl()
 };
 
 /**
@@ -40,9 +46,27 @@ const getShortenUrl = async (originalUrl) => {
 
 /**
  * Copy link to clipboard.
- * @param {HTMLElement} htmlElement - HTML Element containing the short url.
  */
-const copyUrl = async (htmlElement) => {
-	navigator.clipboard.writeText(htmlElement.innerHTML);
-	document.getElementById('urlAlert').classList.remove('collapse');
+const copyUrl = () => {
+	const result = document.getElementById("result");
+
+	navigator.clipboard.writeText(result.innerHTML);
+	toastAlert()
 };
+
+const toastAlert = (timeoutInMiliseconds = 2000) => {
+	const urlAlert = document.getElementById("urlAlert");
+
+	urlAlert.classList.add('fade-in');
+	urlAlert.classList.remove('collapse');
+
+	setTimeout(() => {
+		urlAlert.classList.remove('fade-in');
+		urlAlert.classList.add('fade-out');
+		
+		setTimeout(() => {
+			urlAlert.classList.add('collapse');
+			urlAlert.classList.remove('fade-out');
+		}, 500);
+	}, timeoutInMiliseconds);
+}
