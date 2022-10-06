@@ -3,12 +3,11 @@
 
 body {
   text-align: center;
-  background-color: #f8f8f8;
-
+  background-color: rgb(20, 20, 20);
 }
+
 #result {
   margin-bottom: 1rem;
   cursor: pointer;
   font-weight: bold;
 }
-
