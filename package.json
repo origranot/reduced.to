@@ -5,7 +5,8 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "nest start",
-		"start:dev": "nest start --watch"
+		"start:dev": "nest start --watch",
+		"start:prod": "node dist/main"
 	},
 	"repository": {
 		"type": "git",
