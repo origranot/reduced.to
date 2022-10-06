@@ -9,7 +9,6 @@ router.post('/shortener', (req, res) => {
 	if (!(originalUrl.startsWith('http://')) || originalUrl.startsWith('https://')) {
 		originalUrl = 'https://' + originalUrl
 	}
-
 	try {
 		originalUrl = new URL({ toString: () => originalUrl });
 	} catch (err) {
