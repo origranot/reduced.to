@@ -20,6 +20,7 @@
 	},
 	"homepage": "https://github.com/origranot/url-shortener#readme",
 	"dependencies": {
+		"@nestjs/cli": "^9.1.4",
 		"@nestjs/common": "^9.1.4",
 		"@nestjs/core": "^9.1.4",
 		"@nestjs/platform-express": "^9.1.4",
