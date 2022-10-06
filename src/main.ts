@@ -19,6 +19,9 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('pug');
   
+  // Declare Globals
+  global.URL_DICT = {}
+  
   await app.listen(3000);
 }
 bootstrap();
