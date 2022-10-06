@@ -1,4 +1,5 @@
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { ShortenerDTO } from '../dto/shortener.dto';
 import { ShortenerService } from '../services/shortener.service';
 
 @Controller({
@@ -6,9 +7,29 @@ import { ShortenerService } from '../services/shortener.service';
 })
 
 export class ShortenerController {
-  constructor(private readonly shortenerService: ShortenerService) {}
+  constructor(private readonly shortenerService: ShortenerService) { }
   @Post()
-  requestHandler() {
-    return this.shortenerService.shortUrl();
+  requestHandler(@Body() body: ShortenerDTO) {
+    let parsedUrl: URL;
+
+    try {
+      parsedUrl = new URL(body.originalUrl);
+    } catch (err) {
+      //Implement throw exception
+      return;
+    }
+
+    let shortUrl = this.shortenerService.getShortUrl(parsedUrl.href);
+
+    if (shortUrl !== null) {
+      return { newUrl: shortUrl };
+    }
+
+    do {
+      shortUrl = this.shortenerService.generateShortUrl();
+    } while (!this.shortenerService.isShortUrlAvailable(shortUrl));
+
+    this.shortenerService.addUrl(parsedUrl.href, shortUrl);
+    return { newUrl: shortUrl };
   }
 }
