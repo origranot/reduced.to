@@ -3,6 +3,9 @@
 /**
  * Handles shortener button click.
  */
+
+let invalidUrl = false;
+
 const handleShortenerClick = async () => {
 	const result = document.getElementById("result");
 	const loader = document.getElementById("loading");
@@ -10,6 +13,8 @@ const handleShortenerClick = async () => {
 	
 	loader.style.display = "block";
 	result.style.display = "none";
+
+	invalidUrl = false
 
 	const shortenInfo = await getShortenUrl(urlInput.value);
 
@@ -19,6 +24,7 @@ const handleShortenerClick = async () => {
 
 	if (shortenInfo === null) {
 		result.textContent = 'This url is invalid..';
+		invalidUrl = true;
 		return;
 	}
 
@@ -48,11 +54,15 @@ const getShortenUrl = async (originalUrl) => {
 /**
  * Copy link to clipboard.
  */
-const copyUrl = () => {
-	const result = document.querySelector("#result #text");
 
+const copyUrl = () => {
+  if (!invalidUrl) {
+    return;
+  }
+  
+	const result = document.querySelector("#result #text");
 	navigator.clipboard.writeText(result.textContent);
-	toastAlert()
+	toastAlert();
 };
 
 const toastAlert = (timeoutInMiliseconds = 2000) => {
