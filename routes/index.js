@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 })
 
 router.get('*', (req, res) => {
-    res.status(404).send('Its 404 you fucker!');
+    res.status(404).send('Error 404: Page not found');
 })
 
 module.exports = router;
