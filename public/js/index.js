@@ -5,21 +5,21 @@
  */
 const handleShortenerClick = async () => {
 	document.getElementById("loading").style.display = "block"
-	let originalUrl = document.getElementById('urlInput').value;
+	const originalUrl = document.getElementById('urlInput').value;
 
-	let shortenInfo = await getShortenUrl(originalUrl);
+	const shortenInfo = await getShortenUrl(originalUrl);
+
+	// Remove the loader from the screen
+	document.getElementById("loading").style.display = "none"
 
 	if (shortenInfo === null) {
 		document.getElementById('result').textContent = 'This url is invalid..';
-		document.getElementById("loading").style.display = "none"
 		return;
 	}
 
-
-	let { newUrl } = shortenInfo;
+	const { newUrl } = shortenInfo;
 	document.getElementById('result').textContent = window.location.href + newUrl;
 	document.getElementById('urlAlert').classList.add('collapse');
-	document.getElementById("loading").style.display = "none"
 };
 
 /**
@@ -44,6 +44,5 @@ const getShortenUrl = async (originalUrl) => {
  */
 const copyUrl = async (htmlElement) => {
 	navigator.clipboard.writeText(htmlElement.innerHTML);
-
 	document.getElementById('urlAlert').classList.remove('collapse');
 };
