@@ -4,28 +4,28 @@
  * Handles shortener button click.
  */
 const handleShortenerClick = async () => {
-	const result = document.getElementById("result");
-	const loader = document.getElementById("loading");
-	const urlInput = document.getElementById("urlInput");
-	const urlAlert = document.getElementById("urlAlert");
-	
-	loader.style.display = "block";
-	result.style.display = "none";
+  const result = document.getElementById('result');
+  const loader = document.getElementById('loading');
+  const urlInput = document.getElementById('urlInput');
+  const urlAlert = document.getElementById('urlAlert');
 
-	const shortenInfo = await getShortenUrl(urlInput.value);
+  loader.style.display = 'flex';
+  result.style.display = 'none';
 
-	// Remove the loader from the screen
-	loader.style.display = "none";
-	result.style.display = "block";
+  const shortenInfo = await getShortenUrl(urlInput.value);
 
-	if (shortenInfo === null) {
-		result.textContent = 'This url is invalid..';
-		return;
-	}
+  // Remove the loader from the screen
+  loader.style.display = 'none';
+  result.style.display = 'block';
 
-	const { newUrl } = shortenInfo;
-	result.textContent = window.location.href + newUrl;
-	urlAlert.classList.add('collapse');
+  if (shortenInfo === null) {
+    result.textContent = 'This url is invalid..';
+    return;
+  }
+
+  const { newUrl } = shortenInfo;
+  result.textContent = window.location.href + newUrl;
+  urlAlert.classList.add('collapse');
 };
 
 /**
@@ -33,15 +33,15 @@ const handleShortenerClick = async () => {
  * @param {String} originalUrl - The original url we want to shorten.
  */
 const getShortenUrl = async (originalUrl) => {
-	let result;
-	try {
-		result = await axios.post('/api/shortener', {
-			originalUrl,
-		});
-	} catch (err) {
-		return null;
-	}
-	return result.data;
+  let result;
+  try {
+    result = await axios.post('/api/shortener', {
+      originalUrl,
+    });
+  } catch (err) {
+    return null;
+  }
+  return result.data;
 };
 
 /**
@@ -49,6 +49,6 @@ const getShortenUrl = async (originalUrl) => {
  * @param {HTMLElement} htmlElement - HTML Element containing the short url.
  */
 const copyUrl = async (htmlElement) => {
-	navigator.clipboard.writeText(htmlElement.innerHTML);
-	document.getElementById('urlAlert').classList.remove('collapse');
+  navigator.clipboard.writeText(htmlElement.innerHTML);
+  document.getElementById('urlAlert').classList.remove('collapse');
 };
