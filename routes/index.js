@@ -1,8 +1,7 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 
-const shortnerService = require('../services/shortner');
-
+const shortenerService = require('../services/shortener');
 
 router.use((req, res, next) => {
     let { path } = req;
@@ -12,11 +11,11 @@ router.use((req, res, next) => {
         return res.status(301).redirect(originalUrl);
     }
     next();
-})
+});
 
 router.get('/', (req, res) => {
     res.render('index');
-})
+});
 
 router.get('*', (req, res) => {
     res.status(404).send('Error 404: Page not found');

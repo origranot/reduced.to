@@ -1,29 +1,29 @@
 {
-  "name": "url-shortner",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "run:dev": "nodemon app.js",
-    "start": "node app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/origranot/url-shortner.git"
-  },
-  "author": "OriG",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/origranot/url-shortner/issues"
-  },
-  "homepage": "https://github.com/origranot/url-shortner#readme",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "pug": "^3.0.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.20"
-  }
+	"name": "url-shortener",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node app",
+		"run:dev": "nodemon app.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/origranot/url-shortener.git"
+	},
+	"author": "OriG",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/origranot/url-shortener/issues"
+	},
+	"homepage": "https://github.com/origranot/url-shortener#readme",
+	"dependencies": {
+		"body-parser": "^1.19.0",
+		"express": "^4.17.1",
+		"pug": "^3.0.1"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.20"
+	}
 }

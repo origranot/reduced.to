@@ -1,21 +1,17 @@
+@import url('./animations.css');
+@import url('./loader.css');
+
 body {
     text-align      : center;
-    background-color: #4e4e4e;
-    font-family     : "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size       : 14px;
-    height          : 100vh;
-    width           : 100vw;
     display         : flex;
     flex-direction  : column;
     justify-content : center;
+    background-color: rgb(20, 20, 20);
+    overflow        : hidden;
 }
 
-.wrapper {
-    margin: auto;
-    height: 100%;
-    width : 50%;
-}
-
-.img-cover {
-    border-radius: 20px;
+#result {
+    margin-bottom: 1rem;
+    cursor       : pointer;
+    font-weight  : bold;
 }

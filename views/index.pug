@@ -4,26 +4,55 @@ html(lang="en")
         title Url Shortener
         meta(charset='utf-8')
         meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
-        meta(name='description' content='Just a small description')
+        meta(name='description' content='Just a small shortener for a long url')
         meta(name='author' content='OriG')
 
+        // Bootstrap Icons
+        link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" integrity="sha512-5PV92qsds/16vyYIJo3T/As4m2d8b6oWYfoqV+vtizRB6KhF1F9kYzWzQmsO6T3z3QG2Xdhrx7FQ+5R1LiQdUA==" crossorigin="anonymous" referrerpolicy="no-referrer")
         // Loads CSS files
         link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
         link(rel='stylesheet' href='/css/index.css')
-
+        link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css')
+        link(type='image/png', sizes='16x16', rel='icon', href='/assets/favicon.png')
         // Loads JS files
         script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
         script(src='/js/index.js')
 
     body
-        .wrapper.mt-5
-            div
-                img(src='https://images.unsplash.com/photo-1617854818583-09e7f077a156?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80', width="600").img-cover
-            h1.p-3.text-white.font-weight-bold.mt-2 Witty URL Shortner
+
+        //- Main body of the application that is visible on load
+        .container
+            h1.p-3.text-light.font-weight-bold.mt-5 URL Shortener
+            div.pb-5
+                img(src="https://images.unsplash.com/photo-1617854818583-09e7f077a156?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Image of a browser" width="500")
             .alert.alert-primary(role='alert').
-                This is a simple UI shortner.
+                Add your very long <b>URL</b> in the input bellow and click on the button to make it shorter
             .input-group.mb-3
-                input#urlInput.form-control(type='text' placeholder="Enter a long URL to shorten.." aria-label="url" aria-describedby='shortnerBtn')
+                input#urlInput.border-primary.text-light.bg-dark.form-control(type='text' placeholder="Very long url.." aria-label="url" aria-describedby='shortenerBtn')
                 .input-group-append
-                    button#shortnerBtn.btn.btn-warning(type='button' onclick='handleShortnerClick()') Go!
-            h4#result.text-success.font-weight-bold 
+                    button#shortenerBtn.btn.btn-primary(type='button' onclick='handleShortenerClick()') Shorten URL
+            #loading.fade-in
+                .lds-dual-ring
+            
+            //- Result of the URL shortening section
+            #result.text-light
+                p#text.text-light.fade-in(onclick='copyUrl()')
+                #action.d-none.flex
+                    button.btn.btn-dark.mr-1(type='button' onclick='copyUrl()')
+                        i.bi.bi-clipboard
+                    button.btn.btn-dark(type='button' onclick='openLink()')
+                        i.bi.bi-box-arrow-up-right
+            #urlAlert.alert.alert-success.collapse(role='alert').
+                Link has been copied to the clipboard
+
+
+            //- Wave animation at the cottom of the screen
+            .waves-div
+                svg.waves(xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', viewbox='0 24 150 28', preserveaspectratio='none', shape-rendering='auto')
+                    defs
+                        path#gentle-wave(d='M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z')
+                    g.parallax
+                        use(xlink:href='#gentle-wave', x='48', y='0', fill='rgba(255,255,255,0.7')
+                        use(xlink:href='#gentle-wave', x='48', y='3', fill='rgba(255,255,255,0.5)')
+                        use(xlink:href='#gentle-wave', x='48', y='5', fill='rgba(255,255,255,0.3)')
+                        use(xlink:href='#gentle-wave', x='48', y='7', fill='#fff')
