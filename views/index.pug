@@ -10,10 +10,12 @@ html(lang="en")
         // Loads CSS files
         link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
         link(rel='stylesheet' href='/css/index.css')
+        link(rel='stylesheet' href='/css/toast.css')
 
         // Loads JS files
         script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
-        script(src='/js/index.js')
+        
+        //- script(src='/js/toast.js')
 
     body
         .container
@@ -25,5 +27,5 @@ html(lang="en")
                 .input-group-append
                     button#shortenerBtn.btn.btn-primary(type='button' onclick='handleShortenerClick()') Shorten URL
             #result.text-light(onclick='copyUrl(this)')
-            #urlAlert.alert.alert-success.collapse(role='alert').
-                Link has been copied to the clipboard
+           
+    script(src='/js/index.js')
