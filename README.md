@@ -24,11 +24,20 @@ Live demo: https://url-shortener-live.herokuapp.com/
 - Just create a PR already :)
 
 ## Setting up development environment
+### Locally
 - You just need to install `node` and run the following:
 ```bash
 npm install
 node app.js
 ```
+### Docker
+- You can easily build your application in a docker container and run it.
+```bash
+docker build . -t url-shortener
+docker run -p 3000:3000 url-shortener 
+```
+- Simply go to your favorite browser and visit `http://localhost:3000/` to see your application.
+### Docker compose
 - In case you have docker installed, you can *single-click* deploy and test your changes by running the following and going to `http://localhost:3000/` on your browser.
 ```bash
 docker-compose up
