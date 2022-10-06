@@ -15,12 +15,14 @@ body {
 
 
 .btn-animation {
-  border-color: #3498db;
+  background-color: #3498db;
+  border: #3498db;
   color: #fff;
-  box-shadow: 0 0 30px 30px #3498db inset, 0 0 0 0 #3498db;
    }
   
 .btn-animation:hover {
-    box-shadow: 0 0 20px 0 #3498db inset, 0 0 10px 4px #3498db;
+    background-color: #000;
     color: #fff;
+    box-shadow: 0 0 20px 0 #3498db inset, 0 0 10px 4px #3498db;
   }
+  
