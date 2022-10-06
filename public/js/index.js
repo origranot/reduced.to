@@ -6,6 +6,10 @@ let invalidUrl = false;
 /**
  * Handles shortener button click.
  */
+const handleShortenerKeypress = (event) => {
+	if (event.keyCode === 13)
+		handleShortenerClick();
+}
 const handleShortenerClick = async () => {
 	const result = document.getElementById("result");
 	const loader = document.getElementById("loading");
@@ -23,12 +27,15 @@ const handleShortenerClick = async () => {
 	result.style.display = "block";
 
 	if (shortenInfo === null) {
-		result.textContent = 'This url is invalid..';
+		result.querySelector('#error').textContent = 'This url is invalid..';
+		result.querySelector('#text').textContent = '';
+		result.querySelector('#action').classList = 'd-none';
 		invalidUrl = true;
 		return;
 	}
 
 	const { newUrl } = shortenInfo;
+	result.querySelector('#error').textContent = '';
 	result.querySelector('#text').textContent = window.location.href + newUrl;
 	result.querySelector('#action').classList.replace('d-none', 'd-block');
 
