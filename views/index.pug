@@ -36,6 +36,14 @@ html(lang="en")
             
             //- Result of the URL shortening section
             #result.text-light
+                .input-group.mb-3#action.d-none
+                    input(disabled=true)#urlResult.border-primary.text-light.bg-dark.form-control(type='text' aria-label="url" aria-describedby='shortenerBtn' onclick='copyUrl()')
+                    .input-group-append
+                        button.btn.btn-primary.mr-1(type='button' onclick='copyUrl()')
+                            i.bi.bi-clipboard
+                        button.btn.btn-primary(type='button' onclick='openLink()')
+                            i.bi.bi-box-arrow-up-right
+
                 p#text.text-light.fade-in(onclick='copyUrl()')
                 #action.d-none.flex
                     button.btn.btn-dark.mr-1(type='button' onclick='copyUrl()')
