@@ -14,7 +14,7 @@ export class ShortenerController {
     let parsedUrl: URL;
 
     try {
-      parsedUrl = new URL(parsedUrl);
+      parsedUrl = new URL(body.originalUrl);
     } catch (err: any) {
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
