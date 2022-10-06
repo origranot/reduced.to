@@ -19,6 +19,7 @@
 	"dependencies": {
 		"body-parser": "^1.19.0",
 		"express": "^4.17.1",
-		"pug": "^3.0.1"
+		"pug": "^3.0.1",
+		"typescript": "^4.8.4"
 	}
 }
