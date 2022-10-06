@@ -4,18 +4,18 @@
  * Handles shortener button click.
  */
 const handleShortenerClick = async () => {
-	const result = document.getElementById("result");
-	const loader = document.getElementById("loading");
-	const urlInput = document.getElementById("urlInput");
+	const result = document.getElementById('result');
+	const loader = document.getElementById('loading');
+	const urlInput = document.getElementById('urlInput');
 	
-	loader.style.display = "block";
-	result.style.display = "none";
+	loader.style.display = 'block';
+	result.style.display = 'none';
 
 	const shortenInfo = await getShortenUrl(urlInput.value);
 
 	// Remove the loader from the screen
-	loader.style.display = "none";
-	result.style.display = "block";
+	loader.style.display = 'none';
+	result.style.display = 'block';
 
 	if (shortenInfo === null) {
 		result.textContent = 'This url is invalid..';
@@ -48,14 +48,14 @@ const getShortenUrl = async (originalUrl) => {
  * Copy link to clipboard.
  */
 const copyUrl = () => {
-	const result = document.getElementById("result");
+	const result = document.getElementById('result');
 
 	navigator.clipboard.writeText(result.innerHTML);
 	toastAlert()
 };
 
 const toastAlert = (timeoutInMiliseconds = 2000) => {
-	const urlAlert = document.getElementById("urlAlert");
+	const urlAlert = document.getElementById('urlAlert');
 
 	urlAlert.classList.add('fade-in');
 	urlAlert.classList.remove('collapse');
