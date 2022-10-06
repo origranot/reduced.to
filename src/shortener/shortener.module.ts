@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { ShortenerController } from "./controllers";
-import { ShortenerService } from "./services";
+import { ShortenerController } from "./shortener.controller";
+import { ShortenerService } from "./shortener.service";
 
 @Module({
   controllers: [
