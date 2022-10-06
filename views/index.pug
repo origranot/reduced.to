@@ -30,7 +30,7 @@ html(lang='en')
       #urlAlert.alert.alert-success.collapse(role='alert') Link has been copied to the clipboard
 
     script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
-html(lang="en")
+html(lang='en')
     head
         title Url Shortener
         meta(charset='utf-8')
@@ -55,7 +55,7 @@ html(lang="en")
             .alert.alert-primary(role='alert').
                 Add your very long <b>URL</b> in the input bellow and click on the button to make it shorter
             .input-group.mb-3
-                input#urlInput.border-primary.form-control(type='text' placeholder="Very long url.." aria-label="url" aria-describedby='shortenerBtn')
+                input#urlInput.border-primary.form-control(type='text' placeholder='Very long url..' aria-label='url' aria-describedby='shortenerBtn')
                 .input-group-append
                     button#shortenerBtn.btn.btn-primary(type='button' onclick='handleShortenerClick()') Shorten URL
             #loading
