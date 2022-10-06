@@ -1,5 +1,8 @@
 'use strict';
 
+
+let invalidUrl = false;
+
 /**
  * Handles shortener button click.
  */
@@ -7,9 +10,11 @@ const handleShortenerClick = async () => {
 	const result = document.getElementById("result");
 	const loader = document.getElementById("loading");
 	const urlInput = document.getElementById("urlInput");
-	
+
 	loader.style.display = "block";
 	result.style.display = "none";
+
+	invalidUrl = false
 
 	const shortenInfo = await getShortenUrl(urlInput.value);
 
@@ -19,11 +24,13 @@ const handleShortenerClick = async () => {
 
 	if (shortenInfo === null) {
 		result.textContent = 'This url is invalid..';
+		invalidUrl = true;
 		return;
 	}
 
 	const { newUrl } = shortenInfo;
-	result.textContent = window.location.href + newUrl;
+	result.querySelector('#text').textContent = window.location.href + newUrl;
+	result.querySelector('#action').classList.replace('d-none', 'd-block');
 
 	copyUrl()
 };
@@ -35,9 +42,7 @@ const handleShortenerClick = async () => {
 const getShortenUrl = async (originalUrl) => {
 	let result;
 	try {
-		result = await axios.post('/api/v1/shortener', {
-			originalUrl,
-		});
+		result = await axios.post('/api/v1/shortener', { originalUrl });
 	} catch (err) {
 		return null;
 	}
@@ -47,11 +52,15 @@ const getShortenUrl = async (originalUrl) => {
 /**
  * Copy link to clipboard.
  */
-const copyUrl = () => {
-	const result = document.getElementById("result");
 
-	navigator.clipboard.writeText(result.innerHTML);
-	toastAlert()
+const copyUrl = () => {
+	if (invalidUrl) {
+		return;
+	}
+
+	const result = document.querySelector("#result #text");
+	navigator.clipboard.writeText(result.textContent);
+	toastAlert();
 };
 
 const toastAlert = (timeoutInMiliseconds = 2000) => {
@@ -63,10 +72,16 @@ const toastAlert = (timeoutInMiliseconds = 2000) => {
 	setTimeout(() => {
 		urlAlert.classList.remove('fade-in');
 		urlAlert.classList.add('fade-out');
-		
+
 		setTimeout(() => {
 			urlAlert.classList.add('collapse');
 			urlAlert.classList.remove('fade-out');
 		}, 500);
 	}, timeoutInMiliseconds);
 }
+
+// Open link in a new window/tab.
+const openLink = () => {
+	const text = document.querySelector('#result #text').textContent;
+	window.open(text, '_blank');
+};
