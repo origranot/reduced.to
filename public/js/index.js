@@ -4,17 +4,22 @@
  * Handles shortener button click.
  */
 const handleShortenerClick = async () => {
+	document.getElementById("loading").style.display = "block"
 	let originalUrl = document.getElementById('urlInput').value;
+
 	let shortenInfo = await getShortenUrl(originalUrl);
 
 	if (shortenInfo === null) {
 		document.getElementById('result').textContent = 'This url is invalid..';
+		document.getElementById("loading").style.display = "none"
 		return;
 	}
+
 
 	let { newUrl } = shortenInfo;
 	document.getElementById('result').textContent = window.location.href + newUrl;
 	document.getElementById('urlAlert').classList.add('collapse');
+	document.getElementById("loading").style.display = "none"
 };
 
 /**
