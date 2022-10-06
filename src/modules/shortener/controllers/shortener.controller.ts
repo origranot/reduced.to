@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { ShortenerDTO } from '../dto/shortener.dto';
 import { ShortenerService } from '../services/shortener.service';
 
@@ -8,18 +8,21 @@ import { ShortenerService } from '../services/shortener.service';
 
 export class ShortenerController {
   constructor(private readonly shortenerService: ShortenerService) { }
+  
   @Post()
   requestHandler(@Body() body: ShortenerDTO) {
     let parsedUrl: URL;
 
     try {
       parsedUrl = new URL(body.originalUrl);
-    } catch (err) {
-      //Implement throw exception
-      return;
+    } catch (err: any) {
+      throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        error: 'URL is invalid',
+      }, HttpStatus.BAD_REQUEST);
     }
 
-    let shortUrl = this.shortenerService.getShortUrl(parsedUrl.href);
+    let shortUrl: string = this.shortenerService.getShortUrl(parsedUrl.href);
 
     if (shortUrl !== null) {
       return { newUrl: shortUrl };
