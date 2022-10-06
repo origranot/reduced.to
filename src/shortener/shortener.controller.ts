@@ -1,6 +1,6 @@
 import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
-import { ShortenerDTO } from '../dto/shortener.dto';
-import { ShortenerService } from '../services/shortener.service';
+import { ShortenerDTO } from './dto/shortener.dto';
+import { ShortenerService } from './shortener.service';
 
 @Controller({
   version: '1'
