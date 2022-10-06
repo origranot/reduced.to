@@ -14,11 +14,11 @@ Live demo: https://url-shortener-live.herokuapp.com/
 
 - UI improvements:
   - Animations
-  - Dark/Light mode toggle
+  - Dark/Light mode toggle button
+  - Github repo button
   - Fonts?
+  - Migrate our front to React?
 - Add some tests?
-- Typescript?
-- Migrate into backend framework (eg. nestjs)
 - Better readme?
 - Add more ideas..
 - Just create a PR already :)
