@@ -23,7 +23,8 @@ const handleShortenerClick = async () => {
 	}
 
 	const { newUrl } = shortenInfo;
-	result.textContent = window.location.href + newUrl;
+	result.querySelector('#text').textContent = window.location.href + newUrl;
+	result.querySelector('#action').classList.replace('d-none', 'd-block');
 
 	copyUrl()
 };
@@ -48,9 +49,9 @@ const getShortenUrl = async (originalUrl) => {
  * Copy link to clipboard.
  */
 const copyUrl = () => {
-	const result = document.getElementById("result");
+	const result = document.querySelector("#result #text");
 
-	navigator.clipboard.writeText(result.innerHTML);
+	navigator.clipboard.writeText(result.textContent);
 	toastAlert()
 };
 
@@ -70,3 +71,9 @@ const toastAlert = (timeoutInMiliseconds = 2000) => {
 		}, 500);
 	}, timeoutInMiliseconds);
 }
+
+// Open link in a new window/tab.
+const openLink = () => {
+	const text = document.querySelector('#result #text').textContent;
+	window.open(text, '_blank');
+};
