@@ -1,5 +1,5 @@
 import { Routes } from "@nestjs/core";
-import { ShortenerModule } from "src/shortener/shortener.module";
+import { ShortenerModule } from "../../shortener/shortener.module";
 
 export const shortenerRoutes: Routes = [
   {
