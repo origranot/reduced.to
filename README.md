@@ -6,12 +6,11 @@
 
 ### About:
 
-I created this repo a long time ago (more than 3 years), made this public for Hacktoberfest! This is a very good
-opportunity for beginners to start their journey with open source. All PR's are welcome!
+I created this repo a long time ago (more than 3 years), made this public for Hacktoberfest! This is a very good opportunity for beginners to start their journey with open source. All PR's are welcome!
 
 ## Ideas for contributing (Updating)
 
-- UI improvments:
+- UI improvements:
   - Animations
   - Dark/Light mode toggle
   - Fonts?
