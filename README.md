@@ -8,7 +8,7 @@
 
 I created this repo a long time ago (more than 3 years), made this public for Hacktoberfest! This is a very good opportunity for beginners to start their journey with open source. All PR's are welcome!
 
-Live link to the website: https://url-shortener-live.herokuapp.com/
+Live demo: https://url-shortener-live.herokuapp.com/
 
 ## Ideas for contributing (Updating)
 
