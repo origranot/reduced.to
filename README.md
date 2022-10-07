@@ -27,11 +27,11 @@ Live demo: https://url-shortener-live.herokuapp.com/
 Step 1. Fork the Repository
 Step 2. Clone the repository on your local machine
 ```sh
-   git clone https://github.com/GITHUBPROFILENAME/REPOSITORYNAME.git
+git clone https://github.com/GITHUBPROFILENAME/url-shortener.git
 ```
 Step 3. Enter the command, to move to project directory
 ```sh
-cd url-shortener-1
+cd url-shortener
 ```
 Step 4. Install the node dependencies.
 ```sh
