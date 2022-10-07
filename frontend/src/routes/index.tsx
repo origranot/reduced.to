@@ -1,5 +1,6 @@
-import { component$, useStylesScoped$ } from '@builder.io/qwik';
+import { $, component$, useStylesScoped$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
+import axios from 'axios';
 import animations from '../assets/css/animations.css?inline';
 import loader from '../assets/css/loader.css?inline';
 import styles from './index.css?inline';
@@ -8,6 +9,89 @@ export default component$(() => {
   useStylesScoped$(animations)
   useStylesScoped$(styles)
   useStylesScoped$(loader)
+
+  // Open link in a new window/tab.
+const openLink$ = $(() => {
+	const text = document.querySelector('#result #text')!.textContent;
+	window.open(text!, '_blank');
+});
+
+const toastAlert$ = $(async (timeoutInMiliseconds: number = 2000) => {
+	const urlAlert = document.getElementById("urlAlert");
+
+	urlAlert!.classList.add('fade-in');
+	urlAlert!.classList.remove('collapse');
+
+	setTimeout(() => {
+		urlAlert!.classList.remove('fade-in');
+		urlAlert!.classList.add('fade-out');
+
+		setTimeout(() => {
+			urlAlert!.classList.add('collapse');
+			urlAlert!.classList.remove('fade-out');
+		}, 500);
+	}, timeoutInMiliseconds);
+})
+
+/**
+ * Copy link to clipboard.
+ */
+
+const copyUrl$ = $(() => {
+	const result = document.querySelector("#result #text");
+	navigator.clipboard.writeText(result!.textContent!);
+	toastAlert$();
+});
+
+  /**
+ * Returns the shorter link from the server.
+ * @param {String} originalUrl - The original url we want to shorten.
+ */
+const getShortenUrl$ = $(async (originalUrl: string) => {
+	let result;
+	try {
+		result = await axios.post('/api/v1/shortener', { originalUrl });
+	} catch (err) {
+		return null;
+	}
+	return result.data;
+});
+
+const handleShortenerClick$ = $(async () => {
+    const result = document.getElementById("result");
+    const loader = document.getElementById("loading");
+    const urlInput = document.getElementById("urlInput");
+
+    loader!.style.display = "block";
+    result!.style.display = "none";
+
+
+    const shortenInfo = await getShortenUrl$(urlInput!.value);
+
+    // Remove the loader from the screen
+    loader!.style.display = "none";
+    result!.style.display = "block";
+
+    if (shortenInfo === null) {
+      result!.querySelector('#error')!.textContent = 'This url is invalid..';
+      result!.querySelector('#text')!.textContent = '';
+      result!.querySelector('#action')!.classList = 'd-none';
+      return;
+    }
+
+    const { newUrl } = shortenInfo;
+    result!.querySelector('#error')!.textContent = '';
+    result!.querySelector('#text')!.textContent = window.location.href + newUrl;
+    result!.querySelector('#action')!.classList.replace('d-none', 'd-block');
+
+    copyUrl$()
+  });
+
+  const handleShortenerKeypress$ = $((e: KeyboardEvent) => {
+    if (e.keyCode === 13) {
+      handleShortenerClick$();
+    }
+  });
 
   return (
     <div class="container">
@@ -18,9 +102,9 @@ export default component$(() => {
         Add your very long <b>URL</b> in the input bellow and click on the button to make it shorter
       </div>
       <div class="input-group mb-3">
-        <input type="text" id="urlInput" class="border-primary text-light bg-dark form-control" placeholder="Very long url..." aria-label="url" aria-describedby="shortenerBtn" />
+        <input type="text" id="urlInput" class="border-primary text-light bg-dark form-control" placeholder="Very long url..." onKeyPress$={(event) => handleShortenerKeypress$(event)} aria-label="url" aria-describedby="shortenerBtn" />
         <div class="input-group-append">
-          <button type="button" id="shortenerBtn" class="btn btn-primary">Shorten URL</button>
+          <button type="button" id="shortenerBtn" class="btn btn-primary" onClick$={() => handleShortenerClick$()}>Shorten URL</button>
         </div>
       </div>
       <div id="loading" class="fade-in">
@@ -28,13 +112,13 @@ export default component$(() => {
       </div>
       <div id="result" class="text-light">
           <p id="error" className="text-light fade-in"></p>
-          <p id="text" className="text-light fade-in"></p>
+          <p id="text" className="text-light fade-in" onClick$={() => copyUrl$()}></p>
           <div id="action" className="d-none flex">
-            <button type="button" className="btn btn-dark mr-1">
+            <button type="button" className="btn btn-dark mr-1" onClick$={() => copyUrl$()}>
               <i className="bi bi-clipboard"></i>
             </button>
             <button type="button" className="btn btn-dark">
-              <i className="bi bi-box-arrow-up-right"></i>
+              <i className="bi bi-box-arrow-up-right" onClick$={() => openLink$()}></i>
             </button>
           </div>
       </div>
