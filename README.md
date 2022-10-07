@@ -48,6 +48,11 @@ http://localhost:3000/
 
 Happy Hacking !
    
+## Contributors
+
+<a href = "https://github.com/origranot/url-shortener/graphs/contributors">
+  <img src = "https://contrib.rocks/image?repo=origranot/url-shortener"/>
+</a>
 
 
 
