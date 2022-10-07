@@ -10,8 +10,7 @@
         "watchAssets": true
       },
       {
-        "include": "../views",
-        "outDir": "dist/views",
+        "include": "**/*.pug",
         "watchAssets": true
       }
     ],

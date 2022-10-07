@@ -12,6 +12,7 @@ body {
   cursor: pointer;
   font-weight: bold;
 }
+
 .center {
   position: absolute;
   margin: auto;
@@ -19,5 +20,5 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  height: 200px;
+  height: 400px;
 }
