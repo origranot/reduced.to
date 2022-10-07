@@ -65,7 +65,7 @@ const handleShortenerClick$ = $(async () => {
     loader!.style.display = "block";
     result!.style.display = "none";
 
-
+    //@ts-ignore
     const shortenInfo = await getShortenUrl$(urlInput!.value);
 
     // Remove the loader from the screen
@@ -75,6 +75,7 @@ const handleShortenerClick$ = $(async () => {
     if (shortenInfo === null) {
       result!.querySelector('#error')!.textContent = 'This url is invalid..';
       result!.querySelector('#text')!.textContent = '';
+      //@ts-ignore
       result!.querySelector('#action')!.classList = 'd-none';
       return;
     }
