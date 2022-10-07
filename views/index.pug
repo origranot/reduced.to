@@ -19,13 +19,14 @@ html(lang="en")
         script(src='/js/index.js')
 
     body
-        .container
+        .container.center
             .upper-body
                 h1.p-3.font-weight-bold.upper-body-txt URL Shortener
                 #toggle(onclick='toggleMode()')
                     i.indicator
+
             .alert.alert-primary(role='alert').
-                Add your very long <b>URL</b> in the input bellow and click on the button to make it shorter
+                Add your very long <b>URL</b> in the input below and click on the button to make it shorter
             .input-group.mb-3
                 input#urlInput.border-primary.form-control(type='text' onkeypress='handleShortenerKeypress(event)' placeholder="Very long url.." aria-label="url" aria-describedby='shortenerBtn')
                 .input-group-append
@@ -42,6 +43,7 @@ html(lang="en")
                         i.bi.bi-box-arrow-up-right
             #urlAlert.alert.alert-success.collapse(role='alert').
                 Link has been copied to the clipboard
+
             .waves-div
                 svg.waves(xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', viewbox='0 24 150 28', preserveaspectratio='none', shape-rendering='auto')
                     defs
@@ -58,3 +60,4 @@ html(lang="en")
                         use(xlink:href='#gentle-wave', x='48', y='7', fill='#222')
         script(src='/js/togglebtn.js')
         script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
+
