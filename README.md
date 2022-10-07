@@ -14,24 +14,47 @@ Live demo: https://url-shortener-live.herokuapp.com/
 
 - UI improvements:
   - Animations
-  - Dark/Light mode toggle
+  - Dark/Light mode toggle button
+  - Github repo button
   - Fonts?
+  - Migrate our front to React?
 - Add some tests?
-- Typescript?
-- Migrate into backend framework (eg. nestjs)
 - Better readme?
 - Add more ideas..
 - Just create a PR already :)
 
-## How to install?
-
+## How to run?
+Step 1. Fork the Repository
+Step 2. Clone the repository on your local machine
+```sh
+git clone https://github.com/GITHUBPROFILENAME/url-shortener.git
 ```
+Step 3. Enter the command, to move to project directory
+```sh
+cd url-shortener
+```
+Step 4. Install the node dependencies.
+```sh
 npm install
 ```
+Step 5. Start NPM , to make your project live
+```sh
+npm start
+```
+Step 6. Go on your browser and open 
+```sh
+http://localhost:3000/
+```
 
-```
-node app.js
-```
+Happy Hacking !
+   
+## Contributors
+
+<a href = "https://github.com/origranot/url-shortener/graphs/contributors">
+  <img src = "https://contrib.rocks/image?repo=origranot/url-shortener"/>
+</a>
+
+
 
 ## License
 
