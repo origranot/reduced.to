@@ -1,0 +1,38 @@
+body{
+    background: #0A0A0A;
+}
+
+.text-area {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    margin: 0;
+    font-family: 'Concert One', cursive;
+    font-weight: 900;
+    font-size: 7em;
+    animation-name: animate;
+    animation-duration: 10s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;            
+    padding:40px;
+    line-height:1.5;
+    text-transform:uppercase;
+ }
+ .cl{
+    display: flex;
+    position: absolute;
+    top: 40%;
+    left: 45%;
+    flex-direction: column;
+    color: rgb(84, 122, 155);
+    font-size: 2em;
+  
+
+ }
+@keyframes animate {
+    0%,100%{ text-shadow:0 0 30px rgb(29, 239, 243); }
+    25%{ text-shadow:0 0 30px rgb(151, 3, 31); }
+    50%{ text-shadow:0 0 30px forestgreen; }
+    75%{ text-shadow:0 0 30px rgb(160, 214, 33); }
+ }
