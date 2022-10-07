@@ -21,6 +21,7 @@ Live demo: https://url-shortener-live.herokuapp.com/
 - Add some tests?
 - Better readme?
 - Add more ideas..
+- Let's try to find a good domain?
 - Just create a PR already :)
 
 ## How to run?
