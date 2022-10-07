@@ -27,7 +27,7 @@ Live demo: https://url-shortener-live.herokuapp.com/
 Step 1. Fork the Repository
 Step 2. Clone the repository on your local machine
 ```sh
-   git clone https://github.com/GITHUBPROFILENAME/REPOSITORYNAME.git
+git clone https://github.com/GITHUBPROFILENAME/REPOSITORYNAME.git
 ```
 Step 3. Enter the command, to move to project directory
 ```sh
