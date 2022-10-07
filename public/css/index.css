@@ -1,3 +1,29 @@
 body {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
+
+.container {
+    width: 80%;
+    height: 50vh;
+    border-radius: 10px;
+    background-color: aliceblue;
+}
+
+.title-center {
+    text-align: center;
+    font-size: 1.8rem;
+    margin: 1em 0;
+}
+
+.style-one {
+    color: red;
+}
+
+.style-two {
+    color: rgba(8, 67, 86, 0.8);
+}
+
+
