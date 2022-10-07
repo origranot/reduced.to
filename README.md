@@ -17,11 +17,11 @@ Live demo: https://url-shortener-live.herokuapp.com/
   - Dark/Light mode toggle button
   - Github repo button
   - Fonts?
-  - Migrate our front to React?
+- Migrate our front to React?
 - Add some tests?
 - Better readme?
+- Add logs?
 - Add more ideas..
-- Let's try to find a good domain?
 - Just create a PR already :)
 
 ## How to run?
@@ -54,8 +54,6 @@ Happy Hacking !
 <a href = "https://github.com/origranot/url-shortener/graphs/contributors">
   <img src = "https://contrib.rocks/image?repo=origranot/url-shortener"/>
 </a>
-
-
 
 ## License
 
