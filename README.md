@@ -27,11 +27,11 @@ Live demo: https://url-shortener-live.herokuapp.com/
 Step 1. Fork the Repository
 Step 2. Clone the repository on your local machine
 ```sh
-git clone https://github.com/GITHUBPROFILENAME/url-shortener.git
+   git clone https://github.com/GITHUBPROFILENAME/REPOSITORYNAME.git
 ```
 Step 3. Enter the command, to move to project directory
 ```sh
-cd url-shortener
+cd url-shortener-1
 ```
 Step 4. Install the node dependencies.
 ```sh
@@ -48,11 +48,6 @@ http://localhost:3000/
 
 Happy Hacking !
    
-## Contributors
-
-<a href = "https://github.com/origranot/url-shortener/graphs/contributors">
-  <img src = "https://contrib.rocks/image?repo=origranot/url-shortener"/>
-</a>
 
 
 
