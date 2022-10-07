@@ -1,5 +1,5 @@
-@import url('./animations.css');
-@import url('./loader.css');
+@import url("./animations.css");
+@import url("./loader.css");
 
 body {
   text-align: center;
@@ -11,4 +11,13 @@ body {
   margin-bottom: 1rem;
   cursor: pointer;
   font-weight: bold;
+}
+.center {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 200px;
 }
