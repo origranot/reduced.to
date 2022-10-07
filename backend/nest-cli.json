@@ -5,7 +5,7 @@
   "compilerOptions": {
     "assets": [
       {
-        "include": "../public",
+        "include": "../../frontend/server",
         "outDir": "dist/public",
         "watchAssets": true
       },
