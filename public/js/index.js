@@ -1,38 +1,20 @@
 'use strict';
 
-
-let invalidUrl = false;
-
 /**
  * Handles shortener button click.
  */
 const handleShortenerClick = async () => {
-	const result = document.getElementById("result");
-	const loader = document.getElementById("loading");
-	const urlInput = document.getElementById("urlInput");
+  let originalUrl = document.getElementById('urlInput').value;
+  let shortenInfo = await getShortenUrl(originalUrl);
 
-	loader.style.display = "block";
-	result.style.display = "none";
+  if (shortenInfo === null) {
+    document.getElementById('result').textContent = 'This url is invalid..';
+    return;
+  }
 
-	invalidUrl = false
-
-	const shortenInfo = await getShortenUrl(urlInput.value);
-
-	// Remove the loader from the screen
-	loader.style.display = 'none';
-	result.style.display = 'block';
-
-	if (shortenInfo === null) {
-		result.textContent = 'This url is invalid..';
-		invalidUrl = true;
-		return;
-	}
-
-	const { newUrl } = shortenInfo;
-	result.querySelector('#text').textContent = window.location.href + newUrl;
-	result.querySelector('#action').classList.replace('d-none', 'd-block');
-
-	copyUrl()
+  let { newUrl } = shortenInfo;
+  document.getElementById('result').textContent = window.location.href + newUrl;
+  document.getElementById('urlAlert').classList.add('collapse');
 };
 
 /**
@@ -40,49 +22,23 @@ const handleShortenerClick = async () => {
  * @param {String} originalUrl - The original url we want to shorten.
  */
 const getShortenUrl = async (originalUrl) => {
-	let result;
-	try {
-		result = await axios.post('/api/shortener', { originalUrl });
-	} catch (err) {
-		return null;
-	}
-	return result.data;
+  let result;
+  try {
+    result = await axios.post('/api/shortener', {
+      originalUrl,
+    });
+  } catch (err) {
+    return null;
+  }
+  return result.data;
 };
 
 /**
  * Copy link to clipboard.
+ * @param {HTMLElement} htmlElement - HTML Element containing the short url.
  */
+const copyUrl = async (htmlElement) => {
+  navigator.clipboard.writeText(htmlElement.innerHTML);
 
-const copyUrl = () => {
-	const result = document.getElementById('result');
-	if (invalidUrl) {
-		return;
-	}
-
-	const result = document.querySelector("#result #text");
-	navigator.clipboard.writeText(result.textContent);
-	toastAlert();
-};
-
-const toastAlert = (timeoutInMiliseconds = 2000) => {
-	const urlAlert = document.getElementById('urlAlert');
-
-	urlAlert.classList.add('fade-in');
-	urlAlert.classList.remove('collapse');
-
-	setTimeout(() => {
-		urlAlert.classList.remove('fade-in');
-		urlAlert.classList.add('fade-out');
-
-		setTimeout(() => {
-			urlAlert.classList.add('collapse');
-			urlAlert.classList.remove('fade-out');
-		}, 500);
-	}, timeoutInMiliseconds);
-}
-
-// Open link in a new window/tab.
-const openLink = () => {
-	const text = document.querySelector('#result #text').textContent;
-	window.open(text, '_blank');
+  document.getElementById('urlAlert').classList.remove('collapse');
 };
