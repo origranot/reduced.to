@@ -3,10 +3,12 @@
 
 body {
   text-align: center;
-  background-color: rgb(20, 20, 20);
+  background-color: #eee;
   overflow: hidden;
 }
-
+#urlInput{
+  background-color: #eee;
+}
 #result {
   margin-bottom: 1rem;
   cursor: pointer;

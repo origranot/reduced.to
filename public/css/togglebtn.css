@@ -1,0 +1,69 @@
+
+
+#result,#error,#text {
+  color: black;
+}
+#result.active,#error.active,#text.active {
+  color: #fff;
+}
+.upper-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+body.active {
+  background-color: rgb(20, 20, 20);
+}
+.upper-body-txt {
+  color: #343a40;
+}
+.upper-body-txt.active {
+  color: #fff;
+}
+#urlInput.active {
+  background: #343a40;
+  color: white;
+}
+#toggle {
+  cursor: pointer;
+  position: relative;
+  display: block;
+  width: 70px;
+  height: 32px;
+  border-radius: 32px;
+  background-color: rgb(168, 168, 168);
+  transition: 0.3s;
+  box-shadow: inset 0 8px 60px rgba(0, 0, 0, 0.1),
+    inset 0 8px 8px rgba(0, 0, 0, 0.1), inset 0 -4px 4px rgba(0, 0, 0, 0.1);
+}
+#toggle.active .indicator.active {
+  background: white;
+}
+#toggle .indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(to bottom, #444, #222);
+  border-radius: 50%;
+  transform: scale(0.9);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5),
+    inset 0 4px 4px rgba(255 255 255 0.2), inset 0 -4px 4px rgba(55 255 255 0.2);
+  transition: 0.3s;
+}
+#toggle.active .indicator {
+  left: 39px;
+}
+
+#toggle.active {
+  background: rgb(78, 78, 78);
+  box-shadow: inset 0 2px 60px rgba(0, 0, 0, 0.1),
+    inset 0 2px 8px rgba(0, 0, 0, 0.1), inset 0 4px -4px rgba(0, 0, 0, 0.05);
+}
+.parallax.dark-parallax {
+  display: inline-block;
+}
+.parallax.dark-parallax.active {
+  display: none;
+}
