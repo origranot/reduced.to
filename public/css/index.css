@@ -23,6 +23,18 @@ body {
   height: 400px;
 }
 
+#footer{
+  position: fixed;
+  bottom: 25vh;
+  width: 100%;
+}
+
+#footer a{
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+}
+
 .btn-animation {
   background-color: #3498db;
   border: #3498db;
