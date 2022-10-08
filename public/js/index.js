@@ -26,6 +26,9 @@ const handleShortenerClick = async () => {
 	// Remove the loader from the screen
 	loader.style.display = "none";
 	result.style.display = "block";
+	
+	// Empty url input field after result is fetched from the server
+	emptyUrl();
 
 	if (!newUrl) {
 		result.querySelector('#error').textContent = 'This url is invalid..';
@@ -96,3 +99,8 @@ const openLink = () => {
 	const text = document.querySelector('#result #text').textContent;
 	window.open(text, '_blank');
 };
+
+// Empty URL input field after result is fetched
+const emptyUrl = () => {
+	document.getElementById('urlInput').value = '';
+}
