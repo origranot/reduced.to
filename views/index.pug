@@ -14,14 +14,16 @@ html(lang="en")
         link(rel='stylesheet' href='/css/index.css')
         link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css')
         link(type='image/png', sizes='16x16', rel='icon', href='/assets/favicon.png')
+        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css' integrity='sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==' crossorigin='anonymous' referrerpolicy='no-referrer')
         // Loads JS files
         script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
         script(src='/js/index.js')
 
     body
         div.d-flex.flex-row-reverse.m-3
-            a.link-light(href="https://github.com/origranot/url-shortener") 
-                button.btn.btn-primary(type="button") View on Github
+            a(href='https://github.com/origranot/url-shortener')
+                | View project on Github 
+                i.fa-brands.fa-github
         .container
             h1.p-3.text-light.font-weight-bold URL Shortener
             .alert.alert-primary(role='alert').
