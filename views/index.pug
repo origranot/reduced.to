@@ -12,21 +12,16 @@ html(lang="en")
         
         // Loads CSS files
         link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
-        link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css')
-        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css' integrity='sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==' crossorigin='anonymous' referrerpolicy='no-referrer')
         link(rel='stylesheet' href='/css/index.css')
-
+        link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css')
+        
         // Favicon
         link(type='image/png', sizes='16x16', rel='icon', href='/assets/favicon.png')
         
         // Loads JS files
         script(src='/js/index.js')
     body
-        div.d-flex.flex-row-reverse.m-5
-            a.github-link(href='https://github.com/origranot/url-shortener')
-                | View project on Github 
-                i.fa-brands.fa-github
-        .container
+        .container.center
             h1.p-3.text-light.font-weight-bold URL Shortener
             .alert.alert-primary(role='alert').
                 Add your very long <b>URL</b> in the input below and click on the button to make it shorter
@@ -55,3 +50,16 @@ html(lang="en")
                     use(xlink:href='#gentle-wave', x='48', y='3', fill='rgba(255,255,255,0.5)')
                     use(xlink:href='#gentle-wave', x='48', y='5', fill='rgba(255,255,255,0.3)')
                     use(xlink:href='#gentle-wave', x='48', y='7', fill='#fff')
+        .animation-area 
+            ul.squares 
+                li 
+                li 
+                li 
+                li 
+                li 
+                li 
+                li 
+                li 
+                li 
+
+
