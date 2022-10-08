@@ -22,16 +22,12 @@ Live demo: https://url-shortener-live.herokuapp.com/
 - UI improvements:
   - Animations
   - Dark/Light mode toggle button
-  - Github repo button
   - Fonts?
-- Migrate our front to React?
+- Migrate our front to Qwick?
+- Yarn instead of NPM.
 - Add some tests?
 - Better readme?
 - Add logs?
-- Displaying the Benefits of using URL-Shortner
-  -Safety
-  -Reliable
-  -Shortend
 - Adding a statistics page.
 - Add more ideas..
 - Just create a PR already :)
