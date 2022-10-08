@@ -24,6 +24,8 @@ Live demo: https://url-shortener-live.herokuapp.com/
 - Add more ideas..
 - Just create a PR already :)
 
+Go to the CONTRIBUTE.md to check how to contribute via git, you could also use the github desktop or VS code according to your comfort :D
+
 ## How to run?
 Step 1. Fork the Repository
 Step 2. Clone the repository on your local machine
