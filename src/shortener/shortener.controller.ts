@@ -21,10 +21,7 @@ export class ShortenerController {
       });
     }
 
-    let shortUrl = await this.shortenerService.getShortUrl(parsedUrl.href);
-    if (shortUrl !== null) {
-      return { newUrl: shortUrl };
-    }
+    let shortUrl: string;
 
     do {
       shortUrl = this.shortenerService.generateShortUrl();

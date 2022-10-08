@@ -6,32 +6,13 @@ export class ShortenerService {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) { }
 
   /**
-   * Return the shortener url of the specific url.
-   * @param {String} originalUrl The original url.
-   * @returns {String} Returns the value or null
-   */
-  getShortUrl = async (originalUrl: string): Promise<string> => {
-    const shortUrl: string = await this.cacheManager.get(originalUrl);
-    return shortUrl ?? null;
-  };
-
-  /**
    * Return the original url of the specific url.
    * @param {String} shortUrl The short url
    * @returns {String} Returns the original url or null
    */
   getOriginalUrl = async (shortUrl: string): Promise<string> => {
-    const keys = await this.cacheManager.store.keys()
-
-    //Loop through keys
-    for await (const key of keys) {
-      const value = await this.cacheManager.get(key);
-      if (value === shortUrl) {
-        return key;
-      }
-    }
-
-    return null;
+    const originalUrl = await this.cacheManager.get(shortUrl);
+    return originalUrl ? originalUrl.toString() : null;
   };
 
   /**
@@ -58,6 +39,6 @@ export class ShortenerService {
   * @param {String} shortUrl The shorten url.
   */
   addUrl = async (originalUrl: string, shortUrl: string) => {
-    await this.cacheManager.set(originalUrl, shortUrl);
+    await this.cacheManager.set(shortUrl, originalUrl);
   };
 }
