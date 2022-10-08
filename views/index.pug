@@ -17,11 +17,15 @@ html(lang="en")
         
         // Favicon
         link(type='image/png', sizes='16x16', rel='icon', href='/assets/favicon.png')
-        
+        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css' integrity='sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==' crossorigin='anonymous' referrerpolicy='no-referrer')
         // Loads JS files
         script(src='/js/index.js')
     body
-        .container.center
+        div.d-flex.flex-row-reverse.m-3
+            a(href='https://github.com/origranot/url-shortener')
+                | View project on Github 
+                i.fa-brands.fa-github
+        .container
             h1.p-3.text-light.font-weight-bold URL Shortener
             .alert.alert-primary(role='alert').
                 Add your very long <b>URL</b> in the input below and click on the button to make it shorter
