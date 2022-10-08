@@ -23,9 +23,11 @@ html(lang="en")
         script(src='/js/index.js')
         script(async, defer, src="https://buttons.github.io/buttons.js")
     body
-        .container.center
-            .text-right.mb-3
-                a.github-button(href="https://github.com/origranot/url-shortener" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star origranot/url-shortener on GitHub") Star
+        .container
+            div.d-flex.flex-row-reverse.my-5
+                a.github-button(href="https://github.com/origranot/url-shortener" data-size="large" data-show-count="true" aria-label="Star origranot/url-shortener on GitHub") Star
+
+        .container
             h1.p-3.text-light.font-weight-bold URL Shortener
             .alert.alert-primary(role='alert').
                 Add your very long <b>URL</b> in the input below and click on the button to make it shorter
