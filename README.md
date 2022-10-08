@@ -38,6 +38,8 @@ Step 4. Install the node dependencies.
 ```sh
 npm install
 ```
+IF You Can't able to Install npm Follow this article https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac
+
 Step 5. Start NPM , to make your project live
 ```sh
 npm start
