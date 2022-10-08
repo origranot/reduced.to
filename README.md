@@ -12,7 +12,7 @@ Live demo: https://url-shortener-live.herokuapp.com/
 
 ## Ideas for contributing (Updating)
 <p align="center">
-<img src="https://media2.giphy.com/media/55XeaJRor7da56SRaL/giphy.gif?cid=ecf05e47zyesangu7bbdm2al7sms29mpxcbj2b1soup8mwpe&rid=giphy.gif&ct=g">
+<img src="/docs/idea.gif">
 </p>
 
 - UI improvements:
