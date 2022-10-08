@@ -6,16 +6,6 @@ export class ShortenerService {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) { }
 
   /**
-   * Return the shortener url of the specific url.
-   * @param {String} originalUrl The original url.
-   * @returns {String} Returns the value or null
-   */
-  getShortUrl = async (originalUrl: string): Promise<string> => {
-    const shortUrl: string = await this.cacheManager.get(originalUrl);
-    return shortUrl ?? null;
-  };
-
-  /**
    * Return the original url of the specific url.
    * @param {String} shortUrl The short url
    * @returns {String} Returns the original url or null
