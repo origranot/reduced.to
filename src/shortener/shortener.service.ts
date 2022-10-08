@@ -11,17 +11,8 @@ export class ShortenerService {
    * @returns {String} Returns the original url or null
    */
   getOriginalUrl = async (shortUrl: string): Promise<string> => {
-    const keys = await this.cacheManager.store.keys()
-
-    //Loop through keys
-    for await (const key of keys) {
-      const value = await this.cacheManager.get(key);
-      if (value === shortUrl) {
-        return key;
-      }
-    }
-
-    return null;
+    const originalUrl = await this.cacheManager.get(shortUrl);
+    return originalUrl ? originalUrl.toString() : null;
   };
 
   /**
@@ -48,6 +39,6 @@ export class ShortenerService {
   * @param {String} shortUrl The shorten url.
   */
   addUrl = async (originalUrl: string, shortUrl: string) => {
-    await this.cacheManager.set(originalUrl, shortUrl);
+    await this.cacheManager.set(shortUrl, originalUrl);
   };
 }
