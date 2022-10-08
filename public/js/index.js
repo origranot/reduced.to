@@ -23,11 +23,21 @@ const handleShortenerClick = async () => {
 
 	const { newUrl } = await getShortenUrl(urlInput.value);
 
+	const isValidUrl = urlString => {
+		var urlPattern = new RegExp('^(https?:\\/\\/)?' + // validate protocol
+			'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // validate domain name
+			'((\\d{1,3}\\.){3}\\d{1,3}))' + // validate OR ip (v4) address
+			'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // validate port and path
+			'(\\?[;&a-z\\d%_.~+=-]*)?' + // validate query string
+			'(\\#[-a-z\\d_]*)?$', 'i'); // validate fragment locator
+		return !!urlPattern.test(urlString);
+	}
+
 	// Remove the loader from the screen
 	loader.style.display = "none";
 	result.style.display = "block";
 
-	if (!newUrl) {
+	if (!newUrl || !isValidUrl(urlInput.value)) {
 		result.querySelector('#error').textContent = 'This url is invalid..';
 		result.querySelector('#text').textContent = '';
 		result.querySelector('#action').classList = 'd-none';
