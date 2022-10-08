@@ -20,7 +20,7 @@ html(lang="en")
         
         // Loads JS files
         script(src='/js/index.js')
-    body
+    body.gradient-background 
         .container.center
             h1.p-3.text-light.font-weight-bold URL Shortener
             .alert.alert-primary(role='alert').
@@ -32,7 +32,7 @@ html(lang="en")
             #loading.fade-in
                 .lds-dual-ring
             #result.text-light
-                p#error.text-light.fade-in
+                p#error.text-light.fade-in.danger
                 p#text.text-light.fade-in(onclick='copyUrl()')
                 #action.d-none.flex
                     button.btn.btn-dark.mr-1(type='button' onclick='copyUrl()')

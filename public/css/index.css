@@ -1,10 +1,20 @@
 @import url('./animations.css');
 @import url('./loader.css');
 
+html {
+  height: 100%;
+}
+
 body {
   text-align: center;
   background-color: rgb(20, 20, 20);
   overflow: hidden;
+}
+
+.gradient-background {
+  background: linear-gradient(to right, #434343 0%, black 100%);
+  width: 100%;
+  height: 100%;
 }
 
 #result {
@@ -33,4 +43,8 @@ body {
     background-color: #000;
     color: #fff;
     box-shadow: 0 0 20px 0 #3498db inset, 0 0 10px 4px #3498db;
+  }
+
+  .danger{
+    background-color: red;
   }
