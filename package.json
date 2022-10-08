@@ -1,11 +1,13 @@
 {
 	"name": "url-shortener",
 	"version": "1.0.0",
-	"description": "",
+	"description": "URL shortener is a web application that reduces the length of link URL. So it's easier to remember, share and track.",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
+		"postinstall": "nest build",
 		"start": "nest start",
-		"start:dev": "nest start --watch"
+		"start:dev": "nest start --watch",
+		"start:prod": "node dist/main"
 	},
 	"repository": {
 		"type": "git",
@@ -18,14 +20,19 @@
 	},
 	"homepage": "https://github.com/origranot/url-shortener#readme",
 	"dependencies": {
+		"@nestjs/cli": "^9.1.4",
 		"@nestjs/common": "^9.1.4",
 		"@nestjs/core": "^9.1.4",
 		"@nestjs/platform-express": "^9.1.4",
+		"@nestjs/schematics": "^9.0.3",
 		"body-parser": "^1.19.0",
+		"cache-manager": "^5.0.0",
 		"express": "^4.17.1",
-		"pug": "^3.0.1"
+		"pug": "^3.0.1",
+		"ts-node": "^10.9.1"
 	},
 	"devDependencies": {
+		"@types/cache-manager": "^4.0.2",
 		"@types/express": "^4.17.13",
 		"@types/node": "^16.0.0",
 		"source-map-support": "^0.5.20",

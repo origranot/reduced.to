@@ -3,11 +3,8 @@ import { ShortenerController } from "./shortener.controller";
 import { ShortenerService } from "./shortener.service";
 
 @Module({
-  controllers: [
-    ShortenerController
-  ],
-  providers: [
-    ShortenerService
-  ]
+  controllers: [ShortenerController],
+  providers: [ShortenerService],
+  exports: [ShortenerService]
 })
-export class ShortenerModule {}
+export class ShortenerModule { }
