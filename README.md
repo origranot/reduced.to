@@ -6,7 +6,7 @@
 
 ## How Does It Work?
 
-Simply copy and paste a url and click shorten url! And now you have a shortened version of that url. 
+Simply copy and paste a URL into the provided area. Then click shorten URL! Your URL has now been shortened!
 
 ### About:
 
