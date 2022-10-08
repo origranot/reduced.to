@@ -1,7 +1,12 @@
 'use strict';
 
-
 let invalidUrl = false;
+
+const handleShortenerKeypress = (event) => {
+	if (event.keyCode === 13) {
+		handleShortenerClick();
+	}
+}
 
 /**
  * Handles shortener button click.
@@ -16,19 +21,21 @@ const handleShortenerClick = async () => {
 
 	invalidUrl = false
 
-	const shortenInfo = await getShortenUrl(urlInput.value);
+	const { newUrl } = await getShortenUrl(urlInput.value);
 
 	// Remove the loader from the screen
 	loader.style.display = "none";
 	result.style.display = "block";
 
-	if (shortenInfo === null) {
-		result.textContent = 'This url is invalid..';
+	if (!newUrl) {
+		result.querySelector('#error').textContent = 'This url is invalid..';
+		result.querySelector('#text').textContent = '';
+		result.querySelector('#action').classList = 'd-none';
 		invalidUrl = true;
 		return;
 	}
 
-	const { newUrl } = shortenInfo;
+	result.querySelector('#error').textContent = '';
 	result.querySelector('#text').textContent = window.location.href + newUrl;
 	result.querySelector('#action').classList.replace('d-none', 'd-block');
 
@@ -42,11 +49,15 @@ const handleShortenerClick = async () => {
 const getShortenUrl = async (originalUrl) => {
 	let result;
 	try {
-		result = await axios.post('/api/v1/shortener', { originalUrl });
+		result = await fetch('/api/v1/shortener', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ originalUrl })
+		});
 	} catch (err) {
 		return null;
 	}
-	return result.data;
+	return result.json()
 };
 
 /**
