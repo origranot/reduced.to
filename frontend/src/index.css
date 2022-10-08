@@ -1,0 +1,36 @@
+@import url('./assets/css/animations.css');
+@import url('./assets/css/loader.css');
+
+body {
+  text-align: center;
+  background-color: rgb(20, 20, 20);
+  overflow: hidden;
+}
+
+#result {
+  margin-bottom: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.center {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 400px;
+}
+
+.btn-animation {
+  background-color: #3498db;
+  border: #3498db;
+  color: #fff;
+}
+
+.btn-animation:hover {
+  background-color: #000;
+  color: #fff;
+  box-shadow: 0 0 20px 0 #3498db inset, 0 0 10px 4px #3498db;
+}

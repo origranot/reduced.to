@@ -7,7 +7,8 @@
 		"postinstall": "nest build",
 		"start": "nest start",
 		"start:dev": "nest start --watch",
-		"start:prod": "node dist/main"
+		"start:prod": "node dist/main",
+		"build-frontend": "cd frontend && npm run build"
 	},
 	"repository": {
 		"type": "git",
