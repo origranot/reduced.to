@@ -1,6 +1,6 @@
 import {Waves} from "./components/Waves";
 import {Loading} from "./components/Loading";
-import {useRef, useState} from "react";
+import {FormEvent, useEffect, useRef, useState} from "react";
 import {useShortenUrl} from "./hooks/useShortenUrl";
 import {useCopyUrl} from "./hooks/useCopyUrl";
 import React from 'react';
@@ -9,21 +9,27 @@ import React from 'react';
 function App() {
 
     const alertRef = useRef(null);
-    const [url, setUrl] = useState('');
     const [copy] = useCopyUrl(alertRef);
-    const [result, error, loading, shorten, api] = useShortenUrl()
+    const [url, setUrl, result, error, loading, shorten, api] = useShortenUrl()
 
-    const copyUrl = () => {
+    const [shortUrl, setShortUrl] = useState("");
+
+    useEffect(() => {
         if (result?.newUrl) {
-            const n = api + result.newUrl;
-            copy(n);
+            setShortUrl(api + result.newUrl)
+            copy(api + result.newUrl)
         }
+    }, [result]);
+
+
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        await shorten(url)
     }
 
     const openLink = () => {
         if (result?.newUrl) {
-            const n = window.location.href + result.newUrl;
-            window.open(n, '_blank');
+            window.open(shortUrl, '_blank');
         }
     }
 
@@ -36,10 +42,7 @@ function App() {
                 <div className="alert alert-primary" role="alert">
                     Add your very long <b>URL</b> in the input below and click on the button to make it shorter
                 </div>
-                <form className="input-group mb-3" onSubmit={(e) => {
-                    e.preventDefault();
-                    shorten(url).then(copyUrl);
-                }}>
+                <form className="input-group mb-3" onSubmit={(e) => handleSubmit(e)}>
                     <input type="text" id="urlInput" className="border-primary text-light bg-dark form-control"
                            placeholder="Very long url.." aria-label="url" aria-describedby='shortenerBtn'
                            value={url}
@@ -60,11 +63,11 @@ function App() {
                             {
                                 result && result.newUrl && <>
                                     <p id="text" className="text-light fade-in">
-                                        {window.location.href} {result?.newUrl}
+                                        {api}{result?.newUrl}
                                     </p>
 
                                     <div id="action" className="d-block flex">
-                                        <button className="btn btn-dark mr-1" onClick={() => copyUrl()}>
+                                        <button className="btn btn-dark mr-1" onClick={() => copy(shortUrl)}>
                                             <i className="bi bi-clipboard"></i>
                                         </button>
                                         <button className="btn btn-dark" onClick={() => openLink()}>

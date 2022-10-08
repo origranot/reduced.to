@@ -8,7 +8,8 @@
 		"start": "nest start",
 		"start:dev": "nest start --watch",
 		"start:prod": "node dist/main",
-		"build-frontend": "cd frontend && npm run build"
+		"start:dev:frontend": "cd frontend && npm run dev",
+		"build-frontend": "cd frontend && npm run build --emptyOutDir"
 	},
 	"repository": {
 		"type": "git",
