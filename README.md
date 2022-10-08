@@ -25,6 +25,8 @@ Live demo: https://url-shortener-live.herokuapp.com/
 - Just create a PR already :)
 
 ## How to run?
+
+### Locally
 Step 1. Fork the Repository
 
 Step 2. Clone the repository on your local machine
@@ -46,6 +48,19 @@ npm start
 Step 6. Go on your browser and open 
 ```sh
 http://localhost:3000/
+```
+
+### Docker
+- You can easily build your application in a docker container and run it.
+```sh
+docker build . -t url-shortener
+docker run -p 3000:3000 url-shortener
+```
+- Simply go to your favorite browser and visit `http://localhost:3000/` to see your application.
+### Docker compose
+- In case you have docker installed, you can *single-click* deploy and test your changes by running the following and going to `http://localhost:3000/` on your browser.
+```sh
+docker-compose up
 ```
 
 Happy Hacking !
