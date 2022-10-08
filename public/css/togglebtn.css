@@ -1,19 +1,23 @@
 html {
-  --bg: #fcfcfc;
+  --bg: #cbcaca;
   --bg-panel: #ebebeb;
   --color-headings: #333333;
   --color-text: #333333;
   --toggle-btn: #231f20;
   --error-btn: rgb(200, 29, 29);
+  --moon-color: gray;
+  --sun-color: rgb(255, 255, 0);
 }
 
 html[data-theme='dark'] {
   --bg: #333333;
   --bg-panel: #434343;
-  --color-headings: #fcfcfc;
+  --color-headings: #cbcaca;
   --color-text: #b5b5b5;
   --toggle-btn: #b5b5b5;
   --error-btn: red;
+  --moon-color:rgb(255, 255, 0) ;
+  --sun-color: gray;
 }
 
 body {
@@ -88,4 +92,14 @@ html.transition *:after {
 }
 #error {
   color: var(--error-btn);
+}
+.sun-moon{
+  display: flex;
+  justify-content: space-between;
+}
+.sun{
+color: var(--sun-color);
+}
+.moon{
+color: var(--moon-color);
 }
