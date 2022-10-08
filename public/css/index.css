@@ -2,11 +2,15 @@
 @import url("./loader.css");
 
 :root {
-  --body-bg: #ffffff;
+  --body-bg: #fff;
+  --github-link: #222;
+  --github-link-hover: rgb(20, 18, 15);
 }
 
 [data-theme="dark"] {
   --body-bg: rgb(20, 20, 20);
+  --github-link: #fff;
+  --github-link-hover: rgb(223, 210, 210);
 }
 
 body {
@@ -44,10 +48,10 @@ body {
 }
 
 .github-link {
-  color: #fff;
+  color: var(--github-link) !important;
 }
 
 .github-link:hover {
   text-decoration: none;
-  color: rgb(223, 210, 210);
+  color: var(--github-link-hover) !important;
 }
