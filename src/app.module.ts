@@ -1,13 +1,12 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppRoutingModule } from './routes/app-routing.module';
 import { ShortenerModule } from './shortener/shortener.module';
 
 @Module({
-  imports: [
-    ShortenerModule,
-    AppRoutingModule
-  ],
+  imports: [CacheModule.register({
+    isGlobal: true,
+    ttl: 0 // Unlimited time
+  }), ShortenerModule],
   controllers: [AppController]
 })
-export class AppModule {}
+export class AppModule { }
