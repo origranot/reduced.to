@@ -4,7 +4,7 @@
 	"description": "",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"postinstall": "nest build",
+		"postinstall": "npm run build-frontend && nest build",
 		"start": "nest start",
 		"start:dev": "nest start --watch",
 		"start:prod": "node dist/main",
