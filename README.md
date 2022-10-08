@@ -26,6 +26,7 @@ Live demo: https://url-shortener-live.herokuapp.com/
 
 ## How to run?
 Step 1. Fork the Repository
+
 Step 2. Clone the repository on your local machine
 ```sh
 git clone https://github.com/GITHUBPROFILENAME/url-shortener.git
