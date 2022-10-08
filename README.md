@@ -11,6 +11,9 @@ I created this repo a long time ago (more than 3 years), made this public for Ha
 Live demo: https://url-shortener-live.herokuapp.com/
 
 ## Ideas for contributing (Updating)
+<p align="center">
+<img src="https://media2.giphy.com/media/55XeaJRor7da56SRaL/giphy.gif?cid=ecf05e47zyesangu7bbdm2al7sms29mpxcbj2b1soup8mwpe&rid=giphy.gif&ct=g">
+</p>
 
 - UI improvements:
   - Animations
@@ -21,6 +24,11 @@ Live demo: https://url-shortener-live.herokuapp.com/
 - Add some tests?
 - Better readme?
 - Add logs?
+- Displaying the Benefits of using URL-Shortner
+  -Safety
+  -Reliable
+  -Shortend
+- Adding a statistics page.
 - Add more ideas..
 - Just create a PR already :)
 
