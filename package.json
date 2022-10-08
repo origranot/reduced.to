@@ -1,7 +1,7 @@
 {
 	"name": "url-shortener",
 	"version": "1.0.0",
-	"description": "link shortener project to contribute Hacktoberfest 2022",
+	"description": "URL shortener is a web application that reduces the length of link URL. So it's easier to remember, share and track.",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"postinstall": "nest build",
