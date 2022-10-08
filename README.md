@@ -4,6 +4,10 @@
 <img src="/docs/gif.gif">
 </div>
 
+## How Does It Work?
+
+Simply copy and paste a URL into the provided area. Then click shorten URL! Your URL has now been shortened!
+
 ### About:
 
 I created this repo a long time ago (more than 3 years), made this public for Hacktoberfest! This is a very good opportunity for beginners to start their journey with open source. All PR's are welcome!
