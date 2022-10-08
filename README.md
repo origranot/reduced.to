@@ -38,7 +38,6 @@ cd url-shortener-1
 Step 4. Install the node dependencies.
 ```sh
 npm install
-node app.js
 ```
 Step 5. Start NPM , to make your project live
 ```sh
