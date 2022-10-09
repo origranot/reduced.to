@@ -3,10 +3,16 @@
 <!-- PROJECT SHIELDS -->
 <div align="center">
 
- [![Contributors][contributors-shield]][contributors-url]
- [![Forks][forks-shield]][forks-url]
- [![Stargazers][stars-shield]][stars-url]
- [![Issues][issues-shield]][issues-url]
+ ![GitHub contributors](https://img.shields.io/github/contributors/origranot/url-shortener?style=for-the-badge&color=blue)
+![GitHub Closed issues](https://img.shields.io/github/issues-closed-raw/origranot/url-shortener?style=for-the-badge&color=brightgreen)
+![GitHub PR Open](https://img.shields.io/github/issues-pr/origranot/url-shortener?style=for-the-badge&color=aqua)
+![GitHub PR closed](https://img.shields.io/github/issues-pr-closed-raw/origranot/url-shortener?style=for-the-badge&color=blue)
+![GitHub language count](https://img.shields.io/github/languages/count/origranot/url-shortener?style=for-the-badge&color=brightgreen)
+![GitHub top language](https://img.shields.io/github/languages/top/origranot/url-shortener?style=for-the-badge&color=aqua)
+![GitHub last commit](https://img.shields.io/github/last-commit/origranot/url-shortener?style=for-the-badge&color=blue)
+![GitHub Maintained](https://img.shields.io/badge/Maintained%3F-yes-brightgreen.svg?style=for-the-badge)
+ ![Github Repo Size](https://img.shields.io/github/repo-size/origranot/url-shortener?style=for-the-badge&color=aqua)
+
  
 </div>
 
@@ -63,7 +69,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://github.com/origranot/url-shortener)
 
-I've created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
+I've created this repository over 3 years ago, and this is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome :)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -204,6 +210,8 @@ Don't forget to give the project a star ⭐!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+<br> <br>
+
 ## 🏆 Contributors
 <a href = "https://github.com/origranot/url-shortener/graphs/contributors">
   <img src = "https://contrib.rocks/image?repo=origranot/url-shortener"/>
@@ -211,6 +219,7 @@ Don't forget to give the project a star ⭐!
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+<br>
 
 <!-- LICENSE -->
 ## 📝 License
