@@ -27,6 +27,8 @@ const handleShortenerClick = async () => {
 	loader.style.display = "none";
 	result.style.display = "block";
 
+	urlInput.value = '';
+
 	if (!newUrl) {
 		result.querySelector('#error').textContent = 'This url is invalid..';
 		result.querySelector('#text').textContent = '';

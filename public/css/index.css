@@ -34,12 +34,3 @@ body {
   color: #fff;
   box-shadow: 0 0 20px 0 #3498db inset, 0 0 10px 4px #3498db;
 }
-
-.github-link {
-  color: #fff;
-}
-
-.github-link:hover {
-  text-decoration: none;
-  color: rgb(223, 210, 210);
-}

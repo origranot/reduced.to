@@ -24,11 +24,12 @@ html(lang="en")
         
         // Loads JS files
         script(src='/js/index.js')
+        script(async, defer, src="https://buttons.github.io/buttons.js")
     body
-        div.d-flex.flex-row-reverse.m-5
-            a.github-link(href='https://github.com/origranot/url-shortener')
-                | View project on Github 
-                i.fa-brands.fa-github
+        .container
+            div.d-flex.flex-row-reverse.my-5
+                a.github-button(href="https://github.com/origranot/url-shortener" data-size="large" data-show-count="true" aria-label="Star origranot/url-shortener on GitHub") Star
+
         .container
             .upper-body
                 h1.p-3.font-weight-bold.upper-body-txt.light URL Shortener
