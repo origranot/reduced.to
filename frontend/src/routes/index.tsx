@@ -78,7 +78,7 @@ export default component$(() => {
     if (!newUrl) {
       result!.querySelector('#error')!.textContent = 'This url is invalid..';
       result!.querySelector('#text')!.textContent = '';
-      result!.querySelector('#action')!.classList.add('d-none');
+      result!.querySelector('#action')!.classList.replace('d-block', 'd-none');
       return;
     }
 
