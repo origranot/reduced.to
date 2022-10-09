@@ -1,10 +1,11 @@
+import { ShortenerService } from './shortener/shortener.service';
 import { Controller, Get, Param, Redirect, Render, VERSION_NEUTRAL } from '@nestjs/common';
 
 @Controller({
   version: VERSION_NEUTRAL
 })
 export class AppController {
-  constructor() { }
+  constructor(private readonly ShortenerService: ShortenerService) { }
 
   @Get()
   @Render('index')
@@ -13,12 +14,12 @@ export class AppController {
   }
 
   @Get(':path')
-  @Redirect('http://localhost:3000', 301)
-  redirect(@Param() params: { path: string }) {
-	  const originalUrl = global.URL_DICT[params.path];
-    if (originalUrl !== undefined) {
+  @Redirect()
+  async redirect(@Param() params: { path: string }) {
+    const originalUrl = await this.ShortenerService.getOriginalUrl(params.path);
+    if (originalUrl !== null) {
       return { url: originalUrl }
     }
-    return;
+    return '404!'; //TODO: Implement a 404 page.
   }
 }

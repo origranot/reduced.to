@@ -4,34 +4,46 @@
 <img src="/docs/gif.gif">
 </div>
 
+## How Does It Work?
+
+Simply copy and paste a URL into the provided area. Then click shorten URL! Your URL has now been shortened!
+
 ### About:
 
-I created this repo a long time ago (more than 3 years), made this public for Hacktoberfest! This is a very good opportunity for beginners to start their journey with open source. All PR's are welcome!
+I created this repo a long time ago (more than 3 years), made this public for Hacktoberfest! This is a very good opportunity for beginners to start their journey with open source. All PRs are welcome!
 
 Live demo: https://url-shortener-live.herokuapp.com/
 
 ## Ideas for contributing (Updating)
+<p align="center">
+<img src="/docs/idea.gif">
+</p>
 
 - UI improvements:
   - Animations
   - Dark/Light mode toggle button
-  - Github repo button
   - Fonts?
-  - Migrate our front to React?
+- Migrate our front to Qwick?
+- Yarn instead of NPM.
 - Add some tests?
 - Better readme?
+- Add logs?
+- Adding a statistics page.
 - Add more ideas..
 - Just create a PR already :)
 
 ## How to run?
+
+### Locally
 Step 1. Fork the Repository
+
 Step 2. Clone the repository on your local machine
 ```sh
-   git clone https://github.com/GITHUBPROFILENAME/REPOSITORYNAME.git
+git clone https://github.com/GITHUBPROFILENAME/url-shortener.git
 ```
 Step 3. Enter the command, to move to project directory
 ```sh
-cd url-shortener-1
+cd url-shortener
 ```
 Step 4. Install the node dependencies.
 ```sh
@@ -46,10 +58,26 @@ Step 6. Go on your browser and open
 http://localhost:3000/
 ```
 
+### Docker
+- You can easily build your application in a docker container and run it.
+```sh
+docker build . -t url-shortener
+docker run -p 3000:3000 url-shortener
+```
+- Simply go to your favorite browser and visit `http://localhost:3000/` to see your application.
+### Docker compose
+- In case you have docker installed, you can *single-click* deploy and test your changes by running the following and going to `http://localhost:3000/` on your browser.
+```sh
+docker-compose up
+```
+
 Happy Hacking !
    
+## Contributors
 
-
+<a href = "https://github.com/origranot/url-shortener/graphs/contributors">
+  <img src = "https://contrib.rocks/image?repo=origranot/url-shortener"/>
+</a>
 
 ## License
 
