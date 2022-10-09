@@ -20,8 +20,12 @@ const handleShortenerClick = async () => {
 	result.style.display = "none";
 
 	invalidUrl = false
+	/**
+	 *  fixx if a person tries xyz.com instead of https://xyz.com 🚀
+	 */
+	const ValidUrl  = RegExp("^https://").test(urlInput.value)? urlInput.value : `https://${urlInput.value}`; 
+	const { newUrl } = await getShortenUrl(ValidUrl);
 
-	const { newUrl } = await getShortenUrl(urlInput.value);
 
 	// Remove the loader from the screen
 	loader.style.display = "none";
