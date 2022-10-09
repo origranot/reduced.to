@@ -17,9 +17,6 @@ async function bootstrap() {
 
   app.useStaticAssets(join(__dirname, 'public'));
   
-  // Declare Globals
-  global.URL_DICT = {}
-  
   await app.listen(process.env.PORT || 3000);
 }
 
