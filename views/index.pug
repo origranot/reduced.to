@@ -15,31 +15,39 @@ html(lang="en")
         link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css')
         link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css' integrity='sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==' crossorigin='anonymous' referrerpolicy='no-referrer')
         link(rel='stylesheet' href='/css/index.css')
+        link(rel='stylesheet' href='/css/togglebtn.css')
+        // Fontawsome Icons
+        link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css')
 
         // Favicon
         link(type='image/png', sizes='16x16', rel='icon', href='/assets/favicon.png')
         
         // Loads JS files
         script(src='/js/index.js')
-        script(async, defer, src="https://buttons.github.io/buttons.js")
     body
+        div.d-flex.flex-row-reverse.m-5
+            a.github-link(href='https://github.com/origranot/url-shortener')
+                | View project on Github 
+                i.fa-brands.fa-github
         .container
-            div.d-flex.flex-row-reverse.my-5
-                a.github-button(href="https://github.com/origranot/url-shortener" data-size="large" data-show-count="true" aria-label="Star origranot/url-shortener on GitHub") Star
-
-        .container
-            h1.p-3.text-light.font-weight-bold URL Shortener
+            .upper-body
+                h1.p-3.font-weight-bold.upper-body-txt.light URL Shortener
+                .toggle-container
+                    input#switch(type='checkbox', name='theme')
+                    label.toggleLabel(for='switch')
+                        i.bi.bi-brightness-high-fill.sun
+                        i.bi.bi-moon-fill.moon
             .alert.alert-primary(role='alert').
                 Add your very long <b>URL</b> in the input below and click on the button to make it shorter
             .input-group.mb-3
-                input#urlInput.border-primary.text-light.bg-dark.form-control(type='text' onkeypress='handleShortenerKeypress(event)' placeholder="Very long url.." aria-label="url" aria-describedby='shortenerBtn')
+                input#urlInput.border-primary.form-control(type='text' onkeypress='handleShortenerKeypress(event)' placeholder="Very long url.." aria-label="url" aria-describedby='shortenerBtn')
                 .input-group-append
                     button#shortenerBtn.btn.btn-animation(type='button' onclick='handleShortenerClick()') Shorten URL
             #loading.fade-in
                 .lds-dual-ring
-            #result.text-light
-                p#error.text-light.fade-in
-                p#text.text-light.fade-in(onclick='copyUrl()')
+            #result
+                p#error.fade-in
+                p#text.fade-in(onclick='copyUrl()')
                 #action.d-none.flex
                     button.btn.btn-dark.mr-1(type='button' onclick='copyUrl()')
                         i.bi.bi-clipboard
@@ -56,3 +64,4 @@ html(lang="en")
                     use(xlink:href='#gentle-wave', x='48', y='3', fill='rgba(255,255,255,0.5)')
                     use(xlink:href='#gentle-wave', x='48', y='5', fill='rgba(255,255,255,0.3)')
                     use(xlink:href='#gentle-wave', x='48', y='7', fill='#fff')
+        script(src='/js/togglebtn.js')

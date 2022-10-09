@@ -1,0 +1,120 @@
+html {
+  --bg: #cbcaca;
+  --bg-panel: #ebebeb;
+  --color-headings: #333333;
+  --color-text: #333333;
+  --toggle-btn: #231f20;
+  --error-btn: rgb(200, 29, 29);
+}
+
+html[data-theme='dark'] {
+  --bg: #333333;
+  --bg-panel: #434343;
+  --color-headings: #cbcaca;
+  --color-text: #b5b5b5;
+  --toggle-btn: #b5b5b5;
+  --error-btn: red;
+}
+
+body {
+  background-color: var(--bg);
+}
+
+.container h1 {
+  color: var(--color-headings);
+}
+.container p {
+  color: var(--color-text);
+}
+.upper-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+input[type='checkbox'] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+.parallax use {
+  fill: var(--color-text);
+}
+.toggleLabel {
+  cursor: pointer;
+  width: 60px;
+  height: 30px;
+  background: grey;
+  float: right;
+  border-radius: 100px;
+  position: relative;
+}
+
+.toggleLabel:after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 25px;
+  height: 25px;
+  background: #fff;
+  border-radius: 90px;
+  transition: 0.3s;
+}
+
+input:checked + .toggleLabel {
+  background: var(--toggle-btn);
+}
+
+input:checked + .toggleLabel:after {
+  left: calc(100% - 5px);
+  transform: translateX(-100%);
+}
+
+.toggleLabel:active:after {
+  width: 50px;
+}
+
+html.transition,
+html.transition *,
+html.transition *:before,
+html.transition *:after {
+  transition: all 750ms !important;
+  transition-delay: 0 !important;
+}
+
+.github-link {
+  color: var(--color-text);
+}
+#error {
+  color: var(--error-btn);
+}
+
+/* sun and moon  */
+label i {
+  width: 20px;
+  z-index: 5;
+  font-size: 1em;
+}
+
+label .sun {
+  position: absolute;
+  width: 20px;
+  left: 5px;
+  top: 3px;
+  color: #ffdf00;
+}
+
+label .moon {
+  position: absolute;
+  right: 5px;
+  top: 3px;
+  color: #5d5d5d;
+}
+
+input:checked + label .sun {
+  color: #5d5d5d;
+}
+
+input:checked + label .moon {
+  color: #ffdf00;
+}
