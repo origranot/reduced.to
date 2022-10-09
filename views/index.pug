@@ -26,6 +26,9 @@ html(lang="en")
         .container
             div.d-flex.flex-row-reverse.my-5
                 a.github-button(href="https://github.com/origranot/url-shortener" data-size="large" data-show-count="true" aria-label="Star origranot/url-shortener on GitHub") Star
+                .theme-wrapper 
+                  i.fa-regular.fa-sun#sun(onclick='lightMode()') 
+                  i.fa-regular.fa-moon#moon(onclick='darkMode()')
 
         .container
             h1.p-3.text-light.font-weight-bold URL Shortener

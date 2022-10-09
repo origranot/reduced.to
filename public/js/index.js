@@ -98,3 +98,27 @@ const openLink = () => {
 	const text = document.querySelector('#result #text').textContent;
 	window.open(text, '_blank');
 };
+
+function lightMode(){
+	document.getElementById('sun').style.display='none';
+	document.getElementById('moon').style.display='block';
+	localStorage.setItem('theme','light');
+	document.body.style.background='#c1beff'
+}
+function darkMode(){
+	document.getElementById('moon').style.display='none';
+	document.getElementById('sun').style.display='block';
+	localStorage.setItem('theme','dark');
+	document.body.style.background='#141414';
+
+};
+window.onload=()=>{
+	const localstoragetheme = localStorage.getItem("theme");
+        if (localstoragetheme === "dark" && localstoragetheme !== null) {
+		darkMode();
+	}
+	else{
+		lightMode();
+	}
+
+}

@@ -3,7 +3,7 @@
 
 body {
   text-align: center;
-  background-color: rgb(20, 20, 20);
+  background:rgb(20,20,20);
   overflow: hidden;
 }
 
@@ -33,4 +33,15 @@ body {
   background-color: #000;
   color: #fff;
   box-shadow: 0 0 20px 0 #3498db inset, 0 0 10px 4px #3498db;
+}
+.theme-wrapper{
+  margin-right: 10px;
+  display: flex;
+  justify-content:space-between;
+}
+i{
+  font-size: 2rem;
+  color:#adb3bf ;
+  padding: 0 5px;
+  cursor: pointer;
 }
