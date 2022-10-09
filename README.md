@@ -53,7 +53,7 @@ Step 5. Start NPM , to make your project live
 ```sh
 npm start
 ```
-Step 6. Go on your browser and open 
+Step 6. Open your web browser and visit 
 ```sh
 http://localhost:3000/
 ```
