@@ -6,11 +6,10 @@ WORKDIR /app
 # Install app dependencies
 COPY *.json ./
 
-# install dependencies for production
-RUN npm ci --omit=dev
-
 # Copy all files to build stage
 COPY . .
+# install dependencies for production
+RUN npm install
 
 # building code for production
 RUN npm run postinstall
@@ -23,10 +22,8 @@ WORKDIR /app
 
 # Copy build
 COPY --from=BuildStage /app/node_modules/ ./node_modules/
-COPY --from=BuildStage /app/views ./views/
-COPY --from=BuildStage /app/dist/ ./dist/
-COPY --from=BuildStage /app/public/ ./public/
+COPY --from=BuildStage /app/dist/ .
 
 EXPOSE 3000
 
-CMD [ "node", "dist/main.js" ]
+CMD [ "node", "main.js" ]
