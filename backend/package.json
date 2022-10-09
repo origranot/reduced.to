@@ -1,10 +1,11 @@
 {
-	"name": "url-shortener",
+	"name": "url-shortener/backend",
 	"version": "1.0.0",
 	"description": "",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"postinstall": "nest build",
+		"build": "nest build",
 		"start": "nest start",
 		"start:dev": "nest start --watch",
 		"start:prod": "node dist/main"

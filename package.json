@@ -1,0 +1,28 @@
+{
+    "name": "url-shortener",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "build:all": "npm run build:frontend && npm run build:backend && ncp ./backend/dist ./dist",
+        "build:frontend": "npm --prefix ./frontend run build:ssg",
+        "build:backend": "npm --prefix ./backend run build",
+        "postinstall": "npm run build:all",
+        "start:prod": "node dist/main"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/origranot/url-shortener.git"
+    },
+    "author": "OriG",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/origranot/url-shortener/issues"
+    },
+    "homepage": "https://github.com/origranot/url-shortener#readme",
+    "dependencies": {
+        "@nestjs/common": "^9.1.4",
+        "@nestjs/core": "^9.1.4",
+        "@nestjs/platform-express": "^9.1.4",
+        "ncp": "^2.0.0"
+    }
+}
