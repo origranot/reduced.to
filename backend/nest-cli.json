@@ -5,13 +5,8 @@
   "compilerOptions": {
     "assets": [
       {
-        "include": "../../frontend/server",
+        "include": "../../frontend/dist",
         "outDir": "dist/public",
-        "watchAssets": true
-      },
-      {
-        "include": "../views",
-        "outDir": "dist/views",
         "watchAssets": true
       }
     ],
