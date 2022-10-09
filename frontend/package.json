@@ -6,9 +6,9 @@
   },
   "private": true,
   "scripts": {
-    "postinstall": "npm run build:ssg",
+    "postinstall": "yarn build:ssg",
     "build": "qwik build",
-    "build:ssg": "npm run build && npm run ssg",
+    "build:ssg": "yarn build && yarn ssg",
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
     "build.static": "vite build --ssr src/entry.static.tsx",

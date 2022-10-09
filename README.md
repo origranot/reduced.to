@@ -83,9 +83,9 @@ List of frameworks/libraries used to bootstrap the project.
 ### 📃 Prerequisites
 
 List of things you need to run the project locally and how to install them.
-* npm
+* yarn
   ```sh
-  npm install npm@latest -g
+  npm install yarn@latest -g
   ```
 
 ### 💻 Installation
@@ -96,17 +96,17 @@ List of things you need to run the project locally and how to install them.
     git clone https://github.com/your_username_/url-shortener.git
     ```
 3. Open the cloned repository using the `url-shortener.code-workspace` file (VSCode)
-4. Install NPM packages
+4. Install Yarn packages
     ```sh
-    npm install && npm run install:all
+    yarn && yarn install:all
     ```
 5. Build the project
     ```sh
-    npm run build:all
+    yarn build:all
     ```
 6. Run the project
     ```sh
-    npm run start:prod
+    yarn start:prod
     ```
 7. Go on your browser and open 
     ```sh
@@ -125,7 +125,7 @@ You will find 3 folders
     ```
 2. Run the project (it will open a new window)
     ```sh
-    npm run start
+    yarn start
     ```
 3. Vite will be now listening for changes in the code and reloading the solution
 
@@ -136,7 +136,7 @@ You will find 3 folders
     ```
 2. Run the project (be sure that you built the frontend before)
     ```sh
-    npm run start:dev
+    yarn start:dev
     ```
 3. Nest will be now listening for changes in the code and reloading the solution
 
@@ -173,7 +173,7 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 - [x] Migrate backend to NestJS
 - [x] Migrate frontend to Qwik
 - [x] Better README
-- [ ] Yarn instead of NPM
+- [x] Yarn instead of NPM
 - [ ] Split front-end into components
 - [ ] Better UI
     - [ ] Animations

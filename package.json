@@ -3,13 +3,13 @@
 	"version": "1.0.0",
 	"description": "URL shortener is a web application that reduces the length of link URL. So it's easier to remember, share and track.",
 	"scripts": {
-		"build:all": "npm run build:frontend && npm run build:backend && ncp ./backend/dist ./dist",
-		"build:frontend": "npm --prefix ./frontend run build:ssg",
-		"build:backend": "npm --prefix ./backend run build",
-		"postinstall": "npm run install:all && npm run build:all",
-		"install:all": "npm run install:frontend && npm run install:backend",
-		"install:frontend": "cd ./frontend && npm i",
-		"install:backend": "cd ./backend && npm i",
+		"build:all": "yarn build:frontend && yarn build:backend && ncp ./backend/dist ./dist",
+		"build:frontend": "yarn --cwd ./frontend run build:ssg",
+		"build:backend": "yarn --cwd ./backend run build",
+		"postinstall": "yarn install:all && yarn build:all",
+		"install:all": "yarn install:frontend && yarn install:backend",
+		"install:frontend": "cd ./frontend && yarn",
+		"install:backend": "cd ./backend && yarn",
 		"start:prod": "node dist/main"
 	},
 	"repository": {

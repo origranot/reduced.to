@@ -10,7 +10,7 @@ COPY nest-cli.json ./
 
 # If you are building your code for production
 # RUN npm ci --only=production
-RUN npm install
+RUN yarn
 
 # Bundle app source
 COPY . .
@@ -18,4 +18,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD [ "npm", "start" ]
+CMD [ "yarn", "start" ]
