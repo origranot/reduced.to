@@ -28,5 +28,8 @@
 		"@nestjs/platform-express": "^9.1.4",
 		"cache-manager": "^5.0.0",
 		"ncp": "^2.0.0"
+	},
+	"devDependencies": {
+		"@types/canvas-confetti": "^1.4.3"
 	}
 }
