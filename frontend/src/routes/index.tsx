@@ -3,6 +3,7 @@ import type { DocumentHead } from '@builder.io/qwik-city';
 import animations from '../assets/css/animations.css?inline';
 import loader from '../assets/css/loader.css?inline';
 import styles from './index.css?inline';
+import confetti from "canvas-confetti"
 
 export default component$(() => {
   useStylesScoped$(animations)
@@ -35,6 +36,25 @@ export default component$(() => {
   /**
    * Copy link to clipboard.
    */
+   const confettiAnimate$ = $(() => {
+    confetti({
+      particleCount: 120,
+      spread: 100,
+      origin:{
+        x: 0,
+        y:.8
+      }
+      });
+    confetti({
+      particleCount: 120,
+      spread: 100,
+      origin:{
+        x: 1,
+        y:.8
+      }
+      });
+  })
+
   const copyUrl$ = $(() => {
     const result = document.querySelector("#result #text");
     navigator.clipboard.writeText(result!.textContent!);
@@ -87,6 +107,7 @@ export default component$(() => {
     result!.querySelector('#action')!.classList.replace('d-none', 'd-block');
 
     copyUrl$()
+    confettiAnimate$();
   });
 
   const handleShortenerKeypress$ = $((e: KeyboardEvent) => {
