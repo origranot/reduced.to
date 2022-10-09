@@ -105,7 +105,7 @@ const handleShortenerClick$ = $(async () => {
       <div class="input-group mb-3">
         <input type="text" id="urlInput" class="border-primary text-light bg-dark form-control" placeholder="Very long url..." onKeyPress$={(event) => handleShortenerKeypress$(event)} aria-label="url" aria-describedby="shortenerBtn" />
         <div class="input-group-append">
-          <button type="button" id="shortenerBtn" class="btn btn-primary" onClick$={() => handleShortenerClick$()}>Shorten URL</button>
+          <button type="button" id="shortenerBtn" class="btn btn-animation" onClick$={() => handleShortenerClick$()}>Shorten URL</button>
         </div>
       </div>
       <div id="loading" class="fade-in">
