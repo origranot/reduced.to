@@ -4,9 +4,13 @@
 <img src="/docs/gif.gif">
 </div>
 
+## How Does It Work?
+
+Simply copy and paste a URL into the provided area. Then click shorten URL! Your URL has now been shortened!
+
 ### About:
 
-I created this repo a long time ago (more than 3 years), made this public for Hacktoberfest! This is a very good opportunity for beginners to start their journey with open source. All PR's are welcome!
+I created this repo a long time ago (more than 3 years), made this public for Hacktoberfest! This is a very good opportunity for beginners to start their journey with open source. All PRs are welcome!
 
 Live demo: https://url-shortener-live.herokuapp.com/
 
@@ -18,16 +22,12 @@ Live demo: https://url-shortener-live.herokuapp.com/
 - UI improvements:
   - Animations
   - Dark/Light mode toggle button
-  - Github repo button
   - Fonts?
-- Migrate our front to React?
+- Migrate our front to Qwick?
+- Yarn instead of NPM.
 - Add some tests?
 - Better readme?
 - Add logs?
-- Displaying the Benefits of using URL-Shortner
-  -Safety
-  -Reliable
-  -Shortend
 - Adding a statistics page.
 - Add more ideas..
 - Just create a PR already :)
