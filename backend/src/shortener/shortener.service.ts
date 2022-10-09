@@ -1,21 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class ShortenerService {
+  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) { }
+
   /**
-   * Return the shortener url of the specific url.
-   * @param {String} originalUrl The original url.
-   * @returns {String} Returns the key or null
+   * Return the original url of the specific url.
+   * @param {String} shortUrl The short url
+   * @returns {String} Returns the original url or null
    */
-  getShortUrl(originalUrl: string): string {
-    const urlIndex: number = Object.values(global.URL_DICT).indexOf(originalUrl);
-    return urlIndex !== -1 ? Object.keys(global.URL_DICT)[urlIndex] : null;
+  getOriginalUrl = async (shortUrl: string): Promise<string> => {
+    const originalUrl = await this.cacheManager.get(shortUrl);
+    return originalUrl ? originalUrl.toString() : null;
   };
 
   /**
- * Generating the short url
- * @returns {String} Returns a random 5 characters url
- */
+  * Generating the short url
+  * @returns {String} Returns a random 5 characters url
+  */
   generateShortUrl = (): string => {
     return Math.random().toString(36).substring(2, 7);
   };
@@ -25,16 +28,17 @@ export class ShortenerService {
    * @param {String} shortUrl The shorten url.
    * @returns {Boolean} Is the shortener url taken
    */
-  isShortUrlAvailable = (shortUrl: string): boolean => {
-    return global.URL_DICT[shortUrl] === undefined;
+  isShortUrlAvailable = async (shortUrl: string): Promise<boolean> => {
+    const originalUrl = await this.getOriginalUrl(shortUrl);
+    return originalUrl === null;
   };
 
   /**
- * Add the short url to the server routes.
- * @param {String} originalUrl The original url.
- * @param {String} shortUrl The shorten url.
- */
-  addUrl = (originalUrl: string, shortUrl: string) => {
-    global.URL_DICT[shortUrl] = originalUrl;
+  * Add the short url to the server routes.
+  * @param {String} originalUrl The original url.
+  * @param {String} shortUrl The shorten url.
+  */
+  addUrl = async (originalUrl: string, shortUrl: string) => {
+    await this.cacheManager.set(shortUrl, originalUrl);
   };
 }
