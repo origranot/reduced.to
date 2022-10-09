@@ -5,14 +5,14 @@
  * entry point will be the common one.
  *
  * - Server (express, cloudflare...)
- * - npm run start
- * - npm run preview
- * - npm run build
+ * - yarn start
+ * - yarn preview
+ * - yarn build
  *
  */
-import { renderToStream, RenderToStreamOptions } from '@builder.io/qwik/server';
-import { manifest } from '@qwik-client-manifest';
-import Root from './root';
+import { renderToStream, RenderToStreamOptions } from "@builder.io/qwik/server";
+import { manifest } from "@qwik-client-manifest";
+import Root from "./root";
 
 export default function (opts: RenderToStreamOptions) {
   return renderToStream(<Root />, {
@@ -22,7 +22,7 @@ export default function (opts: RenderToStreamOptions) {
       implementation: {
         linkInsert: null,
         workerFetchInsert: null,
-        prefetchEvent: 'always',
+        prefetchEvent: "always",
       },
     },
   });
