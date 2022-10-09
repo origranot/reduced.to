@@ -20,6 +20,6 @@ export class AppController {
     if (originalUrl !== null) {
       return { url: originalUrl }
     }
-    return '404!'; //TODO: Implement a 404 page.
+    return '404!';
   }
 }

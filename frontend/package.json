@@ -1,5 +1,5 @@
 {
-  "name": "url-shortener/frontend",
+  "name": "url-shortener-frontend",
   "description": "",
   "engines": {
     "node": ">=15.0.0"
