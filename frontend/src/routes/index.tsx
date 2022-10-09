@@ -66,8 +66,29 @@ export default component$(() => {
 
     loader!.style.display = "block";
     result!.style.display = "none";
+    /**
+     * fixx so xyz.com works as well as https://xyz.com
+     * 
+     */
+    let ValidUrl = urlInput!.value; 
+    //Tests for https  , http and empty string . 
+    
+  if (!RegExp("^https://").test(urlInput!.value) && !RegExp("^http://").test(urlInput!.value) && urlInput!.value ) {
+    
+    ValidUrl = `https://${urlInput!.value}`; 
+  
+  }
+  const { newUrl } = await getShortenUrl$(ValidUrl);
 
-    const { newUrl } = await getShortenUrl$(urlInput!.value);
+
+
+    //const { newUrl } = await getShortenUrl$(urlInput!.value);
+    
+
+
+
+
+
 
     // Remove the loader from the screen
     loader!.style.display = "none";
