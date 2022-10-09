@@ -8,8 +8,8 @@
 		"build:backend": "npm --prefix ./backend run build",
 		"postinstall": "npm run install:all && npm run build:all",
 		"install:all": "npm run install:frontend && npm run install:backend",
-		"install:frontend": "npm --prefix ./frontend i",
-		"install:backend": "npm --prefix ./backend i",
+		"install:frontend": "cd ./frontend npm i",
+		"install:backend": "cd ./backend npm i",
 		"start:prod": "node dist/main"
 	},
 	"repository": {
