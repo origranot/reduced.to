@@ -61,7 +61,11 @@
 <!-- ABOUT THE PROJECT -->
 ## 🌐 About The Project
 
+<center>
+
 [![URL Shortener GIF](docs/urlshortener.gif)](https://github.com/origranot/url-shortener)
+
+</center>
 
 I've created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
 
