@@ -1,13 +1,13 @@
 {
-  "name": "my-qwik-basic-starter",
-  "description": "Recommended for your first Qwik app (comes with Qwik City)",
+  "name": "url-shortener/frontend",
+  "description": "",
   "engines": {
     "node": ">=15.0.0"
   },
   "private": true,
   "scripts": {
     "build": "qwik build",
-    "build2": "npm run build.client && npm run build.ssr && npm run build.ssg",
+    "build:ssg": "npm run build && npm run ssg",
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
     "build.static": "vite build --ssr src/entry.static.tsx",
