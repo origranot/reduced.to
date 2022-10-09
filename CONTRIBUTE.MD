@@ -72,13 +72,13 @@ If you go to the project directory and execute the command `git status`, you'll 
 Add those changes to the branch you just created using the `git add` command:
 
 ```
-git add "filename with extention in which you have made changes"
+git add "filename with extension in which you have made changes"
 ```
 
 Now commit those changes using the `git commit` command:
 
 ```
-git commit -m "Add relavent message to the change you made"
+git commit -m "Add relevant message to the change you made"
 ```
 
 ## Push changes to GitHub
