@@ -10,7 +10,7 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 
 ### About:
 
-I created this repo a long time ago (more than 3 years), made this public for Hacktoberfest! This is a very good opportunity for beginners to start their journey with open source. All PRs are welcome!
+I've created this repository over 3 years ago, and have made it public for Hacktoberfest! </br> This is a great opportunity for beginners to start their journey with contributing to open source.</br>All PRs are welcome! :)
 
 Live demo: https://url-shortener-live.herokuapp.com/
 
@@ -23,7 +23,7 @@ Live demo: https://url-shortener-live.herokuapp.com/
   - Animations
   - Dark/Light mode toggle button
   - Fonts?
-- Migrate our front to Qwick?
+- Migrate our front-end to Qwick?
 - Yarn instead of NPM.
 - Add some tests?
 - Better readme?
