@@ -66,8 +66,23 @@ export default component$(() => {
 
     loader!.style.display = "block";
     result!.style.display = "none";
+    /**
+     * fixx so xyz.com works as well as https://xyz.com
+     * 
+     */
 
-    const { newUrl } = await getShortenUrl$(urlInput!.value);
+	const ValidUrl  = RegExp("^https://").test(urlInput!.value)? urlInput!.value : `https://${urlInput!.value}`; 
+	const { newUrl } = await getShortenUrl(ValidUrl);
+
+
+
+    //const { newUrl } = await getShortenUrl$(urlInput!.value);
+    
+
+
+
+
+
 
     // Remove the loader from the screen
     loader!.style.display = "none";
