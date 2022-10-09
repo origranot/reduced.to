@@ -35,14 +35,13 @@ export default component$(() => {
   /**
    * Copy link to clipboard.
    */
-
   const copyUrl$ = $(() => {
     const result = document.querySelector("#result #text");
     navigator.clipboard.writeText(result!.textContent!);
     toastAlert$();
   });
 
-    /**
+  /**
    * Returns the shorter link from the server.
    * @param {String} originalUrl - The original url we want to shorten.
    */
@@ -68,7 +67,6 @@ export default component$(() => {
     loader!.style.display = "block";
     result!.style.display = "none";
 
-    //@ts-ignore
     const { newUrl } = await getShortenUrl$(urlInput!.value);
 
     // Remove the loader from the screen
@@ -80,8 +78,7 @@ export default component$(() => {
     if (!newUrl) {
       result!.querySelector('#error')!.textContent = 'This url is invalid..';
       result!.querySelector('#text')!.textContent = '';
-      //@ts-ignore
-      result!.querySelector('#action')!.classList = 'd-none';
+      result!.querySelector('#action')!.classList.add('d-none');
       return;
     }
 
@@ -93,35 +90,35 @@ export default component$(() => {
   });
 
   const handleShortenerKeypress$ = $((e: KeyboardEvent) => {
-    if (e.keyCode === 13) {
+    if (e.key === 'enter') {
       handleShortenerClick$();
     }
   });
 
   return (
     <>
-    <div class="container">
-      <div className="d-flex flex-row-reverse my-5">
-        <a href="https://github.com/origranot/url-shortener" className="github-button" data-size="large" data-show-count="true" aria-label="Star origranot/url-shortener on Github"> Star</a>
-      </div>
-    </div>
-    <div class="container">
-      <h1 class="p-3 text-light font-weight-bold">
-        URL Shortener
-      </h1>
-      <div class="alert alert-primary" role="alert">
-        Add your very long <b>URL</b> in the input bellow and click on the button to make it shorter
-      </div>
-      <div class="input-group mb-3">
-        <input type="text" id="urlInput" class="border-primary text-light bg-dark form-control" placeholder="Very long url..." onKeyPress$={(event) => handleShortenerKeypress$(event)} aria-label="url" aria-describedby="shortenerBtn" />
-        <div class="input-group-append">
-          <button type="button" id="shortenerBtn" class="btn btn-animation" onClick$={() => handleShortenerClick$()}>Shorten URL</button>
+      <div class="container">
+        <div className="d-flex flex-row-reverse my-5">
+          <a href="https://github.com/origranot/url-shortener" className="github-button" data-size="large" data-show-count="true" aria-label="Star origranot/url-shortener on Github"> Star</a>
         </div>
       </div>
-      <div id="loading" class="fade-in">
-        <div class="lds-dual-ring"></div>
-      </div>
-      <div id="result" class="text-light">
+      <div class="container">
+        <h1 class="p-3 text-light font-weight-bold">
+          URL Shortener
+        </h1>
+        <div class="alert alert-primary" role="alert">
+          Add your very long <b>URL</b> in the input bellow and click on the button to make it shorter
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" id="urlInput" class="border-primary text-light bg-dark form-control" placeholder="Very long url..." onKeyPress$={(event) => handleShortenerKeypress$(event)} aria-label="url" aria-describedby="shortenerBtn" />
+          <div class="input-group-append">
+            <button type="button" id="shortenerBtn" class="btn btn-animation" onClick$={() => handleShortenerClick$()}>Shorten URL</button>
+          </div>
+        </div>
+        <div id="loading" class="fade-in">
+          <div class="lds-dual-ring"></div>
+        </div>
+        <div id="result" class="text-light">
           <p id="error" className="text-light fade-in"></p>
           <p id="text" className="text-light fade-in" onClick$={() => copyUrl$()}></p>
           <div id="action" className="d-none flex">
@@ -132,11 +129,11 @@ export default component$(() => {
               <i className="bi bi-box-arrow-up-right" onClick$={() => openLink$()}></i>
             </button>
           </div>
+        </div>
+        <div id="urlAlert" className="alert alert-success collapse" role="alert">
+          Link has been copied to the clipboard
+        </div>
       </div>
-      <div id="urlAlert" className="alert alert-success collapse" role="alert">
-        Link has been copied to the clipboard
-      </div>
-    </div>
       <div className="waves-div">
         <svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
           <defs>
@@ -144,17 +141,17 @@ export default component$(() => {
           </defs>
           <g class="parallax">
             {/* @ts-ignore */}
-            <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7"></use>
+            <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
             {/* @ts-ignore */}
-            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)"></use>
+            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
             {/* @ts-ignore */}
-            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)"></use>
+            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
             {/* @ts-ignore */}
-            <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff"></use>
+            <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
           </g>
-          </svg>
+        </svg>
       </div>
-  </>
+    </>
   );
 });
 
