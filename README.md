@@ -63,7 +63,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://github.com/origranot/url-shortener)
 
-I created this repo a long time ago (more than 3 years), made this public for Hacktoberfest! This is a very good opportunity for beginners to start their journey with open source. All PRs are welcome!
+I've created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
