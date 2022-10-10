@@ -1,5 +1,6 @@
 import { component$, useRef, useStylesScoped$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
+import { GithubButton } from '~/components/github-button/github-button';
 import { copyUrl, handleShortenerOnKeyUp, openLink } from '~/components/shortener-input/handleShortener';
 import { ShortenerInput } from '~/components/shortener-input/shortener-input';
 import { Waves } from '~/components/waves/waves';
@@ -18,7 +19,7 @@ export default component$(() => {
     <>
       <div class="container">
         <div className="d-flex flex-row-reverse my-5">
-          <a href="https://github.com/origranot/url-shortener" className="github-button" data-size="large" data-show-count="true" aria-label="Star origranot/url-shortener on Github"> Star</a>
+          <GithubButton type="Star" user="origranot" repo="url-shortener" isLarge showCount label="Star"></GithubButton>
         </div>
       </div>
       <div class="container">
