@@ -61,7 +61,11 @@
 <!-- ABOUT THE PROJECT -->
 ## 🌐 About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://github.com/origranot/url-shortener)
+<div align="center">
+
+[![URL Shortener GIF](docs/urlshortener.gif)](https://github.com/origranot/url-shortener)
+
+</div>
 
 I've created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
 
@@ -163,7 +167,11 @@ Happy Hacking !
 
 Simply copy and paste a URL into the provided area. Then click shorten URL! Your URL has now been shortened!
 
-[![Product Name Screen Shot][product-screenshot]](https://github.com/origranot/url-shortener)
+<div align="center">
+
+[![URL Shortener GIF](docs/urlshortener.gif)](https://github.com/origranot/url-shortener)
+
+</div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -173,14 +181,14 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 - [x] Migrate backend to NestJS
 - [x] Migrate frontend to Qwik
 - [x] Better README
-- [ ] Yarn instead of NPM
+- [x] Generate QRCode
 - [ ] Split front-end into components
 - [ ] Better UI
     - [ ] Animations
     - [ ] Dark/Light mode
     - [ ] Fonts?
-- [ ] Add some testing
-- [ ] Add logs
+- [ ] Tests
+- [ ] Logs
 - [ ] Add a statistics page
 - [ ] Add more ideas
 

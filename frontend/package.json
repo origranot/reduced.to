@@ -36,6 +36,7 @@
     "@types/node": "latest",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
+    "@types/qrcode": "^1.5.0",
     "@typescript-eslint/eslint-plugin": "5.37.0",
     "@typescript-eslint/parser": "5.37.0",
     "eslint": "8.23.1",
@@ -50,6 +51,7 @@
   },
   "dependencies": {
     "axios": "^1.1.2",
-    "canvas-confetti": "^1.5.1"
+    "canvas-confetti": "^1.5.1",
+    "qrcode": "^1.5.1"
   }
 }
