@@ -4,11 +4,34 @@ import animations from '../assets/css/animations.css?inline';
 import loader from '../assets/css/loader.css?inline';
 import styles from './index.css?inline';
 import confetti from "canvas-confetti"
+import QRCode from "qrcode"
 
 export default component$(() => {
   useStylesScoped$(animations)
   useStylesScoped$(styles)
   useStylesScoped$(loader)
+
+  // Generates the QR code for the shortened url
+  const generateQRCode$ =  $(() => {
+    const result = document.querySelector("#qrcode")
+    const url = document.querySelector("#result #text")!.textContent || ""
+
+    result!.classList.replace('d-none', 'd-flex')
+
+    QRCode.toCanvas(document.querySelector("#qrcode canvas"), url, function (error) {
+      if (error) console.error(error)
+      console.log('success!');
+    })
+  })
+
+  // Downloads the QR code
+  const downloadQRCode$ = $(() => {
+    const canvas = document.querySelector("#qrcode canvas") as HTMLCanvasElement
+    const a = document.createElement("a")
+    a.href = canvas.toDataURL("image/png")
+    a.download = "qrcode.png"
+    a.click()
+  })
 
   // Open link in a new window/tab.
   const openLink$ = $(() => {
@@ -83,6 +106,10 @@ export default component$(() => {
     const result = document.getElementById("result");
     const loader = document.getElementById("loading");
     const urlInput = document.getElementById("urlInput") as HTMLInputElement;
+    const qrCodeResult = document.querySelector("#qrcode")
+
+    // Remove the QRCode Result Div from the screen
+    qrCodeResult!.classList.replace('d-flex', 'd-none')
 
     loader!.style.display = "block";
     result!.style.display = "none";
@@ -146,10 +173,17 @@ export default component$(() => {
             <button type="button" className="btn btn-dark mr-1" onClick$={() => copyUrl$()}>
               <i className="bi bi-clipboard"></i>
             </button>
-            <button type="button" className="btn btn-dark">
+            <button type="button" className="btn btn-dark mr-1">
               <i className="bi bi-box-arrow-up-right" onClick$={() => openLink$()}></i>
             </button>
+            <button type="button" className="btn btn-dark">
+              <i className="bi bi-qr-code" onClick$={() => generateQRCode$()}></i>
+            </button>
           </div>
+        </div>
+        <div id="qrcode" className="d-none flex-column align-items-center">
+          <canvas className='m-2'></canvas>
+          <a href="#qrcode" className="text-center text-white" onClick$={() => downloadQRCode$()}>Download QRCode</a>
         </div>
         <div id="urlAlert" className="alert alert-success collapse" role="alert">
           Link has been copied to the clipboard
