@@ -1,4 +1,27 @@
 import confetti from "canvas-confetti";
+import QRCode from "qrcode";
+
+  // Generates the QR code for the shortened url
+export function generateQRCode(){
+    const result = document.querySelector("#qrcode")
+    const url = document.querySelector("#result #text")!.textContent || ""
+
+    result!.classList.replace('d-none', 'd-flex')
+
+    QRCode.toCanvas(document.querySelector("#qrcode canvas"), url, function (error) {
+      if (error) console.error(error)
+      console.log('success!');
+    })
+  }
+
+  // Downloads the QR code
+export function downloadQRCode() {
+    const canvas = document.querySelector("#qrcode canvas") as HTMLCanvasElement
+    const a = document.createElement("a")
+    a.href = canvas.toDataURL("image/png")
+    a.download = "qrcode.png"
+    a.click()
+}
 
 export async function toastAlert(timeoutInMiliseconds: number = 2000) {
   const urlAlert = document.getElementById("urlAlert");

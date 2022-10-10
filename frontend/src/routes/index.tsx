@@ -2,7 +2,7 @@ import { component$, useRef, useStylesScoped$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { Alert } from '~/components/alert/alert';
 import { GithubButton } from '~/components/github-button/github-button';
-import { copyUrl, handleShortenerOnKeyUp, openLink } from '~/components/shortener-input/handleShortener';
+import { copyUrl, downloadQRCode, generateQRCode, handleShortenerOnKeyUp, openLink } from '~/components/shortener-input/handleShortener';
 import { ShortenerInput } from '~/components/shortener-input/shortener-input';
 import { Waves } from '~/components/waves/waves';
 import animations from '../assets/css/animations.css?inline';
@@ -44,10 +44,17 @@ export default component$(() => {
             <button type="button" className="btn btn-dark mr-1" onClick$={() => copyUrl()}>
               <i className="bi bi-clipboard"></i>
             </button>
-            <button type="button" className="btn btn-dark">
+            <button type="button" className="btn btn-dark mr-1">
               <i className="bi bi-box-arrow-up-right" onClick$={() => openLink()}></i>
             </button>
+            <button type="button" className="btn btn-dark">
+              <i className="bi bi-qr-code" onClick$={() => generateQRCode()}></i>
+            </button>
           </div>
+        </div>
+        <div id="qrcode" className="d-none flex-column align-items-center">
+          <canvas className='m-2'></canvas>
+          <a href="#qrcode" className="text-center text-white" onClick$={() => downloadQRCode()}>Download QRCode</a>
         </div>
         <Alert id="urlAlert" className="alert alert-success collapse" text="Link has been copied to the clipboard"/>
       </div>
