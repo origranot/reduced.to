@@ -1,12 +1,12 @@
 import { component$ } from "@builder.io/qwik";
 
-export interface ToastProps {
+export interface AlertProps {
     id: string
     className: string
     text: string
 }
 
-export const Toast = component$((props: ToastProps) => {
+export const Alert = component$((props: AlertProps) => {
     return (
         <div 
             id={props.id} 
