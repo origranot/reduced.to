@@ -3,6 +3,7 @@ import type { DocumentHead } from '@builder.io/qwik-city';
 import { GithubButton } from '~/components/github-button/github-button';
 import { copyUrl, handleShortenerOnKeyUp, openLink } from '~/components/shortener-input/handleShortener';
 import { ShortenerInput } from '~/components/shortener-input/shortener-input';
+import { Toast } from '~/components/toast/toast';
 import { Waves } from '~/components/waves/waves';
 import animations from '../assets/css/animations.css?inline';
 import loader from '../assets/css/loader.css?inline';
@@ -48,9 +49,7 @@ export default component$(() => {
             </button>
           </div>
         </div>
-        <div id="urlAlert" className="alert alert-success collapse" role="alert">
-          Link has been copied to the clipboard
-        </div>
+        <Toast id="urlAlert" className="alert alert-success collapse" text="Link has been copied to the clipboard"/>
       </div>
       <Waves/>
     </>
