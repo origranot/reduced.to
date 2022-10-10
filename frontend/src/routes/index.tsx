@@ -1,120 +1,17 @@
-import { $, component$, useStylesScoped$ } from '@builder.io/qwik';
+import { component$, useRef, useStylesScoped$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
+import { copyUrl, handleShortenerOnKeyUp, openLink } from '~/components/shortener-input/handleShortener';
+import { ShortenerInput } from '~/components/shortener-input/shortener-input';
 import animations from '../assets/css/animations.css?inline';
 import loader from '../assets/css/loader.css?inline';
 import styles from './index.css?inline';
-import confetti from "canvas-confetti"
 
 export default component$(() => {
   useStylesScoped$(animations)
   useStylesScoped$(styles)
   useStylesScoped$(loader)
 
-  // Open link in a new window/tab.
-  const openLink$ = $(() => {
-    const text = document.querySelector('#result #text')!.textContent;
-    window.open(text!, '_blank');
-  });
-
-  const toastAlert$ = $(async (timeoutInMiliseconds: number = 2000) => {
-    const urlAlert = document.getElementById("urlAlert");
-
-    urlAlert!.classList.add('fade-in');
-    urlAlert!.classList.remove('collapse');
-
-    setTimeout(() => {
-      urlAlert!.classList.remove('fade-in');
-      urlAlert!.classList.add('fade-out');
-
-      setTimeout(() => {
-        urlAlert!.classList.add('collapse');
-        urlAlert!.classList.remove('fade-out');
-      }, 500);
-    }, timeoutInMiliseconds);
-  })
-
-  /**
-   * Copy link to clipboard.
-   */
-   const confettiAnimate$ = $(() => {
-    confetti({
-      particleCount: 120,
-      spread: 100,
-      origin:{
-        x: 0,
-        y:.8
-      }
-      });
-    confetti({
-      particleCount: 120,
-      spread: 100,
-      origin:{
-        x: 1,
-        y:.8
-      }
-      });
-  })
-
-  const copyUrl$ = $(() => {
-    const result = document.querySelector("#result #text");
-    navigator.clipboard.writeText(result!.textContent!);
-    toastAlert$();
-  });
-
-  /**
-   * Returns the shorter link from the server.
-   * @param {String} originalUrl - The original url we want to shorten.
-   */
-  const getShortenUrl$ = $(async (originalUrl: string) => {
-    let result;
-    try {
-      result = await fetch('/api/v1/shortener', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ originalUrl })
-      });
-    } catch (err) {
-      return null;
-    }
-    return result.json();
-  });
-
-  const handleShortenerClick$ = $(async () => {
-    const result = document.getElementById("result");
-    const loader = document.getElementById("loading");
-    const urlInput = document.getElementById("urlInput") as HTMLInputElement;
-
-    loader!.style.display = "block";
-    result!.style.display = "none";
-
-    const { newUrl } = await getShortenUrl$(urlInput!.value);
-
-    // Remove the loader from the screen
-    loader!.style.display = "none";
-    result!.style.display = "block";
-
-    urlInput.value = '';
-
-    if (!newUrl) {
-      result!.querySelector('#error')!.textContent = 'This url is invalid..';
-      result!.querySelector('#text')!.textContent = '';
-      result!.querySelector('#action')!.classList.replace('d-block', 'd-none');
-      return;
-    }
-
-    result!.querySelector('#error')!.textContent = '';
-    result!.querySelector('#text')!.textContent = window.location.href + newUrl;
-    result!.querySelector('#action')!.classList.replace('d-none', 'd-block');
-
-    copyUrl$()
-    confettiAnimate$();
-  });
-
-  const handleShortenerKeypress$ = $((e: KeyboardEvent) => {
-    if (e.key === 'enter') {
-      handleShortenerClick$();
-    }
-  });
+  const shortenerInputRef = useRef();
 
   return (
     <>
@@ -130,24 +27,22 @@ export default component$(() => {
         <div class="alert alert-primary" role="alert">
           Add your very long <b>URL</b> in the input bellow and click on the button to make it shorter
         </div>
-        <div class="input-group mb-3">
-          <input type="text" id="urlInput" class="border-primary text-light bg-dark form-control" placeholder="Very long url..." onKeyPress$={(event) => handleShortenerKeypress$(event)} aria-label="url" aria-describedby="shortenerBtn" />
-          <div class="input-group-append">
-            <button type="button" id="shortenerBtn" class="btn btn-animation" onClick$={() => handleShortenerClick$()}>Shorten URL</button>
-          </div>
-        </div>
+        <ShortenerInput
+          ref={shortenerInputRef}
+          onKeyUp$={(event) => handleShortenerOnKeyUp(event) }
+        ></ShortenerInput>
         <div id="loading" class="fade-in">
           <div class="lds-dual-ring"></div>
         </div>
         <div id="result" class="text-light">
           <p id="error" className="text-light fade-in"></p>
-          <p id="text" className="text-light fade-in" onClick$={() => copyUrl$()}></p>
+          <p id="text" className="text-light fade-in" onClick$={() => copyUrl()}></p>
           <div id="action" className="d-none flex">
-            <button type="button" className="btn btn-dark mr-1" onClick$={() => copyUrl$()}>
+            <button type="button" className="btn btn-dark mr-1" onClick$={() => copyUrl()}>
               <i className="bi bi-clipboard"></i>
             </button>
             <button type="button" className="btn btn-dark">
-              <i className="bi bi-box-arrow-up-right" onClick$={() => openLink$()}></i>
+              <i className="bi bi-box-arrow-up-right" onClick$={() => openLink()}></i>
             </button>
           </div>
         </div>
