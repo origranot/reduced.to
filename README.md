@@ -173,14 +173,13 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 - [x] Migrate backend to NestJS
 - [x] Migrate frontend to Qwik
 - [x] Better README
-- [ ] Yarn instead of NPM
 - [ ] Split front-end into components
 - [ ] Better UI
     - [ ] Animations
     - [ ] Dark/Light mode
     - [ ] Fonts?
-- [ ] Add some testing
-- [ ] Add logs
+- [ ] Tests
+- [ ] Logs
 - [ ] Add a statistics page
 - [ ] Add more ideas
 
