@@ -16,7 +16,7 @@
   <h1 align="center">URL Shortener</h1>
 
   <p align="center">
-    URL shortener is a web application that reduces the length of link URL. So it's easier to remember, share and track.
+    The URL shortener is a web application that reduces the length of a link URL. So it's easier to remember, share and track.
     <br />
     <br />
     <a href="https://url-shortener-live.herokuapp.com">View Demo</a>
@@ -67,7 +67,7 @@
 
 </div>
 
-I've created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
+I've created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey by contributing to open source. All PRs are welcome! :)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -201,7 +201,7 @@ _See the [open issues](https://github.com/othneildrew/Best-README-Template/issue
 <!-- CONTRIBUTING -->
 ## 🥇 Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what makes the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star ⭐!
