@@ -14,11 +14,17 @@ body {
 /* dark button */
 
 
+#toggleContainer{
+  text-align: center;
+  left: 0;
+}
+
+#darkbutton{
+  right: 0%;
+}
+
 label{
-  position: fixed;
-  top: 0px;
-  right: 0px;
-  display: block;
+  position: relative;
   width: 500px;
   height: 200px;
   background: rgb(251,248,248);

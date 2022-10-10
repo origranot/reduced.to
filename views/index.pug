@@ -32,17 +32,19 @@ html(lang="en")
 
         link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css' integrity='sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==' crossorigin='anonymous' referrerpolicy='no-referrer')
 
-        input#toggle(type='checkbox')
-        label(for='toggle')
-            i.fa-solid.fa-sun.sun
-            i.fa-solid.fa-moon.moon
-        .background
+
+        
+        div#toggleContainer
+            input#toggle(type='checkbox')
+            label#darkbutton(for='toggle')
+                i.fa-solid.fa-sun.sun
+                i.fa-solid.fa-moon.moon
+            .background
+
+
 
         .container
-            div.d-flex.flex-row-reverse.my-5
-                a.github-button(href="https://github.com/origranot/url-shortener" data-size="large" data-show-count="true" aria-label="Star origranot/url-shortener on GitHub") Star
 
-        .container
             h1.p-3.font-weight-bold URL Shortener
             .alert.alert-primary(role='alert').
                 Add your very long <b>URL</b> in the input below and click on the button to make it shorter
@@ -66,6 +68,8 @@ html(lang="en")
         #footer
              p View project on Github
              a.github-button(href='https://github.com/origranot/url-shortener', data-color-scheme='no-preference: dark_high_contrast; light: light; dark: dark_dimmed;', data-size='large', data-show-count='true', aria-label='Star origranot/url-shortener on GitHub') Star
+
+
         .waves-div
             svg.waves(xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', viewbox='0 24 150 28', preserveaspectratio='none', shape-rendering='auto')
                 defs
