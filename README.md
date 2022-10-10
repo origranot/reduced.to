@@ -181,6 +181,7 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 - [x] Migrate backend to NestJS
 - [x] Migrate frontend to Qwik
 - [x] Better README
+- [x] Generate QRCode
 - [ ] Split front-end into components
 - [ ] Better UI
     - [ ] Animations
