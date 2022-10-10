@@ -2,15 +2,11 @@
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
-  "compilerOptions": {    
+  "compilerOptions": {
     "assets": [
       {
-        "include": "../public",
+        "include": "../../frontend/dist",
         "outDir": "dist/public",
-        "watchAssets": true
-      },
-      {
-        "include": "**/*.pug",
         "watchAssets": true
       }
     ],
