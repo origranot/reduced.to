@@ -1,22 +1,18 @@
-<a name="readme-top"></a>
-
-<!-- PROJECT SHIELDS -->
-<div align="center">
-
- [![Contributors][contributors-shield]][contributors-url]
- [![Forks][forks-shield]][forks-url]
- [![Stargazers][stars-shield]][stars-url]
- [![Issues][issues-shield]][issues-url]
- 
-</div>
-
-<!-- PROJECT LOGO -->
-<br />
 <div align="center">
   <h1 align="center">URL Shortener</h1>
+  
+  <!-- PROJECT SHIELDS -->
+  <div align="center">
+
+   [![Contributors][contributors-shield]][contributors-url]
+   [![Forks][forks-shield]][forks-url]
+   [![Stargazers][stars-shield]][stars-url]
+   [![Issues][issues-shield]][issues-url]
+
+  </div>
 
   <p align="center">
-    URL shortener is a web application that reduces the length of link URL. So it's easier to remember, share and track.
+    URL shortener is a web application that reduces the length of link URL so it's easier to remember, share and track.
     <br />
     <br />
     <a href="https://url-shortener-live.herokuapp.com">View Demo</a>
