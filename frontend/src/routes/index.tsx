@@ -115,6 +115,16 @@ export default component$(() => {
       handleShortenerClick$();
     }
   });
+  
+const changeBtnVisibility$ = $((e: Event) => { 
+  const inputValue = e?.target?.value;
+  const shortnerBtn = document?.getElementById("shortenerBtn");
+  if (!inputValue && shortnerBtn) { 
+    shortnerBtn.setAttribute("disabled", "true") 
+  } else { 
+    shortnerBtn?.removeAttribute("disabled") 
+  } 
+})  
 
   return (
     <>
@@ -131,7 +141,7 @@ export default component$(() => {
           Add your very long <b>URL</b> in the input bellow and click on the button to make it shorter
         </div>
         <div class="input-group mb-3">
-          <input type="text" id="urlInput" class="border-primary text-light bg-dark form-control" placeholder="Very long url..." onKeyPress$={(event) => handleShortenerKeypress$(event)} aria-label="url" aria-describedby="shortenerBtn" />
+          <input type="text" id="urlInput" class="border-primary text-light bg-dark form-control" placeholder="Very long url..." onKeyPress$={(event) => handleShortenerKeypress$(event)} aria-label="url" aria-describedby="shortenerBtn" onInput$={(event) => changeBtnVisibility$(event)} />
           <div class="input-group-append">
             <button type="button" id="shortenerBtn" class="btn btn-animation" onClick$={() => handleShortenerClick$()}>Shorten URL</button>
           </div>
