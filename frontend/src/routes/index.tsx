@@ -1,4 +1,4 @@
-import { $, component$, useStylesScoped$ } from '@builder.io/qwik';
+import { $, component$, useStore, useStylesScoped$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import confetti from "canvas-confetti";
 import QRCode from "qrcode";
@@ -10,6 +10,10 @@ export default component$(() => {
   useStylesScoped$(animations)
   useStylesScoped$(styles)
   useStylesScoped$(loader)
+  
+  const state = useStore({
+    inputValue: null,
+  })
 
   // Generates the QR code for the shortened url
   const generateQRCode$ =  $(() => {
@@ -142,6 +146,7 @@ export default component$(() => {
       handleShortenerClick$();
     }
   });
+   
 
   return (
     <>
@@ -158,9 +163,9 @@ export default component$(() => {
           Add your very long <b>URL</b> in the input below and click on the button to make it shorter
         </div>
         <div class="input-group mb-3">
-          <input type="text" id="urlInput" class="border-primary text-light bg-dark form-control" placeholder="Very long url..." onKeyPress$={(event) => handleShortenerKeypress$(event)} aria-label="url" aria-describedby="shortenerBtn" />
+          <input type="text" id="urlInput" class="border-primary text-light bg-dark form-control" placeholder="Very long url..." onKeyPress$={(event) => handleShortenerKeypress$(event)} aria-label="url" aria-describedby="shortenerBtn" onInput$={(event) => (state.inputValue = event?.target?.value)} />
           <div class="input-group-append">
-            <button type="button" id="shortenerBtn" class="btn btn-animation" onClick$={() => handleShortenerClick$()}>Shorten URL</button>
+            <button type="button" id="shortenerBtn" class="btn btn-animation" onClick$={() => handleShortenerClick$()} disabled={state.inputValue ? false : true}>Shorten URL</button>
           </div>
         </div>
         <div id="loading" class="fade-in">
