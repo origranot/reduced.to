@@ -67,7 +67,7 @@
 
 </div>
 
-I've created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
+I created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
