@@ -1,7 +1,7 @@
 name: 📄 Documentation suggestion
 description: Suggestions on how we can improve the documentation.
 title: '[DOCS]'
-labels: [docs, triage]
+labels: [documentation]
 body:
   - type: textarea
     id: description
