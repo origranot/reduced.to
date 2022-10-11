@@ -1,6 +1,5 @@
 name: 💡 General Feature Request
 description: Have a new idea/feature for URL Shortner? Please suggest!
-title: '[FEATURE] <description>'
 labels: [enhancement, triage]
 body:
   - type: textarea
