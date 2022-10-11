@@ -1,10 +1,10 @@
 import { $, component$, useStylesScoped$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
+import confetti from "canvas-confetti";
+import QRCode from "qrcode";
 import animations from '../assets/css/animations.css?inline';
 import loader from '../assets/css/loader.css?inline';
 import styles from './index.css?inline';
-import confetti from "canvas-confetti"
-import QRCode from "qrcode"
 
 export default component$(() => {
   useStylesScoped$(animations)
@@ -138,7 +138,7 @@ export default component$(() => {
   });
 
   const handleShortenerKeypress$ = $((e: KeyboardEvent) => {
-    if (e.key === 'enter') {
+    if (e.key.toLowerCase() === 'enter') {
       handleShortenerClick$();
     }
   });
