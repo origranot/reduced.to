@@ -155,7 +155,7 @@ export default component$(() => {
           URL Shortener
         </h1>
         <div class="alert alert-primary" role="alert">
-          Add your very long <b>URL</b> in the input bellow and click on the button to make it shorter
+          Add your very long <b>URL</b> in the input below and click on the button to make it shorter
         </div>
         <div class="input-group mb-3">
           <input type="text" id="urlInput" class="border-primary text-light bg-dark form-control" placeholder="Very long url..." onKeyPress$={(event) => handleShortenerKeypress$(event)} aria-label="url" aria-describedby="shortenerBtn" />
