@@ -1,5 +1,5 @@
 name: 📄 Documentation issue
-description: Found an issue in the documentation? You can use this one!
+description: Suggestions on how we can improve the documentation.
 title: '[DOCS]'
 labels: [docs, triage]
 body:
