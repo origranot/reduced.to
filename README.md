@@ -16,7 +16,7 @@
   <h1 align="center">URL Shortener</h1>
 
   <p align="center">
-    The URL shortener is a web application that reduces the length of a link URL. So it's easier to remember, share and track.
+    URL shortener is a web application that reduces the length of link URL. So it's easier to remember, share and track.
     <br />
     <br />
     <a href="https://url-shortener-live.herokuapp.com">View Demo</a>
