@@ -21,7 +21,7 @@ body:
     id: extrainfo
     attributes:
       label: Additional information
-      description: Is there anything else we should know about this issue?
+      description: Is there anything else we should know about this suggestion?
     validations:
       required: false
  
