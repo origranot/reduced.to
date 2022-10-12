@@ -10,7 +10,9 @@
 		"install:all": "npm run install:frontend && npm run install:backend",
 		"install:frontend": "cd ./frontend && npm i",
 		"install:backend": "cd ./backend && npm i",
-		"start:prod": "node dist/main"
+		"start:prod": "node dist/main",
+		"fmt": "prettier --write .",
+		"fmt.check": "prettier --check ."
 	},
 	"repository": {
 		"type": "git",
