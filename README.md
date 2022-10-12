@@ -77,7 +77,7 @@ List of frameworks/libraries used to bootstrap the project.
 
 * [![Nest][NestJS]][Nest-url]
 * [![Qwik][Qwik.js]][Qwik-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* [![Tailwindcss][Tailwindcss]][Tailwindcss-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -182,11 +182,12 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 - [x] Migrate frontend to Qwik
 - [x] Better README
 - [x] Generate QRCode
-- [ ] Split front-end into components
-- [ ] Better UI
-    - [ ] Animations
+- [x] Split front-end into components
+- [x] Better UI
+    - [x] Animations
     - [ ] Dark/Light mode
     - [ ] Fonts?
+- [ ] Improve front-end components
 - [ ] Tests
 - [ ] Logs
 - [ ] Add a statistics page
@@ -249,5 +250,5 @@ Project Link: [https://github.com/origranot/url-shortener](https://github.com/or
 [Nest-url]: https://nestjs.com/
 [Qwik.js]: https://tinyurl.com/y67dv8ub
 [Qwik-url]: https://qwik.builder.io/
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
+[tailwindcss]: https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=fff
+[tailwindcss-url]: https://tailwindcss.com

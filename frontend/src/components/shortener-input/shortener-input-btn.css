@@ -1,0 +1,11 @@
+.btn-animation {
+  background-color: #3498db;
+  border: #3498db;
+  color: #fff;
+}
+
+.btn-animation:hover {
+  background-color: #000;
+  color: #fff;
+  box-shadow: 0 0 20px 0 #3498db inset, 0 0 10px 4px #3498db;
+}
