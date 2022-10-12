@@ -134,7 +134,7 @@ export default component$(() => {
     }
 
     result!.querySelector('#error')!.textContent = '';
-    result!.querySelector('#text')!.textContent = window.location.href + newUrl;
+    result!.querySelector('#text')!.textContent = window.location.href.split('#')[0] + newUrl;
     result!.querySelector('#action')!.classList.replace('d-none', 'd-block');
 
     copyUrl$()
