@@ -4,7 +4,7 @@ import {
   useContextProvider,
   useRef,
   useStore,
-  useStylesScoped$,
+  useStylesScoped$
 } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { ShortenerAlert } from '~/components/alert/alert';
@@ -15,7 +15,7 @@ import { QRCode } from '~/components/qr-code/qr-code';
 import {
   copyUrl,
   handleShortener,
-  openLink,
+  openLink
 } from '~/components/shortener-input/handleShortener';
 import { ShortenerInput } from '~/components/shortener-input/shortener-input';
 import { Waves } from '~/components/waves/waves';
@@ -84,13 +84,13 @@ export default component$(() => {
             <span
               id="text"
               className="fade-in cursor-pointer"
-              onClick$={() => copyUrl({ state })}
+              onClick$={() => copyUrl(state)}
             ></span>
             <div id="action" className="hidden btn-group p-4">
               <button
                 type="button"
                 className="btn hover:btn-primary"
-                onClick$={() => copyUrl({ state })}
+                onClick$={() => copyUrl(state)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

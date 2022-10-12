@@ -80,6 +80,6 @@ export async function handleShortener({ state }: any) {
   result!.querySelector('#action')!.classList.replace('hidden', 'block');
 
   state.showAlert = true;
-  copyUrl({ state });
+  copyUrl(state);
   confettiAnimate();
 }
