@@ -182,11 +182,12 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 - [x] Migrate frontend to Qwik
 - [x] Better README
 - [x] Generate QRCode
-- [ ] Split front-end into components
-- [ ] Better UI
-    - [ ] Animations
+- [x] Split front-end into components
+- [x] Better UI
+    - [x] Animations
     - [ ] Dark/Light mode
     - [ ] Fonts?
+- [ ] Improve front-end components
 - [ ] Tests
 - [ ] Logs
 - [ ] Add a statistics page
