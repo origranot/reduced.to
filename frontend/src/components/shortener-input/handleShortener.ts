@@ -1,5 +1,5 @@
-import confetti from "canvas-confetti";
-import { Store } from "../../routes";
+import confetti from 'canvas-confetti';
+import { Store } from '../../routes';
 
 function confettiAnimate() {
   confetti({
@@ -21,7 +21,7 @@ function confettiAnimate() {
 }
 
 export function copyUrl(state: Store) {
-  const result = document.querySelector("#result #text");
+  const result = document.querySelector('#result #text');
   navigator.clipboard.writeText(result!.textContent!);
 
   if (!state.showAlert) {
@@ -36,9 +36,9 @@ export function copyUrl(state: Store) {
 const getShortenUrl = async (originalUrl: string) => {
   let result;
   try {
-    result = await fetch("/api/v1/shortener", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    result = await fetch('/api/v1/shortener', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ originalUrl }),
     });
   } catch (err) {
@@ -48,39 +48,38 @@ const getShortenUrl = async (originalUrl: string) => {
 };
 
 export function openLink() {
-  const text = document.querySelector("#result #text")!.textContent;
-  window.open(text!, "_blank");
+  const text = document.querySelector('#result #text')!.textContent;
+  window.open(text!, '_blank');
 }
 
 export async function handleShortener({ state }: any) {
-  const result = document.getElementById("result");
-  const loader = document.getElementById("loading");
+  const result = document.getElementById('result');
+  const loader = document.getElementById('loading');
   //const urlInput = document.getElementById("urlInput") as HTMLInputElement;
   const urlInput = state.inputValue;
-  loader!.classList.replace("hidden", "block");
-  result!.classList.replace("block", "hidden");
+  loader!.classList.replace('hidden', 'block');
+  result!.classList.replace('block', 'hidden');
 
   const { newUrl } = await getShortenUrl(urlInput);
 
   // Remove the loader from the screen
-  loader!.classList.replace("block", "hidden");
-  result!.classList.replace("hidden", "block");
+  loader!.classList.replace('block', 'hidden');
+  result!.classList.replace('hidden', 'block');
 
   //urlInput.value = "";
-  state.inputValue = ""
+  state.inputValue = '';
   if (!newUrl) {
-    result!.querySelector("#error")!.textContent = "This url is invalid..";
-    result!.querySelector("#text")!.textContent = "";
-    result!.querySelector("#action")!.classList.replace("block", "hidden");
+    result!.querySelector('#error')!.textContent = 'This url is invalid..';
+    result!.querySelector('#text')!.textContent = '';
+    result!.querySelector('#action')!.classList.replace('block', 'hidden');
     return;
   }
 
-  result!.querySelector("#error")!.textContent = "";
-  result!.querySelector("#text")!.textContent = window.location.href + newUrl;
-  result!.querySelector("#action")!.classList.replace("hidden", "block");
+  result!.querySelector('#error')!.textContent = '';
+  result!.querySelector('#text')!.textContent = window.location.href + newUrl;
+  result!.querySelector('#action')!.classList.replace('hidden', 'block');
 
   state.showAlert = true;
   copyUrl({ state });
   confettiAnimate();
 }
-
