@@ -30,6 +30,7 @@
 		"ncp": "^2.0.0"
 	},
 	"devDependencies": {
-		"@types/canvas-confetti": "^1.4.3"
+		"@types/canvas-confetti": "^1.4.3",
+		"prettier": "^2.7.1"
 	}
 }
