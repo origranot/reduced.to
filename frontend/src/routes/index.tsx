@@ -124,8 +124,6 @@ export default component$(() => {
     loader!.style.display = "none";
     result!.style.display = "block";
 
-    urlInput.value = '';
-
     if (!newUrl) {
       result!.querySelector('#error')!.textContent = 'This url is invalid..';
       result!.querySelector('#text')!.textContent = '';
@@ -174,7 +172,7 @@ export default component$(() => {
         </div>
         <div id="result" class="text-light">
           <p id="error" className="text-light fade-in"></p>
-          <p id="text" className="text-light fade-in" onClick$={() => copyUrl$()}></p>
+          <p id="text" className="text-light fade-in" onClick$={() => openLink$()}></p>
           <div id="action" className="d-none flex">
             <button type="button" className="btn btn-dark mr-1" onClick$={() => copyUrl$()}>
               <i className="bi bi-clipboard"></i>
