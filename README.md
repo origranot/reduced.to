@@ -250,4 +250,4 @@ Project Link: [https://github.com/origranot/url-shortener](https://github.com/or
 [Qwik.js]: https://tinyurl.com/y67dv8ub
 [Qwik-url]: https://qwik.builder.io/
 [tailwindcss]: https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=fff
-[tailwindcss-url]: https://getbootstrap.com
+[tailwindcss-url]: https://tailwindcss.com
