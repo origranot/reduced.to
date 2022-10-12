@@ -7,6 +7,8 @@ on:
   pull_request:
     branches:
       - master
+  workflow_dispatch:
+  
 jobs:
   lint-package:
     name: Lint Package
@@ -26,4 +28,4 @@ jobs:
 
       - name: Prettier Check
         if: ${{ always() }}
-        run: npm run fmt
+        run: npm run fmt.check
