@@ -14,7 +14,8 @@ import styles from './index.css?inline';
 export const InputContext = createContext('input');
 
 export interface Store {
-  showAlert: false
+  showAlert: false,
+  inputValue: string
 }
 
 export default component$(() => {
@@ -24,7 +25,8 @@ export default component$(() => {
   const shortenerInputRef = useRef();
 
   const state = useStore<Store>({
-    showAlert: false
+    showAlert: false,
+    inputValue: ""
   });
 
   useContextProvider(InputContext, state);
@@ -48,15 +50,17 @@ export default component$(() => {
             <ShortenerInput
               ref={shortenerInputRef}
               onKeyUp$={(event) => { 
-                if (event.key.toLowerCase() === 'enter') {
+                if (event.key.toLowerCase() === 'enter' && state.inputValue.length > 0) {
                   handleShortener({ state })
                 }
               }}
+              
+              onInput$={(event) => (state.inputValue = (event.target as HTMLInputElement).value)}
             ></ShortenerInput>
             <Loader/>
             <div id="result" class="hidden">
               <p id="error" className="fade-in"></p>
-              <p id="text" className="fade-in" onClick$={() => copyUrl({state})}></p>
+              <span id="text" className="fade-in cursor-pointer" onClick$={() => copyUrl({state})}></span>
               <div id="action" className="hidden btn-group p-4">
                 <button type="button" className="btn hover:btn-primary" onClick$={() => copyUrl({state})}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" className="w-6 h-6">
@@ -84,7 +88,6 @@ export default component$(() => {
           </div>
         </div>
 	      <div class="col-span-2"></div>
-        
       </div>
   );
 });
@@ -92,3 +95,24 @@ export default component$(() => {
 export const head: DocumentHead = {
   title: 'URL Shortener',
 };
+
+
+
+{/* <div class="container">
+        <div className="d-flex flex-row-reverse my-5">
+          <a href="https://github.com/origranot/url-shortener" className="github-button" data-size="large" data-show-count="true" aria-label="Star origranot/url-shortener on Github"> Star</a>
+        </div>
+      </div>
+      <div class="container">
+        <h1 class="p-3 text-light font-weight-bold">
+          URL Shortener
+        </h1>
+        <div class="alert alert-primary" role="alert">
+          Add your very long <b>URL</b> in the input below and click on the button to make it shorter
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" id="urlInput" class="border-primary text-light bg-dark form-control" placeholder="Very long url..." onKeyPress$={(event) => handleShortenerKeypress$(event)} aria-label="url" aria-describedby="shortenerBtn" 
+            onInput$={(event) => (state.inputValue = (event.target as HTMLInputElement).value)} 
+          />
+          <div class="input-group-append">
+            <button type="button" id="shortenerBtn" class="btn btn-animation" onClick$={() => handleShortenerClick$()} disabled={state.inputValue.length > 0 ? false : true}>Shorten URL</button> */}

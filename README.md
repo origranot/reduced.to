@@ -67,7 +67,7 @@
 
 </div>
 
-I've created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
+I created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -194,7 +194,7 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 
 Just create a [Pull request](https://github.com/origranot/url-shortener/pulls) already 😃
 
-_See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues)._
+_See the [open issues](https://github.com/origranot/url-shortener/issues) for a full list of proposed features (and known issues)._
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

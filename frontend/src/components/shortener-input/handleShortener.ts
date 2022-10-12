@@ -54,19 +54,19 @@ export function openLink() {
 export async function handleShortener({ state }: any) {
   const result = document.getElementById("result");
   const loader = document.getElementById("loading");
-  const urlInput = document.getElementById("urlInput") as HTMLInputElement;
-
+  //const urlInput = document.getElementById("urlInput") as HTMLInputElement;
+  const urlInput = state.inputValue;
   loader!.classList.replace("hidden", "block");
   result!.classList.replace("block", "hidden");
 
-  const { newUrl } = await getShortenUrl(urlInput!.value);
+  const { newUrl } = await getShortenUrl(urlInput);
 
   // Remove the loader from the screen
   loader!.classList.replace("block", "hidden");
   result!.classList.replace("hidden", "block");
 
-  urlInput.value = "";
-
+  //urlInput.value = "";
+  state.inputValue = ""
   if (!newUrl) {
     result!.querySelector("#error")!.textContent = "This url is invalid..";
     result!.querySelector("#text")!.textContent = "";
