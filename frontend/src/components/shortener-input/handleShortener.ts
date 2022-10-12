@@ -1,6 +1,7 @@
 import confetti from "canvas-confetti";
+import { Store } from "../../routes";
 
-export function confettiAnimate() {
+function confettiAnimate() {
   confetti({
     particleCount: 120,
     spread: 100,
@@ -19,7 +20,7 @@ export function confettiAnimate() {
   });
 }
 
-export function copyUrl({ state }: any) {
+export function copyUrl(state: Store) {
   const result = document.querySelector("#result #text");
   navigator.clipboard.writeText(result!.textContent!);
 
@@ -79,7 +80,7 @@ export async function handleShortener({ state }: any) {
   result!.querySelector("#action")!.classList.replace("hidden", "block");
 
   state.showAlert = true;
-  copyUrl({state});
+  copyUrl({ state });
   confettiAnimate();
 }
 
