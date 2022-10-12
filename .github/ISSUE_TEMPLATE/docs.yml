@@ -24,4 +24,3 @@ body:
       description: Is there anything else we should know about this suggestion?
     validations:
       required: false
- 

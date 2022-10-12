@@ -41,9 +41,9 @@
 }
 
 .fade-in {
-  animation: fade-in .5s;
+  animation: fade-in 0.5s;
 }
 
 .fade-out {
-  animation: fade-out .5s;
+  animation: fade-out 0.5s;
 }

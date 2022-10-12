@@ -1,8 +1,8 @@
-import { component$, useStylesScoped$ } from "@builder.io/qwik";
+import { component$, useStylesScoped$ } from '@builder.io/qwik';
 import styles from './waves.css?inline';
 
 export const Waves = component$(() => {
-  useStylesScoped$(styles)
+  useStylesScoped$(styles);
   return (
     <div className="waves-div">
       <svg
