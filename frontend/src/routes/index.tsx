@@ -2,11 +2,11 @@ import { component$, createContext, useContextProvider, useRef, useStore, useSty
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { ShortenerAlert } from '~/components/alert/alert';
 import { GithubButton } from '~/components/github-button/github-button';
+import { Loader } from '~/components/loader/loader';
 import { copyUrl, downloadQRCode, generateQRCode, handleShortener, openLink } from '~/components/shortener-input/handleShortener';
 import { ShortenerInput } from '~/components/shortener-input/shortener-input';
 import { Waves } from '~/components/waves/waves';
 import animations from '../assets/css/animations.css?inline';
-import loader from '../assets/css/loader.css?inline';
 import styles from './index.css?inline';
 
 export const InputContext = createContext('input');
@@ -18,7 +18,6 @@ export interface Store {
 export default component$(() => {
   useStylesScoped$(animations)
   useStylesScoped$(styles)
-  useStylesScoped$(loader)
 
   const shortenerInputRef = useRef();
 
@@ -53,9 +52,7 @@ export default component$(() => {
               
             }}
           ></ShortenerInput>
-          <div id="loading" class="hidden fade-in">
-            <div class="lds-dual-ring"></div>
-          </div>
+          <Loader/>
           <div id="result" class="hidden">
             <p id="error" className="fade-in"></p>
             <p id="text" className="fade-in" onClick$={() => copyUrl({state})}></p>
