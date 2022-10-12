@@ -3,7 +3,7 @@ import { Cache } from 'cache-manager';
 
 @Injectable()
 export class ShortenerService {
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) { }
+  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
   /**
    * Return the original url of the specific url.
@@ -16,9 +16,9 @@ export class ShortenerService {
   };
 
   /**
-  * Generating the short url
-  * @returns {String} Returns a random 5 characters url
-  */
+   * Generating the short url
+   * @returns {String} Returns a random 5 characters url
+   */
   generateShortUrl = (): string => {
     return Math.random().toString(36).substring(2, 7);
   };
@@ -34,10 +34,10 @@ export class ShortenerService {
   };
 
   /**
-  * Add the short url to the server routes.
-  * @param {String} originalUrl The original url.
-  * @param {String} shortUrl The shorten url.
-  */
+   * Add the short url to the server routes.
+   * @param {String} originalUrl The original url.
+   * @param {String} shortUrl The shorten url.
+   */
   addUrl = async (originalUrl: string, shortUrl: string) => {
     await this.cacheManager.set(shortUrl, originalUrl);
   };
