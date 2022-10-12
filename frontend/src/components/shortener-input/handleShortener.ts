@@ -6,7 +6,7 @@ export function generateQRCode(){
     const result = document.querySelector("#qrcode")
     const url = document.querySelector("#result #text")!.textContent || ""
 
-    result!.classList.replace('d-none', 'd-flex')
+    result!.classList.replace("hidden", "flex")
 
     QRCode.toCanvas(document.querySelector("#qrcode canvas"), url, function (error) {
       if (error) console.error(error)
@@ -21,23 +21,6 @@ export function downloadQRCode() {
     a.href = canvas.toDataURL("image/png")
     a.download = "qrcode.png"
     a.click()
-}
-
-export async function toastAlert(timeoutInMiliseconds: number = 2000) {
-  const urlAlert = document.getElementById("urlAlert");
-
-  urlAlert!.classList.add("fade-in");
-  urlAlert!.classList.remove("collapse");
-
-  setTimeout(() => {
-    urlAlert!.classList.remove("fade-in");
-    urlAlert!.classList.add("fade-out");
-
-    setTimeout(() => {
-      urlAlert!.classList.add("collapse");
-      urlAlert!.classList.remove("fade-out");
-    }, 500);
-  }, timeoutInMiliseconds);
 }
 
 export function confettiAnimate() {
@@ -59,10 +42,13 @@ export function confettiAnimate() {
   });
 }
 
-export function copyUrl() {
+export function copyUrl({ state }: any) {
   const result = document.querySelector("#result #text");
   navigator.clipboard.writeText(result!.textContent!);
-  toastAlert();
+
+  if (!state.showAlert) {
+    state.showAlert = true;
+  }
 }
 
 /**
@@ -83,44 +69,40 @@ const getShortenUrl = async (originalUrl: string) => {
   return result.json();
 };
 
-export async function handleShortenerClick() {
+export function openLink() {
+  const text = document.querySelector("#result #text")!.textContent;
+  window.open(text!, "_blank");
+}
+
+export async function handleShortener({ state }: any) {
   const result = document.getElementById("result");
   const loader = document.getElementById("loading");
   const urlInput = document.getElementById("urlInput") as HTMLInputElement;
 
-  loader!.style.display = "block";
-  result!.style.display = "none";
+  loader!.classList.replace("hidden", "block");
+  result!.classList.replace("block", "hidden");
 
   const { newUrl } = await getShortenUrl(urlInput!.value);
 
   // Remove the loader from the screen
-  loader!.style.display = "none";
-  result!.style.display = "block";
+  loader!.classList.replace("block", "hidden");
+  result!.classList.replace("hidden", "block");
 
   urlInput.value = "";
 
   if (!newUrl) {
     result!.querySelector("#error")!.textContent = "This url is invalid..";
     result!.querySelector("#text")!.textContent = "";
-    result!.querySelector("#action")!.classList.replace("d-block", "d-none");
+    result!.querySelector("#action")!.classList.replace("block", "hidden");
     return;
   }
 
   result!.querySelector("#error")!.textContent = "";
   result!.querySelector("#text")!.textContent = window.location.href + newUrl;
-  result!.querySelector("#action")!.classList.replace("d-none", "d-block");
+  result!.querySelector("#action")!.classList.replace("hidden", "block");
 
-  copyUrl();
+  state.showAlert = true;
+  copyUrl({state});
   confettiAnimate();
 }
 
-export function handleShortenerOnKeyUp(e: KeyboardEvent) {
-  if (e.key === "Enter") {
-    handleShortenerClick();
-  }
-}
-
-export function openLink() {
-  const text = document.querySelector("#result #text")!.textContent;
-  window.open(text!, "_blank");
-}
