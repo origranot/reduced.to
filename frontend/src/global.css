@@ -5,9 +5,11 @@
  * the styles in here will be applied to the Document, without any sort of CSS scoping.
  *
  */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
   text-align: center;
-  background-color: rgb(20, 20, 20);
   overflow: hidden;
 }

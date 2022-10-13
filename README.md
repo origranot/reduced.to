@@ -3,11 +3,11 @@
 <!-- PROJECT SHIELDS -->
 <div align="center">
 
- [![Contributors][contributors-shield]][contributors-url]
- [![Forks][forks-shield]][forks-url]
- [![Stargazers][stars-shield]][stars-url]
- [![Issues][issues-shield]][issues-url]
- 
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+
 </div>
 
 <!-- PROJECT LOGO -->
@@ -59,11 +59,16 @@
 <br/>
 
 <!-- ABOUT THE PROJECT -->
+
 ## 🌐 About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://github.com/origranot/url-shortener)
+<div align="center">
 
-I've created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
+[![URL Shortener GIF](docs/urlshortener.gif)](https://github.com/origranot/url-shortener)
+
+</div>
+
+I created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -71,19 +76,21 @@ I've created this repository over 3 years ago, and have made it public for Hackt
 
 List of frameworks/libraries used to bootstrap the project.
 
-* [![Nest][NestJS]][Nest-url]
-* [![Qwik][Qwik.js]][Qwik-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+- [![Nest][nestjs]][nest-url]
+- [![Qwik][qwik.js]][qwik-url]
+- [![Tailwindcss][tailwindcss]][tailwindcss-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
+
 ## 🚀 Getting Started
 
 ### 📃 Prerequisites
 
 List of things you need to run the project locally and how to install them.
-* npm
+
+- npm
   ```sh
   npm install npm@latest -g
   ```
@@ -92,64 +99,71 @@ List of things you need to run the project locally and how to install them.
 
 1. [Fork](https://github.com/origranot/url-shortener/fork) the repo
 2. Clone the repo
-    ```sh
-    git clone https://github.com/your_username_/url-shortener.git
-    ```
+   ```sh
+   git clone https://github.com/your_username_/url-shortener.git
+   ```
 3. Open the cloned repository using the `url-shortener.code-workspace` file (VSCode)
 4. Install NPM packages
-    ```sh
-    npm install && npm run install:all
-    ```
+   ```sh
+   npm install && npm run install:all
+   ```
 5. Build the project
-    ```sh
-    npm run build:all
-    ```
+   ```sh
+   npm run build:all
+   ```
 6. Run the project
-    ```sh
-    npm run start:prod
-    ```
-7. Go on your browser and open 
-    ```sh
-    http://localhost:3000/
-    ```
+   ```sh
+   npm run start:prod
+   ```
+7. Go on your browser and open
+   ```sh
+   http://localhost:3000/
+   ```
+
 ### 👩‍💻 Development
+
 You will find 3 folders
-* 🎯 `root`
-* ✨ `url-shortener/frontend`
-* 🚀 `url-shortener/backend`
+
+- 🎯 `root`
+- ✨ `url-shortener/frontend`
+- 🚀 `url-shortener/backend`
 
 ### _Running the frontend in dev mode_
+
 1. Move to the frontend folder
-    ```sh
-    cd ./frontend
-    ```
+   ```sh
+   cd ./frontend
+   ```
 2. Run the project (it will open a new window)
-    ```sh
-    npm run start
-    ```
+   ```sh
+   npm run start
+   ```
 3. Vite will be now listening for changes in the code and reloading the solution
 
 ### _Running the backend in dev mode_
+
 1. Move to the backend folder
-    ```sh
-    cd ./backend
-    ```
+   ```sh
+   cd ./backend
+   ```
 2. Run the project (be sure that you built the frontend before)
-    ```sh
-    npm run start:dev
-    ```
+   ```sh
+   npm run start:dev
+   ```
 3. Nest will be now listening for changes in the code and reloading the solution
 
 ### 🐳 Docker
+
 - You can easily build your application in a docker container and run it.
   ```sh
   docker build . -t url-shortener
   docker run -p 3000:3000 url-shortener
   ```
-- Simply go to your favorite browser and visit `http://localhost:3000/` to see your application.
+- Simply go to your favourite browser and visit `http://localhost:3000/` to see your application.
 
 ### 🐙 Docker compose
-- In case you have docker installed, you can *single-click* deploy and test your changes by running the following and going to `http://localhost:3000/` on your browser.
+
+- In case you have docker installed, you can _single-click_ deploy and test your changes by running the following and going to `http://localhost:3000/` on your browser.
   ```sh
   docker-compose up
   ```
@@ -159,41 +173,49 @@ Happy Hacking !
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
+
 ## 🐱‍💻 Usage
 
 Simply copy and paste a URL into the provided area. Then click shorten URL! Your URL has now been shortened!
 
-[![Product Name Screen Shot][product-screenshot]](https://github.com/origranot/url-shortener)
+<div align="center">
+
+[![URL Shortener GIF](docs/urlshortener.gif)](https://github.com/origranot/url-shortener)
+
+</div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
+
 ## 🧱 Roadmap
 
 - [x] Migrate backend to NestJS
 - [x] Migrate frontend to Qwik
 - [x] Better README
-- [ ] Yarn instead of NPM
-- [ ] Split front-end into components
-- [ ] Better UI
-    - [ ] Animations
-    - [ ] Dark/Light mode
-    - [ ] Fonts?
-- [ ] Add some testing
-- [ ] Add logs
+- [x] Generate QRCode
+- [x] Split front-end into components
+- [x] Better UI
+  - [x] Animations
+  - [ ] Dark/Light mode
+  - [ ] Fonts?
+- [ ] Improve front-end components
+- [ ] Tests
+- [ ] Logs
 - [ ] Add a statistics page
 - [ ] Add more ideas
 
 Just create a [Pull request](https://github.com/origranot/url-shortener/pulls) already 😃
 
-_See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues)._
+_See the [open issues](https://github.com/origranot/url-shortener/issues) for a full list of proposed features (and known issues)._
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
+
 ## 🥇 Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star ⭐!
@@ -205,14 +227,14 @@ Don't forget to give the project a star ⭐!
 5. Open a Pull Request
 
 ## 🏆 Contributors
+
 <a href = "https://github.com/origranot/url-shortener/graphs/contributors">
   <img src = "https://contrib.rocks/image?repo=origranot/url-shortener"/>
 </a>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
+
 ## 📝 License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
@@ -220,6 +242,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
+
 ## 💌 Contact
 
 Project Link: [https://github.com/origranot/url-shortener](https://github.com/origranot/url-shortener)
@@ -227,6 +250,7 @@ Project Link: [https://github.com/origranot/url-shortener](https://github.com/or
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/origranot/url-shortener.svg?style=for-the-badge
 [contributors-url]: https://github.com/origranot/url-shortener/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/origranot/url-shortener.svg?style=for-the-badge
@@ -235,11 +259,10 @@ Project Link: [https://github.com/origranot/url-shortener](https://github.com/or
 [stars-url]: https://github.com/origranot/url-shortener/stargazers
 [issues-shield]: https://img.shields.io/github/issues/origranot/url-shortener.svg?style=for-the-badge
 [issues-url]: https://github.com/origranot/url-shortener/issues
-
 [product-screenshot]: docs/gif.gif
-[NestJS]: https://img.shields.io/badge/nestJS-000000?style=for-the-badge&logo=nestjs&logoColor=E0234E
-[Nest-url]: https://nestjs.com/
-[Qwik.js]: https://tinyurl.com/y67dv8ub
-[Qwik-url]: https://qwik.builder.io/
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
+[nestjs]: https://img.shields.io/badge/nestJS-000000?style=for-the-badge&logo=nestjs&logoColor=E0234E
+[nest-url]: https://nestjs.com/
+[qwik.js]: https://tinyurl.com/y67dv8ub
+[qwik-url]: https://qwik.builder.io/
+[tailwindcss]: https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=fff
+[tailwindcss-url]: https://tailwindcss.com

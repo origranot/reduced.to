@@ -1,13 +1,19 @@
-import { BadRequestException, Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import { ShortenerDTO } from './dto/shortener.dto';
 import { ShortenerService } from './shortener.service';
 
 @Controller({
-  path: "shortener",
-  version: '1'
+  path: 'shortener',
+  version: '1',
 })
 export class ShortenerController {
-  constructor(private readonly shortenerService: ShortenerService) { }
+  constructor(private readonly shortenerService: ShortenerService) {}
 
   @Post()
   async shortener(@Body() body: ShortenerDTO) {
