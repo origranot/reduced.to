@@ -19,7 +19,7 @@
     URL shortener is a web application that reduces the length of link URL. So it's easier to remember, share and track.
     <br />
     <br />
-    <a href="https://url-shortener-live.herokuapp.com">View Demo</a>
+    <!-- <a href="https://url-shortener-live.herokuapp.com">View Demo</a> -->
     ·
     <a href="https://github.com/origranot/url-shortener/issues">Report Bug</a>
     ·
