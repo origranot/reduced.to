@@ -1,178 +1,169 @@
-import { $, component$, useStylesScoped$ } from '@builder.io/qwik';
+import {
+  component$,
+  createContext,
+  useContextProvider,
+  useRef,
+  useStore,
+  useStylesScoped$,
+} from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
+import { ShortenerAlert } from '~/components/alert/alert';
+import { GithubButton } from '~/components/github-button/github-button';
+import { Loader } from '~/components/loader/loader';
+import { generateQRCode } from '~/components/qr-code/handleQRCode';
+import { QRCode } from '~/components/qr-code/qr-code';
+import {
+  copyUrl,
+  handleShortener,
+  openLink,
+} from '~/components/shortener-input/handleShortener';
+import { ShortenerInput } from '~/components/shortener-input/shortener-input';
+import { Waves } from '~/components/waves/waves';
 import animations from '../assets/css/animations.css?inline';
-import loader from '../assets/css/loader.css?inline';
 import styles from './index.css?inline';
 
+export const InputContext = createContext('input');
+
+export interface Store {
+  showAlert: boolean;
+  inputValue: string;
+}
+
 export default component$(() => {
-  useStylesScoped$(animations)
-  useStylesScoped$(styles)
-  useStylesScoped$(loader)
+  useStylesScoped$(animations);
+  useStylesScoped$(styles);
 
-  // Open link in a new window/tab.
-  const openLink$ = $(() => {
-    const text = document.querySelector('#result #text')!.textContent;
-    window.open(text!, '_blank');
+  const shortenerInputRef = useRef();
+
+  const state = useStore<Store>({
+    showAlert: false,
+    inputValue: '',
   });
 
-  const toastAlert$ = $(async (timeoutInMiliseconds: number = 2000) => {
-    const urlAlert = document.getElementById("urlAlert");
-
-    urlAlert!.classList.add('fade-in');
-    urlAlert!.classList.remove('collapse');
-
-    setTimeout(() => {
-      urlAlert!.classList.remove('fade-in');
-      urlAlert!.classList.add('fade-out');
-
-      setTimeout(() => {
-        urlAlert!.classList.add('collapse');
-        urlAlert!.classList.remove('fade-out');
-      }, 500);
-    }, timeoutInMiliseconds);
-  })
-
-  /**
-   * Copy link to clipboard.
-   */
-  const copyUrl$ = $(() => {
-    const result = document.querySelector("#result #text");
-    navigator.clipboard.writeText(result!.textContent!);
-    toastAlert$();
-  });
-
-  /**
-   * Returns the shorter link from the server.
-   * @param {String} originalUrl - The original url we want to shorten.
-   */
-  const getShortenUrl$ = $(async (originalUrl: string) => {
-    let result;
-    try {
-      result = await fetch('/api/v1/shortener', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ originalUrl })
-      });
-    } catch (err) {
-      return null;
-    }
-    return result.json();
-  });
-
-  const handleShortenerClick$ = $(async () => {
-    const result = document.getElementById("result");
-    const loader = document.getElementById("loading");
-    const urlInput = document.getElementById("urlInput") as HTMLInputElement;
-
-    loader!.style.display = "block";
-    result!.style.display = "none";
-    /**
-     * fixx so xyz.com works as well as https://xyz.com
-     * 
-     */
-    let ValidUrl = urlInput!.value; 
-    //Tests for https  , http and empty string . 
-    
-  if (!RegExp("^https://").test(urlInput!.value) && !RegExp("^http://").test(urlInput!.value) && urlInput!.value ) {
-    
-    ValidUrl = `https://${urlInput!.value}`; 
-  
-  }
-  const { newUrl } = await getShortenUrl$(ValidUrl);
-
-
-
-    //const { newUrl } = await getShortenUrl$(urlInput!.value);
-    
-
-
-
-
-
-
-    // Remove the loader from the screen
-    loader!.style.display = "none";
-    result!.style.display = "block";
-
-    urlInput.value = '';
-
-    if (!newUrl) {
-      result!.querySelector('#error')!.textContent = 'This url is invalid..';
-      result!.querySelector('#text')!.textContent = '';
-      result!.querySelector('#action')!.classList.replace('d-block', 'd-none');
-      return;
-    }
-
-    result!.querySelector('#error')!.textContent = '';
-    result!.querySelector('#text')!.textContent = window.location.href + newUrl;
-    result!.querySelector('#action')!.classList.replace('d-none', 'd-block');
-
-    copyUrl$()
-  });
-
-  const handleShortenerKeypress$ = $((e: KeyboardEvent) => {
-    if (e.key === 'enter') {
-      handleShortenerClick$();
-    }
-  });
+  useContextProvider(InputContext, state);
 
   return (
-    <>
-      <div class="container">
-        <div className="d-flex flex-row-reverse my-5">
-          <a href="https://github.com/origranot/url-shortener" className="github-button" data-size="large" data-show-count="true" aria-label="Star origranot/url-shortener on Github"> Star</a>
-        </div>
-      </div>
-      <div class="container">
-        <h1 class="p-3 text-light font-weight-bold">
-          URL Shortener
-        </h1>
-        <div class="alert alert-primary" role="alert">
-          Add your very long <b>URL</b> in the input bellow and click on the button to make it shorter
-        </div>
-        <div class="input-group mb-3">
-          <input type="text" id="urlInput" class="border-primary text-light bg-dark form-control" placeholder="Very long url..." onKeyPress$={(event) => handleShortenerKeypress$(event)} aria-label="url" aria-describedby="shortenerBtn" />
-          <div class="input-group-append">
-            <button type="button" id="shortenerBtn" class="btn btn-animation" onClick$={() => handleShortenerClick$()}>Shorten URL</button>
+    <div class="mx-auto container grid grid-cols-12">
+      <div class="col-span-2"></div>
+      <div class="col-span-8">
+        <div className="flex flex-col">
+          <div className="flex justify-end my-5">
+            <GithubButton
+              type="Star"
+              user="origranot"
+              repo="url-shortener"
+              isLarge
+              showCount
+              label="Star"
+            ></GithubButton>
           </div>
-        </div>
-        <div id="loading" class="fade-in">
-          <div class="lds-dual-ring"></div>
-        </div>
-        <div id="result" class="text-light">
-          <p id="error" className="text-light fade-in"></p>
-          <p id="text" className="text-light fade-in" onClick$={() => copyUrl$()}></p>
-          <div id="action" className="d-none flex">
-            <button type="button" className="btn btn-dark mr-1" onClick$={() => copyUrl$()}>
-              <i className="bi bi-clipboard"></i>
-            </button>
-            <button type="button" className="btn btn-dark">
-              <i className="bi bi-box-arrow-up-right" onClick$={() => openLink$()}></i>
-            </button>
+          <article class="prose mx-auto max-w-4xl pb-16">
+            <h1>URL Shortener</h1>
+            <p>
+              Add your very long <b>URL</b> in the input bellow and click on the
+              button to make it shorter
+            </p>
+          </article>
+          <ShortenerInput
+            ref={shortenerInputRef}
+            onKeyUp$={(event) => {
+              if (
+                event.key.toLowerCase() === 'enter' &&
+                state.inputValue.length > 0
+              ) {
+                handleShortener({ state });
+              }
+            }}
+            onInput$={(event) =>
+              (state.inputValue = (event.target as HTMLInputElement).value)
+            }
+            onSubmit$={() => handleShortener({ state })}
+          />
+          <Loader />
+          <div id="result" class="hidden">
+            <p id="error" className="fade-in"></p>
+            <span
+              id="text"
+              className="fade-in cursor-pointer"
+              onClick$={() => copyUrl(state)}
+            ></span>
+            <div id="action" className="hidden btn-group p-4">
+              <button
+                type="button"
+                className="btn hover:btn-primary"
+                onClick$={() => copyUrl(state)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75"
+                  />
+                </svg>
+              </button>
+              <button
+                type="button"
+                className="btn hover:btn-primary"
+                onClick$={() => openLink()}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                  />
+                </svg>
+              </button>
+              <button
+                type="button"
+                className="btn hover:btn-primary"
+                onClick$={() => generateQRCode(100)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6.75 6.75h.75v.75h-.75v-.75zM6.75 16.5h.75v.75h-.75v-.75zM16.5 6.75h.75v.75h-.75v-.75zM13.5 13.5h.75v.75h-.75v-.75zM13.5 19.5h.75v.75h-.75v-.75zM19.5 13.5h.75v.75h-.75v-.75zM19.5 19.5h.75v.75h-.75v-.75zM16.5 16.5h.75v.75h-.75v-.75z"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
-        </div>
-        <div id="urlAlert" className="alert alert-success collapse" role="alert">
-          Link has been copied to the clipboard
+          <div id="qrcode" className="hidden mx-auto">
+            <QRCode showDownload />
+          </div>
+          <ShortenerAlert />
+          <Waves />
         </div>
       </div>
-      <div className="waves-div">
-        <svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-          <defs>
-            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path>
-          </defs>
-          <g class="parallax">
-            {/* @ts-ignore */}
-            <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
-            {/* @ts-ignore */}
-            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
-            {/* @ts-ignore */}
-            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
-            {/* @ts-ignore */}
-            <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
-          </g>
-        </svg>
-      </div>
-    </>
+      <div class="col-span-2"></div>
+    </div>
   );
 });
 
