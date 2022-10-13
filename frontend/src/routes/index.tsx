@@ -5,23 +5,23 @@ import {
   useRef,
   useStore,
   useStylesScoped$,
-} from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
-import { ShortenerAlert } from "~/components/alert/alert";
-import { GithubButton } from "~/components/github-button/github-button";
-import { Loader } from "~/components/loader/loader";
-import { generateQRCode } from "~/components/qr-code/handleQRCode";
-import { QRCode } from "~/components/qr-code/qr-code";
+} from '@builder.io/qwik';
+import type { DocumentHead } from '@builder.io/qwik-city';
+import { ShortenerAlert } from '~/components/alert/alert';
+import { GithubButton } from '~/components/github-button/github-button';
+import { Loader } from '~/components/loader/loader';
+import { generateQRCode } from '~/components/qr-code/handleQRCode';
+import { QRCode } from '~/components/qr-code/qr-code';
 import {
   copyUrl,
   handleShortener,
   openLink,
-} from "~/components/shortener-input/handleShortener";
-import { ShortenerInput } from "~/components/shortener-input/shortener-input";
-import { Waves } from "~/components/waves/waves";
-import animations from "../assets/css/animations.css?inline";
-import styles from "./index.css?inline";
-export const InputContext = createContext("input");
+} from '~/components/shortener-input/handleShortener';
+import { ShortenerInput } from '~/components/shortener-input/shortener-input';
+import { Waves } from '~/components/waves/waves';
+import animations from '../assets/css/animations.css?inline';
+import styles from './index.css?inline';
+export const InputContext = createContext('input');
 
 export interface Store {
   showAlert: boolean;
@@ -36,7 +36,7 @@ export default component$(() => {
 
   const state = useStore<Store>({
     showAlert: false,
-    inputValue: "",
+    inputValue: '',
   });
 
   useContextProvider(InputContext, state);
@@ -53,7 +53,7 @@ export default component$(() => {
               isLarge
               showCount
               label="Star"
-            />
+            ></GithubButton>
           </div>
           <article class="prose mx-auto max-w-4xl pb-16">
             <h1>URL Shortener</h1>
@@ -76,8 +76,8 @@ export default component$(() => {
               (state.inputValue = (event.target as HTMLInputElement).value)
             }
             onSubmit$={() => handleShortener({ state })}
-          />
-          <Loader />
+          ></ShortenerInput>
+          <Loader></Loader>
           <div id="result" class="hidden">
             <p id="error" className="fade-in"></p>
             <span

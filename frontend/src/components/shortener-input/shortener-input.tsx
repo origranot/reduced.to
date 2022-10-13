@@ -1,7 +1,7 @@
-import { component$, useContext, useRef } from "@builder.io/qwik";
-import { InputContext, Store } from "~/routes";
-import { handleShortener } from "./handleShortener";
-import { ShortenerInputBtn } from "./shortener-input-btn";
+import { component$, useContext, useRef } from '@builder.io/qwik';
+import { InputContext, Store } from '~/routes';
+import { handleShortener } from './handleShortener';
+import { ShortenerInputBtn } from './shortener-input-btn';
 
 export interface ShortenerInputProps {
   ref: any;
@@ -27,14 +27,13 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
           placeholder="Very long url..."
           aria-label="url"
           aria-describedby="shortenerBtn"
-        />
+        ></input>
         <ShortenerInputBtn
           ref={shortenerInputBtnRef}
           disabled={state.inputValue.length === 0}
           onClick$={() => handleShortener(state)}
-        />
+        ></ShortenerInputBtn>
       </div>
     </div>
   );
 });
-
