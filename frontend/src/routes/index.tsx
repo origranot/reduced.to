@@ -4,7 +4,7 @@ import {
   useContextProvider,
   useRef,
   useStore,
-  useStylesScoped$
+  useStylesScoped$,
 } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { ShortenerAlert } from '~/components/alert/alert';
@@ -15,7 +15,7 @@ import { QRCode } from '~/components/qr-code/qr-code';
 import {
   copyUrl,
   handleShortener,
-  openLink
+  openLink,
 } from '~/components/shortener-input/handleShortener';
 import { ShortenerInput } from '~/components/shortener-input/shortener-input';
 import { Waves } from '~/components/waves/waves';
@@ -77,7 +77,8 @@ export default component$(() => {
             onInput$={(event) =>
               (state.inputValue = (event.target as HTMLInputElement).value)
             }
-          ></ShortenerInput>
+            onSubmit$={() => handleShortener({ state })}
+          />
           <Loader />
           <div id="result" class="hidden">
             <p id="error" className="fade-in"></p>
