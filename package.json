@@ -6,7 +6,6 @@
     "build:all": "npm run build:frontend && npm run build:backend && ncp ./backend/dist ./dist",
     "build:frontend": "npm --prefix ./frontend run build:ssg",
     "build:backend": "npm --prefix ./backend run build",
-    "postinstall": "npm run install:all && npm run build:all",
     "install:all": "npm run install:frontend && npm run install:backend",
     "install:frontend": "cd ./frontend && npm i",
     "install:backend": "cd ./backend && npm i",
