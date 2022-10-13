@@ -1,22 +1,24 @@
-import { component$, useStylesScoped$ } from "@builder.io/qwik";
+import { component$, useStylesScoped$ } from '@builder.io/qwik';
 import styles from './shortener-input-btn.css?inline';
 
 export interface ShortenerInputBtnProps {
-    ref: any;
-    disabled: boolean;
-    onClick$: () => void;
+  ref: any;
+  disabled: boolean;
+  onClick$: () => void;
 }
 
 export const ShortenerInputBtn = component$((props: ShortenerInputBtnProps) => {
-    useStylesScoped$(styles)
+  useStylesScoped$(styles);
 
-    return (
-        <button 
-            ref={props.ref}
-            onClick$={props.onClick$}
-            type="button"
-            id="shortenerBtn"
-            class={`btn btn-primary ${props.disabled ? 'btn-disabled' : ''}`}
-        >Shorten URL</button>
-    )
-})
+  return (
+    <button
+      ref={props.ref}
+      onClick$={props.onClick$}
+      type="button"
+      id="shortenerBtn"
+      class={`btn btn-primary ${props.disabled ? 'btn-disabled' : ''}`}
+    >
+      Shorten URL
+    </button>
+  );
+});
