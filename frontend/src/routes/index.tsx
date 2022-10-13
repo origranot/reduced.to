@@ -77,7 +77,8 @@ export default component$(() => {
             onInput$={(event) =>
               (state.inputValue = (event.target as HTMLInputElement).value)
             }
-          ></ShortenerInput>
+            onSubmit$={() => handleShortener({state})}
+          />
           <Loader />
           <div id="result" class="hidden">
             <p id="error" className="fade-in"></p>
