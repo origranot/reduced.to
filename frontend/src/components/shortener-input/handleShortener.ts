@@ -76,7 +76,8 @@ export async function handleShortener({ state }: any) {
   }
 
   result!.querySelector('#error')!.textContent = '';
-  result!.querySelector('#text')!.textContent = window.location.href.split('#')[0] + newUrl;
+  result!.querySelector('#text')!.textContent =
+    window.location.href.split('#')[0] + newUrl;
   result!.querySelector('#action')!.classList.replace('hidden', 'block');
 
   state.showAlert = true;

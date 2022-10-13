@@ -1,12 +1,12 @@
 import { component$, useContext, useRef } from '@builder.io/qwik';
 import { InputContext, Store } from '~/routes';
-import { handleShortener } from './handleShortener';
 import { ShortenerInputBtn } from './shortener-input-btn';
 
 export interface ShortenerInputProps {
   ref: any;
   onKeyUp$: (event: KeyboardEvent) => void;
   onInput$: (event: InputEvent) => void;
+  onSubmit$: () => void;
 }
 
 export const ShortenerInput = component$((props: ShortenerInputProps) => {
@@ -30,8 +30,8 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
         <ShortenerInputBtn
           ref={shortenerInputBtnRef}
           disabled={state.inputValue.length === 0}
-          onClick$={() => handleShortener(state)}
-        ></ShortenerInputBtn>
+          onClick$={props.onSubmit$}
+        />
       </div>
     </div>
   );
