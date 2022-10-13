@@ -18,7 +18,6 @@ import {
   openLink,
 } from '~/components/shortener-input/handleShortener';
 import { ShortenerInput } from '~/components/shortener-input/shortener-input';
-import { Waves } from '~/components/waves/waves';
 import animations from '../assets/css/animations.css?inline';
 import styles from './index.css?inline';
 
