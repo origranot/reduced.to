@@ -4,7 +4,7 @@ export default component$(() => {
   return (
     <>
       <main data-theme="dracula" class="h-screen">
-        <section class="min-h-screen flex flex-col">
+        <section>
           <Slot />
         </section>
       </main>

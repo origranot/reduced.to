@@ -43,7 +43,7 @@ export default component$(() => {
   useContextProvider(InputContext, state);
 
   return (
-    <>
+    <div class="min-h-screen flex flex-col">
       <div class="mx-auto container grid grid-cols-12 flex-1">
         <div class="col-start-2 col-end-12 md:col-start-3 md:col-end-11">
           <div className="flex flex-col">
@@ -163,7 +163,7 @@ export default component$(() => {
         </div>
       </div>
       <Waves />
-    </>
+    </div>
   );
 });
 
