@@ -43,9 +43,8 @@ export default component$(() => {
   useContextProvider(InputContext, state);
 
   return (
-    <div class="mx-auto container grid grid-cols-12">
-      <div class="col-span-2"></div>
-      <div class="col-span-8">
+    <div class="mx-auto container grid grid-cols-12 flex-1">
+      <div class="col-start-2 col-end-12 md:col-start-3 md:col-end-11">
         <div className="flex flex-col">
           <div className="flex justify-end my-5">
             <GithubButton
@@ -159,10 +158,8 @@ export default component$(() => {
             <QRCode showDownload />
           </div>
           <ShortenerAlert />
-          <Waves />
         </div>
       </div>
-      <div class="col-span-2"></div>
     </div>
   );
 });
