@@ -159,7 +159,7 @@ You will find 3 folders
   docker build . -t url-shortener
   docker run -p 3000:3000 url-shortener
   ```
-- Simply go to your favorite browser and visit `http://localhost:3000/` to see your application.
+- Simply go to your favourite browser and visit `http://localhost:3000/` to see your application.
 
 ### 🐙 Docker compose
 
@@ -215,7 +215,7 @@ _See the [open issues](https://github.com/origranot/url-shortener/issues) for a 
 
 ## 🥇 Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star ⭐!
