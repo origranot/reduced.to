@@ -83,13 +83,13 @@ export default component$(() => {
             <span
               id="text"
               className="fade-in cursor-pointer"
-              onClick$={() => copyUrl({ state })}
+              onClick$={() => copyUrl(state)}
             ></span>
             <div id="action" className="hidden btn-group p-4">
               <button
                 type="button"
                 className="btn hover:btn-primary"
-                onClick$={() => copyUrl({ state })}
+                onClick$={() => copyUrl(state)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
