@@ -14,7 +14,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
   const shortenerInputBtnRef = useRef();
   return (
     <div className="form-control">
-      <div class="input-group mb-3 flex">
+      <div class="sm:input-group mb-3 flex-col sm:flex-row gap-2 sm:gap-0">
         <input
           ref={props.ref}
           onKeyUp$={props.onKeyUp$}
@@ -22,7 +22,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
           value={state.inputValue}
           type="text"
           id="urlInput"
-          class="input input-bordered bg-base-200 flex-auto"
+          class="input input-bordered bg-base-200 flex-auto w-full sm:w-auto mb-2"
           placeholder="Very long url..."
           aria-label="url"
           aria-describedby="shortenerBtn"
