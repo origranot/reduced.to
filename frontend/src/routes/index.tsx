@@ -90,6 +90,7 @@ export default component$(() => {
               <div id="action" className="hidden btn-group p-4">
                 <button
                   type="button"
+                  title="Copy"
                   className="btn hover:btn-primary"
                   onClick$={() => copyUrl(state)}
                 >
@@ -110,6 +111,7 @@ export default component$(() => {
                 </button>
                 <button
                   type="button"
+                  title="Open in new tab"
                   className="btn hover:btn-primary"
                   onClick$={() => openLink()}
                 >
@@ -130,6 +132,7 @@ export default component$(() => {
                 </button>
                 <button
                   type="button"
+                  title="QR Code"
                   className="btn hover:btn-primary"
                   onClick$={() => generateQRCode(100)}
                 >
