@@ -7,6 +7,7 @@ export interface ShortenerInputProps {
   ref: any;
   onKeyUp$: (event: KeyboardEvent) => void;
   onInput$: (event: InputEvent) => void;
+  onSubmit$: () => void;
 }
 
 export const ShortenerInput = component$((props: ShortenerInputProps) => {
@@ -36,3 +37,4 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
     </div>
   );
 });
+

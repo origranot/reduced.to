@@ -21,7 +21,6 @@ import { ShortenerInput } from "~/components/shortener-input/shortener-input";
 import { Waves } from "~/components/waves/waves";
 import animations from "../assets/css/animations.css?inline";
 import styles from "./index.css?inline";
-
 export const InputContext = createContext("input");
 
 export interface Store {
@@ -67,7 +66,7 @@ export default component$(() => {
             ref={shortenerInputRef}
             onKeyUp$={(event) => {
               if (
-                event.key.toLowerCase() === "enter" &&
+                event.key.toLowerCase() === 'enter' &&
                 state.inputValue.length > 0
               ) {
                 handleShortener({ state });
@@ -76,7 +75,8 @@ export default component$(() => {
             onInput$={(event) =>
               (state.inputValue = (event.target as HTMLInputElement).value)
             }
-          ></ShortenerInput>
+            onSubmit$={() => handleShortener({ state })}
+          />
           <Loader />
           <div id="result" class="hidden">
             <p id="error" className="fade-in"></p>
@@ -166,5 +166,5 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: "URL Shortener",
+  title: 'URL Shortener',
 };
