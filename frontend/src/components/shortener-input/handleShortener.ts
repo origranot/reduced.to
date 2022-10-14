@@ -60,7 +60,13 @@ export async function handleShortener({ state }: any) {
   loader!.classList.replace('hidden', 'block');
   result!.classList.replace('block', 'hidden');
 
-  const { newUrl } = await getShortenUrl(urlInput);
+  let validUrl = urlInput;
+
+  if (!RegExp('^https://|^http://').test(urlInput) && urlInput) {
+    validUrl = `https://${urlInput}`;
+  }
+
+  const { newUrl } = await getShortenUrl(validUrl);
 
   // Remove the loader from the screen
   loader!.classList.replace('block', 'hidden');
