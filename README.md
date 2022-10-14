@@ -13,13 +13,14 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <h1 align="center">URL Shortener</h1>
+  
+[![logo](https://user-images.githubusercontent.com/26607131/195708368-d1e929b2-d7ed-466e-b2d0-7aef91672c3b.png)](https://reduced.to)
 
   <p align="center">
-    URL shortener is a web application that reduces the length of link URL. So it's easier to remember, share and track.
+    Reduced.to is a modern web application that reduces the length of link URL. So it's easier to remember, share and track.
     <br />
     <br />
-    <a href="https://url-shortener-live.herokuapp.com">View Demo</a>
+    <a href="https://reduced.to">App</a>
     ·
     <a href="https://github.com/origranot/url-shortener/issues">Report Bug</a>
     ·
