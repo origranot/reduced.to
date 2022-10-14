@@ -58,7 +58,9 @@ export default component$(() => {
               ></GithubButton>
             </div>
             <article class="prose mx-auto max-w-4xl pb-16">
-              <h1>URL Shortener</h1>
+              <div class="mx-auto">
+                <img class="mx-auto" src="logo.png" />
+              </div>
               <p>
                 Add your very long <b>URL</b> in the input bellow and click on
                 the button to make it shorter
@@ -171,5 +173,5 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: 'URL Shortener',
+  title: 'reduced.to',
 };
