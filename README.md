@@ -14,7 +14,7 @@
 <br />
 <div align="center">
   
-[![logo](https://user-images.githubusercontent.com/26607131/195708368-d1e929b2-d7ed-466e-b2d0-7aef91672c3b.png)](https://reduced.to)
+[![logo](https://user-images.githubusercontent.com/26607131/195944856-0c23581a-e1b5-43ee-bcae-c0d65e724faf.png)](https://reduced.to)
 
   <p align="center">
     Reduced.to is a modern web application that reduces the length of link URL. So it's easier to remember, share and track.
