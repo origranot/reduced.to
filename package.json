@@ -10,7 +10,7 @@
     "install:frontend": "cd ./frontend && npm i",
     "install:backend": "cd ./backend && npm i",
     "start:prod": "node dist/main",
-    "fmt": "prettier --loglevel warn --write \"*.{ts,json,yml,yaml,md}\" \"{frontend,backend}/**/*.{ts,json,yml,yaml,md}\"",
+    "fmt": "prettier --loglevel warn --write \"*.{ts,json,yml,yaml,md}\" \"{frontend,backend}/**/*.{ts,tsx,json,yml,yaml,md}\"",
     "fmt.check": "prettier --check .",
     "prepare": "husky install"
   },
