@@ -40,7 +40,7 @@ where "url you just copied" (without the quotation marks) is the url to this rep
 For example:
 
 ```
-git clone https://github.com/this-is-you/url-shortener.git
+git clone https://github.com/this-is-you/reduced.to.git
 ```
 
 where `this-is-you` is your GitHub username. Here you're copying the contents of the first-contributions repository on GitHub to your computer.
@@ -50,7 +50,7 @@ where `this-is-you` is your GitHub username. Here you're copying the contents of
 Change to the repository directory on your computer (if you are not already there):
 
 ```
-cd url-shortener
+cd reduced.to
 ```
 
 Now create a branch using the `git switch` command:
