@@ -1,7 +1,7 @@
 {
-  "name": "url-shortener",
+  "name": "reduced.to",
   "version": "1.0.0",
-  "description": "URL shortener is a web application that reduces the length of link URL. So it's easier to remember, share and track.",
+  "description": "reduced.to is a web application that reduces the length of link URL. So it's easier to remember, share and track.",
   "scripts": {
     "build:all": "npm run build:frontend && npm run build:backend && ncp ./backend/dist ./dist",
     "build:frontend": "npm --prefix ./frontend run build:ssg",
