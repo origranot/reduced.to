@@ -1,15 +1,15 @@
 {
   "folders": [
     {
-      "name": "🎯 root",
+      "name": "🚀 reduced.to",
       "path": "."
     },
     {
-      "name": "✨ url-shortener/frontend",
+      "name": "🎨 reduced.to/frontend",
       "path": "frontend"
     },
     {
-      "name": "🚀 url-shortener/backend",
+      "name": "📦 reduced.to/backend",
       "path": "backend"
     }
   ],
@@ -24,7 +24,6 @@
     "recommendations": [
       "folke.vscode-monorepo-workspace",
       "seatonjiang.gitmoji-vscode",
-      "jondot.vscode-hygen",
       "esbenp.prettier-vscode",
       "dbaeumer.vscode-eslint",
       "editorconfig.editorconfig"

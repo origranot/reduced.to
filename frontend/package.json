@@ -1,12 +1,11 @@
 {
-  "name": "url-shortener-frontend",
+  "name": "reduced.to-frontend",
   "description": "",
   "engines": {
     "node": ">=15.0.0"
   },
   "private": true,
   "scripts": {
-    "postinstall": "npm run build:ssg",
     "build": "qwik build",
     "build:ssg": "npm run build && npm run ssg",
     "build.client": "vite build",
