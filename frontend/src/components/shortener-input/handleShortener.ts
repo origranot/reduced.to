@@ -65,12 +65,21 @@ export async function handleShortener({ state }: any) {
   if (!RegExp('^https://|^http://').test(urlInput) && urlInput) {
     validUrl = `https://${urlInput}`;
   }
-
-  const { newUrl } = await getShortenUrl(validUrl);
-
+  
   // Remove the loader from the screen
   loader!.classList.replace('block', 'hidden');
   result!.classList.replace('hidden', 'block');
+
+  const expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+  const regex = new RegExp(expression);
+  if (!regex.test(validUrl) && validUrl) {
+    result!.querySelector('#error')!.textContent = 'This url is invalid..';
+    result!.querySelector('#text')!.textContent = '';
+    result!.querySelector('#action')!.classList.replace('block', 'hidden');
+    return;
+  }
+
+  const { newUrl } = await getShortenUrl(validUrl);
 
   //urlInput.value = "";
   state.inputValue = '';
