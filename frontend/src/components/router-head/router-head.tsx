@@ -34,6 +34,19 @@ export const RouterHead = component$(() => {
       <meta name="twitter:site" content="@QwikDev" />
       <meta name="twitter:title" content="Qwik" />
 
+      <meta name="description" content="Reduced.to is a Free Modern URL Reducer" />
+      <meta name="robots" content="index, follow">
+      <meta property="og:locale" content="en_US" />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content="Reduced.to | URL Shortener" />
+      <meta property="og:description" content="Reduced.to is a Free Modern URL Reducer" />
+      <meta property="og:url" content="https://reduced.to/" />
+      <meta property="og:site_name" content="Reduced.to" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="Reduced.to | URL Shortener" />
+      <meta name="twitter:description" content="Reduced.to is a Free Modern URL Reducer" />
+      <meta name="theme-color" content="#272935" />
+
       {head.meta.map((m) => (
         <meta {...m} />
       ))}
