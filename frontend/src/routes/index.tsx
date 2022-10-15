@@ -67,10 +67,6 @@ export default component$(() => {
                   Use our shortened URL for sharing Long Links easily
                 </p>
               </div>
-              {/* <p>
-                Add your very long <b>URL</b> in the input bellow and click on
-                the button to make it shorter
-              </p> */}
             </article>
             <ShortenerInput
               ref={shortenerInputRef}
