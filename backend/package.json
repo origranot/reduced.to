@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "nest build",
     "start": "nest start",
-    "start:dev": "nest start --watch",
+    "start:dev": "nest start --watch --watchAssets",
     "start:prod": "node dist/main",
     "fmt": "prettier --write .",
     "fmt.check": "prettier --check ."

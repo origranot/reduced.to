@@ -20,7 +20,8 @@
     "preview": "qwik build preview && vite preview --open",
     "ssg": "node server/entry.static",
     "start": "vite --open --mode ssr",
-    "qwik": "qwik"
+    "qwik": "qwik",
+    "ssg:dev": "nodemon -e ts,tsx -w ./src --exec \"npm run build:ssg\""
   },
   "devDependencies": {
     "@builder.io/qwik": "0.10.0",
@@ -43,6 +44,7 @@
     "eslint": "8.23.1",
     "eslint-plugin-qwik": "0.10.0",
     "node-fetch": "3.2.10",
+    "nodemon": "^2.0.20",
     "postcss": "^8.4.17",
     "prettier": "2.7.1",
     "react": "18.2.0",
