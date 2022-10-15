@@ -29,3 +29,6 @@ jobs:
       - name: Prettier Check
         if: ${{ always() }}
         run: npm run fmt.check
+      
+      - name: Test
+        run: npm run test:all
