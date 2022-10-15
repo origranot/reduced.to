@@ -1,9 +1,9 @@
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
-import { Cache } from 'cache-manager';
+import { AppCacheService } from './../cache/cache.service';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ShortenerService {
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+  constructor(private readonly appCacheService: AppCacheService) {}
 
   /**
    * Return the original url of the specific url.
@@ -11,7 +11,7 @@ export class ShortenerService {
    * @returns {String} Returns the original url or null
    */
   getOriginalUrl = async (shortUrl: string): Promise<string> => {
-    const originalUrl = await this.cacheManager.get(shortUrl);
+    const originalUrl = await this.appCacheService.get(shortUrl);
     return originalUrl ? originalUrl.toString() : null;
   };
 
@@ -39,6 +39,6 @@ export class ShortenerService {
    * @param {String} shortUrl The shorten url.
    */
   addUrl = async (originalUrl: string, shortUrl: string) => {
-    await this.cacheManager.set(shortUrl, originalUrl);
+    await this.appCacheService.set(shortUrl, originalUrl);
   };
 }
