@@ -19,6 +19,7 @@ export default component$(() => {
     <QwikCity>
       <head>
         <meta charSet="utf-8" />
+        <title>reduced.to | Best Lightweight Online Link Shortener</title>
         <RouterHead />
       </head>
       <body lang="en">

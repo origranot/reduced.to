@@ -60,11 +60,17 @@ export default component$(() => {
             <article class="prose mx-auto max-w-4xl pb-16">
               <div class="mx-auto">
                 <img class="mx-auto" src="logo.png" />
+                <p>
+                  reduced.to is a free lightweight tool to reduce your long
+                  links
+                  <br></br>
+                  Use our shortened URL for sharing Long Links easily
+                </p>
               </div>
-              <p>
+              {/* <p>
                 Add your very long <b>URL</b> in the input bellow and click on
                 the button to make it shorter
-              </p>
+              </p> */}
             </article>
             <ShortenerInput
               ref={shortenerInputRef}
