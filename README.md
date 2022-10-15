@@ -66,7 +66,7 @@
 <div align="center">
   
   
-<img src="https://user-images.githubusercontent.com/74503582/195991177-ee2a842c-03ad-40cb-8a83-86cef0100648.gif" alt="Reduce.io Website" style="width:60%;" />
+<img src="https://user-images.githubusercontent.com/74503582/195991177-ee2a842c-03ad-40cb-8a83-86cef0100648.gif" alt="Reduce.io Website" />
 
   
   
@@ -184,7 +184,7 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 
 <div align="center">
 
-<img src="https://user-images.githubusercontent.com/74503582/195991177-ee2a842c-03ad-40cb-8a83-86cef0100648.gif" alt="Reduce.io Website" style="width:60%;" />
+<img src="https://user-images.githubusercontent.com/74503582/195991177-ee2a842c-03ad-40cb-8a83-86cef0100648.gif" alt="Reduce.io Website" />
 
 </div>
 
