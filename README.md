@@ -64,9 +64,12 @@
 ## 🌐 About The Project
 
 <div align="center">
+  
+  
+<img src="https://user-images.githubusercontent.com/74503582/195991177-ee2a842c-03ad-40cb-8a83-86cef0100648.gif" alt="Reduce.io Website" />
 
-[![URL Shortener GIF](docs/urlshortener.gif)](https://github.com/origranot/url-shortener)
-
+  
+  
 </div>
 
 I created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
@@ -181,7 +184,7 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 
 <div align="center">
 
-[![URL Shortener GIF](docs/urlshortener.gif)](https://github.com/origranot/url-shortener)
+<img src="https://user-images.githubusercontent.com/74503582/195991177-ee2a842c-03ad-40cb-8a83-86cef0100648.gif" alt="Reduce.io Website" />
 
 </div>
 
