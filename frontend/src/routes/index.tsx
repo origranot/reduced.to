@@ -146,7 +146,7 @@ export default component$(() => {
                   type="button"
                   title="QR Code"
                   className="btn hover:btn-primary"
-                  onClick$={() => generateQRCode(100)}
+                  onClick$={() => generateQRCode(150)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
