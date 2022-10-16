@@ -1,0 +1,10 @@
+.toggle {
+  --b1: 0 0% 90% / 0.9;
+}
+
+.toggle:checked,
+.toggle[checked='true'],
+.toggle[aria-checked='true'] {
+  --tw-border-opacity: 0.2;
+  --b1: 231 15% 16% / 0.9;
+}
