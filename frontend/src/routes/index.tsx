@@ -18,6 +18,7 @@ import {
   openLink,
 } from '~/components/shortener-input/handleShortener';
 import { ShortenerInput } from '~/components/shortener-input/shortener-input';
+import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
 import { Waves } from '~/components/waves/waves';
 import animations from '../assets/css/animations.css?inline';
 import styles from './index.css?inline';
@@ -48,14 +49,23 @@ export default component$(() => {
         <div class="col-start-2 col-end-12 md:col-start-3 md:col-end-11">
           <div className="flex flex-col">
             <div className="flex justify-end my-5">
-              <GithubButton
-                type="Star"
-                user="origranot"
-                repo="url-shortener"
-                isLarge
-                showCount
-                label="Star"
-              ></GithubButton>
+              <div className="flex">
+                <div className="grid  flex-grow place-items-center">
+                  <ThemeSwitcher></ThemeSwitcher>
+                </div>
+                <div className="divider divider-horizontal"></div>
+                <div className="grid  flex-grow place-items-center">
+                  <span className="h-5">
+                    <GithubButton
+                      type="Star"
+                      user="origranot"
+                      repo="url-shortener"
+                      showCount
+                      label="Star"
+                    ></GithubButton>
+                  </span>
+                </div>
+              </div>
             </div>
             <article class="prose mx-auto max-w-4xl pb-16">
               <div class="mx-auto">
