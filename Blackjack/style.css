@@ -1,0 +1,46 @@
+body{
+    text-align: center;
+    background-color: #016f32;
+    background-size: cover;
+    color: white;
+    font-weight: bold;
+    font-size: 2rem;
+}
+h1{
+    color: goldenrod;
+    font-size: 3rem;
+}
+#message-el{
+   font-style: italic;
+}
+#start-el{
+    color: #016f32;
+    width: 150px;
+    background-color: goldenrod;
+    font-size: 20px;
+    padding: 12px 12px;
+    border: 2px solid;
+    border-radius:20px ;
+    border-color: aliceblue;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+#start-el:hover{
+    border: 4px solid;
+    border-color:skyblue;
+}
+#newCard-el{
+    color: #016f32;
+    width: 150px;
+    background-color: goldenrod;
+    font-size: 20px;
+    padding: 12px 12px;
+    border: 2px solid;
+    border-radius:20px ;
+    border-color: aliceblue;
+    font-weight: bold;
+}
+#newCard-el:hover{
+    border: 4px solid;
+    border-color:skyblue;
+}
