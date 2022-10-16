@@ -1,33 +1,27 @@
-import {
-  component$,
-  createContext,
-  Slot,
-  useClientEffect$,
-  useContextProvider,
-  useStore,
-} from '@builder.io/qwik';
-import { LOCAL_STORAGE_THEME_KEY } from '../components/theme-switcher/theme-switcher';
+import { component$, Slot } from '@builder.io/qwik';
+import { ThemeLoader } from '~/components/theme-switcher/theme-loader';
 
-export interface ThemeStore {
-  darkMode: boolean;
-}
+// export interface ThemeStore {
+//   darkMode: boolean;
+// }
 
-export const ThemeContext = createContext('theme');
+// export const ThemeContext = createContext('theme');
 
 export default component$(() => {
-  const state = useStore<ThemeStore>({
-    darkMode: true,
-  });
+  // const state = useStore<ThemeStore>({
+  //   darkMode: true,
+  // });
 
-  useContextProvider(ThemeContext, state);
+  // useContextProvider(ThemeContext, state);
 
-  useClientEffect$(() => {
-    state.darkMode = localStorage.getItem(LOCAL_STORAGE_THEME_KEY) === 'true';
-  });
+  // useClientEffect$(() => {
+  //   state.darkMode = localStorage.getItem(LOCAL_STORAGE_THEME_KEY) === 'true';
+  // });
 
   return (
     <>
-      <main data-theme={state.darkMode ? 'dracula' : 'winter'} class="h-screen">
+      <ThemeLoader />
+      <main class="h-screen">
         <section>
           <Slot />
         </section>
