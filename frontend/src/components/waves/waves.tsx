@@ -1,8 +1,12 @@
-import { component$, useStylesScoped$ } from '@builder.io/qwik';
+import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
+import { ThemeContext, ThemeStore } from '~/routes/layout';
 import styles from './waves.css?inline';
 
 export const Waves = component$(() => {
+  const state: ThemeStore = useContext(ThemeContext) as ThemeStore;
+
   useStylesScoped$(styles);
+
   return (
     <div className="waves-div">
       <svg
@@ -24,28 +28,28 @@ export const Waves = component$(() => {
             xlink:href="#gentle-wave"
             x="48"
             y="0"
-            fill="rgba(255,255,255,0.7"
+            fill={state.darkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)'}
           />
           <use
             // @ts-expect-error
             xlink:href="#gentle-wave"
             x="48"
             y="3"
-            fill="rgba(255,255,255,0.5)"
+            fill={state.darkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
           />
           <use
             // @ts-expect-error
             xlink:href="#gentle-wave"
             x="48"
             y="5"
-            fill="rgba(255,255,255,0.3)"
+            fill={state.darkMode ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
           />
           <use
             // @ts-expect-error
             xlink:href="#gentle-wave"
             x="48"
             y="7"
-            fill="#fff"
+            fill={state.darkMode ? '#fff' : '#000'}
           />
         </g>
       </svg>
