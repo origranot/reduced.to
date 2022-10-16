@@ -45,6 +45,7 @@ export const getColorPreference = (): ThemePreference => {
 export const ThemeSwitcher = component$(() => {
   useStylesScoped$(styles);
   const state = useContext(GlobalStore);
+
   const onClick$ = $(() => {
     state.theme = state.theme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
     setPreference(state.theme);
