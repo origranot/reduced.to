@@ -6,7 +6,7 @@ export const Waves = component$(() => {
   useStylesScoped$(styles);
   const state: ThemeStore = useContext(ThemeContext) as ThemeStore;
 
-  const fillColor = state.darkMode ? "255,255,255" : "5,122,255";
+  const fillColor = state.darkMode ? '255,255,255' : '5,122,255';
 
   return (
     <div className="waves-div">

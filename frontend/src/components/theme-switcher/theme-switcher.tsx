@@ -2,6 +2,7 @@ import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
 import { ThemeContext, ThemeStore } from '~/routes/layout';
 import styles from './theme-switcher.css?inline';
 
+export const LOCAL_STORAGE_THEME_KEY = 'isDarkMode';
 export const ThemeSwitcher = component$(() => {
   useStylesScoped$(styles);
   const state: ThemeStore = useContext(ThemeContext) as ThemeStore;
@@ -42,7 +43,10 @@ export const ThemeSwitcher = component$(() => {
         type="checkbox"
         checked={state.darkMode}
         class="toggle bg-transparent col-start-1 row-start-1 col-span-2 "
-        onClick$={() => (state.darkMode = !state.darkMode)}
+        onClick$={() => {
+          state.darkMode = !state.darkMode;
+          localStorage.setItem(LOCAL_STORAGE_THEME_KEY, `${state.darkMode}`);
+        }}
       />
     </div>
   );
