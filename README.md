@@ -198,10 +198,12 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 - [x] Split front-end into components
 - [x] Better UI
   - [x] Animations
+  - [x] Logo
   - [ ] Dark/Light mode
   - [ ] Fonts?
 - [ ] Improve front-end components
-- [ ] Tests
+- [ ] Backend tests
+- [ ] Front-end Tests
 - [ ] Logs
 - [ ] Add a statistics page
 - [ ] Add more ideas
