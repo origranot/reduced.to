@@ -1,14 +1,61 @@
-import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
-import { ThemeContext, ThemeStore } from '~/routes/layout';
+import { $, component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
+import { GlobalStore } from '~/context';
+import { themeStorageKey } from '../router-head/theme-script';
 import styles from './theme-switcher.css?inline';
 
-export const LOCAL_STORAGE_THEME_KEY = 'isDarkMode';
+export const DARK_THEME = 'dracula';
+export const LIGHT_THEME = 'winter';
+export type ThemePreference = typeof DARK_THEME | typeof LIGHT_THEME;
+
+export const colorSchemeChangeListener = (
+  onColorSchemeChange: (isDark: boolean) => void
+) => {
+  const listener = ({ matches: isDark }: MediaQueryListEvent) => {
+    onColorSchemeChange(isDark);
+  };
+  window
+    .matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', (event) => listener(event));
+
+  return () =>
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .removeEventListener('change', listener);
+};
+
+export const setPreference = (theme: ThemePreference) => {
+  localStorage.setItem(themeStorageKey, theme);
+  reflectPreference(theme);
+};
+
+export const reflectPreference = (theme: ThemePreference) => {
+  document.firstElementChild?.setAttribute('data-theme', theme);
+};
+
+export const getColorPreference = (): ThemePreference => {
+  if (localStorage.getItem(themeStorageKey)) {
+    return localStorage.getItem(themeStorageKey) as ThemePreference;
+  } else {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? DARK_THEME
+      : LIGHT_THEME;
+  }
+};
+
 export const ThemeSwitcher = component$(() => {
   useStylesScoped$(styles);
-  const state: ThemeStore = useContext(ThemeContext) as ThemeStore;
+  const state = useContext(GlobalStore);
+  const onClick$ = $(() => {
+    state.theme = state.theme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
+    setPreference(state.theme);
+  });
 
   return (
-    <div class="inline-grid grid-cols-2">
+    <div
+      class={`inline-grid grid-cols-2 ${
+        state.theme === 'auto' ? 'hidden' : ''
+      }`}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-4 w-4 m-1 col-start-1 row-start-1"
@@ -41,12 +88,10 @@ export const ThemeSwitcher = component$(() => {
 
       <input
         type="checkbox"
-        checked={state.darkMode}
-        class="toggle bg-transparent col-start-1 row-start-1 col-span-2 "
-        onClick$={() => {
-          state.darkMode = !state.darkMode;
-          localStorage.setItem(LOCAL_STORAGE_THEME_KEY, `${state.darkMode}`);
-        }}
+        aria-checked={state.theme === DARK_THEME}
+        checked={state.theme === DARK_THEME}
+        class="toggle bg-transparent col-start-1 row-start-1 col-span-2"
+        onClick$={onClick$}
       />
     </div>
   );

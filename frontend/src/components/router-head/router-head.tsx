@@ -1,5 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 import { useDocumentHead, useLocation } from '@builder.io/qwik-city';
+import { ThemeScript } from './theme-script';
 
 /**
  * The RouterHead component is placed inside of the document `<head>` element.
@@ -14,6 +15,7 @@ export const RouterHead = component$(() => {
 
       <link rel="canonical" href={loc.href} />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="color-scheme" content="dark light" />
       <link rel="icon" type="image/png" href="/favicon.png" />
 
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -45,6 +47,7 @@ export const RouterHead = component$(() => {
       {head.styles.map((s) => (
         <style {...s.props} dangerouslySetInnerHTML={s.style} />
       ))}
+      <ThemeScript />
     </>
   );
 });
