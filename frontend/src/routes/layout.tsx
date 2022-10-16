@@ -2,13 +2,16 @@ import {
   component$,
   createContext,
   Slot,
+  useClientEffect$,
   useContextProvider,
   useStore,
 } from '@builder.io/qwik';
+import { LOCAL_STORAGE_THEME_KEY } from '../components/theme-switcher/theme-switcher';
 
 export interface ThemeStore {
   darkMode: boolean;
 }
+
 export const ThemeContext = createContext('theme');
 
 export default component$(() => {
@@ -17,6 +20,10 @@ export default component$(() => {
   });
 
   useContextProvider(ThemeContext, state);
+
+  useClientEffect$(() => {
+    state.darkMode = localStorage.getItem(LOCAL_STORAGE_THEME_KEY) === 'true';
+  });
 
   return (
     <>
