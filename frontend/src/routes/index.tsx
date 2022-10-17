@@ -103,7 +103,7 @@ export default component$(() => {
                 <button
                   type="button"
                   title="Copy"
-                  className="btn hover:btn-primary"
+                  className="btn"
                   onClick$={() => copyUrl(state)}
                 >
                   <svg
@@ -124,7 +124,7 @@ export default component$(() => {
                 <button
                   type="button"
                   title="Open in new tab"
-                  className="btn hover:btn-primary"
+                  className="btn"
                   onClick$={() => openLink()}
                 >
                   <svg
@@ -145,7 +145,7 @@ export default component$(() => {
                 <button
                   type="button"
                   title="QR Code"
-                  className="btn hover:btn-primary"
+                  className="btn"
                   onClick$={() => generateQRCode(150)}
                 >
                   <svg
