@@ -31,8 +31,6 @@ export const RouterHead = component$(() => {
       />
       <script async defer src="https://buttons.github.io/buttons.js"></script>
       <meta property="og:site_name" content="Qwik" />
-      <meta name="twitter:site" content="@QwikDev" />
-      <meta name="twitter:title" content="Qwik" />
 
       <meta name="description" content="Reduced.to is a Free Modern URL Reducer" />
       <meta name="robots" content="index, follow">
@@ -45,7 +43,6 @@ export const RouterHead = component$(() => {
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Reduced.to | URL Shortener" />
       <meta name="twitter:description" content="Reduced.to is a Free Modern URL Reducer" />
-      <meta name="theme-color" content="#272935" />
 
       {head.meta.map((m) => (
         <meta {...m} />
