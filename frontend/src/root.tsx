@@ -27,7 +27,7 @@ export default component$(() => {
       <head>
         <meta
           name="google-site-verification"
-          content="1dT-30OoUZ1WcN0ThJRsKLwBlv5IfYUlc21THPDlqUU"
+          content="Q9tCAwIfwf_wfLdpL1WEhDeJy1WHUc65JM2MMjsCOCg"
         />
         <meta charSet="utf-8" />
         <RouterHead />
