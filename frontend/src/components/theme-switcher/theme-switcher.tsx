@@ -88,7 +88,8 @@ export const ThemeSwitcher = component$(() => {
 
       <input
         type="checkbox"
-        aria-checked={state.theme === DARK_THEME}
+        aria-checked={`${state.theme === DARK_THEME}`}
+        aria-label="Switch theme"
         checked={state.theme === DARK_THEME}
         class="toggle bg-transparent col-start-1 row-start-1 col-span-2"
         onClick$={onClick$}
