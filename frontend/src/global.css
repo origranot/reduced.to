@@ -19,6 +19,6 @@ body {
   --w-bg: 0 0% 100%; /* Wave background */
 }
 
-[data-theme='winter'] {
-  --w-bg: 217 96% 19%; /* Wave background */
+[data-theme='light'] {
+  --w-bg: 219 25% 32%; /* Wave background */
 }
