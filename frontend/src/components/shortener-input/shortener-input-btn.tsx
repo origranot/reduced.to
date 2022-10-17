@@ -17,7 +17,6 @@ export const ShortenerInputBtn = component$((props: ShortenerInputBtnProps) => {
       type="button"
       id="shortenerBtn"
       class={`btn w-full sm:w-auto ${props.disabled ? 'btn-disabled' : ''}`}
-    >
       Shorten URL
     </button>
   );
