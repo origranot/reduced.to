@@ -4,7 +4,7 @@ import { themeStorageKey } from '../router-head/theme-script';
 import styles from './theme-switcher.css?inline';
 
 export const DARK_THEME = 'dracula';
-export const LIGHT_THEME = 'winter';
+export const LIGHT_THEME = 'light';
 export type ThemePreference = typeof DARK_THEME | typeof LIGHT_THEME;
 
 export const colorSchemeChangeListener = (
