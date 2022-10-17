@@ -25,10 +25,6 @@ export default component$(() => {
   return (
     <QwikCity>
       <head>
-        <meta
-          name="google-site-verification"
-          content="Q9tCAwIfwf_wfLdpL1WEhDeJy1WHUc65JM2MMjsCOCg"
-        />
         <meta charSet="utf-8" />
         <RouterHead />
       </head>
