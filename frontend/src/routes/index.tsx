@@ -189,5 +189,46 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: 'reduced.to',
+  title: 'The FREE Open-Source URL Shortener | Reduced.to',
+  meta: [
+    {
+      name: 'title',
+      content: 'Reduced.to | The FREE Open-Source URL Shortener',
+    },
+    {
+      name: 'description',
+      content:
+        'Reduced.to is the FREE, Modern, and Open-Source URL Shortener. Convert those ugly and long URLs into short, easy to manage links and QR-Codes.',
+    },
+    {
+      property: 'og:type',
+      content: 'website',
+    },
+    {
+      property: 'og:url',
+      content: 'https://reduced.to',
+    },
+    {
+      property: 'og:title',
+      content: 'Reduced.to | The FREE Open-Source URL Shortener',
+    },
+    {
+      property: 'og:description',
+      content:
+        'Reduced.to is the FREE, Modern, and Open-Source URL Shortener. Convert those ugly and long URLs into short, easy to manage links and QR-Codes.',
+    },
+    {
+      property: 'twitter:card',
+      content: 'summary',
+    },
+    {
+      property: 'twitter:title',
+      content: 'Reduced.to | The FREE Open-Source URL Shortener',
+    },
+    {
+      property: 'twitter:description',
+      content:
+        'Reduced.to is the FREE, Modern, and Open-Source URL Shortener. Convert those ugly and long URLs into short, easy to manage links and QR-Codes.',
+    },
+  ],
 };
