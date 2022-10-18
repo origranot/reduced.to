@@ -199,7 +199,7 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 - [x] Better UI
   - [x] Animations
   - [x] Logo
-  - [ ] Dark/Light mode
+  - [x] Dark/Light mode
   - [ ] Fonts?
 - [ ] Improve front-end components
 - [ ] Backend tests
