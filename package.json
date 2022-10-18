@@ -24,19 +24,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/origranot/url-shortener.git"
+    "url": "git+https://github.com/origranot/reduced.to.git"
   },
   "author": "OriG",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/origranot/url-shortener/issues"
+    "url": "https://github.com/origranot/reduced.to/issues"
   },
-  "homepage": "https://github.com/origranot/url-shortener#readme",
+  "homepage": "https://github.com/origranot/reduced.to#readme",
   "dependencies": {
-    "@nestjs/common": "^9.1.4",
-    "@nestjs/core": "^9.1.4",
-    "@nestjs/platform-express": "^9.1.4",
-    "cache-manager": "^5.0.0",
     "ncp": "^2.0.0"
   },
   "devDependencies": {
