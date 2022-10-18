@@ -4,9 +4,9 @@ import { IConfiguration } from './config.factory';
 
 @Injectable()
 export class AppConfigService {
-    constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService) {}
 
-    getConfig(): IConfiguration {
-        return this.configService.get('config', { infer: true });
-    }
+  getConfig(): IConfiguration {
+    return this.configService.get('config', { infer: true });
+  }
 }
