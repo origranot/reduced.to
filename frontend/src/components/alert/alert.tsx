@@ -53,7 +53,7 @@ export const ShortenerAlert = component$(() => {
     <>
       <div
         id="urlAlert"
-        className={`alert alert-success shadow-lg ${alertStore.fadeIn} ${alertStore.fadeOut} ${alertStore.hidden}`}
+        className={`alert alert-success shadow-lg absolute w-4/5 bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 ${alertStore.fadeIn} ${alertStore.fadeOut} ${alertStore.hidden}`}
       >
         <div>
           <svg
