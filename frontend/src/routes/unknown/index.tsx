@@ -39,7 +39,7 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: 'The FREE Open-Source URL Shortener | Reduced.to',
+  title: '🤷‍♀️ Page not found | Reduced.to',
   meta: [
     {
       name: 'title',
