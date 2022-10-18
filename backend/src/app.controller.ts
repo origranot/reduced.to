@@ -23,7 +23,7 @@ export class AppController {
   @Get()
   @Render('unknown')
   unknown() {
-    console.log('here');
+  
     return;
   }
 
