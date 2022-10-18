@@ -1,8 +1,41 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, useStylesScoped$ } from '@builder.io/qwik';
 import { DocumentHead } from '@builder.io/qwik-city';
+import animations from '../../assets/css/animations.css?inline';
+import { ThemeSwitcher } from '../../components/theme-switcher/theme-switcher';
+import { Waves } from '../../components/waves/waves';
 
 export default component$(() => {
-  return <div>404</div>;
+  useStylesScoped$(animations);
+
+  return (
+    <section class="h-screen flex flex-col">
+      <div class="flex justify-end m-4">
+        <ThemeSwitcher />
+      </div>
+
+      <div class="grow container flex flex-col items-center justify-center px-5 mx-auto my-8">
+        <div class="max-w-md text-center mb-8">
+          <h2 class="mb-8 font-extrabold text-9xl text-gray-600 dark:text-gray-300">
+            <span class="sr-only">Error</span>404
+          </h2>
+          <p class="text-2xl font-semibold md:text-3xl">
+            Sorry, we couldn't find this page.
+          </p>
+          <p class="mt-4 mb-8 dark:text-gray-400">
+            The link is wrong or expired.
+          </p>
+          <a
+            rel="noopener noreferrer"
+            href="/"
+            class="px-8 py-3 font-semibold rounded btn btn-primary"
+          >
+            Back to homepage
+          </a>
+        </div>
+      </div>
+      <Waves />
+    </section>
+  );
 });
 
 export const head: DocumentHead = {
