@@ -6,6 +6,6 @@ module.exports = {
   },
   plugins: [require('@tailwindcss/typography'), require('daisyui')],
   daisyui: {
-    themes: ['light', 'dark', 'night', 'winter', 'dracula'],
+    themes: ['light', 'dracula'],
   },
 };

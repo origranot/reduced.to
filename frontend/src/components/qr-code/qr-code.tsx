@@ -8,11 +8,11 @@ export interface QRCodeProps {
 export const QRCode = component$((props: QRCodeProps) => {
   return (
     <>
-      <canvas className="mx-auto pb-2"></canvas>
+      <canvas className="mx-auto mb-2 rounded-lg shadow-lg"></canvas>
       {props.showDownload && (
         <a
           href="#qrcode"
-          className="text-center text-white"
+          className="text-center"
           onClick$={() => downloadQRCode()}
         >
           Download QRCode

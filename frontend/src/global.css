@@ -13,3 +13,12 @@ body {
   text-align: center;
   overflow: hidden;
 }
+
+/* Custom variables for themes */
+[data-theme='dracula'] {
+  --w-bg: 0 0% 100%; /* Wave background */
+}
+
+[data-theme='light'] {
+  --w-bg: 219 25% 32%; /* Wave background */
+}

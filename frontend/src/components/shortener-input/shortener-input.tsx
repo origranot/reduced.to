@@ -22,7 +22,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
           value={state.inputValue}
           type="text"
           id="urlInput"
-          class="input input-bordered bg-base-200 flex-auto w-full sm:w-auto mb-2"
+          class="input input-bordered focus:outline-0 bg-base-200 flex-auto w-full sm:w-auto mb-2"
           placeholder="Very long url..."
           aria-label="url"
           aria-describedby="shortenerBtn"
