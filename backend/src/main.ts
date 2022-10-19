@@ -15,7 +15,6 @@ async function bootstrap() {
   });
 
   app.useStaticAssets(join(__dirname, 'public'));
-
   app.useGlobalPipes(new ValidationPipe());
 
   const port = app.get(AppConfigService).getConfig().app.port;
