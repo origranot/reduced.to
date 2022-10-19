@@ -64,9 +64,7 @@
 ## 🌐 About The Project
 
 <div align="center">
-
-[![URL Shortener GIF](docs/urlshortener.gif)](https://github.com/origranot/reduced.to)
-
+<img src="docs/reduced-to.gif" width="600" height="254">
 </div>
 
 I created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
@@ -180,9 +178,7 @@ Happy Hacking !
 Simply copy and paste a URL into the provided area. Then click shorten URL! Your URL has now been shortened!
 
 <div align="center">
-
-[![URL Shortener GIF](docs/urlshortener.gif)](https://github.com/origranot/reduced.to)
-
+<img src="docs/reduced-to.gif" width="600" height="254">
 </div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
