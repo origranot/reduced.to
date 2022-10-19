@@ -4,14 +4,12 @@ export const themeStorageKey = 'theme-preference';
 
 export const ThemeScript = () => {
   const themeScript = `
-        document.firstElementChild
-            .setAttribute('data-theme',
-                localStorage.getItem('${themeStorageKey}') ??
+        let selectedTheme = localStorage.getItem('${themeStorageKey}') ??
                 (window.matchMedia('(prefers-color-scheme: dark)').matches ? '${DARK_THEME}' : '${LIGHT_THEME}')
-            );
-        if (document.firstElementChild
-            .getAttribute('data-theme') === '${DARK_THEME}')
-                document.firstElementChild.classList.add('dark');
+
+        let root = document.firstElementChild;
+        root.setAttribute('data-theme', selectedTheme);
+        root.classList.toggle('dark', selectedTheme === '${DARK_THEME}');
         `;
   return <script dangerouslySetInnerHTML={themeScript} />;
 };
