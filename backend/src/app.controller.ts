@@ -1,4 +1,3 @@
-import { ShortenerService } from './shortener/shortener.service';
 import {
   Controller,
   Get,
@@ -7,6 +6,7 @@ import {
   Render,
   VERSION_NEUTRAL,
 } from '@nestjs/common';
+import { ShortenerService } from './shortener/shortener.service';
 
 @Controller({
   version: VERSION_NEUTRAL,
@@ -20,6 +20,12 @@ export class AppController {
     return;
   }
 
+  @Get()
+  @Render('unknown')
+  unknown() {
+    return;
+  }
+
   @Get(':path')
   @Redirect()
   async redirect(@Param() params: { path: string }) {
@@ -27,6 +33,8 @@ export class AppController {
     if (originalUrl !== null) {
       return { url: originalUrl };
     }
-    return '404!';
+
+    // 404, redirect to /unknown
+    return { url: '/unknown' };
   }
 }

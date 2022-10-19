@@ -1,0 +1,32 @@
+{
+  "folders": [
+    {
+      "name": "🚀 reduced.to",
+      "path": "."
+    },
+    {
+      "name": "🎨 reduced.to/frontend",
+      "path": "frontend"
+    },
+    {
+      "name": "📦 reduced.to/backend",
+      "path": "backend"
+    }
+  ],
+  "settings": {
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+  },
+  "extensions": {
+    "recommendations": [
+      "folke.vscode-monorepo-workspace",
+      "seatonjiang.gitmoji-vscode",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "editorconfig.editorconfig"
+    ]
+  }
+}

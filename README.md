@@ -14,7 +14,7 @@
 <br />
 <div align="center">
   
-[![logo](https://user-images.githubusercontent.com/26607131/195708368-d1e929b2-d7ed-466e-b2d0-7aef91672c3b.png)](https://reduced.to)
+[![logo](https://user-images.githubusercontent.com/26607131/195944856-0c23581a-e1b5-43ee-bcae-c0d65e724faf.png)](https://reduced.to)
 
   <p align="center">
     Reduced.to is a modern web application that reduces the length of link URL. So it's easier to remember, share and track.
@@ -22,9 +22,9 @@
     <br />
     <a href="https://reduced.to">App</a>
     ·
-    <a href="https://github.com/origranot/url-shortener/issues">Report Bug</a>
+    <a href="https://github.com/origranot/reduced.to/issues">Report Bug</a>
     ·
-    <a href="https://github.com/origranot/url-shortener/issues">Request Feature</a>
+    <a href="https://github.com/origranot/reduced.to/issues">Request Feature</a>
   </p>
 </div>
 <br />
@@ -34,27 +34,27 @@
   <summary>📚 Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">🌐 About The Project</a>
+      <a href="#-about-the-project">🌐 About The Project</a>
       <ul>
-        <li><a href="#built-with">🔥 Built With</a></li>
+        <li><a href="#-built-with">🔥 Built With</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">🚀 Getting Started</a>
+      <a href="#-getting-started">🚀 Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">📃 Prerequisites</a></li>
-        <li><a href="#installation">💻 Installation</a></li>
-        <li><a href="#development">👩‍💻 Development</a></li>
-        <li><a href="#docker">🐳 Docker</a></li>
-        <li><a href="#docker-compose">🐙 Docker Compose</a></li>
+        <li><a href="#-prerequisites">📃 Prerequisites</a></li>
+        <li><a href="#-installation">💻 Installation</a></li>
+        <li><a href="#-development">👩‍💻 Development</a></li>
+        <li><a href="#-docker">🐳 Docker</a></li>
+        <li><a href="#-docker-compose">🐙 Docker Compose</a></li>
       </ul>
     </li>
-    <li><a href="#usage">🐱‍💻 Usage</a></li>
-    <li><a href="#roadmap">🧱 Roadmap</a></li>
-    <li><a href="#contributing">🥇 Contributing</a></li>
-    <li><a href="#contribors">🏆 Contributors</a></li>
-    <li><a href="#license">📝 License</a></li>
-    <li><a href="#contact">💌 Contact</a></li>
+    <li><a href="#-usage">🐱‍💻 Usage</a></li>
+    <li><a href="#-roadmap">🧱 Roadmap</a></li>
+    <li><a href="#-contributing">🥇 Contributing</a></li>
+    <li><a href="#-contributors">🏆 Contributors</a></li>
+    <li><a href="#-license">📝 License</a></li>
+    <li><a href="#-contact">💌 Contact</a></li>
   </ol>
 </details>
 <br/>
@@ -64,9 +64,7 @@
 ## 🌐 About The Project
 
 <div align="center">
-
-[![URL Shortener GIF](docs/urlshortener.gif)](https://github.com/origranot/url-shortener)
-
+<img src="docs/reduced-to.gif" width="600" height="254">
 </div>
 
 I created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
@@ -98,12 +96,12 @@ List of things you need to run the project locally and how to install them.
 
 ### 💻 Installation
 
-1. [Fork](https://github.com/origranot/url-shortener/fork) the repo
+1. [Fork](https://github.com/origranot/reduced.to/fork) the repo
 2. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/url-shortener.git
+   git clone https://github.com/your_username_/reduced.to.git
    ```
-3. Open the cloned repository using the `url-shortener.code-workspace` file (VSCode)
+3. Open the cloned repository using the `reduced.to.code-workspace` file (VSCode)
 4. Install NPM packages
    ```sh
    npm install && npm run install:all
@@ -126,8 +124,8 @@ List of things you need to run the project locally and how to install them.
 You will find 3 folders
 
 - 🎯 `root`
-- ✨ `url-shortener/frontend`
-- 🚀 `url-shortener/backend`
+- ✨ `reduced.to/frontend`
+- 🚀 `reduced.to/backend`
 
 ### _Running the frontend in dev mode_
 
@@ -157,8 +155,8 @@ You will find 3 folders
 
 - You can easily build your application in a docker container and run it.
   ```sh
-  docker build . -t url-shortener
-  docker run -p 3000:3000 url-shortener
+  docker build . -t reduced.to
+  docker run -p 3000:3000 reduced.to
   ```
 - Simply go to your favourite browser and visit `http://localhost:3000/` to see your application.
 
@@ -180,9 +178,7 @@ Happy Hacking !
 Simply copy and paste a URL into the provided area. Then click shorten URL! Your URL has now been shortened!
 
 <div align="center">
-
-[![URL Shortener GIF](docs/urlshortener.gif)](https://github.com/origranot/url-shortener)
-
+<img src="docs/reduced-to.gif" width="600" height="254">
 </div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -198,17 +194,19 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 - [x] Split front-end into components
 - [x] Better UI
   - [x] Animations
-  - [ ] Dark/Light mode
+  - [x] Logo
+  - [x] Dark/Light mode
   - [ ] Fonts?
 - [ ] Improve front-end components
-- [ ] Tests
+- [ ] Backend tests
+- [ ] Front-end Tests
 - [ ] Logs
 - [ ] Add a statistics page
 - [ ] Add more ideas
 
-Just create a [Pull request](https://github.com/origranot/url-shortener/pulls) already 😃
+Just create a [Pull request](https://github.com/origranot/reduced.to/pulls) already 😃
 
-_See the [open issues](https://github.com/origranot/url-shortener/issues) for a full list of proposed features (and known issues)._
+_See the [open issues](https://github.com/origranot/reduced.to/issues) for a full list of proposed features (and known issues)._
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -229,8 +227,8 @@ Don't forget to give the project a star ⭐!
 
 ## 🏆 Contributors
 
-<a href = "https://github.com/origranot/url-shortener/graphs/contributors">
-  <img src = "https://contrib.rocks/image?repo=origranot/url-shortener"/>
+<a href = "https://github.com/origranot/reduced.to/graphs/contributors">
+  <img src = "https://contrib.rocks/image?repo=origranot/reduced.to"/>
 </a>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -246,20 +244,20 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## 💌 Contact
 
-Project Link: [https://github.com/origranot/url-shortener](https://github.com/origranot/url-shortener)
+Project Link: [https://github.com/origranot/reduced.to](https://github.com/origranot/reduced.to)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/origranot/url-shortener.svg?style=for-the-badge
-[contributors-url]: https://github.com/origranot/url-shortener/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/origranot/url-shortener.svg?style=for-the-badge
-[forks-url]: https://github.com/origranot/url-shortener/network/members
-[stars-shield]: https://img.shields.io/github/stars/origranot/url-shortener.svg?style=for-the-badge
-[stars-url]: https://github.com/origranot/url-shortener/stargazers
-[issues-shield]: https://img.shields.io/github/issues/origranot/url-shortener.svg?style=for-the-badge
-[issues-url]: https://github.com/origranot/url-shortener/issues
+[contributors-shield]: https://img.shields.io/github/contributors/origranot/reduced.to.svg?style=for-the-badge
+[contributors-url]: https://github.com/origranot/reduced.to/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/origranot/reduced.to.svg?style=for-the-badge
+[forks-url]: https://github.com/origranot/reduced.to/network/members
+[stars-shield]: https://img.shields.io/github/stars/origranot/reduced.to.svg?style=for-the-badge
+[stars-url]: https://github.com/origranot/reduced.to/stargazers
+[issues-shield]: https://img.shields.io/github/issues/origranot/reduced.to.svg?style=for-the-badge
+[issues-url]: https://github.com/origranot/reduced.to/issues
 [product-screenshot]: docs/gif.gif
 [nestjs]: https://img.shields.io/badge/nestJS-000000?style=for-the-badge&logo=nestjs&logoColor=E0234E
 [nest-url]: https://nestjs.com/

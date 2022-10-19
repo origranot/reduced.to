@@ -18,6 +18,7 @@ import {
   openLink,
 } from '~/components/shortener-input/handleShortener';
 import { ShortenerInput } from '~/components/shortener-input/shortener-input';
+import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
 import { Waves } from '~/components/waves/waves';
 import animations from '../assets/css/animations.css?inline';
 import styles from './index.css?inline';
@@ -48,17 +49,34 @@ export default component$(() => {
         <div class="col-start-2 col-end-12 md:col-start-3 md:col-end-11">
           <div className="flex flex-col">
             <div className="flex justify-end my-5">
-              <GithubButton
-                type="Star"
-                user="origranot"
-                repo="url-shortener"
-                isLarge
-                showCount
-                label="Star"
-              ></GithubButton>
+              <div className="flex">
+                <div className="grid  flex-grow place-items-center">
+                  <span className="h-5">
+                    <GithubButton
+                      type="Star"
+                      user="origranot"
+                      repo="url-shortener"
+                      showCount
+                      label="Star"
+                    ></GithubButton>
+                  </span>
+                </div>
+                <div className="divider divider-horizontal"></div>
+                <div className="grid  flex-grow place-items-center">
+                  <ThemeSwitcher></ThemeSwitcher>
+                </div>
+              </div>
             </div>
             <article class="prose mx-auto max-w-4xl pb-16">
-              <h1>URL Shortener</h1>
+              <div class="mx-auto">
+                <img
+                  class="mx-auto"
+                  src="logo.png"
+                  width="410"
+                  height="73"
+                  alt="Logo"
+                />
+              </div>
               <p>
                 Add your very long <b>URL</b> in the input bellow and click on
                 the button to make it shorter
@@ -91,7 +109,7 @@ export default component$(() => {
                 <button
                   type="button"
                   title="Copy"
-                  className="btn hover:btn-primary"
+                  className="btn"
                   onClick$={() => copyUrl(state)}
                 >
                   <svg
@@ -112,7 +130,7 @@ export default component$(() => {
                 <button
                   type="button"
                   title="Open in new tab"
-                  className="btn hover:btn-primary"
+                  className="btn"
                   onClick$={() => openLink()}
                 >
                   <svg
@@ -133,8 +151,8 @@ export default component$(() => {
                 <button
                   type="button"
                   title="QR Code"
-                  className="btn hover:btn-primary"
-                  onClick$={() => generateQRCode(100)}
+                  className="btn"
+                  onClick$={() => generateQRCode(150)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -171,5 +189,46 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: 'URL Shortener',
+  title: 'The FREE Open-Source URL Shortener | Reduced.to',
+  meta: [
+    {
+      name: 'title',
+      content: 'Reduced.to | The FREE Open-Source URL Shortener',
+    },
+    {
+      name: 'description',
+      content:
+        'Reduced.to is the FREE, Modern, and Open-Source URL Shortener. Convert those ugly and long URLs into short, easy to manage links and QR-Codes.',
+    },
+    {
+      property: 'og:type',
+      content: 'website',
+    },
+    {
+      property: 'og:url',
+      content: 'https://reduced.to',
+    },
+    {
+      property: 'og:title',
+      content: 'Reduced.to | The FREE Open-Source URL Shortener',
+    },
+    {
+      property: 'og:description',
+      content:
+        'Reduced.to is the FREE, Modern, and Open-Source URL Shortener. Convert those ugly and long URLs into short, easy to manage links and QR-Codes.',
+    },
+    {
+      property: 'twitter:card',
+      content: 'summary',
+    },
+    {
+      property: 'twitter:title',
+      content: 'Reduced.to | The FREE Open-Source URL Shortener',
+    },
+    {
+      property: 'twitter:description',
+      content:
+        'Reduced.to is the FREE, Modern, and Open-Source URL Shortener. Convert those ugly and long URLs into short, easy to manage links and QR-Codes.',
+    },
+  ],
 };

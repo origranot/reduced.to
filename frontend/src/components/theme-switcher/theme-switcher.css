@@ -1,0 +1,17 @@
+.btn-toggle {
+  flex-shrink: 0;
+  --handleoffset: 1.5rem;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-width: 1px;
+  border-color: hsl(var(--bc) / var(--tw-border-opacity));
+  --tw-border-opacity: 0.2;
+  --tw-bg-opacity: 0.2;
+  transition-duration: 0.3s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--rounded-badge, 1.9rem);
+  transition: background, box-shadow var(--animation-input, 0.2s) ease-in-out;
+  box-shadow: var(--t-sh);
+}
