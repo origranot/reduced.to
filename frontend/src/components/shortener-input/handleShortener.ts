@@ -65,7 +65,6 @@ export async function handleShortener({ state }: any) {
   loader!.classList.replace('block', 'hidden');
   result!.classList.replace('hidden', 'block');
 
-  //urlInput.value = "";
   state.inputValue = '';
   if (!newUrl) {
     result!.querySelector('#error')!.textContent = 'This url is invalid..';
