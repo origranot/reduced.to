@@ -34,6 +34,7 @@
   "homepage": "https://github.com/origranot/reduced.to#readme",
   "dependencies": {
     "@nestjs/common": "^9.1.4",
+    "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.1.4",
     "@nestjs/throttler": "^3.1.0",
     "ncp": "^2.0.0",
