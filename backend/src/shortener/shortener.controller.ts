@@ -8,11 +8,6 @@ import {
 import { ShortenerDTO } from './dto/shortener.dto';
 import { ShortenerService } from './shortener.service';
 
-const regexBadHttp = new RegExp(
-  /^([^hH][tT][tT][pP]|[hH][^tT][tT][pP]|[hH][tT][^tT][pP]|[hH][tT][tT][^pP])/
-);
-const regexUrlSchema = new RegExp(/^(.+:|\.)/);
-
 @Controller({
   path: 'shortener',
   version: '1',
@@ -24,14 +19,7 @@ export class ShortenerController {
   async shortener(@Body() body: ShortenerDTO) {
     let parsedUrl: URL;
     try {
-      const prepend = regexUrlSchema.test(body.originalUrl)
-        ? ''
-        : body.originalUrl.substring(0, 1) === ':'
-        ? 'http'
-        : 'http:/';
-      parsedUrl = new URL(
-        (prepend + body.originalUrl).replace(regexBadHttp, 'http')
-      );
+      parsedUrl = new URL(body.originalUrl);
     } catch (err: any) {
       throw new BadRequestException({
         status: HttpStatus.BAD_REQUEST,
