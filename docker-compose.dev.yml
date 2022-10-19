@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+  front-end:
+    container_name: front-end
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+      network: host
+    volumes:
+      - ./frontend:/usr/src/app
+    ports:
+      - '${FE_PORT}:5173'
+    depends_on:
+      - back-end
+
+  back-end:
+    container_name: back-end
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+      network: host
+    volumes:
+      - ./backend:/usr/src/app
+    ports:
+      - '${BE_PORT}:3000'
