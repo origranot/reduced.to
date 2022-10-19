@@ -55,18 +55,11 @@ export function openLink() {
 export async function handleShortener({ state }: any) {
   const result = document.getElementById('result');
   const loader = document.getElementById('loading');
-  //const urlInput = document.getElementById("urlInput") as HTMLInputElement;
   const urlInput = normalizeUrl(state.inputValue);
   loader!.classList.replace('hidden', 'block');
   result!.classList.replace('block', 'hidden');
 
-  let validUrl = urlInput;
-
-  if (!RegExp('^https://|^http://').test(urlInput) && urlInput) {
-    validUrl = `https://${urlInput}`;
-  }
-
-  const { newUrl } = await getShortenUrl(validUrl);
+  const { newUrl } = await getShortenUrl(urlInput);
 
   // Remove the loader from the screen
   loader!.classList.replace('block', 'hidden');
