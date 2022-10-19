@@ -11,7 +11,7 @@
     "install:all": "npm run install:frontend && npm run install:backend",
     "install:frontend": "cd ./frontend && npm i",
     "install:backend": "cd ./backend && npm i",
-    "start:prod": "node dist/main",
+    "start:prod": "node ./backend/dist/main",
     "fmt": "prettier --loglevel warn --write \"*.{ts,json,yml,yaml,md}\" \"{frontend,backend}/**/*.{ts,tsx,json,yml,yaml,md}\"",
     "fmt.check": "prettier --check .",
     "prepare": "husky install",
@@ -33,17 +33,9 @@
   },
   "homepage": "https://github.com/origranot/reduced.to#readme",
   "dependencies": {
-    "@nestjs/common": "^9.1.4",
-    "@nestjs/config": "^2.2.0",
-    "@nestjs/core": "^9.1.4",
-    "@nestjs/platform-express": "^9.1.4",
-    "@nestjs/throttler": "^3.1.0",
-    "ncp": "^2.0.0",
-    "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.5.7"
+    "ncp": "^2.0.0"
   },
   "devDependencies": {
-    "@types/canvas-confetti": "^1.4.3",
     "concurrently": "^7.4.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
