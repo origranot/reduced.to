@@ -33,7 +33,11 @@
   },
   "homepage": "https://github.com/origranot/reduced.to#readme",
   "dependencies": {
-    "ncp": "^2.0.0"
+    "@nestjs/common": "^9.1.4",
+    "@nestjs/core": "^9.1.4",
+    "ncp": "^2.0.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.5.7"
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.4.3",
