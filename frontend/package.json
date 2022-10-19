@@ -19,7 +19,7 @@
     "lint": "eslint \"src/**/*.ts*\"",
     "preview": "qwik build preview && vite preview --open",
     "ssg": "node server/entry.static",
-    "start": "vite --open --mode ssr",
+    "start": "vite --open --mode ssr --host",
     "qwik": "qwik",
     "ssg:dev": "nodemon -e ts,tsx -w ./src --exec \"npm run build:ssg\""
   },
