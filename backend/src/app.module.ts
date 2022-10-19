@@ -12,7 +12,6 @@ import { AppConfigService } from './config/config.service';
     AppConfigModule,
     AppCacheModule,
     ThrottlerModule.forRootAsync({
-      imports: [AppConfigModule],
       inject: [AppConfigService],
       useFactory: (config: AppConfigService) => ({
         ttl: config.getConfig().rateLimit.ttl,
