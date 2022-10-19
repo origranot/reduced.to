@@ -8,6 +8,10 @@ export const ThemeScript = () => {
             .setAttribute('data-theme',
                 localStorage.getItem('${themeStorageKey}') ??
                 (window.matchMedia('(prefers-color-scheme: dark)').matches ? '${DARK_THEME}' : '${LIGHT_THEME}')
-            )`;
+            );
+        if (document.firstElementChild
+            .getAttribute('data-theme') === '${DARK_THEME}')
+                document.firstElementChild.classList.add('dark');
+        `;
   return <script dangerouslySetInnerHTML={themeScript} />;
 };

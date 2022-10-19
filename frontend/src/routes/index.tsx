@@ -51,10 +51,6 @@ export default component$(() => {
             <div className="flex justify-end my-5">
               <div className="flex">
                 <div className="grid  flex-grow place-items-center">
-                  <ThemeSwitcher></ThemeSwitcher>
-                </div>
-                <div className="divider divider-horizontal"></div>
-                <div className="grid  flex-grow place-items-center">
                   <span className="h-5">
                     <GithubButton
                       type="Star"
@@ -64,6 +60,10 @@ export default component$(() => {
                       label="Star"
                     ></GithubButton>
                   </span>
+                </div>
+                <div className="divider divider-horizontal"></div>
+                <div className="grid  flex-grow place-items-center">
+                  <ThemeSwitcher></ThemeSwitcher>
                 </div>
               </div>
             </div>

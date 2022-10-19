@@ -30,6 +30,7 @@ export const setPreference = (theme: ThemePreference) => {
 
 export const reflectPreference = (theme: ThemePreference) => {
   document.firstElementChild?.setAttribute('data-theme', theme);
+  document.firstElementChild?.classList.toggle('dark', theme === DARK_THEME);
 };
 
 export const getColorPreference = (): ThemePreference => {
@@ -51,14 +52,14 @@ export const ThemeSwitcher = component$(() => {
   });
 
   return (
-    <div
-      class={`inline-grid grid-cols-2 ${
-        state.theme === 'auto' ? 'hidden' : ''
-      }`}
+    <button
+      aria-label="Switch theme"
+      class="rounded-full items-center w-12 h-6 btn-toggle dark:btn-toggle-chkd place-items-center inline-grid grid-cols-2"
+      onClick$={onClick$}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-4 w-4 m-1 col-start-1 row-start-1"
+        class="w-4 m-1 dark:opacity-10 opacity-100 col-start-1 row-start-1 z-10"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -73,7 +74,7 @@ export const ThemeSwitcher = component$(() => {
 
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-4 w-4 m-1 col-start-2 row-start-1"
+        class="w-4 m-1 opacity-10 dark:opacity-100 dark:block col-start-2 row-start-1 z-10"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -85,15 +86,7 @@ export const ThemeSwitcher = component$(() => {
           d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
         />
       </svg>
-
-      <input
-        type="checkbox"
-        aria-checked={`${state.theme === DARK_THEME}`}
-        aria-label="Switch theme"
-        checked={state.theme === DARK_THEME}
-        class="toggle bg-transparent col-start-1 row-start-1 col-span-2"
-        onClick$={onClick$}
-      />
-    </div>
+      <span class="rounded-full ml-0.5 pl-0.5 rounded-full toggle-switch w-5 h-5 transition-all -ml-6 absolute dark:translate-x-[24px]"></span>
+    </button>
   );
 });
