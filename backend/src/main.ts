@@ -1,4 +1,4 @@
-import { VersioningType } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
@@ -15,6 +15,7 @@ async function bootstrap() {
   });
 
   app.useStaticAssets(join(__dirname, 'public'));
+  app.useGlobalPipes(new ValidationPipe());
 
   const port = app.get(AppConfigService).getConfig().app.port;
 

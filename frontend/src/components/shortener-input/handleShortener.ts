@@ -55,24 +55,16 @@ export function openLink() {
 export async function handleShortener({ state }: any) {
   const result = document.getElementById('result');
   const loader = document.getElementById('loading');
-  //const urlInput = document.getElementById("urlInput") as HTMLInputElement;
-  const urlInput = state.inputValue;
+  const urlInput = normalizeUrl(state.inputValue);
   loader!.classList.replace('hidden', 'block');
   result!.classList.replace('block', 'hidden');
 
-  let validUrl = urlInput;
-
-  if (!RegExp('^https://|^http://').test(urlInput) && urlInput) {
-    validUrl = `https://${urlInput}`;
-  }
-
-  const { newUrl } = await getShortenUrl(validUrl);
+  const { newUrl } = await getShortenUrl(urlInput);
 
   // Remove the loader from the screen
   loader!.classList.replace('block', 'hidden');
   result!.classList.replace('hidden', 'block');
 
-  //urlInput.value = "";
   state.inputValue = '';
   if (!newUrl) {
     result!.querySelector('#error')!.textContent = 'This url is invalid..';
@@ -90,3 +82,26 @@ export async function handleShortener({ state }: any) {
   copyUrl(state);
   confettiAnimate();
 }
+
+/**
+ * Normalize input url
+ *  - add protocol 'http' if missing.
+ *  - correct protocol http/https if mistyped one character.
+ * @param {String} url
+ * @returns {String} Normalized url
+ */
+const normalizeUrl = (url: string): string => {
+  const regexBadPrefix = new RegExp(/^(:\/*|\/+|https:\/*)/); // Check if starts with  ':', '/' and 'https:example.com' etc.
+  const regexBadPrefixHttp = new RegExp(/^http:\/*/); // Check if 'http:example.com', 'http:/example.com' etc.
+  const regexProtocolExists = new RegExp(/^(.+:\/\/|[^a-zA-Z])/); // Check if starts with '*://' or special chars.
+  const regexMistypedHttp = new RegExp(
+    /^([^hH][tT][tT][pP]|[hH][^tT][tT][pP]|[hH][tT][^tT][pP]|[hH][tT][tT][^pP])/
+  );
+
+  url = url
+    .replace(regexMistypedHttp, 'http')
+    .replace(regexBadPrefix, 'https://')
+    .replace(regexBadPrefixHttp, 'http://');
+
+  return (regexProtocolExists.test(url) ? '' : 'https://') + url;
+};
