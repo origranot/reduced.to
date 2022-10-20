@@ -88,20 +88,20 @@ export async function handleShortener({ state }: any) {
  *  - add protocol 'http' if missing.
  *  - correct protocol http/https if mistyped one character.
  * @param {String} url
- * @returns {String}
+ * @returns {String} Normalized url
  */
 const normalizeUrl = (url: string): string => {
-  const regexBadPrefix = new RegExp(/^(:\/*|\/+|http:\/*)/); // Check if starts with  ':', '/' and 'http:example.com' etc.
-  const regexBadPrefixHttps = new RegExp(/^https:\/*/); // Check if 'https:example.com', 'https:/example.com' etc.
+  const regexBadPrefix = new RegExp(/^(:\/*|\/+|https:\/*)/); // Check if starts with  ':', '/' and 'https:example.com' etc.
+  const regexBadPrefixHttp = new RegExp(/^http:\/*/); // Check if 'http:example.com', 'http:/example.com' etc.
   const regexProtocolExists = new RegExp(/^(.+:\/\/|[^a-zA-Z])/); // Check if starts with '*://' or special chars.
   const regexMistypedHttp = new RegExp(
     /^([^hH][tT][tT][pP]|[hH][^tT][tT][pP]|[hH][tT][^tT][pP]|[hH][tT][tT][^pP])/
   );
 
-  url = url.replace(regexMistypedHttp, 'http');
-  url = url.replace(regexBadPrefix, 'http://');
-  url = url.replace(regexBadPrefixHttps, 'https://');
-  url = (regexProtocolExists.test(url) ? '' : 'http://') + url;
+  url = url
+    .replace(regexMistypedHttp, 'http')
+    .replace(regexBadPrefix, 'https://')
+    .replace(regexBadPrefixHttp, 'http://');
 
-  return url;
+  return (regexProtocolExists.test(url) ? '' : 'https://') + url;
 };
