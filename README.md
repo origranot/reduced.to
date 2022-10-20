@@ -94,6 +94,8 @@ List of things you need to run the project locally and how to install them.
   npm install npm@latest -g
   ```
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ### 💻 Installation
 
 1. [Fork](https://github.com/origranot/reduced.to/fork) the repo
@@ -117,6 +119,8 @@ List of things you need to run the project locally and how to install them.
 7. Go on your browser and open
    ```sh
    http://localhost:3000/
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
    ```
 
 ### 👩‍💻 Development
@@ -224,6 +228,8 @@ Don't forget to give the project a star ⭐!
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 🏆 Contributors
 
