@@ -78,7 +78,7 @@ export default component$(() => {
                 />
               </div>
               <p>
-                Add your very long <b>URL</b> in the input bellow and click on
+                Add your very long <b>URL</b> in the input below and click on
                 the button to make it shorter
               </p>
             </article>
