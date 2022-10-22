@@ -12,10 +12,10 @@ export const QRCode = component$((props: QRCodeProps) => {
       {props.showDownload && (
         <a
           href="#qrcode"
-          className="text-center"
+          className="btn btn-primary text-center"
           onClick$={() => downloadQRCode()}
         >
-          Download QRCode
+         Download Code
         </a>
       )}
     </>
