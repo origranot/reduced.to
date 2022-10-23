@@ -1,4 +1,4 @@
-name: Docker
+name: Deploy
 
 on:
   push:
@@ -52,6 +52,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          image: backend
 
   frontend-deployment:
     name: Build and publish frontend image
@@ -94,3 +95,4 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          image: frontend
