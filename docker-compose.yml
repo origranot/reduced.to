@@ -10,7 +10,7 @@ services:
     ports:
       - '5000:5000'
     volumes:
-      - './frontend:/app'
+      - '/app'
     networks:
       - bp-network
   backend:
@@ -20,8 +20,8 @@ services:
       dockerfile: Dockerfile
     restart: always
     volumes:
-      - ./backend:/usr/src/app
-      - /app/node_modules
+      - ./backend:/svr/app/
+      - /svr/app/node_modules
     networks:
       - bp-network
     ports:

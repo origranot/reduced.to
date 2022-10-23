@@ -1,6 +1,6 @@
-FROM node:18-alpine As build
+FROM node:18-alpine AS build
 
-WORKDIR /usr/src/app
+WORKDIR /svr/app
 
 COPY --chown=node:node package*.json ./
 
@@ -15,11 +15,11 @@ RUN npm run build
 # Set NODE_ENV environment variable
 ENV NODE_ENV production
 
-FROM node:18-alpine As production
+FROM node:18-alpine AS production
 
 # Copy the bundled code from the build stage to the production image
-COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+COPY --chown=node:node --from=build /svr/app/node_modules ./node_modules
+COPY --chown=node:node --from=build /svr/app/dist ./dist
 
 EXPOSE 3000
 

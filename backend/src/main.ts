@@ -13,6 +13,7 @@ async function bootstrap() {
     prefix: 'api/v',
   });
 
+  app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
 
   const port = app.get(AppConfigService).getConfig().app.port;

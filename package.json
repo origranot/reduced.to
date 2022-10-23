@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/origranot/reduced.to#readme",
   "dependencies": {
+    "express": "^4.18.2",
     "ncp": "^2.0.0"
   },
   "devDependencies": {
