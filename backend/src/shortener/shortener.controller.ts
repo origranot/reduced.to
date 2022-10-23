@@ -5,7 +5,7 @@ import {
   Get,
   HttpStatus,
   Param,
-  Post
+  Post,
 } from '@nestjs/common';
 import { ShortenerDTO } from './dto/shortener.dto';
 import { ShortenerService } from './shortener.service';
