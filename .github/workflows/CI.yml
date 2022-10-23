@@ -1,4 +1,4 @@
-name: URL-Shortener CI
+name: CI
 
 on:
   push:
@@ -27,13 +27,13 @@ jobs:
         run: npm install && npm run install:all
 
       - name: Build solution
-        if: ${{ always() }}
+        if: always()
         run: npm run build:all
 
       - name: Run tests
-        if: ${{ always() }}
+        if: always()
         run: npm run test:all
 
       - name: Prettier Check
-        if: ${{ always() }}
+        if: always()
         run: npm run fmt.check

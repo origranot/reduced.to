@@ -13,6 +13,7 @@ services:
       - '/app'
     networks:
       - bp-network
+
   backend:
     container_name: backend
     build:
@@ -26,6 +27,7 @@ services:
       - bp-network
     ports:
       - '3000:3000'
+
 networks:
   bp-network:
     driver: bridge

@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  app:
+    image: ghcr.io/origranot/reduced.to:master
+    container_name: reduced.to
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30 reduced.to
+
+networks:
+  bp-network:
+    driver: bridge
