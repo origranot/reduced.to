@@ -20,9 +20,7 @@ export const GithubButton = component$((props: GithubButtonProps) => {
       href: hrefBuilder(GithubButtonType[props.type], props.user, props.repo),
       'data-size': props.isLarge ? 'large' : '',
       'data-show-count': `${props.showCount ?? false}`,
-      'data-icon': props.defaultIcon
-        ? ''
-        : getIcon(GithubButtonType[props.type]),
+      'data-icon': props.defaultIcon ? '' : getIcon(GithubButtonType[props.type]),
       'aria-label': props.ariaLabel ?? '',
     };
   };

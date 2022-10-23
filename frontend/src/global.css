@@ -20,8 +20,7 @@ body {
   --ts-bg: 231 15% 16% / 0.9; /* Theme switcher background */
   /* Theme switcher shadow */
   --handleoffset: 1.5rem;
-  --t-sh: var(--handleoffset) 0 0 2px hsl(var(--ts-bg)) inset,
-    0 0 0 2px hsl(var(--ts-bg)) inset;
+  --t-sh: var(--handleoffset) 0 0 2px hsl(var(--ts-bg)) inset, 0 0 0 2px hsl(var(--ts-bg)) inset;
 }
 
 [data-theme='light'] {

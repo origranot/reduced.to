@@ -1,10 +1,6 @@
 import { GithubButtonType } from './constants';
 
-export const hrefBuilder = (
-  type: GithubButtonType,
-  username: string,
-  repository: string
-) => {
+export const hrefBuilder = (type: GithubButtonType, username: string, repository: string) => {
   switch (type) {
     case GithubButtonType.Follow:
       return `https://github.com/${username}`;
