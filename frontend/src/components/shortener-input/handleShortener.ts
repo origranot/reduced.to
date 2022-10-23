@@ -1,5 +1,6 @@
 import confetti from 'canvas-confetti';
 import { Store } from '../../routes';
+import { ISocialMedia } from './types/social-media';
 
 function confettiAnimate() {
   confetti({
@@ -80,6 +81,33 @@ export async function handleShortener({ state }: any) {
   state.showAlert = true;
   copyUrl(state);
   confettiAnimate();
+}
+
+/**
+ * Share on social media
+ * @param {String} socialMedia - Social network name
+ */
+export function shareOnSocialMedia(socialMedia:string) {
+  const shorten_url = document.querySelector('#result #text')!.textContent;
+  if(!shorten_url) return
+  switch (socialMedia) {
+    case "twitter":
+      let base_url = "https://twitter.com/share?";
+      const params:ISocialMedia = {
+        text: "My url has just reduced!\nCheck out:",
+        url: shorten_url ,
+        hashtags: "reducedto,shortenurl",
+      }
+      for(const prop in params) {
+        const index_value = params[`${prop}`]
+        if(!index_value) continue
+        base_url += `&${prop}=${encodeURIComponent(index_value)}`
+      }
+      window.open(base_url, '', 'left=0,top=auto,width=550,height=450');
+      break;
+    default:
+      break;
+  }
 }
 
 /**
