@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - '5000:5000'
+    volumes:
+      - '/app'
+    networks:
+      - bp-network
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./backend:/svr/app/
+      - /svr/app/node_modules
+    networks:
+      - bp-network
+    ports:
+      - '3000:3000'
+
+networks:
+  bp-network:
+    driver: bridge
