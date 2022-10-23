@@ -7,9 +7,7 @@ export const DARK_THEME = 'dracula';
 export const LIGHT_THEME = 'light';
 export type ThemePreference = typeof DARK_THEME | typeof LIGHT_THEME;
 
-export const colorSchemeChangeListener = (
-  onColorSchemeChange: (isDark: boolean) => void
-) => {
+export const colorSchemeChangeListener = (onColorSchemeChange: (isDark: boolean) => void) => {
   const listener = ({ matches: isDark }: MediaQueryListEvent) => {
     onColorSchemeChange(isDark);
   };
@@ -18,9 +16,7 @@ export const colorSchemeChangeListener = (
     .addEventListener('change', (event) => listener(event));
 
   return () =>
-    window
-      .matchMedia('(prefers-color-scheme: dark)')
-      .removeEventListener('change', listener);
+    window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', listener);
 };
 
 export const setPreference = (theme: ThemePreference) => {
@@ -37,9 +33,7 @@ export const getColorPreference = (): ThemePreference => {
   if (localStorage.getItem(themeStorageKey)) {
     return localStorage.getItem(themeStorageKey) as ThemePreference;
   } else {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? DARK_THEME
-      : LIGHT_THEME;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? DARK_THEME : LIGHT_THEME;
   }
 };
 

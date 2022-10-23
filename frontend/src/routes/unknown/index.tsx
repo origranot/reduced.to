@@ -18,12 +18,8 @@ export default component$(() => {
           <h2 class="mb-8 font-extrabold text-9xl text-gray-600 dark:text-gray-300">
             <span class="sr-only">Error</span>404
           </h2>
-          <p class="text-2xl font-semibold md:text-3xl">
-            Sorry, we couldn't find this page.
-          </p>
-          <p class="mt-4 mb-8 dark:text-gray-400">
-            The link is wrong or expired.
-          </p>
+          <p class="text-2xl font-semibold md:text-3xl">Sorry, we couldn't find this page.</p>
+          <p class="mt-4 mb-8 dark:text-gray-400">The link is wrong or expired.</p>
           <a
             rel="noopener noreferrer"
             href="/"

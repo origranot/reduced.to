@@ -10,11 +10,7 @@ export const QRCode = component$((props: QRCodeProps) => {
     <>
       <canvas className="mx-auto mb-2 rounded-lg shadow-lg"></canvas>
       {props.showDownload && (
-        <a
-          href="#qrcode"
-          className="text-center"
-          onClick$={() => downloadQRCode()}
-        >
+        <a href="#qrcode" className="text-center" onClick$={() => downloadQRCode()}>
           Download QRCode
         </a>
       )}
