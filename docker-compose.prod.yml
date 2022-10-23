@@ -1,17 +1,25 @@
 version: '3'
 
 services:
-  app:
-    image: ghcr.io/origranot/reduced.to:master
-    container_name: reduced.to
+  backend:
+    image: ghcr.io/origranot/reduced.to/backend:master
+    container_name: backend
+    networks:
+      - local-network
+
+  frontend:
+    image: ghcr.io/origranot/reduced.to/frontend:master
+    container_name: frontend
+    networks:
+      - local-network
 
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 30 reduced.to
+    command: --interval 30 backend frontend
 
 networks:
-  bp-network:
+  local-network:
     driver: bridge
