@@ -12,11 +12,7 @@ import { GithubButton } from '~/components/github-button/github-button';
 import { Loader } from '~/components/loader/loader';
 import { generateQRCode } from '~/components/qr-code/handleQRCode';
 import { QRCode } from '~/components/qr-code/qr-code';
-import {
-  copyUrl,
-  handleShortener,
-  openLink,
-} from '~/components/shortener-input/handleShortener';
+import { copyUrl, handleShortener, openLink } from '~/components/shortener-input/handleShortener';
 import { ShortenerInput } from '~/components/shortener-input/shortener-input';
 import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
 import { Waves } from '~/components/waves/waves';
@@ -69,32 +65,21 @@ export default component$(() => {
             </div>
             <article class="prose mx-auto max-w-4xl pb-16">
               <div class="mx-auto">
-                <img
-                  class="mx-auto"
-                  src="logo.png"
-                  width="410"
-                  height="73"
-                  alt="Logo"
-                />
+                <img class="mx-auto" src="logo.png" width="410" height="73" alt="Logo" />
               </div>
               <p>
-                Add your very long <b>URL</b> in the input below and click on
-                the button to make it shorter
+                Add your very long <b>URL</b> in the input below and click on the button to make it
+                shorter
               </p>
             </article>
             <ShortenerInput
               ref={shortenerInputRef}
               onKeyUp$={(event) => {
-                if (
-                  event.key.toLowerCase() === 'enter' &&
-                  state.inputValue.length > 0
-                ) {
+                if (event.key.toLowerCase() === 'enter' && state.inputValue.length > 0) {
                   handleShortener({ state });
                 }
               }}
-              onInput$={(event) =>
-                (state.inputValue = (event.target as HTMLInputElement).value)
-              }
+              onInput$={(event) => (state.inputValue = (event.target as HTMLInputElement).value)}
               onSubmit$={() => handleShortener({ state })}
             />
             <Loader />
@@ -106,12 +91,7 @@ export default component$(() => {
                 onClick$={() => copyUrl(state)}
               ></span>
               <div id="action" className="hidden btn-group p-4">
-                <button
-                  type="button"
-                  title="Copy"
-                  className="btn"
-                  onClick$={() => copyUrl(state)}
-                >
+                <button type="button" title="Copy" className="btn" onClick$={() => copyUrl(state)}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

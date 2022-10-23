@@ -1,10 +1,4 @@
-import {
-  component$,
-  useContext,
-  useStore,
-  useStylesScoped$,
-  useWatch$,
-} from '@builder.io/qwik';
+import { component$, useContext, useStore, useStylesScoped$, useWatch$ } from '@builder.io/qwik';
 import styles from '~/assets/css/animations.css?inline';
 import { InputContext, Store } from '~/routes';
 
