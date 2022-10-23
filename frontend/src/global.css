@@ -10,25 +10,29 @@
 @tailwind utilities;
 
 body {
-  text-align: center;
-  overflow: hidden;
+	text-align: center;
+	overflow: hidden;
 }
 
 /* Custom variables for themes */
 [data-theme='dracula'] {
-  --w-bg: 0 0% 100%; /* Wave background */
-  --ts-bg: 231 15% 16% / 0.9; /* Theme switcher background */
-  /* Theme switcher shadow */
-  --handleoffset: 1.5rem;
-  --t-sh: var(--handleoffset) 0 0 2px hsl(var(--ts-bg)) inset,
-    0 0 0 2px hsl(var(--ts-bg)) inset;
+	--w-bg: 0 0% 100%;
+	/* Wave background */
+	--ts-bg: 231 15% 16% / 0.9;
+	/* Theme switcher background */
+	/* Theme switcher shadow */
+	--handleoffset: 1.5rem;
+	--t-sh: var(--handleoffset) 0 0 2px hsl(var(--ts-bg)) inset,
+		0 0 0 2px hsl(var(--ts-bg)) inset;
 }
 
 [data-theme='light'] {
-  --w-bg: 219 25% 32%; /* Wave background */
-  --ts-bg: 0 0% 90% / 0.9; /* Theme switcher background */
-  /* Theme switcher shadow */
-  --handleoffset: 1.5rem;
-  --t-sh: calc(var(--handleoffset) * -1) 0 0 2px hsl(var(--ts-bg)) inset,
-    0 0 0 2px hsl(var(--ts-bg)) inset;
+	--w-bg: 219 25% 32%;
+	/* Wave background */
+	--ts-bg: 0 0% 90% / 0.9;
+	/* Theme switcher background */
+	/* Theme switcher shadow */
+	--handleoffset: 1.5rem;
+	--t-sh: calc(var(--handleoffset) * -1) 0 0 2px hsl(var(--ts-bg)) inset,
+		0 0 0 2px hsl(var(--ts-bg)) inset;
 }
