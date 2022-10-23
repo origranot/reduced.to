@@ -1,0 +1,8 @@
+node_modules
+dist
+npm-debug.log
+CONTRIBUTE.MD
+README.md
+.gitignore
+LICENSE
+.DS_Store

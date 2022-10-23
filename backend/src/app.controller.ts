@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Redirect,
-  Render,
-  VERSION_NEUTRAL,
-} from '@nestjs/common';
+import { Controller, Get, Param, Redirect, Render, VERSION_NEUTRAL } from '@nestjs/common';
 import { ShortenerService } from './shortener/shortener.service';
 
 @Controller({

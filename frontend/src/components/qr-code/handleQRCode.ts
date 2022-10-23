@@ -7,14 +7,9 @@ export function generateQRCode(width: number) {
 
   result!.classList.remove('hidden');
 
-  QRCode.toCanvas(
-    document.querySelector('#qrcode canvas'),
-    url,
-    { width },
-    (error: any) => {
-      if (error) console.error(error);
-    }
-  );
+  QRCode.toCanvas(document.querySelector('#qrcode canvas'), url, { width }, (error: any) => {
+    if (error) console.error(error);
+  });
 }
 
 // Downloads the QR code
