@@ -8,6 +8,9 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
+    define: {
+      'process.env.API_DOMAIN': JSON.stringify(env.API_DOMAIN),
+    },
     ssr: { target: 'node', format: 'cjs' },
     plugins: [qwikCity(), qwikVite(), tsconfigPaths(), qwikReact()],
     define: {
