@@ -47,6 +47,7 @@
         <li><a href="#-development">👩‍💻 Development</a></li>
         <li><a href="#-docker">🐳 Docker</a></li>
         <li><a href="#-docker-compose">🐙 Docker Compose</a></li>
+        <li><a href="#-configuration">👷 Configuration</a></li>
       </ul>
     </li>
     <li><a href="#-usage">🐱‍💻 Usage</a></li>
@@ -96,36 +97,30 @@ List of things you need to run the project locally and how to install them.
 
 ### 💻 Installation
 
-1. [Fork](https://github.com/origranot/reduced.to/fork) the repo
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/reduced.to.git
-   ```
-3. Open the cloned repository using the `reduced.to.code-workspace` file (VSCode)
-4. Install NPM packages
+1. [Fork](https://github.com/origranot/reduced.to/fork) / Clone this repository
+2. Open the repository using the `reduced.to.code-workspace` file (VSCode)
+3. Install NPM packages
    ```sh
    npm install && npm run install:all
    ```
-5. Build the project
+4. Copy `backend.example.env` to `backend/.env` and fill it properly ([see below](#backend-configuration)).
+5. Copy `frontend.example.env` to `frontend/.env` and fill it properly ([see below](#frontend-configuration)).
+6. Run the backend:
    ```sh
-   npm run build:all
+   npm run start:backend
    ```
-6. Run the project
+7. Run the frontend:
    ```sh
-   npm run start:prod
-   ```
-7. Go on your browser and open
-   ```sh
-   http://localhost:3000/
+   npm run start:frontend
    ```
 
 ### 👩‍💻 Development
 
 You will find 3 folders
 
-- 🎯 `root`
-- ✨ `reduced.to/frontend`
-- 🚀 `reduced.to/backend`
+- 🚀 `root`
+- 🎨 `reduced.to/frontend`
+- 📦 `reduced.to/backend`
 
 ### _Running the frontend in dev mode_
 
@@ -134,8 +129,8 @@ You will find 3 folders
    cd ./frontend
    ```
 2. Run the project (it will open a new window)
-   ```sh
-   npm run start
+    ```sh
+   npm run dev
    ```
 3. Vite will be now listening for changes in the code and reloading the solution
 
@@ -154,9 +149,15 @@ You will find 3 folders
 ### 🐳 Docker
 
 - You can easily build your application in a docker container and run it.
+- Build and run frontend instance
   ```sh
-  docker build . -t reduced.to
-  docker run -p 3000:3000 reduced.to
+  docker build frontend/. -t reduced.to-front
+  docker run -p 5000:5000 reduced.to-front
+  ```
+ - Build and run backend instance
+  ```sh
+  docker build backend/. -t reduced.to-back
+  docker run -p 3000:3000 reduced.to-back
   ```
 - Simply go to your favourite browser and visit `http://localhost:3000/` to see your application.
 
@@ -164,8 +165,18 @@ You will find 3 folders
 
 - In case you have docker installed, you can _single-click_ deploy and test your changes by running the following and going to `http://localhost:3000/` on your browser.
   ```sh
-  docker-compose up
+  docker compose -f docker-compose.dev.yml up
   ```
+
+### 👷 Configuration
+
+For the minimal configuration the following settings have to be changed in their `.env` file:
+
+#### Backend configuration
+- 
+
+#### Frontend configuration
+- **API_DOMAIN**: The domain of your backend instance
 
 Happy Hacking !
 
