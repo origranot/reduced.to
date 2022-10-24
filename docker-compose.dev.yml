@@ -9,8 +9,7 @@ services:
     restart: always
     ports:
       - '5000:5000'
-    env_file:
-      - ./frontend/.env
+    env_file: ./frontend/.env
     volumes:
       - '/app'
 
@@ -25,5 +24,4 @@ services:
       - /svr/app/node_modules
     ports:
       - '3000:3000'
-    env_file:
-      - ./backend/.env
+    env_file: ./backend/.env

@@ -4,22 +4,23 @@ services:
   backend:
     image: ghcr.io/origranot/reduced.to/backend:master
     container_name: backend
-    networks:
-      - local-network
+    restart: always
+    env_file: backend.env
+    ports:
+      - '3000:3000'
 
   frontend:
     image: ghcr.io/origranot/reduced.to/frontend:master
     container_name: frontend
-    networks:
-      - local-network
+    restart: always
+    env_file: frontend.env
+    ports:
+      - '5000:5000'
 
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
+    restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 30 backend frontend
-
-networks:
-  local-network:
-    driver: bridge
