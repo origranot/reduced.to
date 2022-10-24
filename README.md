@@ -129,7 +129,7 @@ You will find 3 folders
    cd ./frontend
    ```
 2. Run the project (it will open a new window)
-    ```sh
+   ```sh
    npm run dev
    ```
 3. Vite will be now listening for changes in the code and reloading the solution
@@ -151,19 +151,21 @@ You will find 3 folders
 - You can easily build your application in a docker container and run it.
 - Build and run frontend instance
   ```sh
-  docker build frontend/. -t reduced.to-front
+  docker build frontend/ -t reduced.to-front
   docker run -p 5000:5000 reduced.to-front
   ```
- - Build and run backend instance
-  ```sh
-  docker build backend/. -t reduced.to-back
-  docker run -p 3000:3000 reduced.to-back
-  ```
-- Simply go to your favourite browser and visit `http://localhost:3000/` to see your application.
+- Build and run backend instance
+
+```sh
+docker build backend/ -t reduced.to-back
+docker run -p 3000:3000 reduced.to-back
+```
+
+- Simply go to your favourite browser and visit `http://localhost:5000/` to see your application.
 
 ### 🐙 Docker compose
 
-- In case you have docker installed, you can _single-click_ deploy and test your changes by running the following and going to `http://localhost:3000/` on your browser.
+- In case you have docker installed, you can _single-click_ deploy and test your changes by running the following and going to `http://localhost:5000/` on your browser.
   ```sh
   docker compose -f docker-compose.dev.yml up
   ```
@@ -173,9 +175,11 @@ You will find 3 folders
 For the minimal configuration the following settings have to be changed in their `.env` file:
 
 #### Backend configuration
-- 
+
+-
 
 #### Frontend configuration
+
 - **API_DOMAIN**: The domain of your backend instance
 
 Happy Hacking !
