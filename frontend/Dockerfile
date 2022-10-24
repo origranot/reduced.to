@@ -12,6 +12,9 @@ COPY . .
 # Install dependencies for production
 RUN npm install
 
+# Set Env variables
+ENV API_DOMAIN=localhost:3000
+
 # Building code for production
 RUN npm run build
 
