@@ -36,7 +36,7 @@ export function copyUrl(state: Store) {
 const getShortenUrl = async (originalUrl: string) => {
   let result;
   try {
-    result = await fetch(`${import.meta.env.VITE_API_DOMAIN}/api/v1/shortener`, {
+    result = await fetch(`${API_DOMAIN}/api/v1/shortener`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ originalUrl }),

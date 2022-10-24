@@ -31,3 +31,7 @@ export default component$(() => {
     </QwikCity>
   );
 });
+
+declare global {
+  let API_DOMAIN: string;
+}
