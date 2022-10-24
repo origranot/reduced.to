@@ -10,14 +10,17 @@ export default component$(() => {
 
   useServerMount$(async () => {
     const urlId = location.params.urlId.replace(/\//g, '');
-    const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`);
-    const url = await res.text();
 
-    store.urlRedirect = url;
+    try {
+      const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`);
+      store.urlRedirect = await res.text();
+    } catch (err) {
+      store.urlRedirect = 'unknown';
+    }
   });
 
   useClientEffect$(async () => {
-    window.location.replace(store.urlRedirect.length ? store.urlRedirect : '/unknown');
+    window.location.replace(store.urlRedirect);
   });
 
   return <div />;
