@@ -2,7 +2,6 @@ import {
   component$,
   createContext,
   useContextProvider,
-  useRef,
   useSignal,
   useStore,
   useStylesScoped$,
@@ -30,7 +29,6 @@ export default component$(() => {
   useStylesScoped$(animations);
   useStylesScoped$(styles);
 
-  const shortenerInputRef = useRef();
   const tooltipCopyRef = useSignal(false);
 
   const state = useStore<Store>({
@@ -73,7 +71,6 @@ export default component$(() => {
               </p>
             </article>
             <ShortenerInput
-              ref={shortenerInputRef}
               onKeyUp$={(event) => {
                 if (event.key.toLowerCase() === 'enter' && state.inputValue.length > 0) {
                   handleShortener({ state });
