@@ -93,7 +93,7 @@ export default component$(() => {
                 <button
                   type="button"
                   title="Copy"
-                  className="btn group relative inline-block"
+                  className="btn relative"
                   onClick$={() => {
                     copyUrl();
                     tooltipCopyRef.value = true;
