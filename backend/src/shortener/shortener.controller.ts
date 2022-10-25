@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Headers,
 } from '@nestjs/common';
 import { ShortenerDTO } from './dto/shortener.dto';
 import { ShortenerService } from './shortener.service';
@@ -23,7 +24,7 @@ export class ShortenerController {
   }
 
   @Post()
-  async shortener(@Body() body: ShortenerDTO) {
+  async shortener(@Body() body: ShortenerDTO, @Headers('host') host: string) {
     let parsedUrl: URL;
     try {
       parsedUrl = new URL(body.originalUrl);
@@ -35,6 +36,9 @@ export class ShortenerController {
     }
 
     let shortUrl: string;
+    if(parsedUrl.host === host) {
+      return { newUrl: parsedUrl.href, isExisting: true };
+    }
 
     do {
       shortUrl = this.shortenerService.generateShortUrl();

@@ -59,13 +59,21 @@ export async function handleShortener({ state }: any) {
   loader!.classList.replace('hidden', 'block');
   result!.classList.replace('block', 'hidden');
 
-  const { newUrl } = await getShortenUrl(urlInput);
+  const { newUrl, isExisting } = await getShortenUrl(urlInput);
 
   // Remove the loader from the screen
   loader!.classList.replace('block', 'hidden');
   result!.classList.replace('hidden', 'block');
 
   state.inputValue = '';
+
+  if(isExisting) {
+    result!.querySelector('#error')!.textContent = '';
+    result!.querySelector('#text')!.textContent = `${urlInput}, This URL is already short enough`;
+    result!.querySelector('#action')!.classList.replace('hidden', 'block');
+    return;
+  }
+
   if (!newUrl) {
     result!.querySelector('#error')!.textContent = 'This url is invalid..';
     result!.querySelector('#text')!.textContent = '';
