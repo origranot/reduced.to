@@ -49,7 +49,7 @@ export default component$(() => {
                     <GithubButton
                       type="Star"
                       user="origranot"
-                      repo="url-shortener"
+                      repo="reduced.to"
                       showCount
                       label="Star"
                     ></GithubButton>
