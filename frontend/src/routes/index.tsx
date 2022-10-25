@@ -2,7 +2,6 @@ import {
   component$,
   createContext,
   useContextProvider,
-  useRef,
   useStore,
   useStylesScoped$,
 } from '@builder.io/qwik';
@@ -29,8 +28,6 @@ export interface Store {
 export default component$(() => {
   useStylesScoped$(animations);
   useStylesScoped$(styles);
-
-  const shortenerInputRef = useRef();
 
   const state = useStore<Store>({
     showAlert: false,
@@ -73,7 +70,6 @@ export default component$(() => {
               </p>
             </article>
             <ShortenerInput
-              ref={shortenerInputRef}
               onKeyUp$={(event) => {
                 if (event.key.toLowerCase() === 'enter' && state.inputValue.length > 0) {
                   handleShortener({ state });
