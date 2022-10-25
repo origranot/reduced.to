@@ -83,12 +83,12 @@ export default component$(() => {
               onSubmit$={() => handleShortener({ state })}
             />
             <Loader />
-            <div id="result" class="">
+            <div id="result" class="hidden">
               <p id="error" className="fade-in"></p>
               <span id="text" className="fade-in cursor-pointer" onClick$={() => copyUrl()}></span>
               <div
                 id="action"
-                className="btn-group p-4 relative [&>:first-child>.btn]:rounded-l-lg [&>:last-child>.btn]:rounded-r-lg [&>*>.btn]:rounded-none"
+                className="hidden btn-group p-4 relative [&>:first-child>.btn]:rounded-l-lg [&>:last-child>.btn]:rounded-r-lg [&>*>.btn]:rounded-none"
               >
                 <button
                   type="button"
