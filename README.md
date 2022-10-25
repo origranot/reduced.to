@@ -103,8 +103,8 @@ List of things you need to run the project locally and how to install them.
    ```sh
    npm install && npm run install:all
    ```
-4. Copy `backend.example.env` to `backend/.env` and fill it properly ([see below](#backend-configuration)).
-5. Copy `frontend.example.env` to `frontend/.env` and fill it properly ([see below](#frontend-configuration)).
+4. Copy `backend/example.env` to `.env` and fill it properly ([see below](#backend-configuration)).
+5. Copy `frontend/example.env` to `.env` and fill it properly ([see below](#frontend-configuration)).
 6. Run the backend:
    ```sh
    npm run start:backend
