@@ -1,5 +1,4 @@
 import confetti from 'canvas-confetti';
-import { Store } from '../../routes';
 
 function confettiAnimate() {
   confetti({
@@ -20,13 +19,9 @@ function confettiAnimate() {
   });
 }
 
-export function copyUrl(state: Store) {
+export function copyUrl() {
   const result = document.querySelector('#result #text');
   navigator.clipboard.writeText(result!.textContent!);
-
-  if (!state.showAlert) {
-    state.showAlert = true;
-  }
 }
 
 /**
@@ -77,8 +72,7 @@ export async function handleShortener({ state }: any) {
   result!.querySelector('#text')!.textContent = window.location.href.split('#')[0] + newUrl;
   result!.querySelector('#action')!.classList.replace('hidden', 'block');
 
-  state.showAlert = true;
-  copyUrl(state);
+  copyUrl();
   confettiAnimate();
 }
 
