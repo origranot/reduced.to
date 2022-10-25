@@ -85,11 +85,7 @@ export default component$(() => {
             <Loader />
             <div id="result" class="">
               <p id="error" className="fade-in"></p>
-              <span
-                id="text"
-                className="fade-in cursor-pointer"
-                onClick$={() => copyUrl(state)}
-              ></span>
+              <span id="text" className="fade-in cursor-pointer" onClick$={() => copyUrl()}></span>
               <div
                 id="action"
                 className="btn-group p-4 relative [&>:first-child>.btn]:rounded-l-lg [&>:last-child>.btn]:rounded-r-lg [&>*>.btn]:rounded-none"
@@ -99,7 +95,7 @@ export default component$(() => {
                   title="Copy"
                   className="btn group relative inline-block"
                   onClick$={() => {
-                    copyUrl(state);
+                    copyUrl();
                     tooltipCopyRef.value = true;
                   }}
                 >
