@@ -7,18 +7,6 @@ import { ShortenerService } from './shortener/shortener.service';
 export class AppController {
   constructor(private readonly ShortenerService: ShortenerService) {}
 
-  @Get()
-  @Render('index')
-  root() {
-    return;
-  }
-
-  @Get()
-  @Render('unknown')
-  unknown() {
-    return;
-  }
-
   @Get(':path')
   @Redirect()
   async redirect(@Param() params: { path: string }) {
