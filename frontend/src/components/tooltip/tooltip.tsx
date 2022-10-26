@@ -1,4 +1,6 @@
-import { component$, Signal, useStore, useWatch$ } from '@builder.io/qwik';
+import { component$, Signal, useContext, useStore, useWatch$ } from '@builder.io/qwik';
+import { GlobalStore } from '~/context';
+import { DARK_THEME } from '../theme-switcher/theme-switcher';
 
 export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
 
@@ -56,7 +58,7 @@ export const Tooltip = component$<TooltipProps>(({ label, position, open }) => {
   const store = useStore({
     hidden: true,
   });
-
+  const state = useContext(GlobalStore);
   useWatch$(({ track }) => {
     track(open);
 
@@ -79,11 +81,15 @@ export const Tooltip = component$<TooltipProps>(({ label, position, open }) => {
     <div
       className={`${
         classes.container
-      } absolute whitespace-nowrap rounded bg-black py-[6px] px-4 text-sm font-semibold text-white ${
+      } absolute whitespace-nowrap rounded ${
+          state.theme === DARK_THEME ? 'bg-black' : 'bg-base-200'
+        } py-[6px] px-4 text-sm font-semibold  ${
+          state.theme === DARK_THEME ? 'text-white' : 'text-black'
+        } ${
         store.hidden ? 'hidden' : ''
       }`}
     >
-      <span class={`${classes.span} absolute -z-10 h-2 w-2 rotate-45 rounded-sm bg-black`}></span>
+      <span class={`${classes.span} absolute -z-10 h-2 w-2 rotate-45 rounded-sm ${state.theme === DARK_THEME ? 'bg-black' : 'bg-base-200' }`}></span>
       {label}
     </div>
   );
