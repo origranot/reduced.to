@@ -1,0 +1,7 @@
+.tooltip-bg {
+    background-color: var(--containerBg);
+}
+
+.tooltip-text {
+    color: var(--containerColor);
+}

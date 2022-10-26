@@ -23,6 +23,9 @@ body {
   /* Theme switcher shadow */
   --handleoffset: 1.5rem;
   --t-sh: var(--handleoffset) 0 0 2px hsl(var(--ts-bg)) inset, 0 0 0 2px hsl(var(--ts-bg)) inset;
+  --containerBg: rgb(0 0 0 / 1);
+  --containerColor: rgb(255 255 255 / 1);
+
 }
 
 [data-theme='light'] {
@@ -34,4 +37,6 @@ body {
   --handleoffset: 1.5rem;
   --t-sh: calc(var(--handleoffset) * -1) 0 0 2px hsl(var(--ts-bg)) inset,
     0 0 0 2px hsl(var(--ts-bg)) inset;
+  --containerBg: hsl(var(--ts-bg));
+  --containerColor: rgb(0 0 0 / 1);
 }
