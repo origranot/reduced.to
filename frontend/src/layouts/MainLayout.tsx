@@ -1,12 +1,13 @@
 import { component$, Slot } from '@builder.io/qwik';
-import MainLayout from '~/layouts/MainLayout';
 
 export default component$(() => {
   return (
-    <>
-      <MainLayout>
+    // Navbar will go here
+    <main>
+      <section>
         <Slot />
-      </MainLayout>
-    </>
+      </section>
+    </main>
+    // Footer will go here
   );
 });
