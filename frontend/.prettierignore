@@ -5,3 +5,4 @@
 dist
 node_modules
 server
+./public/favicon/site.webmanifest
