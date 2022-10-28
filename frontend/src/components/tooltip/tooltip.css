@@ -1,7 +1,8 @@
-.tooltip-bg {
-    background-color: var(--containerBg);
+.r-tooltip {
+    background-color: hsl(var(--n));
+    color: hsl(var(--nc));
 }
 
-.tooltip-text {
-    color: var(--containerColor);
+.r-tooltip > span {
+    background-color: hsl(var(--n));
 }

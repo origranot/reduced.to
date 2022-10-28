@@ -81,11 +81,11 @@ export const Tooltip = component$<TooltipProps>(({ label, position, open }) => {
     <div
       className={`${
         classes.container
-      } absolute whitespace-nowrap rounded tooltip-bg py-[6px] px-4 text-sm font-semibold tooltip-text ${
+      } r-tooltip absolute whitespace-nowrap rounded py-[6px] px-4 text-sm font-semibold ${
         store.hidden ? 'hidden' : ''
       }`}
     >
-      <span class={`${classes.span} absolute -z-10 h-2 w-2 rotate-45 rounded-sm tooltip-bg`}></span>
+      <span class={`${classes.span} absolute -z-10 h-2 w-2 rotate-45 rounded-sm`}></span>
       {label}
     </div>
   );
