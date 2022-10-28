@@ -1,12 +1,16 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik';
 import styles from './loader.css?inline';
 
-export const Loader = component$(() => {
+export interface LoaderProps {
+  visible: boolean;
+}
+
+export const Loader = component$((props: LoaderProps) => {
   useStylesScoped$(styles);
 
   return (
-    <div id="loading" class="hidden fade-in">
-      <div class="lds-dual-ring"></div>
+    <div id="loading" className={`${props.visible ? '' : 'hidden'} fade-in`}>
+      <span class="loader" />
     </div>
   );
 });
