@@ -1,4 +1,5 @@
-import { component$, Signal, useStore, useWatch$ } from '@builder.io/qwik';
+import { component$, Signal, useStore, useWatch$, useStylesScoped$ } from '@builder.io/qwik';
+import styles from './tooltip.css';
 
 export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
 
@@ -53,6 +54,7 @@ export const getClassesByPosition = (position: TooltipPosition) => {
 };
 
 export const Tooltip = component$<TooltipProps>(({ label, position, open }) => {
+  useStylesScoped$(styles);
   const store = useStore({
     hidden: true,
   });
@@ -79,11 +81,11 @@ export const Tooltip = component$<TooltipProps>(({ label, position, open }) => {
     <div
       className={`${
         classes.container
-      } absolute whitespace-nowrap rounded bg-black py-[6px] px-4 text-sm font-semibold text-white ${
+      } r-tooltip absolute whitespace-nowrap rounded py-[6px] px-4 text-sm font-semibold ${
         store.hidden ? 'hidden' : ''
       }`}
     >
-      <span class={`${classes.span} absolute -z-10 h-2 w-2 rotate-45 rounded-sm bg-black`}></span>
+      <span class={`${classes.span} absolute -z-10 h-2 w-2 rotate-45 rounded-sm`}></span>
       {label}
     </div>
   );
