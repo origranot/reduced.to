@@ -1,4 +1,4 @@
-import { confettiAnimate } from '~/lib/canvas-confetti';
+import { confettiAnimate } from '~/lib/confetti';
 import { Store } from '~/routes';
 import { copyToClipboard, normalizeUrl } from '~/utils';
 
