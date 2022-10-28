@@ -11,11 +11,12 @@ import { GithubButton } from '~/components/github-button/github-button';
 import { Loader } from '~/components/loader/loader';
 import { generateQRCode } from '~/components/qr-code/handleQRCode';
 import { QRCode } from '~/components/qr-code/qr-code';
-import { copyUrl, handleShortener, openLink } from '~/components/shortener-input/handleShortener';
+import { handleShortener } from '~/components/shortener-input/handleShortener';
 import { ShortenerInput } from '~/components/shortener-input/shortener-input';
 import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
 import { Tooltip } from '~/components/tooltip/tooltip';
 import { Waves } from '~/components/waves/waves';
+import { copyToClipboard, openUrl } from '~/utils';
 import animations from '../assets/css/animations.css?inline';
 import styles from './index.css?inline';
 
@@ -23,7 +24,19 @@ export const InputContext = createContext('input');
 
 export interface Store {
   inputValue: string;
+  reducedUrl: string;
+  loading: boolean;
+  showResult: boolean;
+  showQRCode: boolean;
+  urlError: string;
 }
+
+export const clearValues = (state: Store) => {
+  state.reducedUrl = '';
+  state.showResult = false;
+  state.showQRCode = false;
+  state.urlError = '';
+};
 
 export default component$(() => {
   useStylesScoped$(animations);
@@ -33,6 +46,11 @@ export default component$(() => {
 
   const state = useStore<Store>({
     inputValue: '',
+    reducedUrl: '',
+    loading: false,
+    showResult: false,
+    showQRCode: false,
+    urlError: '',
   });
 
   useContextProvider(InputContext, state);
@@ -73,26 +91,40 @@ export default component$(() => {
             <ShortenerInput
               onKeyUp$={(event) => {
                 if (event.key.toLowerCase() === 'enter' && state.inputValue.length > 0) {
-                  handleShortener({ state });
+                  clearValues(state);
+                  handleShortener(state);
                 }
               }}
               onInput$={(event) => (state.inputValue = (event.target as HTMLInputElement).value)}
-              onSubmit$={() => handleShortener({ state })}
+              onSubmit$={() => {
+                clearValues(state);
+                handleShortener(state);
+              }}
             />
-            <Loader />
-            <div id="result" class="hidden">
-              <p id="error" className="fade-in"></p>
-              <span id="text" className="fade-in cursor-pointer" onClick$={() => copyUrl()}></span>
+            <Loader visible={state.loading} />
+            <div id="result" className={state.showResult ? '' : 'hidden'}>
+              <p id="error" className="fade-in">
+                {state.urlError}
+              </p>
+              <span
+                id="text"
+                className="fade-in cursor-pointer block"
+                onClick$={() => copyToClipboard(state.reducedUrl)}
+              >
+                {state.reducedUrl}
+              </span>
               <div
                 id="action"
-                className="hidden btn-group p-4 relative [&>:first-child>.btn]:rounded-l-lg [&>:last-child>.btn]:rounded-r-lg [&>*>.btn]:rounded-none"
+                className={`${
+                  state.reducedUrl ? '' : 'hidden'
+                } btn-group p-4 relative [&>:first-child>.btn]:rounded-l-lg [&>:last-child>.btn]:rounded-r-lg [&>*>.btn]:rounded-none`}
               >
                 <button
                   type="button"
                   title="Copy"
                   className="btn relative"
                   onClick$={() => {
-                    copyUrl();
+                    copyToClipboard(state.reducedUrl);
                     tooltipCopyRef.value = true;
                   }}
                 >
@@ -116,7 +148,7 @@ export default component$(() => {
                   type="button"
                   title="Open in new tab"
                   className="btn"
-                  onClick$={() => openLink()}
+                  onClick$={() => openUrl(state.reducedUrl)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -137,7 +169,10 @@ export default component$(() => {
                   type="button"
                   title="QR Code"
                   className="btn"
-                  onClick$={() => generateQRCode(150)}
+                  onClick$={() => {
+                    generateQRCode(state.reducedUrl, 150);
+                    state.showQRCode = true;
+                  }}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -161,7 +196,7 @@ export default component$(() => {
                 </button>
               </div>
             </div>
-            <div id="qrcode" className="hidden mx-auto">
+            <div id="qrcode" className={`${state.showQRCode ? '' : 'hidden'} mx-auto`}>
               <QRCode showDownload />
             </div>
           </div>
