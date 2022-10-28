@@ -1,8 +1,8 @@
 .r-tooltip {
-    background-color: hsl(var(--n));
-    color: hsl(var(--nc));
+  background-color: hsl(var(--n));
+  color: hsl(var(--nc));
 }
 
 .r-tooltip > span {
-    background-color: hsl(var(--n));
+  background-color: hsl(var(--n));
 }
