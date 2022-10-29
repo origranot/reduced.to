@@ -176,11 +176,11 @@ For the minimal configuration the following settings have to be changed in their
 
 #### Backend configuration
 
--
+-**DATABASE_URL**: Database connection string
 
 #### Frontend configuration
 
-- **API_DOMAIN**: The domain of your backend instance
+- **API_DOMAIN**: Domain of your backend instance
 
 Happy Hacking !
 
