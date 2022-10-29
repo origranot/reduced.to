@@ -218,6 +218,17 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 - [ ] Logs
 - [ ] Add a statistics page
 - [ ] Add more ideas
+  - [ ] Ownership~ a brief about the creators, the idea, the problem and how it is solving
+  - [ ] Testimonials~ popping up decent reviews by people, who’ve used the product
+  - [ ] Statistics~ depicting visually on the website:
+	• what kind of links people are shortening?
+	• how many folks are using the platform on daily basis?
+	• during which time people are surfing the platform most?
+
+  - [ ] Icons~ instead of hovering over the icons, adding bars with different functions written over it
+  - [ ] How to?~ a short video demo with a tiny blurb on “how to use the tool”
+  - [ ] Future~ inculcating a brief of the updates which are in pipeline and are going to be live soon!
+
 
 Just create a [Pull request](https://github.com/origranot/reduced.to/pulls) already 😃
 
