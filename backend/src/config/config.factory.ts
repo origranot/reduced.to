@@ -10,6 +10,9 @@ export const configFactory: ConfigFactory<{ config: IConfiguration }> = () => {
         ttl: +process.env.RATE_LIMIT_TTL || 60,
         limit: +process.env.RATE_LIMIT_COUNT || 10,
       },
+      jwt: {
+        secret: process.env.JWT_SECRET,
+      },
     },
   };
 };
@@ -23,7 +26,12 @@ export interface RateLimitConfig {
   limit: number;
 }
 
+export interface JWTConfig {
+  secret: string;
+}
+
 export interface IConfiguration {
   app: AppConfig;
   rateLimit: RateLimitConfig;
+  jwt: JWTConfig;
 }
