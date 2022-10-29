@@ -21,6 +21,9 @@
     "editor.formatOnPaste": true,
     "[typescriptreact]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[prisma]": {
+      "editor.defaultFormatter": "Prisma.prisma"
     }
   },
   "extensions": {
