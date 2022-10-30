@@ -1,5 +1,5 @@
 import { component$, useStore } from '@builder.io/qwik';
-import { useNavigate } from '@builder.io/qwik-city';
+import { RequestHandler, useNavigate } from '@builder.io/qwik-city';
 import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
 
 export interface Store {
@@ -154,3 +154,7 @@ export default component$(() => {
     </div>
   );
 });
+
+export const onGet: RequestHandler = async ({ response }) => {
+  throw response.redirect('/');
+};
