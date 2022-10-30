@@ -13,5 +13,8 @@ export default defineConfig(({ mode }) => {
     define: {
       'process.env.API_DOMAIN': JSON.stringify(env.API_DOMAIN),
     },
+    optimizeDeps: {
+      include: ['canvas-confetti'],
+    },
   };
 });
