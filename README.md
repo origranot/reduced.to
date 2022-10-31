@@ -22,9 +22,9 @@
     <br />
     <a href="https://reduced.to">App</a>
     ·
-    <a href="https://github.com/origranot/reduced.to/issues">Report Bug</a>
+    <a href="https://github.com/origranot/reduced.to/issues/new?assignees=&labels=bug%2Ctriage&template=bug.yml">Report Bug</a>
     ·
-    <a href="https://github.com/origranot/reduced.to/issues">Request Feature</a>
+    <a href="https://github.com/origranot/reduced.to/issues/new?assignees=&labels=enhancement%2Ctriage&template=feature_request.yml">Request Feature</a>
   </p>
 </div>
 <br />
