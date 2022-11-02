@@ -9,6 +9,9 @@ RUN npm ci
 
 COPY --chown=node:node . .
 
+# Generate prisma files
+RUN npx prisma generate
+
 # Run the build command which creates the production bundle
 RUN npm run build
 
