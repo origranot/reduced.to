@@ -1,5 +1,8 @@
 FROM --platform=linux/amd64 node:18-alpine AS build
 
+# Required for Prisma Client to work in container
+RUN apt-get update && apt-get install -y openssl
+
 WORKDIR /svr/app
 
 COPY --chown=node:node package*.json ./
