@@ -1,4 +1,7 @@
-FROM node:18-alpine AS build
+FROM node:18 AS build
+
+# Required for Prisma Client to work in container
+RUN apt-get update && apt-get install -y openssl
 
 WORKDIR /svr/app
 
@@ -8,6 +11,9 @@ COPY --chown=node:node package*.json ./
 RUN npm ci
 
 COPY --chown=node:node . .
+
+# Generate prisma files
+RUN npx prisma generate
 
 # Run the build command which creates the production bundle
 RUN npm run build
