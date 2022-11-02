@@ -1,4 +1,4 @@
-FROM node:18-alpine AS build
+FROM --platform=linux/amd64 node:18-alpine AS build
 
 WORKDIR /svr/app
 
@@ -18,7 +18,7 @@ RUN npm run build
 # Set NODE_ENV environment variable
 ENV NODE_ENV production
 
-FROM node:18-alpine AS production
+FROM --platform=linux/amd64 node:18-alpine AS production
 
 # Copy the bundled code from the build stage to the production image
 COPY --chown=node:node --from=build /svr/app/node_modules ./node_modules
