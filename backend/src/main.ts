@@ -1,7 +1,7 @@
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
+import { useContainer } from 'class-validator';
 import { AppModule } from './app.module';
 import { AppConfigService } from './config/config.service';
 
@@ -14,8 +14,11 @@ async function bootstrap() {
     prefix: 'api/v',
   });
 
-  app.useStaticAssets(join(__dirname, 'public'));
+  app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
+
+  // Enable DI in class-validator
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   const port = app.get(AppConfigService).getConfig().app.port;
 

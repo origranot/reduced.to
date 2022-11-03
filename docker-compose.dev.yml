@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - '5000:5000'
+    env_file: ./frontend/.env
+    volumes:
+      - '/app'
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./backend:/svr/app/
+      - /svr/app/node_modules
+    ports:
+      - '3000:3000'
+    env_file: ./backend/.env

@@ -22,9 +22,9 @@
     <br />
     <a href="https://reduced.to">App</a>
     ·
-    <a href="https://github.com/origranot/reduced.to/issues">Report Bug</a>
+    <a href="https://github.com/origranot/reduced.to/issues/new?assignees=&labels=bug%2Ctriage&template=bug.yml">Report Bug</a>
     ·
-    <a href="https://github.com/origranot/reduced.to/issues">Request Feature</a>
+    <a href="https://github.com/origranot/reduced.to/issues/new?assignees=&labels=enhancement%2Ctriage&template=feature_request.yml">Request Feature</a>
   </p>
 </div>
 <br />
@@ -47,6 +47,7 @@
         <li><a href="#-development">👩‍💻 Development</a></li>
         <li><a href="#-docker">🐳 Docker</a></li>
         <li><a href="#-docker-compose">🐙 Docker Compose</a></li>
+        <li><a href="#-configuration">👷 Configuration</a></li>
       </ul>
     </li>
     <li><a href="#-usage">🐱‍💻 Usage</a></li>
@@ -66,10 +67,6 @@
 <div align="center">
 <img src="docs/reduced-to.gif" width="600" height="254">
 </div>
-
-I created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### 🔥 Built With
 
@@ -96,36 +93,30 @@ List of things you need to run the project locally and how to install them.
 
 ### 💻 Installation
 
-1. [Fork](https://github.com/origranot/reduced.to/fork) the repo
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/reduced.to.git
-   ```
-3. Open the cloned repository using the `reduced.to.code-workspace` file (VSCode)
-4. Install NPM packages
+1. [Fork](https://github.com/origranot/reduced.to/fork) / Clone this repository
+2. Open the repository using the `reduced.to.code-workspace` file (VSCode)
+3. Install NPM packages
    ```sh
    npm install && npm run install:all
    ```
-5. Build the project
+4. Copy `backend/example.env` to `.env` and fill it properly ([see below](#backend-configuration)).
+5. Copy `frontend/example.env` to `.env` and fill it properly ([see below](#frontend-configuration)).
+6. Run the backend:
    ```sh
-   npm run build:all
+   npm run start:backend
    ```
-6. Run the project
+7. Run the frontend:
    ```sh
-   npm run start:prod
-   ```
-7. Go on your browser and open
-   ```sh
-   http://localhost:3000/
+   npm run start:frontend
    ```
 
 ### 👩‍💻 Development
 
 You will find 3 folders
 
-- 🎯 `root`
-- ✨ `reduced.to/frontend`
-- 🚀 `reduced.to/backend`
+- 🚀 `root`
+- 🎨 `reduced.to/frontend`
+- 📦 `reduced.to/backend`
 
 ### _Running the frontend in dev mode_
 
@@ -135,7 +126,7 @@ You will find 3 folders
    ```
 2. Run the project (it will open a new window)
    ```sh
-   npm run start
+   npm run dev
    ```
 3. Vite will be now listening for changes in the code and reloading the solution
 
@@ -154,18 +145,38 @@ You will find 3 folders
 ### 🐳 Docker
 
 - You can easily build your application in a docker container and run it.
+- Build and run frontend instance
   ```sh
-  docker build . -t reduced.to
-  docker run -p 3000:3000 reduced.to
+  docker build frontend/ -t reduced.to-front
+  docker run -p 5000:5000 reduced.to-front
   ```
-- Simply go to your favourite browser and visit `http://localhost:3000/` to see your application.
+- Build and run backend instance
+
+```sh
+docker build backend/ -t reduced.to-back
+docker run -p 3000:3000 reduced.to-back
+```
+
+- Simply go to your favourite browser and visit `http://localhost:5000/` to see your application.
 
 ### 🐙 Docker compose
 
-- In case you have docker installed, you can _single-click_ deploy and test your changes by running the following and going to `http://localhost:3000/` on your browser.
+- In case you have docker installed, you can _single-click_ deploy and test your changes by running the following and going to `http://localhost:5000/` on your browser.
   ```sh
-  docker-compose up
+  docker compose -f docker-compose.dev.yml up
   ```
+
+### 👷 Configuration
+
+For the minimal configuration the following settings have to be changed in their `.env` file:
+
+#### Backend configuration
+
+-**DATABASE_URL**: Database connection string
+
+#### Frontend configuration
+
+- **API_DOMAIN**: Domain of your backend instance
 
 Happy Hacking !
 

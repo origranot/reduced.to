@@ -1,11 +1,14 @@
+import { PrismaService } from './prisma.service';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { ShortenerModule } from './shortener/shortener.module';
-import { AppCacheModule } from './cache/cache.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { AppController } from './app.controller';
+import { AppCacheModule } from './cache/cache.module';
+import { ShortenerModule } from './shortener/shortener.module';
 
+import { AuthModule } from './auth/auth.module';
 import { AppConfigModule } from './config/config.module';
 import { AppConfigService } from './config/config.service';
+import { UniqueConstraint } from './shared/decorators/unique.decorator';
 
 @Module({
   imports: [
@@ -19,7 +22,9 @@ import { AppConfigService } from './config/config.service';
       }),
     }),
     ShortenerModule,
+    AuthModule,
   ],
   controllers: [AppController],
+  providers: [PrismaService, UniqueConstraint],
 })
 export class AppModule {}

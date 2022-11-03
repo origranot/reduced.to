@@ -1,15 +1,12 @@
 import { component$, Slot } from '@builder.io/qwik';
-import { ThemeLoader } from '~/components/theme-switcher/theme-loader';
+import MainLayout from '~/layouts/MainLayout';
 
 export default component$(() => {
   return (
     <>
-      <ThemeLoader />
-      <main class="h-screen">
-        <section>
-          <Slot />
-        </section>
-      </main>
+      <MainLayout>
+        <Slot />
+      </MainLayout>
     </>
   );
 });
