@@ -68,10 +68,6 @@
 <img src="docs/reduced-to.gif" width="600" height="254">
 </div>
 
-I created this repository over 3 years ago, and have made it public for Hacktoberfest! This is a great opportunity for beginners to start their journey with contributing to open source. All PRs are welcome! :)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ### 🔥 Built With
 
 List of frameworks/libraries used to bootstrap the project.
