@@ -9,7 +9,7 @@ export class AuthService {
   constructor(private usersService: UsersService, private jwtService: JwtService) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.user({ email: username });
+    const user = await this.usersService.get({ email: username });
     if (user && user.password === pass) {
       const { password, ...result } = user;
       return result;
@@ -32,11 +32,6 @@ export class AuthService {
   }
 
   async signup(signupDto: SignupDto) {
-    const user = await this.usersService.user({ email: signupDto.email });
-    if (user) {
-      throw new ConflictException();
-    }
-
     return this.usersService.create({
       name: signupDto.name || null,
       email: signupDto.email,
