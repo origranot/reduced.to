@@ -197,7 +197,11 @@ export default component$(() => {
                       />
                     </svg>
                   </button>
-                  <TwitterButton handleClick$={()=>{handleShareOnTwitter}}/>
+                  <TwitterButton
+                    handleClick$={() => {
+                      handleShareOnTwitter;
+                    }}
+                  />
                 </div>
               </div>
               <div id="qrcode" className={`${state.showQRCode ? '' : 'hidden'} mx-auto`}>

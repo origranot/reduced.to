@@ -3,16 +3,16 @@ import { component$ } from '@builder.io/qwik';
 export interface TwitterButtonProps {
   className?: string;
   buttonTitle?: string;
-  handleClick$: ()=>void;
+  handleClick$: () => void;
 }
 
 export const TwitterButton = component$((props: TwitterButtonProps) => {
   return (
     <button
       type="button"
-      title={ props?.buttonTitle ? props.buttonTitle : "Share on twitter"}
-      className={ props?.className ? props.className : "btn"}
-      onClick$={ props.handleClick$ }
+      title={props?.buttonTitle ? props.buttonTitle : 'Share on twitter'}
+      className={props?.className ? props.className : 'btn'}
+      onClick$={props.handleClick$}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
