@@ -9,7 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { AppConfigModule } from './config/config.module';
 import { AppConfigService } from './config/config.service';
 import { UniqueConstraint } from './shared/decorators/unique.decorator';
-import { MailModule } from './mail/mail.module';
+import { NovuModule } from './novu/novu.module';
 
 @Module({
   imports: [
@@ -24,7 +24,7 @@ import { MailModule } from './mail/mail.module';
     }),
     ShortenerModule,
     AuthModule,
-    MailModule,
+    NovuModule,
   ],
   controllers: [AppController],
   providers: [PrismaService, UniqueConstraint],
