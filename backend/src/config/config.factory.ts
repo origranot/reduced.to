@@ -1,4 +1,3 @@
-import { MailerOptions } from '@nestjs-modules/mailer';
 import { ConfigFactory } from '@nestjs/config';
 
 export const configFactory: ConfigFactory<{ config: IConfiguration }> = () => {
