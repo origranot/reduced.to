@@ -75,6 +75,7 @@ List of frameworks/libraries used to bootstrap the project.
 - [![Nest][nestjs]][nest-url]
 - [![Qwik][qwik.js]][qwik-url]
 - [![Tailwindcss][tailwindcss]][tailwindcss-url]
+- [![Novu][novu]][novu-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -176,10 +177,7 @@ For the minimal configuration the following settings have to be changed in their
 
 - **JWT_SECRET**: Jwt secret string
 
-- **MAIL_SMTP_HOST**: Smtp gateway host
-- **MAIL_SMTP_PORT**: Smtp gateway port
-- **MAIL_SMTP_USER**: Username for the smtp gateway
-- **MAIL_SMTP_PASSWORD**: Password for the smtp gateway
+- **NOVU_API_KEY**: Get it from https://novu.co/
 
 #### Frontend configuration
 
@@ -283,3 +281,5 @@ Project Link: [https://github.com/origranot/reduced.to](https://github.com/origr
 [qwik-url]: https://qwik.builder.io/
 [tailwindcss]: https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=fff
 [tailwindcss-url]: https://tailwindcss.com
+[novu]: https://img.shields.io/badge/Novu-000000?style=for-the-badge&logo=novu&color=F30F8A
+[novu-url]: https://novu.co/
