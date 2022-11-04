@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/origranot/url-shortener#readme",
   "dependencies": {
-    "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/cli": "^9.1.4",
     "@nestjs/common": "^9.1.4",
     "@nestjs/config": "^2.2.0",
