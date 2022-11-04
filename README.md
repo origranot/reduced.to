@@ -172,7 +172,14 @@ For the minimal configuration the following settings have to be changed in their
 
 #### Backend configuration
 
--**DATABASE_URL**: Database connection string
+- **DATABASE_URL**: Database connection string
+
+- **JWT_SECRET**: Jwt secret string
+
+- **MAIL_SMTP_HOST**: Smtp gateway host
+- **MAIL_SMTP_PORT**: Smtp gateway port
+- **MAIL_SMTP_USER**: Username for the smtp gateway
+- **MAIL_SMTP_PASSWORD**: Password for the smtp gateway
 
 #### Frontend configuration
 
