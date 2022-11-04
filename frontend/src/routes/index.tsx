@@ -8,7 +8,7 @@ import {
 } from '@builder.io/qwik';
 import { DocumentHead } from '@builder.io/qwik-city';
 import animations from '~/assets/css/animations.css?inline';
-import { GithubButton } from '~/components/github-button/github-button';
+import { GithubButton } from '~/components/home-buttons/github-button/github-button';
 import { TwitterButton } from '~/components/home-buttons/twitter-button/twitter-button';
 import { handleShareOnTwitter } from '~/components/home-buttons/actions';
 import { Loader } from '~/components/loader/loader';
@@ -197,11 +197,7 @@ export default component$(() => {
                       />
                     </svg>
                   </button>
-                  <TwitterButton
-                    handleClick$={() => {
-                      handleShareOnTwitter;
-                    }}
-                  />
+                  <TwitterButton handleClick$={() => handleShareOnTwitter(state.reducedUrl)} />
                 </div>
               </div>
               <div id="qrcode" className={`${state.showQRCode ? '' : 'hidden'} mx-auto`}>
