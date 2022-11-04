@@ -1,3 +1,4 @@
+import { MailerOptions } from '@nestjs-modules/mailer';
 import { ConfigFactory } from '@nestjs/config';
 
 export const configFactory: ConfigFactory<{ config: IConfiguration }> = () => {
@@ -12,6 +13,18 @@ export const configFactory: ConfigFactory<{ config: IConfiguration }> = () => {
       },
       jwt: {
         secret: process.env.JWT_SECRET,
+      },
+      mail: {
+        transport: {
+          host: process.env.MAIL_SMTP_HOST,
+          port: +process.env.MAIL_SMTP_PORT,
+          secure: false,
+          auth: {
+            user: process.env.MAIL_SMTP_USER,
+            pass: process.env.MAIL_SMTP_PASSWORD,
+          },
+          tls: { rejectUnauthorized: false },
+        },
       },
     },
   };
@@ -34,4 +47,5 @@ export interface IConfiguration {
   app: AppConfig;
   rateLimit: RateLimitConfig;
   jwt: JWTConfig;
+  mail: MailerOptions;
 }
