@@ -25,7 +25,7 @@ export class AuthController {
   async signup(@Body() signupDto: SignupDto) {
     const user = await this.authService.signup(signupDto);
 
-    this.novu.trigger('new-user', {
+    await this.novu.trigger('new-user', {
       to: {
         subscriberId: user.id,
         email: user.email,
