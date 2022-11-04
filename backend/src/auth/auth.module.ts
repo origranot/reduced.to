@@ -9,6 +9,7 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { NovuModule } from '../novu/novu.module';
+import { VerifyStrategy } from './strategies/verify.strategy';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { NovuModule } from '../novu/novu.module';
     NovuModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, VerifyStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

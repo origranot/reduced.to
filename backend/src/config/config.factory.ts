@@ -6,6 +6,9 @@ export const configFactory: ConfigFactory<{ config: IConfiguration }> = () => {
       app: {
         port: +process.env.APP_PORT || 3000,
       },
+      front: {
+        domain: process.env.FRONT_DOMAIN,
+      },
       rateLimit: {
         ttl: +process.env.RATE_LIMIT_TTL || 60,
         limit: +process.env.RATE_LIMIT_COUNT || 10,
@@ -24,6 +27,10 @@ export interface AppConfig {
   port: number;
 }
 
+export interface FrontConfig {
+  domain: string;
+}
+
 export interface RateLimitConfig {
   ttl: number;
   limit: number;
@@ -39,6 +46,7 @@ export interface NovuConfig {
 
 export interface IConfiguration {
   app: AppConfig;
+  front: FrontConfig;
   rateLimit: RateLimitConfig;
   jwt: JWTConfig;
   novu: NovuConfig;

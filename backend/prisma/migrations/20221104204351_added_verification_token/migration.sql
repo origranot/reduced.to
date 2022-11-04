@@ -4,11 +4,12 @@ CREATE TYPE "Rule" AS ENUM ('USER', 'ADMIN');
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "name" TEXT,
     "rule" "Rule" NOT NULL DEFAULT 'USER',
     "verified" BOOLEAN NOT NULL DEFAULT false,
+    "verificationToken" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

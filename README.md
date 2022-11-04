@@ -175,6 +175,8 @@ For the minimal configuration the following settings have to be changed in their
 
 - **DATABASE_URL**: Database connection string
 
+- **FRONT_DOMAIN**: Frontend instance domain
+
 - **JWT_SECRET**: Jwt secret string
 
 - **NOVU_API_KEY**: Get it from https://novu.co/
