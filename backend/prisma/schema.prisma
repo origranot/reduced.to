@@ -12,12 +12,13 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  name     String
-  email    String  @unique
-  password String
-  rule     Rule    @default(USER)
-  verified Boolean @default(false) // Email verification
+  id                String  @id @default(uuid())
+  name              String
+  email             String  @unique
+  password          String
+  rule              Rule    @default(USER)
+  verified          Boolean @default(false) // Is the mail verification
+  verificationToken String? // Verification token of the mail
 }
 
 enum Rule {
