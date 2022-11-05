@@ -8,15 +8,14 @@ import {
 } from '@builder.io/qwik';
 import { DocumentHead } from '@builder.io/qwik-city';
 import animations from '~/assets/css/animations.css?inline';
+import { handleShareOnTwitter } from '~/components/home-buttons/actions';
 import { GithubButton } from '~/components/home-buttons/github-button/github-button';
 import { TwitterButton } from '~/components/home-buttons/twitter-button/twitter-button';
-import { handleShareOnTwitter } from '~/components/home-buttons/actions';
 import { Loader } from '~/components/loader/loader';
 import { generateQRCode } from '~/components/qr-code/handleQRCode';
 import { QRCode } from '~/components/qr-code/qr-code';
 import { handleShortener } from '~/components/shortener-input/handleShortener';
 import { ShortenerInput } from '~/components/shortener-input/shortener-input';
-import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
 import { Tooltip } from '~/components/tooltip/tooltip';
 import { Waves } from '~/components/waves/waves';
 import { copyToClipboard, openUrl } from '~/utils';
@@ -75,10 +74,6 @@ export default component$(() => {
                         label="Star"
                       ></GithubButton>
                     </span>
-                  </div>
-                  <div className="divider divider-horizontal"></div>
-                  <div className="grid  flex-grow place-items-center">
-                    <ThemeSwitcher></ThemeSwitcher>
                   </div>
                 </div>
               </div>

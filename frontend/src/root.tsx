@@ -16,7 +16,9 @@ export default component$(() => {
 
   const store = useStore<SiteStore>({
     theme: 'auto',
+    user: null,
   });
+
   useContextProvider(GlobalStore, store);
 
   return (
