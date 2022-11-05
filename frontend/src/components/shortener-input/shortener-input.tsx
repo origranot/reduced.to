@@ -24,6 +24,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
           placeholder="Very long url..."
           aria-label="url"
           aria-describedby="shortenerBtn"
+          autoFocus
         />
         <ShortenerInputBtn disabled={state.inputValue.length === 0} onClick$={props.onSubmit$} />
       </div>
