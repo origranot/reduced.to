@@ -14,7 +14,7 @@
 <br />
 <div align="center">
   
-[![logo](https://user-images.githubusercontent.com/26607131/195944856-0c23581a-e1b5-43ee-bcae-c0d65e724faf.png)](https://reduced.to)
+[![logo](https://raw.githubusercontent.com/origranot/reduced.to/ec59ee1dfe4c858b89d2d22935e2734d52794ea3/frontend/public/logo.svg)](https://reduced.to)
 
   <p align="center">
     Reduced.to is a modern web application that reduces the length of link URL. So it's easier to remember, share and track.
