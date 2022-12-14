@@ -84,7 +84,7 @@ export default component$(() => {
               </div>
               <article class="prose mx-auto max-w-4xl pb-16">
                 <div class="mx-auto">
-                  <img class="mx-auto" src="logo.png" width="410" height="73" alt="Logo" />
+                  <img class="mx-auto" src="logo.svg" width="410" height="73" alt="Logo" />
                 </div>
                 <p>
                   Add your very long <b>URL</b> in the input below and click on the button to make
@@ -118,9 +118,8 @@ export default component$(() => {
                 </span>
                 <div
                   id="action"
-                  className={`${
-                    state.reducedUrl ? '' : 'hidden'
-                  } btn-group p-4 relative [&>:first-child>.btn]:rounded-l-lg [&>:last-child>.btn]:rounded-r-lg [&>*>.btn]:rounded-none`}
+                  className={`${state.reducedUrl ? '' : 'hidden'
+                    } btn-group p-4 relative [&>:first-child>.btn]:rounded-l-lg [&>:last-child>.btn]:rounded-r-lg [&>*>.btn]:rounded-none`}
                 >
                   <button
                     type="button"
