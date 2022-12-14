@@ -118,8 +118,9 @@ export default component$(() => {
                 </span>
                 <div
                   id="action"
-                  className={`${state.reducedUrl ? '' : 'hidden'
-                    } btn-group p-4 relative [&>:first-child>.btn]:rounded-l-lg [&>:last-child>.btn]:rounded-r-lg [&>*>.btn]:rounded-none`}
+                  className={`${
+                    state.reducedUrl ? '' : 'hidden'
+                  } btn-group p-4 relative [&>:first-child>.btn]:rounded-l-lg [&>:last-child>.btn]:rounded-r-lg [&>*>.btn]:rounded-none`}
                 >
                   <button
                     type="button"
