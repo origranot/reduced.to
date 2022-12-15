@@ -1,4 +1,4 @@
-import { component$, useContext, useSignal } from '@builder.io/qwik';
+import { component$,add useContext, useSignal } from '@builder.io/qwik';
 import { InputContext, Store } from '~/routes';
 import { ShortenerInputBtn } from './shortener-input-btn';
 
@@ -17,6 +17,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
       <div class="sm:input-group mb-3 flex-col sm:flex-row gap-2 sm:gap-0">
         <input
           onKeyUp$={props.onKeyUp$}
+          onInput$={props.onInput$}
           ref={inputRef}
           document:onKeyDown$={(e) => {
             if(e.key === '/') {
