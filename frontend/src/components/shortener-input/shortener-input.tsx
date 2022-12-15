@@ -18,6 +18,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
         <input
           onKeyUp$={props.onKeyUp$}
           onInput$={props.onInput$}
+          ref={inputRef}
           document:onKeyDown$={(e: KeyboardEvent) => {
             if (e.key === '/') {
               e.preventDefault();
