@@ -1,5 +1,4 @@
-import { component$, Signal, useContext, useSignal } from '@builder.io/qwik';
-import { InputHTMLAttributes, Ref, useRef } from 'react';
+import { component$, useContext, useSignal } from '@builder.io/qwik';
 import { InputContext, Store } from '~/routes';
 import { ShortenerInputBtn } from './shortener-input-btn';
 
