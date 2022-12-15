@@ -1,4 +1,4 @@
-import { component$, useContext } from '@builder.io/qwik';
+import { component$, useContext, useSignal } from '@builder.io/qwik';
 import { InputContext, Store } from '~/routes';
 import { ShortenerInputBtn } from './shortener-input-btn';
 
@@ -10,6 +10,7 @@ export interface ShortenerInputProps {
 
 export const ShortenerInput = component$((props: ShortenerInputProps) => {
   const state: Store = useContext(InputContext) as Store;
+  const inputRef = useSignal<HTMLInputElement>();
 
   return (
     <div className="form-control">
@@ -17,6 +18,12 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
         <input
           onKeyUp$={props.onKeyUp$}
           onInput$={props.onInput$}
+          document:onKeyDown$={(e: KeyboardEvent) => {
+            if (e.key === '/') {
+              e.preventDefault();
+              inputRef.value?.focus();
+            }
+          }}
           value={state.inputValue}
           type="text"
           id="urlInput"
