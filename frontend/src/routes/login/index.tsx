@@ -1,11 +1,12 @@
-import { component$, useStore } from '@builder.io/qwik';
+import { component$, useContext, useStore } from '@builder.io/qwik';
 import { RequestHandler, useNavigate } from '@builder.io/qwik-city';
-import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
-import { setToken } from '~/shared/auth.service';
+import { GlobalStore } from '~/context';
+import { checkAuth, getUser, login, setCookie } from '~/shared/auth.service';
 
 export interface Store {
   email: string;
   password: string;
+  loading: boolean;
 }
 
 export default component$(() => {
@@ -14,13 +15,13 @@ export default component$(() => {
   const store = useStore<Store>({
     email: '',
     password: '',
+    loading: false,
   });
+
+  const globalStore = useContext(GlobalStore);
 
   return (
     <div class="min-h-screen flex flex-col register-bg">
-      <div class="flex justify-end m-4">
-        <ThemeSwitcher />
-      </div>
       <div class="flex flex-1 content-center justify-center items-center">
         <div class="w-96 max-w-md">
           <div className="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
@@ -59,24 +60,63 @@ export default component$(() => {
                 <button
                   class="btn btn-primary"
                   onClick$={async () => {
-                    fetch(`${process.env.API_DOMAIN}/api/v1/auth/login`, {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({
-                        email: store.email,
-                        password: store.password,
-                      }),
-                    }).then(async (v) => {
+                    store.loading = true;
+                    login(store.email, store.password).then(async (v) => {
                       const token = await v.json();
-
-                      setToken(token.access_token);
+                      setCookie('s_id', token.access_token, 1);
+                      globalStore.user = getUser();
+                      store.loading = false;
                       navigate.path = '/';
                     });
                   }}
                 >
-                  Log In
+                  {store.loading ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="38"
+                      height="38"
+                      viewBox="0 0 38 38"
+                    >
+                      <defs>
+                        <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
+                          <stop stop-color="#fff" stop-opacity="0" offset="0%" />
+                          <stop stop-color="#fff" stop-opacity=".631" offset="63.146%" />
+                          <stop stop-color="#fff" offset="100%" />
+                        </linearGradient>
+                      </defs>
+                      <g fill="none" fill-rule="evenodd">
+                        <g transform="translate(1 1)">
+                          <path
+                            d="M36 18c0-9.94-8.06-18-18-18"
+                            id="Oval-2"
+                            stroke="url(#a)"
+                            stroke-width="2"
+                          >
+                            <animateTransform
+                              attributeName="transform"
+                              type="rotate"
+                              from="0 18 18"
+                              to="360 18 18"
+                              dur="0.9s"
+                              repeatCount="indefinite"
+                            />
+                          </path>
+                          <circle fill="#fff" cx="36" cy="18" r="1">
+                            <animateTransform
+                              attributeName="transform"
+                              type="rotate"
+                              from="0 18 18"
+                              to="360 18 18"
+                              dur="0.9s"
+                              repeatCount="indefinite"
+                            />
+                          </circle>
+                        </g>
+                      </g>
+                    </svg>
+                  ) : (
+                    'Log in'
+                  )}
                 </button>
               </div>
             </div>
@@ -87,6 +127,11 @@ export default component$(() => {
   );
 });
 
-export const onGet: RequestHandler = async ({ response }) => {
-  throw response.redirect('/');
+export const onGet: RequestHandler = async ({ request, response }) => {
+  const isAuthorized = await checkAuth(request.headers.get('cookie'));
+
+  if (isAuthorized) {
+    //Redirect because already logged in
+    throw response.redirect('/');
+  }
 };
