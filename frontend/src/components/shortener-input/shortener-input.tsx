@@ -7,13 +7,16 @@ export interface ShortenerInputProps {
   onInput$: (event: InputEvent) => void;
   onSubmit$: () => void;
 }
-export const focusOnKeyDown = (e: KeyboardEvent, inputRef: Signal<HTMLInputElement | undefined>): void => {
+export const focusOnKeyDown = (
+  e: KeyboardEvent,
+  inputRef: Signal<HTMLInputElement | undefined>
+): void => {
   // When forward slash '/' is registered, the search input is focused.
   if (e.key === '/') {
     e.preventDefault();
     inputRef.value?.focus();
   }
-}
+};
 
 export const ShortenerInput = component$((props: ShortenerInputProps) => {
   const state: Store = useContext(InputContext) as Store;
