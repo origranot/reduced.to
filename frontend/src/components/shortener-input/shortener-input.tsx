@@ -1,4 +1,4 @@
-import { component$, useContext, useSignal } from '@builder.io/qwik';
+import { component$, Signal, useContext, useSignal } from '@builder.io/qwik';
 import { InputContext, Store } from '~/routes';
 import { ShortenerInputBtn } from './shortener-input-btn';
 
@@ -7,9 +7,17 @@ export interface ShortenerInputProps {
   onInput$: (event: InputEvent) => void;
   onSubmit$: () => void;
 }
+export const focusOnKeyDown = (e: KeyboardEvent, inputRef: Signal<HTMLInputElement | undefined>): void => {
+  // When forward slash '/' is registered, the search input is focused.
+  if (e.key === '/') {
+    e.preventDefault();
+    inputRef.value?.focus();
+  }
+}
 
 export const ShortenerInput = component$((props: ShortenerInputProps) => {
   const state: Store = useContext(InputContext) as Store;
+
   const inputRef = useSignal<HTMLInputElement>();
 
   return (
@@ -19,12 +27,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
           onKeyUp$={props.onKeyUp$}
           onInput$={props.onInput$}
           ref={inputRef}
-          document:onKeyDown$={(e: KeyboardEvent) => {
-            if (e.key === '/') {
-              e.preventDefault();
-              inputRef.value?.focus();
-            }
-          }}
+          document:onKeyDown$={(event) => focusOnKeyDown(event, inputRef)}
           value={state.inputValue}
           type="text"
           id="urlInput"
