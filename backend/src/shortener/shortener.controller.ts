@@ -25,12 +25,19 @@ export class ShortenerController {
   @Post()
   async shortener(@Body() body: ShortenerDTO) {
     let parsedUrl: URL;
+    let isAlreadyShortened: boolean;
+
     try {
       parsedUrl = new URL(body.originalUrl);
+
+      // Checks if the URL is not an already Reduced.to short URL.
+      isAlreadyShortened = this.shortenerService.isURLAlreadyShortend(body.originalUrl);
+      if(isAlreadyShortened) throw new Error('The URL is already shortened by reduced.to')
+
     } catch (err: any) {
       throw new BadRequestException({
         status: HttpStatus.BAD_REQUEST,
-        error: 'URL is invalid',
+        error: err.message || 'URL is invalid',
       });
     }
 
