@@ -1,20 +1,24 @@
+import { AppConfigService } from '../config/config.service';
 import { ShortenerModule } from './shortener.module';
 import { ShortenerService } from './shortener.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppCacheModule } from '../cache/cache.module';
 import { AppCacheService } from '../cache/cache.service';
+import { AppConfigModule } from '../config/config.module';
 
 describe('ShortenerService', () => {
   let service: ShortenerService;
+  let config: AppConfigService;
   let cache: AppCacheService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppCacheModule, ShortenerModule],
+      imports: [AppConfigModule, AppCacheModule, ShortenerModule],
       providers: [ShortenerService],
     }).compile();
 
     cache = module.get<AppCacheService>(AppCacheService);
+    config = module.get<AppConfigService>(AppConfigService);
     service = module.get<ShortenerService>(ShortenerService);
   });
 
@@ -53,19 +57,37 @@ describe('ShortenerService', () => {
     expect(orignalUrl).toBe(ORIGINAL_URL);
   });
 
-  it('should return true because short url is avaliable', async () => {
-    const SHORT_URL = 'best_url_shortener';
+  describe('isShortUrlAvailable', () => {
+    it('should return true because short url is avaliable', async () => {
+      const SHORT_URL = 'best_url_shortener';
 
-    const isAvailable = await service.isShortUrlAvailable(SHORT_URL);
-    expect(isAvailable).toBeTruthy();
+      const isAvailable = await service.isShortUrlAvailable(SHORT_URL);
+      expect(isAvailable).toBeTruthy();
+    });
+
+    it('should return false because short url is taken', async () => {
+      const ORIGINAL_URL = 'https://github.com/origranot/reduced.to';
+      const SHORT_URL = 'best_url_shortener';
+
+      await service.addUrl(ORIGINAL_URL, SHORT_URL);
+      const isAvailable = await service.isShortUrlAvailable(SHORT_URL);
+      expect(isAvailable).toBeFalsy();
+    });
   });
 
-  it('should return false because short url is taken', async () => {
-    const ORIGINAL_URL = 'https://github.com/origranot/reduced.to';
-    const SHORT_URL = 'best_url_shortener';
+  describe('isUrlAlreadyShortend', () => {
+    it('should return true because the url is already shortened', async () => {
+      const shortenUrl = `${config.getConfig().front.domain}/test123`;
 
-    await service.addUrl(ORIGINAL_URL, SHORT_URL);
-    const isAvailable = await service.isShortUrlAvailable(SHORT_URL);
-    expect(isAvailable).toBeFalsy();
+      const result = service.isUrlAlreadyShortend(shortenUrl);
+      expect(result).toBeTruthy();
+    });
+
+    it('should return false because the url is not shortened', async () => {
+      const url = 'https://github.com/origranot/reduced.to';
+
+      const result = service.isUrlAlreadyShortend(url);
+      expect(result).toBe(false);
+    });
   });
 });

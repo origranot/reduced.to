@@ -1,9 +1,13 @@
 import { AppCacheService } from './../cache/cache.service';
 import { Injectable } from '@nestjs/common';
+import { AppConfigService } from '../config/config.service';
 
 @Injectable()
 export class ShortenerService {
-  constructor(private readonly appCacheService: AppCacheService) {}
+  constructor(
+    private readonly appCacheService: AppCacheService,
+    private readonly appConfigService: AppConfigService
+  ) {}
 
   /**
    * Return the original url of the specific url.
@@ -13,6 +17,16 @@ export class ShortenerService {
   getOriginalUrl = async (shortUrl: string): Promise<string> => {
     const originalUrl = await this.appCacheService.get(shortUrl);
     return originalUrl ? originalUrl.toString() : null;
+  };
+
+  /**
+   * Checks if the url has already been shortend by a using a Regular Expression.
+   * @param {String} shortUrl The short url
+   * @returns {Boolean} Returns a boolean
+   */
+  isUrlAlreadyShortend = (shortUrl: string): boolean => {
+    const domainRegex = new RegExp(this.appConfigService.getConfig().front.domain);
+    return domainRegex.test(shortUrl);
   };
 
   /**
