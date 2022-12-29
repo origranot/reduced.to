@@ -22,9 +22,9 @@ export class ShortenerService {
   /**
    * Checks if the url has already been shortend by a using a Regular Expression.
    * @param {String} shortUrl The short url
-   * @return {Boolean} Returns a boolean
+   * @returns {Boolean} Returns a boolean
    */
-  isURLAlreadyShortend = (shortUrl: string): boolean => {
+  isUrlAlreadyShortend = (shortUrl: string): boolean => {
     const domainRegex = new RegExp(this.appConfigService.getConfig().front.domain);
     return domainRegex.test(shortUrl);
   };
