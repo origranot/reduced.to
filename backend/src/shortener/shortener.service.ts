@@ -1,4 +1,5 @@
 import { AppCacheService } from './../cache/cache.service';
+import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -21,7 +22,8 @@ export class ShortenerService {
    * @return {Boolean} Returns a boolean
    */
   isURLAlreadyShortend = (shortUrl: string): boolean => {
-    return  (/^(https?:\/\/)?(www\.)?reduced\.to(\/.*)?$/).test(shortUrl)
+    const regex = new RegExp(process.env.FRONT_DOMAIN)
+    return  regex.test(shortUrl)
   }
 
   /**
