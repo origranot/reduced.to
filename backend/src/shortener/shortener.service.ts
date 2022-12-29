@@ -1,9 +1,13 @@
 import { AppCacheService } from './../cache/cache.service';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ShortenerService {
-  constructor(private readonly appCacheService: AppCacheService) { }
+  constructor(
+    private readonly appCacheService: AppCacheService,
+    private readonly configService: ConfigService
+  ) {}
 
   /**
    * Return the original url of the specific url.
@@ -21,9 +25,9 @@ export class ShortenerService {
    * @return {Boolean} Returns a boolean
    */
   isURLAlreadyShortend = (shortUrl: string): boolean => {
-    const regex = new RegExp(process.env.FRONT_DOMAIN)
-    return  regex.test(shortUrl)
-  }
+    const domainRegex = new RegExp(this.configService.get<string>('config.front.domain'));
+    return domainRegex.test(shortUrl);
+  };
 
   /**
    * Generating the short url
