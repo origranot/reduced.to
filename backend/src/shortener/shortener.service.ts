@@ -1,6 +1,6 @@
 import { AppCacheService } from './../cache/cache.service';
 import { Injectable } from '@nestjs/common';
-import { AppConfigService } from 'src/config/config.service';
+import { AppConfigService } from '../config/config.service';
 
 @Injectable()
 export class ShortenerService {
