@@ -27,10 +27,15 @@ export class ShortenerController {
     let parsedUrl: URL;
     try {
       parsedUrl = new URL(body.originalUrl);
+
+      // Checks if the URL is not already reduced.
+      if (this.shortenerService.isUrlAlreadyShortend(body.originalUrl)) {
+        throw new Error('The URL is already shortened...');
+      }
     } catch (err: any) {
       throw new BadRequestException({
         status: HttpStatus.BAD_REQUEST,
-        error: 'URL is invalid',
+        error: err.message || 'URL is invalid',
       });
     }
 

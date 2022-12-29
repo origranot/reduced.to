@@ -1,10 +1,10 @@
+import { AppConfigModule } from './../config/config.module';
+import { AppCacheModule } from './../cache/cache.module';
 import { ShortenerService } from './shortener.service';
 import { ShortenerController } from './shortener.controller';
 import { Test } from '@nestjs/testing';
 import { ShortenerDTO } from './dto';
 import { BadRequestException } from '@nestjs/common';
-
-jest.mock('./shortener.service.ts');
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
@@ -13,6 +13,7 @@ describe('ShortenerController', () => {
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [ShortenerController],
+      imports: [AppConfigModule, AppCacheModule],
       providers: [ShortenerService],
     }).compile();
 
