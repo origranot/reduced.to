@@ -28,11 +28,10 @@ export class ShortenerController {
     try {
       parsedUrl = new URL(body.originalUrl);
 
-      // Checks if the URL is not already a reduced.
-      if(this.shortenerService.isURLAlreadyShortend(body.originalUrl)) {
-          throw new Error('The URL is already shortened by reduced.to')
+      // Checks if the URL is not already reduced.
+      if (this.shortenerService.isURLAlreadyShortend(body.originalUrl)) {
+        throw new Error('The URL is already shortened by reduced.to');
       }
-
     } catch (err: any) {
       throw new BadRequestException({
         status: HttpStatus.BAD_REQUEST,
