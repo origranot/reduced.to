@@ -28,7 +28,7 @@ export class ShortenerController {
     try {
       parsedUrl = new URL(body.originalUrl);
 
-      // Checks if the URL is not already reduced.
+      // Checks if the URL is already reduced.
       if (this.shortenerService.isUrlAlreadyShortend(body.originalUrl)) {
         throw new Error('The URL is already shortened...');
       }
