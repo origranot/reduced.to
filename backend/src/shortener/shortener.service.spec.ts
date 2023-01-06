@@ -20,9 +20,7 @@ describe('ShortenerService', () => {
     cache = module.get<AppCacheService>(AppCacheService);
     config = module.get<AppConfigService>(AppConfigService);
     service = module.get<ShortenerService>(ShortenerService);
-  });
 
-  afterEach(async () => {
     await cache.getCacheManager.reset();
   });
 

@@ -12,7 +12,6 @@ import { AppCacheService } from './cache.service';
       useFactory: async (config: AppConfigService) => {
         if (!config.getConfig().redis.enable) {
           return CacheModule.register({
-            isGlobal: true,
             ttl: 0, // Unlimited time
           });
         }
