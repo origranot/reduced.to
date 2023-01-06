@@ -13,6 +13,12 @@ export const configFactory: ConfigFactory<{ config: IConfiguration }> = () => {
         ttl: +process.env.RATE_LIMIT_TTL || 60,
         limit: +process.env.RATE_LIMIT_COUNT || 10,
       },
+      redis: {
+        enable: process.env.REDIS_ENABLE === 'true' || false,
+        host: process.env.REDIS_HOST || 'localhost',
+        port: +process.env.REDIS_PORT || 4000,
+        ttl: +process.env.REDIS_TTL || 60 * 60 * 24 * 7, // Seconds
+      },
       jwt: {
         secret: process.env.JWT_SECRET,
       },
@@ -36,6 +42,13 @@ export interface RateLimitConfig {
   limit: number;
 }
 
+export interface RedisConfig {
+  enable: boolean;
+  host: string;
+  port: number;
+  ttl: number;
+}
+
 export interface JWTConfig {
   secret: string;
 }
@@ -48,6 +61,7 @@ export interface IConfiguration {
   app: AppConfig;
   front: FrontConfig;
   rateLimit: RateLimitConfig;
+  redis: RedisConfig;
   jwt: JWTConfig;
   novu: NovuConfig;
 }
