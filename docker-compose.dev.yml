@@ -1,6 +1,24 @@
 version: '3'
 
 services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=reduced_to_db
+    ports:
+      - '5432:5432'
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - '6379:6379'
+
   frontend:
     container_name: frontend
     build:
@@ -15,6 +33,7 @@ services:
 
   backend:
     container_name: backend
+    platform: linux/amd64
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -25,3 +44,6 @@ services:
     ports:
       - '3000:3000'
     env_file: ./backend/.env
+    depends_on:
+      - postgres
+      - redis
