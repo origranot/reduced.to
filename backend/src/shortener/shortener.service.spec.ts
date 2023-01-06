@@ -20,6 +20,8 @@ describe('ShortenerService', () => {
     cache = module.get<AppCacheService>(AppCacheService);
     config = module.get<AppConfigService>(AppConfigService);
     service = module.get<ShortenerService>(ShortenerService);
+
+    await cache.getCacheManager.reset();
   });
 
   it('should be defined', () => {
