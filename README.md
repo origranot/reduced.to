@@ -177,6 +177,14 @@ For the minimal configuration the following settings have to be changed in their
 
 - **FRONT_DOMAIN**: Frontend instance domain
 
+- **REDIS_ENABLE**: Whether to use external redis store or not.
+
+- **REDIS_HOST**: Redis instnace host
+
+- **REDIS_PORT**: Redis instance port
+
+- **REDIS_TTL**: Redis ttl (in seconds)
+
 - **JWT_SECRET**: Jwt secret string
 
 - **NOVU_API_KEY**: Get it from https://novu.co/
