@@ -22,6 +22,10 @@ describe('ShortenerService', () => {
     service = module.get<ShortenerService>(ShortenerService);
   });
 
+  afterEach(async () => {
+    await cache.getCacheManager.reset();
+  });
+
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
