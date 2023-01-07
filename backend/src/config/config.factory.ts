@@ -17,6 +17,7 @@ export const configFactory: ConfigFactory<{ config: IConfiguration }> = () => {
         enable: process.env.REDIS_ENABLE === 'true' || false,
         host: process.env.REDIS_HOST || 'localhost',
         port: +process.env.REDIS_PORT || 4000,
+        password: process.env.REDIS_PASSWORD || 'password',
         ttl: +process.env.REDIS_TTL || 60 * 60 * 24 * 7, // Seconds
       },
       jwt: {
@@ -46,6 +47,7 @@ export interface RedisConfig {
   enable: boolean;
   host: string;
   port: number;
+  password: string;
   ttl: number;
 }
 
