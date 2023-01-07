@@ -16,6 +16,11 @@ services:
   redis:
     image: redis
     container_name: redis
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
+    env_file: ./backend/.env
     ports:
       - '6379:6379'
 

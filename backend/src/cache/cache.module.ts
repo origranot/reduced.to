@@ -21,11 +21,12 @@ import { AppCacheService } from './cache.service';
             host: config.getConfig().redis.host,
             port: config.getConfig().redis.port,
           },
+          password: config.getConfig().redis.password,
+          ttl: config.getConfig().redis.ttl,
         });
 
         return {
           store: store as unknown as CacheStore,
-          ttl: config.getConfig().redis.ttl,
         };
       },
       inject: [AppConfigService],
