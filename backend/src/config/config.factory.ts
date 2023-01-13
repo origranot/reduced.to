@@ -1,6 +1,6 @@
 import { ConfigFactory } from '@nestjs/config';
 
-export const configFactory: ConfigFactory<{ config: IConfiguration }> = () => {
+export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
   return {
     config: {
       app: {
@@ -59,7 +59,7 @@ export interface NovuConfig {
   apiKey: string;
 }
 
-export interface IConfiguration {
+export interface Configuration {
   app: AppConfig;
   front: FrontConfig;
   rateLimit: RateLimitConfig;

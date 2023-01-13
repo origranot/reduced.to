@@ -53,6 +53,10 @@ export class ShortenerService {
    * @param {String} shortUrl The shorten url.
    */
   addUrl = async (originalUrl: string, shortUrl: string) => {
+    const isShortUrlAvailable = await this.isShortUrlAvailable(shortUrl);
+    if (!isShortUrlAvailable) {
+      throw new Error('Short URL already taken');
+    }
     await this.appCacheService.set(shortUrl, originalUrl);
   };
 }
