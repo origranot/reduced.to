@@ -28,11 +28,16 @@ describe('ShortenerService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should generate a string with 5 random characters', () => {
+  it('should generate a short url with 5 random characters', () => {
     const shortUrl = service.generateShortUrl();
     expect(shortUrl).toHaveLength(5);
   });
 
+  it('should generate a short url with only alphanumeric characters', () => {
+    const shortUrl = service.generateShortUrl();
+    expect(shortUrl).toMatch(/^[a-z0-9]+$/i);
+  });
+
   it('should add url to cache store', async () => {
     const ORIGINAL_URL = 'https://github.com/origranot/reduced.to';
     const SHORT_URL = 'best_url_shortener';
@@ -57,6 +62,12 @@ describe('ShortenerService', () => {
 
     const orignalUrl = await service.getOriginalUrl(SHORT_URL);
     expect(orignalUrl).toBe(ORIGINAL_URL);
+  });
+
+  it('should return null if short url not found in cache', async () => {
+    const SHORT_URL = 'best_url_shortener';
+    const originalUrl = await service.getOriginalUrl(SHORT_URL);
+    expect(originalUrl).toBeNull();
   });
 
   describe('isShortUrlAvailable', () => {
@@ -75,6 +86,16 @@ describe('ShortenerService', () => {
       const isAvailable = await service.isShortUrlAvailable(SHORT_URL);
       expect(isAvailable).toBeFalsy();
     });
+  });
+
+  it('should throw an error if short url is already taken', async () => {
+    const originalUrl = 'https://github.com/origranot/reduced.to';
+    const shortUrl = 'best_url_shortener';
+
+    await service.addUrl(originalUrl, shortUrl);
+    expect(async () => {
+      await service.addUrl(originalUrl, shortUrl);
+    }).rejects.toThrowError('Short URL already taken');
   });
 
   describe('isUrlAlreadyShortend', () => {

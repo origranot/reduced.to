@@ -8,7 +8,7 @@ import { AppConfigService } from './config.service';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env'],
+      envFilePath: process.env.NODE_ENV === 'test' ? '.test.env' : '.env',
       load: [configFactory],
       cache: true,
     }),
