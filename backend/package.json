@@ -39,7 +39,7 @@
     "cache-manager": "^5.0.0",
     "cache-manager-redis-store": "^3.0.1",
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.13.2",
+    "class-validator": "^0.14.0",
     "express": "^4.17.1",
     "jest": "^29.2.0",
     "passport": "^0.6.0",
