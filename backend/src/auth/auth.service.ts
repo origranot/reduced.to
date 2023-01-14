@@ -1,16 +1,20 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Rule } from '@prisma/client';
-import { UsersService } from '../users/users.service';
 import { SignupDto } from './dto/signup.dto';
 import * as argon2 from 'argon2';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService, private jwtService: JwtService) {}
+  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
   async validateUser(email: string, password: string) {
-    const user = await this.usersService.get({ email });
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
     if (!user) {
       return null;
     }
@@ -46,28 +50,34 @@ export class AuthService {
       email: signupDto.email,
     };
 
-    return this.usersService.create({
-      ...userInformation,
-      password: hash,
-      rule: Rule.USER,
-      verificationToken: this.jwtService.sign(userInformation, {
-        expiresIn: '1d',
-      }),
+    return this.prisma.user.create({
+      data: {
+        ...userInformation,
+        password: hash,
+        rule: Rule.USER,
+        verificationToken: this.jwtService.sign(userInformation, {
+          expiresIn: '1d',
+        }),
+      },
     });
   }
 
   async verify(user: any) {
-    const fetchedUser = await this.usersService.get({ email: user.email });
+    const fetchedUser = await this.prisma.user.findUnique({
+      where: {
+        email: user.email,
+      },
+    });
     if (!fetchedUser || !fetchedUser.verificationToken) {
       throw new UnauthorizedException();
     }
 
-    return this.usersService.update(
-      { email: user.email },
-      {
+    return this.prisma.user.update({
+      where: { email: user.email },
+      data: {
         verified: true,
         verificationToken: null,
-      }
-    );
+      },
+    });
   }
 }
