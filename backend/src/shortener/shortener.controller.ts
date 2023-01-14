@@ -18,8 +18,13 @@ export class ShortenerController {
   constructor(private readonly shortenerService: ShortenerService) {}
 
   @Get(':shortUrl')
-  findOne(@Param('shortUrl') shortUrl: string) {
-    return this.shortenerService.getOriginalUrl(shortUrl);
+  async findOne(@Param('shortUrl') shortUrl: string) {
+    const originalUrl = await this.shortenerService.getOriginalUrl(shortUrl);
+    if (!originalUrl) {
+      throw new BadRequestException('Short url is wrong or expired');
+    }
+
+    return originalUrl;
   }
 
   @Post()
@@ -33,10 +38,7 @@ export class ShortenerController {
         throw new Error('The URL is already shortened...');
       }
     } catch (err: any) {
-      throw new BadRequestException({
-        status: HttpStatus.BAD_REQUEST,
-        error: err.message || 'URL is invalid',
-      });
+      throw new BadRequestException(err.message || 'URL is invalid');
     }
 
     let shortUrl: string;
