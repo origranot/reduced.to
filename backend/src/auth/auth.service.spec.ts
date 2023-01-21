@@ -1,21 +1,100 @@
+import { PrismaService } from './../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaModule } from '../prisma/prisma.module';
 import { AuthService } from './auth.service';
+import * as argon2 from 'argon2';
+import { Rule, User } from '@prisma/client';
+import { UnauthorizedException } from '@nestjs/common';
 
 describe('AuthService', () => {
-  let service: AuthService;
+  let authService: AuthService;
+  let prismaService: PrismaService;
+  let jwtService: JwtService;
+  let mockData: User;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [PrismaModule],
-      providers: [AuthService, JwtService],
+      providers: [
+        AuthService,
+        JwtService,
+        {
+          provide: PrismaService,
+          useValue: {
+            user: {
+              findUnique: jest.fn(),
+              update: jest.fn(),
+            },
+          },
+        },
+      ],
     }).compile();
 
-    service = module.get<AuthService>(AuthService);
+    authService = module.get<AuthService>(AuthService);
+    prismaService = module.get<PrismaService>(PrismaService);
+    jwtService = module.get<JwtService>(JwtService);
+
+    mockData = {
+      id: 'some-id',
+      name: 'John Doe',
+      email: 'johndoe@email.com',
+      password: await argon2.hash('password'),
+      verified: false,
+      verificationToken: 'verification_token',
+      rule: Rule.USER,
+    };
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(authService).toBeDefined();
+    expect(prismaService).toBeDefined();
+    expect(jwtService).toBeDefined();
+  });
+
+  describe('validateUser', () => {
+    it('should return null if user does not exist', async () => {
+      jest.spyOn(prismaService.user, 'findUnique').mockResolvedValueOnce(null);
+      const user = await authService.validateUser('fake@email.com', 'password');
+      expect(user).toBeNull();
+    });
+
+    it('should return null if the password is incorrect', async () => {
+      jest.spyOn(prismaService.user, 'findUnique').mockResolvedValueOnce(mockData);
+      const user = await authService.validateUser(mockData.email, 'wrongpassword');
+      expect(user).toBeNull();
+    });
+
+    it('should return the user if email and password match', async () => {
+      jest.spyOn(prismaService.user, 'findUnique').mockResolvedValueOnce(mockData);
+      const user = await authService.validateUser(mockData.email, 'password');
+      expect(user.email).toEqual(mockData.email);
+    });
+  });
+
+  describe('verify', () => {
+    it('should throw an unauthorized exception if the verification token is invalid', async () => {
+      jest.spyOn(prismaService.user, 'update').mockResolvedValueOnce(null);
+      expect(async () => {
+        await authService.verify('invalidtoken');
+      }).rejects.toThrow(UnauthorizedException);
+    });
+
+    it('should return true and update the user if the verification token is valid', async () => {
+      jest.spyOn(prismaService.user, 'findUnique').mockResolvedValueOnce(mockData);
+      jest.spyOn(prismaService.user, 'update').mockResolvedValueOnce({
+        ...mockData,
+        verified: true,
+        verificationToken: null,
+      });
+      const verified = await authService.verify(mockData);
+      expect(verified).toBeTruthy();
+      expect(prismaService.user.update).toHaveBeenCalledWith({
+        where: { email: mockData.email },
+        data: { verified: true, verificationToken: null },
+      });
+    });
   });
 });

@@ -51,7 +51,7 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 30 backend frontend
+    command: --cleanup --interval 30 backend frontend
 
 volumes:
   postgres:
