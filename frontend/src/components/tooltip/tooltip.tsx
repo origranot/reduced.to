@@ -1,5 +1,5 @@
-import { component$, Signal, useStore, useWatch$, useStylesScoped$ } from '@builder.io/qwik';
-import styles from './tooltip.css';
+import { component$, Signal, useStore, useStylesScoped$, useTask$ } from '@builder.io/qwik';
+import styles from './tooltip.css?inline';
 
 export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
 
@@ -59,7 +59,7 @@ export const Tooltip = component$<TooltipProps>(({ label, position, open }) => {
     hidden: true,
   });
 
-  useWatch$(({ track }) => {
+  useTask$(({ track }) => {
     track(open);
 
     store.hidden = !open.value;
