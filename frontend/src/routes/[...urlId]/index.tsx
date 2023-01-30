@@ -1,4 +1,4 @@
-import { component$, useClientEffect$ } from '@builder.io/qwik';
+import { component$, useClientEffect$, useLexicalScope } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
 
 export default component$(() => {
@@ -7,18 +7,19 @@ export default component$(() => {
   useClientEffect$(async () => {
     const urlId = location.params.urlId.replace(/\//g, '');
 
-    let url = '/unknown';
+    const [store] = useLexicalScope();
+    store.url = '/unknown';
     try {
       const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`);
       if (res.status !== 200) {
         throw new Error('failed to fetch original url...');
       }
-      url = await res.text();
+      store.url = await res.text();
     } catch (err) {
       console.error(err);
     }
 
-    window.location.replace(url);
+    window.location.replace(store.url);
   });
 
   return <div />;
