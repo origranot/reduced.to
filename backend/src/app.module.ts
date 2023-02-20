@@ -8,10 +8,12 @@ import { AppConfigModule } from './config/config.module';
 import { AppConfigService } from './config/config.service';
 import { UniqueConstraint } from './shared/decorators/unique.decorator';
 import { NovuModule } from './novu/novu.module';
+import { AppLoggerModule } from './logger/logger.module';
 
 @Module({
   imports: [
     AppConfigModule,
+    AppLoggerModule,
     AppCacheModule,
     ThrottlerModule.forRootAsync({
       inject: [AppConfigService],

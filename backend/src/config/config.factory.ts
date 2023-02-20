@@ -1,10 +1,16 @@
 import { ConfigFactory } from '@nestjs/config';
+import { LOG_LEVEL } from '@origranot/ts-logger';
 
 export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
   return {
     config: {
       app: {
         port: +process.env.APP_PORT || 3000,
+      },
+      logger: {
+        console: {
+          threshold: LOG_LEVEL[process.env.LOGGER_CONSOLE_THRESHOLD] || LOG_LEVEL.INFO,
+        },
       },
       front: {
         domain: process.env.FRONT_DOMAIN || 'http://localhost:5173',
@@ -34,6 +40,12 @@ export interface AppConfig {
   port: number;
 }
 
+export interface LoggerConfig {
+  console: {
+    threshold: LOG_LEVEL;
+  };
+}
+
 export interface FrontConfig {
   domain: string;
 }
@@ -61,6 +73,7 @@ export interface NovuConfig {
 
 export interface Configuration {
   app: AppConfig;
+  logger: LoggerConfig;
   front: FrontConfig;
   rateLimit: RateLimitConfig;
   redis: RedisConfig;
