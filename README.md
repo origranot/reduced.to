@@ -173,18 +173,33 @@ For the minimal configuration the following settings have to be changed in their
 
 #### Backend configuration
 
+###### App
+- **APP_PORT**: Backend port
+
+###### Database
 - **DATABASE_URL**: Database connection string
 
+###### Rate Limit
+- **RATE_LIMIT_TTL**: Rate limt TTL (time to live)
+- **RATE_LIMIT_COUNT**: Number of requests within the ttl 
+
+###### Logger
+- **LOGGER_CONSOLE_THRESHOLD**: Threshold level of the console transporter.
+
+###### Frontend
 - **FRONT_DOMAIN**: Frontend instance domain
 
+###### Redis
 - **REDIS_ENABLE**: Whether to use external redis store or not
 - **REDIS_HOST**: Redis instnace host
 - **REDIS_PORT**: Redis instance port
 - **REDIS_PASSWORD**: Redis instance password
 - **REDIS_TTL**: Redis ttl (in seconds)
 
+###### Auth
 - **JWT_SECRET**: Jwt secret string
 
+###### Novu
 - **NOVU_API_KEY**: Get it from https://novu.co/
 
 #### Frontend configuration
