@@ -22,5 +22,4 @@ export class AppLoggerSerivce implements LoggerService {
   error = (message: any, ...optionalParams: any[]) => this.logger.error(message, ...optionalParams);
   warn = (message: any, ...optionalParams: any[]) => this.logger.warn(message, ...optionalParams);
   debug = (message: any, ...optionalParams: any[]) => this.logger.debug(message, ...optionalParams);
-  verbose = (message: any, ...optionalParams: any[]) => this.logger.fatal(message, ...optionalParams);
 }
