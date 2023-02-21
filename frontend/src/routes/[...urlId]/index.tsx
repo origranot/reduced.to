@@ -11,6 +11,7 @@ export default component$(() => {
     store.url = '/unknown';
     try {
       const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`);
+
       if (res.status !== 200) {
         throw new Error('failed to fetch original url...');
       }

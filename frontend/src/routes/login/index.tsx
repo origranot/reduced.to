@@ -1,7 +1,7 @@
 import { component$, useStore } from '@builder.io/qwik';
-import { RequestHandler, useNavigate } from '@builder.io/qwik-city';
+import { RequestHandler } from '@builder.io/qwik-city';
 import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
-import { setToken } from '~/shared/auth.service';
+import { isAuthorized } from '~/shared/auth.service';
 
 export interface Store {
   email: string;
@@ -9,8 +9,6 @@ export interface Store {
 }
 
 export default component$(() => {
-  const navigate = useNavigate();
-
   const store = useStore<Store>({
     email: '',
     password: '',
@@ -64,15 +62,16 @@ export default component$(() => {
                       headers: {
                         'Content-Type': 'application/json',
                       },
+                      credentials: 'include',
                       body: JSON.stringify({
                         email: store.email,
                         password: store.password,
                       }),
-                    }).then(async (v) => {
-                      const token = await v.json();
-
-                      setToken(token.access_token);
-                      navigate.path = '/';
+                    }).then(async (response) => {
+                      if (response.ok) {
+                        //Temporary solution until CSS loading is fixed, should be handled with useNavigate in the future
+                        window.location.href = '/';
+                      }
                     });
                   }}
                 >
@@ -87,6 +86,8 @@ export default component$(() => {
   );
 });
 
-export const onGet: RequestHandler = async ({ response }) => {
-  throw response.redirect('/');
+export const onGet: RequestHandler = async ({ response, cookie }) => {
+  if (await isAuthorized(cookie)) {
+    throw response.redirect('/');
+  }
 };

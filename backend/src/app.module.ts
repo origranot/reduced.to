@@ -1,14 +1,15 @@
-import { PrismaService } from './prisma/prisma.service';
 import { Module } from '@nestjs/common';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { AppCacheModule } from './cache/cache.module';
-import { ShortenerModule } from './shortener/shortener.module';
 import { AuthModule } from './auth/auth.module';
+import { AppCacheModule } from './cache/cache.module';
 import { AppConfigModule } from './config/config.module';
 import { AppConfigService } from './config/config.service';
-import { UniqueConstraint } from './shared/decorators/unique.decorator';
-import { NovuModule } from './novu/novu.module';
 import { AppLoggerModule } from './logger/logger.module';
+import { NovuModule } from './novu/novu.module';
+import { PrismaService } from './prisma/prisma.service';
+import { UniqueConstraint } from './shared/decorators/unique.decorator';
+import { ShortenerModule } from './shortener/shortener.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AppLoggerModule } from './logger/logger.module';
     ShortenerModule,
     AuthModule,
     NovuModule,
+    UserModule,
   ],
   providers: [PrismaService, UniqueConstraint],
 })

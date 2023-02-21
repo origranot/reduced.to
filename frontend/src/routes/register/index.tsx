@@ -1,6 +1,7 @@
 import { component$, useStore } from '@builder.io/qwik';
 import { RequestHandler, useNavigate } from '@builder.io/qwik-city';
 import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
+import { isAuthorized } from '~/shared/auth.service';
 
 export interface Store {
   name: string;
@@ -49,7 +50,7 @@ export const PasswordMasked = () => {
 };
 
 export default component$(() => {
-  const navigate = useNavigate();
+  const nav = useNavigate();
 
   const store = useStore<Store>({
     name: '',
@@ -97,6 +98,7 @@ export default component$(() => {
                     type={store.passwordVisible ? 'text' : 'password'}
                     className="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
                     value={store.password}
+                    autoComplete="on"
                     onInput$={(event) =>
                       (store.password = (event.target as HTMLInputElement).value)
                     }
@@ -132,14 +134,15 @@ export default component$(() => {
                       headers: {
                         'Content-Type': 'application/json',
                       },
+                      credentials: 'include',
                       body: JSON.stringify({
                         name: store.name,
                         email: store.email,
                         password: store.password,
                       }),
                     }).then((res) => {
-                      if (res.status === 201) {
-                        navigate.path = '/';
+                      if (res.ok && res.status === 201) {
+                        nav.path = '/register/verify';
                       }
                     });
                   }}
@@ -155,6 +158,8 @@ export default component$(() => {
   );
 });
 
-export const onGet: RequestHandler = async ({ response }) => {
-  throw response.redirect('/');
+export const onGet: RequestHandler = async ({ response, cookie }) => {
+  if (await isAuthorized(cookie)) {
+    throw response.redirect('/');
+  }
 };

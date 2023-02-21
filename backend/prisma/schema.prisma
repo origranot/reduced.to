@@ -19,6 +19,7 @@ model User {
   rule              Rule    @default(USER)
   verified          Boolean @default(false) // Is the mail verification
   verificationToken String? // Verification token of the mail
+  refreshToken      String?
 }
 
 enum Rule {

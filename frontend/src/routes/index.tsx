@@ -8,9 +8,9 @@ import {
 } from '@builder.io/qwik';
 import { DocumentHead } from '@builder.io/qwik-city';
 import animations from '~/assets/css/animations.css?inline';
+import { handleShareOnTwitter } from '~/components/home-buttons/actions';
 import { GithubButton } from '~/components/home-buttons/github-button/github-button';
 import { TwitterButton } from '~/components/home-buttons/twitter-button/twitter-button';
-import { handleShareOnTwitter } from '~/components/home-buttons/actions';
 import { Loader } from '~/components/loader/loader';
 import { generateQRCode } from '~/components/qr-code/handleQRCode';
 import { QRCode } from '~/components/qr-code/qr-code';

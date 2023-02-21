@@ -1,10 +1,10 @@
-import { PrismaService } from './../prisma/prisma.service';
+import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
-import * as argon2 from 'argon2';
 import { Rule, User } from '@prisma/client';
-import { UnauthorizedException } from '@nestjs/common';
+import * as argon2 from 'argon2';
+import { PrismaService } from './../prisma/prisma.service';
+import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -41,6 +41,7 @@ describe('AuthService', () => {
       verified: false,
       verificationToken: 'verification_token',
       rule: Rule.USER,
+      refreshToken: 'refresh',
     };
   });
 
