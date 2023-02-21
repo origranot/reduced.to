@@ -58,15 +58,15 @@ export default component$(() => {
   useContextProvider(InputContext, state);
 
   return (
-    <div className="h-screen overflow-x-hidden overflow-y-auto md:overflow-hidden">
+    <div class="h-screen overflow-x-hidden overflow-y-auto md:overflow-hidden">
       <div class="min-h-screen flex flex-col">
         <div class="mx-auto container grid grid-cols-12 flex-1">
           <div class="col-start-2 col-end-12 md:col-start-3 md:col-end-11">
-            <div className="flex flex-col">
-              <div className="flex justify-end my-5">
-                <div className="flex">
-                  <div className="grid  flex-grow place-items-center">
-                    <span className="h-5">
+            <div class="flex flex-col">
+              <div class="flex justify-end my-5">
+                <div class="flex">
+                  <div class="grid  flex-grow place-items-center">
+                    <span class="h-5">
                       <GithubButton
                         type="Star"
                         user="origranot"
@@ -76,8 +76,8 @@ export default component$(() => {
                       ></GithubButton>
                     </span>
                   </div>
-                  <div className="divider divider-horizontal"></div>
-                  <div className="grid  flex-grow place-items-center">
+                  <div class="divider divider-horizontal"></div>
+                  <div class="grid  flex-grow place-items-center">
                     <ThemeSwitcher></ThemeSwitcher>
                   </div>
                 </div>
@@ -106,12 +106,12 @@ export default component$(() => {
               />
               <Loader visible={state.loading} />
               <div id="result" className={state.showResult ? '' : 'hidden'}>
-                <p id="error" className="fade-in">
+                <p id="error" class="fade-in">
                   {state.urlError}
                 </p>
                 <span
                   id="text"
-                  className="fade-in cursor-pointer block"
+                  class="fade-in cursor-pointer block"
                   onClick$={() => copyToClipboard(state.reducedUrl)}
                 >
                   {state.reducedUrl}
@@ -125,7 +125,7 @@ export default component$(() => {
                   <button
                     type="button"
                     title="Copy"
-                    className="btn relative"
+                    class="btn relative"
                     onClick$={() => {
                       copyToClipboard(state.reducedUrl);
                       tooltipCopyRef.value = true;
@@ -137,7 +137,7 @@ export default component$(() => {
                       viewBox="0 0 24 24"
                       stroke-width={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      class="w-6 h-6"
                     >
                       <path
                         stroke-linecap="round"
@@ -150,7 +150,7 @@ export default component$(() => {
                   <button
                     type="button"
                     title="Open in new tab"
-                    className="btn"
+                    class="btn"
                     onClick$={() => openUrl(state.reducedUrl)}
                   >
                     <svg
@@ -159,7 +159,7 @@ export default component$(() => {
                       viewBox="0 0 24 24"
                       stroke-width={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      class="w-6 h-6"
                     >
                       <path
                         stroke-linecap="round"
@@ -171,7 +171,7 @@ export default component$(() => {
                   <button
                     type="button"
                     title="QR Code"
-                    className="btn"
+                    class="btn"
                     onClick$={() => {
                       generateQRCode(state.reducedUrl, 150);
                       state.showQRCode = true;
@@ -183,7 +183,7 @@ export default component$(() => {
                       viewBox="0 0 24 24"
                       stroke-width={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      class="w-6 h-6"
                     >
                       <path
                         stroke-linecap="round"

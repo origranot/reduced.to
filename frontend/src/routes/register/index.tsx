@@ -18,7 +18,7 @@ export const PasswordVisible = () => {
       viewBox="0 0 24 24"
       stroke-width={1.5}
       stroke="currentColor"
-      className="w-6 h-6"
+      class="w-6 h-6"
     >
       <path
         stroke-linecap="round"
@@ -37,7 +37,7 @@ export const PasswordMasked = () => {
       viewBox="0 0 24 24"
       stroke-width={1.5}
       stroke="currentColor"
-      className="w-6 h-6"
+      class="w-6 h-6"
     >
       <path
         stroke-linecap="round"
@@ -66,37 +66,37 @@ export default component$(() => {
       </div>
       <div class="flex flex-1 content-center justify-center items-center">
         <div class="w-96 max-w-md">
-          <div className="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
+          <div class="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
             <div class="prose prose-slate">
               <h1>Create an account</h1>
-              <div className="form-control w-full max-w-xs inline-flex">
-                <label className="label">
-                  <span className="label-text text-xs font-semibold">DISPLAY NAME</span>
+              <div class="form-control w-full max-w-xs inline-flex">
+                <label class="label">
+                  <span class="label-text text-xs font-semibold">DISPLAY NAME</span>
                 </label>
                 <input
                   type="text"
-                  className="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
+                  class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
                   value={store.name}
                   onInput$={(event) => (store.name = (event.target as HTMLInputElement).value)}
                 />
                 <br />
-                <label className="label">
-                  <span className="label-text text-xs font-semibold">EMAIL</span>
+                <label class="label">
+                  <span class="label-text text-xs font-semibold">EMAIL</span>
                 </label>
                 <input
                   type="text"
-                  className="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
+                  class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
                   value={store.email}
                   onInput$={(event) => (store.email = (event.target as HTMLInputElement).value)}
                 />
                 <br />
-                <label className="label">
-                  <span className="label-text text-xs font-semibold">PASSWORD</span>
+                <label class="label">
+                  <span class="label-text text-xs font-semibold">PASSWORD</span>
                 </label>
-                <div className="flex items-center relative">
+                <div class="flex items-center relative">
                   <input
                     type={store.passwordVisible ? 'text' : 'password'}
-                    className="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
+                    class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
                     value={store.password}
                     autoComplete="on"
                     onInput$={(event) =>
@@ -105,7 +105,7 @@ export default component$(() => {
                   />
 
                   <span
-                    className="absolute right-2.5 cursor-pointer flex items-center"
+                    class="absolute right-2.5 cursor-pointer flex items-center"
                     onClick$={() => {
                       store.passwordVisible = !store.passwordVisible;
                     }}
@@ -118,8 +118,8 @@ export default component$(() => {
                     </div>
                   </span>
                 </div>
-                <label className="label">
-                  <span className="label-text text-xs text-left">
+                <label class="label">
+                  <span class="label-text text-xs text-left">
                     Passwords must contain at least eight characters, including at least 1 letter
                     and 1 number.
                   </span>

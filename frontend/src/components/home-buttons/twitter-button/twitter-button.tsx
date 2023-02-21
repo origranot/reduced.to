@@ -20,7 +20,7 @@ export const TwitterButton = component$((props: TwitterButtonProps) => {
         viewBox="0 0 50 50"
         stroke-width={1.5}
         stroke="currentColor"
-        className="w-6 h-6"
+        class="w-6 h-6"
       >
         <path
           stroke-linecap="round"

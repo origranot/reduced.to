@@ -23,7 +23,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
   );
 
   return (
-    <div className="form-control">
+    <div class="form-control">
       <div class="sm:input-group mb-3 flex-col sm:flex-row gap-2 sm:gap-0">
         <input
           ref={searchInput}

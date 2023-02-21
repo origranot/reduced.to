@@ -31,24 +31,24 @@ export default component$(() => {
         <ThemeSwitcher />
       </div>
       <div class="flex flex-1 content-center justify-center items-center">
-        <div class="w-96 max-w-md">
-          <div className="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
+        <div class="w-full max-w-md">
+          <div class="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
             <div class="prose prose-slate">
-              <h1 className="m-0">Thanks for register for our app!</h1>
+              <h1 class="m-0">Thanks for register!</h1>
               <Loader visible={store.loading} />
               {!store.loading && !store.isVerified && (
                 <>
-                  <p className="mt-2">
+                  <p class="mt-4">
                     To keep your account secure, we need to verify your email address. Check your
                     inbox for a message from us to complete the process.
                   </p>
-                  <p className="mt-2 mb-8">
+                  <p class="mt-2 mb-5">
                     If you don't see the email, please check your spam folder or contact our support
                     team for help.
                   </p>
-                  <div className="form-control w-full max-w-xs inline-flex">
+                  <div class="form-control w-full max-w-xs inline-flex">
                     <br />
-                    {store.resent && <p className="mt-2 mb-8">Verification email has been sent!</p>}
+                    {store.resent && <p class="mt-2 mb-8">Verification email has been sent!</p>}
                     <button
                       class="btn btn-primary"
                       onClick$={async () => {
@@ -64,8 +64,8 @@ export default component$(() => {
               )}
               {!store.loading && store.isVerified && (
                 <>
-                  <p className="mt-2 mb-8">Your account is verified</p>
-                  <div className="form-control w-full max-w-xs inline-flex">
+                  <p class="mt-2 mb-8">Your account is verified</p>
+                  <div class="form-control w-full max-w-xs inline-flex">
                     <br />
                     <Link href="/" class="btn btn-primary">
                       Go back

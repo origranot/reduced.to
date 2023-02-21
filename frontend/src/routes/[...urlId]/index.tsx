@@ -1,5 +1,5 @@
 import { component$, useClientEffect$, useLexicalScope } from '@builder.io/qwik';
-import { useLocation } from '@builder.io/qwik-city';
+import { RequestHandler, useLocation } from '@builder.io/qwik-city';
 
 export default component$(() => {
   const location = useLocation();

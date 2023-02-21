@@ -27,16 +27,16 @@ export default component$(() => {
 
   return (
     <div class="min-h-screen flex flex-col register-bg">
-      <div className="hero min-h-screen">
-        <div className="hero-content text-center">
-          <div className="max-w-md">
-            <p className="py-6">
+      <div class="hero min-h-screen">
+        <div class="hero-content text-center">
+          <div class="max-w-md">
+            <p class="py-6">
               {!store.loading &&
                 (store.verified
                   ? 'Your account has been verified successfully'
                   : "We couldn't verify your account. Try again later")}
             </p>
-            <Link href="/" className="btn btn-primary">
+            <Link href="/" class="btn btn-primary">
               Go back
             </Link>
           </div>

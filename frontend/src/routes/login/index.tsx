@@ -21,34 +21,34 @@ export default component$(() => {
       </div>
       <div class="flex flex-1 content-center justify-center items-center">
         <div class="w-96 max-w-md">
-          <div className="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
+          <div class="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
             <div class="prose prose-slate">
-              <h1 className="m-0">Welcome back!</h1>
-              <p className="mt-2 mb-8">We're so excited to see you again!</p>
-              <div className="form-control w-full max-w-xs inline-flex">
-                <label className="label">
-                  <span className="label-text text-xs font-semibold">EMAIL</span>
+              <h1 class="m-0">Welcome back!</h1>
+              <p class="mt-2 mb-8">We're so excited to see you again!</p>
+              <div class="form-control w-full max-w-xs inline-flex">
+                <label class="label">
+                  <span class="label-text text-xs font-semibold">EMAIL</span>
                 </label>
                 <input
                   type="text"
-                  className="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
+                  class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
                   value={store.email}
                   onInput$={(event) => (store.email = (event.target as HTMLInputElement).value)}
                 />
                 <br />
-                <label className="label">
-                  <span className="label-text text-xs font-semibold">PASSWORD</span>
+                <label class="label">
+                  <span class="label-text text-xs font-semibold">PASSWORD</span>
                 </label>
                 <input
                   type={'password'}
-                  className="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
+                  class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
                   value={store.password}
                   onInput$={(event) => (store.password = (event.target as HTMLInputElement).value)}
                 />
-                <label className="label">
-                  <span className="label-text text-xs font-semibold">
+                <label class="label">
+                  <span class="label-text text-xs font-semibold">
                     Need an account?{' '}
-                    <a href="/register" className="link link-primary">
+                    <a href="/register" class="link link-primary">
                       Register
                     </a>
                   </span>

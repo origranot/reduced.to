@@ -5,7 +5,7 @@ export const Waves = component$(() => {
   useStylesScoped$(styles);
 
   return (
-    <div className="waves-div">
+    <div class="waves-div">
       <svg
         class="waves"
         xmlns="http://www.w3.org/2000/svg"
