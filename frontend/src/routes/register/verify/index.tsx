@@ -1,7 +1,6 @@
 import { component$, useClientEffect$, useStore } from '@builder.io/qwik';
-import { Link, RequestHandler } from '@builder.io/qwik-city';
+import { RequestHandler } from '@builder.io/qwik-city';
 import { Loader } from '~/components/loader/loader';
-import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
 import { authorizedFetch, isAuthorized } from '~/shared/auth.service';
 
 export interface Store {
@@ -27,9 +26,6 @@ export default component$(() => {
 
   return (
     <div class="min-h-screen flex flex-col register-bg">
-      <div class="flex justify-end m-4">
-        <ThemeSwitcher />
-      </div>
       <div class="flex flex-1 content-center justify-center items-center">
         <div class="w-full max-w-md">
           <div class="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
@@ -67,9 +63,9 @@ export default component$(() => {
                   <p class="mt-2 mb-8">Your account is verified</p>
                   <div class="form-control w-full max-w-xs inline-flex">
                     <br />
-                    <Link href="/" class="btn btn-primary">
+                    <button class="btn btn-primary" onClick$={() => (window.location.href = '/')}>
                       Go back
-                    </Link>
+                    </button>
                   </div>
                 </>
               )}

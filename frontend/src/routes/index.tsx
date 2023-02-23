@@ -9,14 +9,12 @@ import {
 import { DocumentHead } from '@builder.io/qwik-city';
 import animations from '~/assets/css/animations.css?inline';
 import { handleShareOnTwitter } from '~/components/home-buttons/actions';
-import { GithubButton } from '~/components/home-buttons/github-button/github-button';
 import { TwitterButton } from '~/components/home-buttons/twitter-button/twitter-button';
 import { Loader } from '~/components/loader/loader';
 import { generateQRCode } from '~/components/qr-code/handleQRCode';
 import { QRCode } from '~/components/qr-code/qr-code';
 import { handleShortener } from '~/components/shortener-input/handleShortener';
 import { ShortenerInput } from '~/components/shortener-input/shortener-input';
-import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
 import { Tooltip } from '~/components/tooltip/tooltip';
 import { Waves } from '~/components/waves/waves';
 import { copyToClipboard, openUrl } from '~/utils';
@@ -63,25 +61,6 @@ export default component$(() => {
         <div class="mx-auto container grid grid-cols-12 flex-1">
           <div class="col-start-2 col-end-12 md:col-start-3 md:col-end-11">
             <div class="flex flex-col">
-              <div class="flex justify-end my-5">
-                <div class="flex">
-                  <div class="grid  flex-grow place-items-center">
-                    <span class="h-5">
-                      <GithubButton
-                        type="Star"
-                        user="origranot"
-                        repo="reduced.to"
-                        showCount
-                        label="Star"
-                      ></GithubButton>
-                    </span>
-                  </div>
-                  <div class="divider divider-horizontal"></div>
-                  <div class="grid  flex-grow place-items-center">
-                    <ThemeSwitcher></ThemeSwitcher>
-                  </div>
-                </div>
-              </div>
               <article class="prose mx-auto max-w-4xl pb-16">
                 <div class="mx-auto">
                   <img class="mx-auto" src="logo.svg" width="410" height="73" alt="Logo" />

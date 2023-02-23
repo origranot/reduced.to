@@ -1,6 +1,5 @@
 import { component$, useStore } from '@builder.io/qwik';
 import { RequestHandler } from '@builder.io/qwik-city';
-import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
 import { isAuthorized } from '~/shared/auth.service';
 
 export interface Store {
@@ -16,9 +15,6 @@ export default component$(() => {
 
   return (
     <div class="min-h-screen flex flex-col register-bg">
-      <div class="flex justify-end m-4">
-        <ThemeSwitcher />
-      </div>
       <div class="flex flex-1 content-center justify-center items-center">
         <div class="w-96 max-w-md">
           <div class="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
