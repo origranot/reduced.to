@@ -84,6 +84,7 @@ export default component$(() => {
 
 export const onGet: RequestHandler = async ({ response, cookie }) => {
   if (await isAuthorized(cookie)) {
+    console.log('AUTHORIZED');
     throw response.redirect('/');
   }
 };

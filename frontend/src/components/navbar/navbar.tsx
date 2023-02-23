@@ -1,10 +1,12 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik';
-import { Link } from '@builder.io/qwik-city';
+import { Link, useNavigate } from '@builder.io/qwik-city';
 import { ThemeSwitcher } from '../theme-switcher/theme-switcher';
 import styles from './navbar.css?inline';
 
 export const Navbar = component$(() => {
   useStylesScoped$(styles);
+
+  const navigator = useNavigate();
 
   return (
     <div class="navbar bg-base-100 drop-shadow-md">
@@ -14,9 +16,9 @@ export const Navbar = component$(() => {
         </Link>
       </div>
       <div class="flex-none">
-        <Link href="/login" class="btn btn-primary btn-sm">
+        <button class="btn btn-primary btn-sm" onClick$={() => (navigator.path = '/login')}>
           Login
-        </Link>
+        </button>
         <div class="divider divider-horizontal"></div>
 
         <div class="grid flex-grow place-items-center">
@@ -43,31 +45,5 @@ export const Navbar = component$(() => {
         </div>
       </div>
     </div>
-    // <div class="md:container md:mx-auto mx-5">
-    //   <div class="flex my-5 justify-between">
-    //     <div class="flex">
-    //       <div class="grid flex-grow place-items-center">
-    //         <span class="h-5">
-    //           <GithubButton
-    //             type="Star"
-    //             user="origranot"
-    //             repo="reduced.to"
-    //             showCount
-    //             label="Star"
-    //           ></GithubButton>
-    //         </span>
-    //       </div>
-    //     </div>
-    //     <div class="flex">
-    //       <Link href="/login" class="btn btn-primary btn-sm">
-    //         Login
-    //       </Link>
-    //       <div class="divider divider-horizontal"></div>
-    //       <div class="grid  flex-grow place-items-center">
-    //         <ThemeSwitcher></ThemeSwitcher>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
   );
 });
