@@ -1,7 +1,7 @@
-import { component$, useClientEffect$, useStore } from '@builder.io/qwik';
-import { RequestHandler } from '@builder.io/qwik-city';
+import { component$, useBrowserVisibleTask$, useStore } from '@builder.io/qwik';
+import { Link } from '@builder.io/qwik-city';
 import { Loader } from '~/components/loader/loader';
-import { authorizedFetch, isAuthorized } from '~/shared/auth.service';
+import { authorizedFetch } from '~/shared/auth.service';
 
 export interface Store {
   isVerified: boolean;
@@ -16,7 +16,7 @@ export default component$(() => {
     resent: false,
   });
 
-  useClientEffect$(() => {
+  useBrowserVisibleTask$(() => {
     authorizedFetch(`${process.env.API_DOMAIN}/api/v1/auth/verified`).then(async (response) => {
       const { verified } = await response.json();
       store.isVerified = verified;
@@ -63,9 +63,9 @@ export default component$(() => {
                   <p class="mt-2 mb-8">Your account is verified</p>
                   <div class="form-control w-full max-w-xs inline-flex">
                     <br />
-                    <button class="btn btn-primary" onClick$={() => (window.location.href = '/')}>
+                    <Link href="/" class="btn btn-primary">
                       Go back
-                    </button>
+                    </Link>
                   </div>
                 </>
               )}
@@ -76,9 +76,3 @@ export default component$(() => {
     </div>
   );
 });
-
-export const onGet: RequestHandler = async ({ response, cookie }) => {
-  if (!(await isAuthorized(cookie))) {
-    throw response.redirect('/');
-  }
-};

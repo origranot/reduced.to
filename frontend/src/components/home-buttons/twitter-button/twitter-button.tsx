@@ -11,7 +11,7 @@ export const TwitterButton = component$((props: TwitterButtonProps) => {
     <button
       type="button"
       title={props?.buttonTitle ? props.buttonTitle : 'Share on twitter'}
-      className={props?.className ? props.className : 'btn'}
+      class={props?.className ? props.className : 'btn'}
       onClick$={props.handleClick$}
     >
       <svg

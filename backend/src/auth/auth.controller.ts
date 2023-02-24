@@ -9,6 +9,7 @@ import { JwtRefreshAuthGuard } from './guards/jwt-refresh.guard';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import { LocalAuthGuard } from './guards/local.guard';
 import { VerifyAuthGuard } from './guards/verify.guard';
+import { UserContext } from './interfaces/user-context';
 
 @Controller({
   path: 'auth',
@@ -25,7 +26,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('/login')
   async login(@Req() req: Request, @Res() res: Response) {
-    const tokens = await this.authService.login(req.user);
+    const tokens = await this.authService.login(req.user as UserContext);
     const domain = process.env.NODE_ENV === 'production' ? '.reduced.to' : 'localhost';
     res.cookie('accessToken', tokens.accessToken, {
       expires: new Date(new Date().getTime() + 15 * 60 * 1000), //15 min
@@ -101,12 +102,12 @@ export class AuthController {
   @UseGuards(VerifyAuthGuard)
   @Get('/verify')
   async verify(@Req() req: Request) {
-    return this.authService.verify(req.user);
+    return this.authService.verify(req.user as UserContext);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/verified')
   async verified(@Req() req: Request) {
-    return this.authService.checkVerification(req.user);
+    return this.authService.checkVerification(req.user as UserContext);
   }
 }

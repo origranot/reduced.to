@@ -84,7 +84,7 @@ export default component$(() => {
                 }}
               />
               <Loader visible={state.loading} />
-              <div id="result" className={state.showResult ? '' : 'hidden'}>
+              <div id="result" class={state.showResult ? '' : 'hidden'}>
                 <p id="error" class="fade-in">
                   {state.urlError}
                 </p>
@@ -97,7 +97,7 @@ export default component$(() => {
                 </span>
                 <div
                   id="action"
-                  className={`${
+                  class={`${
                     state.reducedUrl ? '' : 'hidden'
                   } btn-group p-4 relative [&>:first-child>.btn]:rounded-l-lg [&>:last-child>.btn]:rounded-r-lg [&>*>.btn]:rounded-none`}
                 >
@@ -179,7 +179,7 @@ export default component$(() => {
                   <TwitterButton handleClick$={() => handleShareOnTwitter(state.reducedUrl)} />
                 </div>
               </div>
-              <div id="qrcode" className={`${state.showQRCode ? '' : 'hidden'} mx-auto`}>
+              <div id="qrcode" class={`${state.showQRCode ? '' : 'hidden'} mx-auto`}>
                 <QRCode showDownload />
               </div>
             </div>

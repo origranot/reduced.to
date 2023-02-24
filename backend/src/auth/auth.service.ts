@@ -1,10 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Rule } from '@prisma/client';
+import { Role } from '@prisma/client';
 import * as argon2 from 'argon2';
-import { AppConfigService } from 'src/config/config.service';
+import { AppConfigService } from '../config/config.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { SignupDto } from './dto/signup.dto';
+import { UserContext } from './interfaces/user-context';
 
 @Injectable()
 export class AuthService {
@@ -37,7 +38,7 @@ export class AuthService {
     return this.generateTokens(user);
   }
 
-  async signup(signupDto: SignupDto) {
+  async signup(signupDto: SignupDto): Promise<UserContext> {
     const hash = await argon2.hash(signupDto.password);
 
     const userInformation = {
@@ -49,7 +50,7 @@ export class AuthService {
       data: {
         ...userInformation,
         password: hash,
-        rule: Rule.USER,
+        role: Role.USER,
         verificationToken: this.jwtService.sign(userInformation, {
           expiresIn: '1d',
         }),
@@ -59,14 +60,14 @@ export class AuthService {
         email: true,
         name: true,
         refreshToken: true,
-        rule: true,
+        role: true,
         verificationToken: true,
         verified: true,
       },
     });
   }
 
-  async verify(user: any) {
+  async verify(user: UserContext) {
     const fetchedUser = await this.prisma.user.findUnique({
       where: {
         email: user.email,
@@ -87,10 +88,10 @@ export class AuthService {
     return { verified: updatedUser.verified };
   }
 
-  async checkVerification(user: any) {
+  async checkVerification({ id }: UserContext) {
     const fetchedUser = await this.prisma.user.findUnique({
       where: {
-        id: user.userId,
+        id,
       },
     });
 
@@ -128,7 +129,7 @@ export class AuthService {
     return user;
   }
 
-  async generateTokens(user: any) {
+  async generateTokens(user: UserContext) {
     const tokens = {
       accessToken: this.generateToken(user),
       refreshToken: this.generateToken(
@@ -150,12 +151,12 @@ export class AuthService {
     return tokens;
   }
 
-  generateToken(user: any, expiresIn?: string, secret?: string) {
+  generateToken(user: UserContext, expiresIn?: string, secret?: string) {
     const payload = {
-      sub: user.id,
+      id: user.id,
       email: user.email,
       firstName: user.name,
-      rule: user.rule,
+      role: user.role,
       iss: 'reduced.to',
     };
 

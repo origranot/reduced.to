@@ -1,12 +1,10 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik';
-import { Link, useNavigate } from '@builder.io/qwik-city';
+import { Link } from '@builder.io/qwik-city';
 import { ThemeSwitcher } from '../theme-switcher/theme-switcher';
 import styles from './navbar.css?inline';
 
 export const Navbar = component$(() => {
   useStylesScoped$(styles);
-
-  const navigator = useNavigate();
 
   return (
     <div class="navbar bg-base-100 drop-shadow-md">
@@ -16,9 +14,9 @@ export const Navbar = component$(() => {
         </Link>
       </div>
       <div class="flex-none">
-        <button class="btn btn-primary btn-sm" onClick$={() => (navigator.path = '/login')}>
+        <Link href="/login" class="btn btn-primary btn-sm">
           Login
-        </button>
+        </Link>
         <div class="divider divider-horizontal"></div>
 
         <div class="grid flex-grow place-items-center">

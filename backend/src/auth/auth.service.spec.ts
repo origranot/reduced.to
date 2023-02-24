@@ -1,8 +1,9 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Rule, User } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 import * as argon2 from 'argon2';
+import { AppConfigModule } from '../config/config.module';
 import { PrismaService } from './../prisma/prisma.service';
 import { AuthService } from './auth.service';
 
@@ -14,6 +15,7 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [AppConfigModule],
       providers: [
         AuthService,
         JwtService,
@@ -40,7 +42,7 @@ describe('AuthService', () => {
       password: await argon2.hash('password'),
       verified: false,
       verificationToken: 'verification_token',
-      rule: Rule.USER,
+      role: Role.USER,
       refreshToken: 'refresh',
     };
   });

@@ -1,17 +1,27 @@
 import { component$, useStore } from '@builder.io/qwik';
-import { RequestHandler } from '@builder.io/qwik-city';
-import { isAuthorized } from '~/shared/auth.service';
+import { RequestHandler, useNavigate } from '@builder.io/qwik-city';
+import { isAuthorized } from '../../shared/auth.service';
 
-export interface Store {
+interface LoginStore {
   email: string;
   password: string;
+  loading: boolean;
 }
 
+export const onGet: RequestHandler = async ({ cookie, redirect }) => {
+  if (await isAuthorized(cookie)) {
+    throw redirect(302, '/');
+  }
+};
+
 export default component$(() => {
-  const store = useStore<Store>({
+  const store = useStore<LoginStore>({
     email: '',
     password: '',
+    loading: false,
   });
+
+  const navigate = useNavigate();
 
   return (
     <div class="min-h-screen flex flex-col register-bg">
@@ -51,8 +61,9 @@ export default component$(() => {
                 </label>
                 <br />
                 <button
-                  class="btn btn-primary"
+                  class={`btn btn-primary ${store.loading ? 'loading' : ''}`}
                   onClick$={async () => {
+                    store.loading = true;
                     fetch(`${process.env.API_DOMAIN}/api/v1/auth/login`, {
                       method: 'POST',
                       headers: {
@@ -63,12 +74,15 @@ export default component$(() => {
                         email: store.email,
                         password: store.password,
                       }),
-                    }).then(async (response) => {
-                      if (response.ok) {
-                        //Temporary solution until CSS loading is fixed, should be handled with useNavigate in the future
-                        window.location.href = '/';
-                      }
-                    });
+                    })
+                      .then(async (response) => {
+                        if (response.ok) {
+                          navigate('/');
+                        }
+                      })
+                      .finally(() => {
+                        store.loading = false;
+                      });
                   }}
                 >
                   Log In
@@ -81,10 +95,3 @@ export default component$(() => {
     </div>
   );
 });
-
-export const onGet: RequestHandler = async ({ response, cookie }) => {
-  if (await isAuthorized(cookie)) {
-    console.log('AUTHORIZED');
-    throw response.redirect('/');
-  }
-};
