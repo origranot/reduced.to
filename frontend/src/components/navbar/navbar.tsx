@@ -18,6 +18,8 @@ export const Navbar = component$(() => {
       </div>
       <div class="flex-none">
         {globalStore.user ? (
+          //TODO: change to Links after issue resolved
+          // https://github.com/BuilderIO/qwik/issues/2751
           <a href="/logout" class="btn btn-primary btn-sm">
             Logout
           </a>
