@@ -1,5 +1,5 @@
 import { component$, useContextProvider, useStore } from '@builder.io/qwik';
-import { QwikCity, RouterOutlet, ServiceWorkerRegister } from '@builder.io/qwik-city';
+import { QwikCityProvider, RouterOutlet, ServiceWorkerRegister } from '@builder.io/qwik-city';
 import { RouterHead } from './components/router-head/router-head';
 import { ThemeLoader } from './components/theme-switcher/theme-loader';
 import { GlobalStore, SiteStore } from './context';
@@ -16,11 +16,12 @@ export default component$(() => {
 
   const store = useStore<SiteStore>({
     theme: 'auto',
+    user: null,
   });
   useContextProvider(GlobalStore, store);
 
   return (
-    <QwikCity>
+    <QwikCityProvider>
       <head>
         <meta charSet="utf-8" />
         <RouterHead />
@@ -30,6 +31,6 @@ export default component$(() => {
         <RouterOutlet />
         <ServiceWorkerRegister />
       </body>
-    </QwikCity>
+    </QwikCityProvider>
   );
 });

@@ -1,6 +1,6 @@
 import {
   component$,
-  createContext,
+  createContextId,
   useContextProvider,
   useSignal,
   useStore,
@@ -20,7 +20,7 @@ import { Waves } from '~/components/waves/waves';
 import { copyToClipboard, openUrl } from '~/utils';
 import styles from './index.css?inline';
 
-export const InputContext = createContext('input');
+export const InputContext = createContextId('input');
 
 export interface Store {
   inputValue: string;

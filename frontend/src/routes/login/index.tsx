@@ -1,5 +1,6 @@
-import { component$, useStore } from '@builder.io/qwik';
+import { component$, useContext, useStore } from '@builder.io/qwik';
 import { RequestHandler, useNavigate } from '@builder.io/qwik-city';
+import { GlobalStore } from '../../context';
 import { isAuthorized } from '../../shared/auth.service';
 
 interface LoginStore {
@@ -15,7 +16,9 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 };
 
 export default component$(() => {
-  const store = useStore<LoginStore>({
+  const globalStore = useContext(GlobalStore);
+
+  const loginStore = useStore<LoginStore>({
     email: '',
     password: '',
     loading: false,
@@ -38,8 +41,10 @@ export default component$(() => {
                 <input
                   type="text"
                   class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
-                  value={store.email}
-                  onInput$={(event) => (store.email = (event.target as HTMLInputElement).value)}
+                  value={loginStore.email}
+                  onInput$={(event) =>
+                    (loginStore.email = (event.target as HTMLInputElement).value)
+                  }
                 />
                 <br />
                 <label class="label">
@@ -48,8 +53,10 @@ export default component$(() => {
                 <input
                   type={'password'}
                   class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
-                  value={store.password}
-                  onInput$={(event) => (store.password = (event.target as HTMLInputElement).value)}
+                  value={loginStore.password}
+                  onInput$={(event) =>
+                    (loginStore.password = (event.target as HTMLInputElement).value)
+                  }
                 />
                 <label class="label">
                   <span class="label-text text-xs font-semibold">
@@ -61,9 +68,9 @@ export default component$(() => {
                 </label>
                 <br />
                 <button
-                  class={`btn btn-primary ${store.loading ? 'loading' : ''}`}
+                  class={`btn btn-primary ${loginStore.loading ? 'loading' : ''}`}
                   onClick$={async () => {
-                    store.loading = true;
+                    loginStore.loading = true;
                     fetch(`${process.env.API_DOMAIN}/api/v1/auth/login`, {
                       method: 'POST',
                       headers: {
@@ -71,8 +78,8 @@ export default component$(() => {
                       },
                       credentials: 'include',
                       body: JSON.stringify({
-                        email: store.email,
-                        password: store.password,
+                        email: loginStore.email,
+                        password: loginStore.password,
                       }),
                     })
                       .then(async (response) => {
@@ -81,7 +88,7 @@ export default component$(() => {
                         }
                       })
                       .finally(() => {
-                        store.loading = false;
+                        loginStore.loading = false;
                       });
                   }}
                 >
