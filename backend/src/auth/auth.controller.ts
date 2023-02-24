@@ -44,7 +44,7 @@ export class AuthController {
       httpOnly: true,
     });
 
-    res.send({ success: true });
+    res.send({ user: req.user });
   }
 
   @Post('/logout')
@@ -76,7 +76,7 @@ export class AuthController {
       httpOnly: true,
     });
 
-    res.send({ success: true });
+    res.send({ user: user });
   }
 
   @UseGuards(JwtRefreshAuthGuard)

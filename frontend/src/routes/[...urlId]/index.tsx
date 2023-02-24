@@ -1,10 +1,10 @@
-import { component$, useClientEffect$, useLexicalScope } from '@builder.io/qwik';
-import { RequestHandler, useLocation } from '@builder.io/qwik-city';
+import { component$, useBrowserVisibleTask$, useLexicalScope } from '@builder.io/qwik';
+import { useLocation } from '@builder.io/qwik-city';
 
 export default component$(() => {
   const location = useLocation();
 
-  useClientEffect$(async () => {
+  useBrowserVisibleTask$(async () => {
     const urlId = location.params.urlId.replace(/\//g, '');
 
     const [store] = useLexicalScope();

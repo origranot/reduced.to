@@ -1,6 +1,6 @@
 import { component$, useContext, useStore } from '@builder.io/qwik';
 import { RequestHandler, useNavigate } from '@builder.io/qwik-city';
-import { GlobalStore } from '../../context';
+import { GlobalStore, SiteStore } from '../../context';
 import { isAuthorized } from '../../shared/auth.service';
 
 interface LoginStore {
@@ -16,7 +16,7 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 };
 
 export default component$(() => {
-  const globalStore = useContext(GlobalStore);
+  const globalStore = useContext<SiteStore>(GlobalStore);
 
   const loginStore = useStore<LoginStore>({
     email: '',
@@ -84,6 +84,13 @@ export default component$(() => {
                     })
                       .then(async (response) => {
                         if (response.ok) {
+                          const { user } = await response.json();
+                          globalStore.user = {
+                            name: user.name,
+                            email: user.email,
+                            verified: user.verified,
+                            role: user.role,
+                          };
                           navigate('/');
                         }
                       })

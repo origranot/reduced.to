@@ -7,6 +7,7 @@ export interface SiteStore {
     name: string;
     email: string;
     verified: boolean;
+    role: 'USER' | 'ADMIN';
   } | null;
 }
 

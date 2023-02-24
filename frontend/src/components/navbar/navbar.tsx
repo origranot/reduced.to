@@ -1,10 +1,13 @@
-import { component$, useStylesScoped$ } from '@builder.io/qwik';
+import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
+import { GlobalStore, SiteStore } from '../../context';
 import { ThemeSwitcher } from '../theme-switcher/theme-switcher';
 import styles from './navbar.css?inline';
 
 export const Navbar = component$(() => {
   useStylesScoped$(styles);
+
+  const globalStore = useContext<SiteStore>(GlobalStore);
 
   return (
     <div class="navbar bg-base-100 drop-shadow-md">
@@ -14,9 +17,15 @@ export const Navbar = component$(() => {
         </Link>
       </div>
       <div class="flex-none">
-        <Link href="/login" class="btn btn-primary btn-sm">
-          Login
-        </Link>
+        {globalStore.user ? (
+          <a href="/logout" class="btn btn-primary btn-sm">
+            Logout
+          </a>
+        ) : (
+          <a href="/login" class="btn btn-primary btn-sm">
+            Login
+          </a>
+        )}
         <div class="divider divider-horizontal"></div>
 
         <div class="grid flex-grow place-items-center">
