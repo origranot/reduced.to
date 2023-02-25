@@ -1,13 +1,15 @@
-import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
+import { component$, useStylesScoped$ } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
-import { GlobalStore, SiteStore } from '../../context';
+import { useGetCurrentUser } from '../../routes/layout';
 import { ThemeSwitcher } from '../theme-switcher/theme-switcher';
 import styles from './navbar.css?inline';
+import { Profile } from './profile/profile';
 
 export const Navbar = component$(() => {
   useStylesScoped$(styles);
 
-  const globalStore = useContext<SiteStore>(GlobalStore);
+  const userCtx = useGetCurrentUser().value;
+  console.log(userCtx);
 
   return (
     <div class="navbar bg-base-100 drop-shadow-md">
@@ -17,12 +19,10 @@ export const Navbar = component$(() => {
         </Link>
       </div>
       <div class="flex-none">
-        {globalStore.user ? (
+        {userCtx ? (
           //TODO: change to Links after issue resolved
           // https://github.com/BuilderIO/qwik/issues/2751
-          <a href="/logout" class="btn btn-primary btn-sm">
-            Logout
-          </a>
+          <Profile name={userCtx.name} />
         ) : (
           <a href="/login" class="btn btn-primary btn-sm">
             Login

@@ -1,4 +1,5 @@
-import { qwikCity } from '@builder.io/qwik-city/middleware/node';
+import { createQwikCity } from '@builder.io/qwik-city/middleware/node';
+import qwikCityPlan from '@qwik-city-plan';
 import express from 'express';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
@@ -9,7 +10,7 @@ const distDir = join(fileURLToPath(import.meta.url), '..', '..', 'dist');
 const buildDir = join(distDir, 'build');
 
 // Create the Qwik City express middleware
-const { router, notFound } = qwikCity(render);
+const { router, notFound } = createQwikCity({ render, qwikCityPlan });
 
 // Allow for dynamic port
 const PORT = process.env.PORT ?? 5000;

@@ -155,7 +155,7 @@ export class AuthService {
     const payload = {
       id: user.id,
       email: user.email,
-      firstName: user.name,
+      name: user.name,
       role: user.role,
       iss: 'reduced.to',
     };

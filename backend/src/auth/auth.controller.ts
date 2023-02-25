@@ -47,12 +47,6 @@ export class AuthController {
     res.send({ user: req.user });
   }
 
-  @Post('/logout')
-  async logout(@Res() res: any) {
-    res.clearCookie('accessToken');
-    res.send({ success: true });
-  }
-
   @Post('/signup')
   async signup(@Res() res: Response, @Body() signupDto: SignupDto) {
     const user = await this.authService.signup(signupDto);

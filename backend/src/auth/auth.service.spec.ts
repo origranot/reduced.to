@@ -81,7 +81,9 @@ describe('AuthService', () => {
     it('should throw an unauthorized exception if the verification token is invalid', async () => {
       jest.spyOn(prismaService.user, 'update').mockResolvedValueOnce(null);
       expect(async () => {
-        await authService.verify('invalidtoken');
+        await authService.verify({
+          ...mockData,
+        });
       }).rejects.toThrow(UnauthorizedException);
     });
 
