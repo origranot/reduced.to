@@ -16,8 +16,6 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 };
 
 export default component$(() => {
-  const globalStore = useContext<SiteStore>(GlobalStore);
-
   const loginStore = useStore<LoginStore>({
     email: '',
     password: '',
@@ -84,13 +82,6 @@ export default component$(() => {
                     })
                       .then(async (response) => {
                         if (response.ok) {
-                          const { user } = await response.json();
-                          globalStore.user = {
-                            name: user.name,
-                            email: user.email,
-                            verified: user.verified,
-                            role: user.role,
-                          };
                           navigate('/');
                         }
                       })

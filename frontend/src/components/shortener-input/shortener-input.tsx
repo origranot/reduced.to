@@ -1,9 +1,16 @@
-import { component$, useContext, $, useOnDocument, useSignal } from '@builder.io/qwik';
+import {
+  component$,
+  useContext,
+  $,
+  useOnDocument,
+  useSignal,
+  QwikKeyboardEvent,
+} from '@builder.io/qwik';
 import { InputContext, Store } from '~/routes';
 import { ShortenerInputBtn } from './shortener-input-btn';
 
 export interface ShortenerInputProps {
-  onKeyUp$: () => void;
+  onKeyUp$: (event: QwikKeyboardEvent<HTMLInputElement>) => void;
   onInput$: (event: InputEvent) => void;
   onSubmit$: () => void;
 }
