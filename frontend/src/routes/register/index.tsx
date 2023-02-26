@@ -56,8 +56,6 @@ export const PasswordMasked = () => {
 };
 
 export default component$(() => {
-  const nav = useNavigate();
-
   const store = useStore<RegisterStore>({
     name: '',
     email: '',

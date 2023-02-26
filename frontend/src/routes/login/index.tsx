@@ -1,6 +1,5 @@
-import { component$, useContext, useStore } from '@builder.io/qwik';
+import { component$, useStore } from '@builder.io/qwik';
 import { RequestHandler, useNavigate } from '@builder.io/qwik-city';
-import { GlobalStore, SiteStore } from '../../context';
 import { isAuthorized } from '../../shared/auth.service';
 
 interface LoginStore {
