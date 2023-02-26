@@ -10,6 +10,7 @@ import { JwtAuthGuard } from './guards/jwt.guard';
 import { LocalAuthGuard } from './guards/local.guard';
 import { VerifyAuthGuard } from './guards/verify.guard';
 import { UserContext } from './interfaces/user-context';
+import { setAuthCookies } from './utils/cookies';
 
 @Controller({
   path: 'auth',
@@ -23,26 +24,17 @@ export class AuthController {
     private readonly appConfigService: AppConfigService
   ) {}
 
+  cookieOptions = {
+    path: '/',
+    sameSite: 'strict',
+    httpOnly: true,
+  } as any;
+
   @UseGuards(LocalAuthGuard)
   @Post('/login')
   async login(@Req() req: Request, @Res() res: Response) {
     const tokens = await this.authService.login(req.user as UserContext);
-    const domain = process.env.NODE_ENV === 'production' ? '.reduced.to' : 'localhost';
-    res.cookie('accessToken', tokens.accessToken, {
-      expires: new Date(new Date().getTime() + 15 * 60 * 1000), //15 min
-      domain,
-      path: '/',
-      sameSite: 'strict',
-      httpOnly: true,
-    });
-
-    res.cookie('refreshToken', tokens.refreshToken, {
-      expires: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), //7 days
-      domain,
-      path: '/',
-      sameSite: 'strict',
-      httpOnly: true,
-    });
+    res = setAuthCookies(res, this.appConfigService.getConfig().front.domain, tokens);
 
     res.send({ user: req.user });
   }
@@ -55,22 +47,7 @@ export class AuthController {
     await this.novuService.sendVerificationEmail(user);
 
     const tokens = await this.authService.login(user);
-    const domain = process.env.NODE_ENV === 'production' ? '.reduced.to' : 'localhost';
-    res.cookie('accessToken', tokens.accessToken, {
-      expires: new Date(new Date().getTime() + 15 * 60 * 1000), //15 min
-      domain,
-      path: '/',
-      sameSite: 'strict',
-      httpOnly: true,
-    });
-
-    res.cookie('refreshToken', tokens.refreshToken, {
-      expires: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), //7 days
-      domain,
-      path: '/',
-      sameSite: 'strict',
-      httpOnly: true,
-    });
+    res = setAuthCookies(res, this.appConfigService.getConfig().front.domain, tokens);
 
     res.send({ user: user });
   }
@@ -82,8 +59,8 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('check-auth')
-  checkAuth(@Req() req) {
+  @Get('/check-auth')
+  checkAuth(@Req() req: Request) {
     return { user: req.user };
   }
 
