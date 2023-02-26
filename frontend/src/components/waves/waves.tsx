@@ -20,34 +20,10 @@ export const Waves = component$(() => {
           ></path>
         </defs>
         <g class="parallax">
-          <use
-            // @ts-expect-error
-            xlink:href="#gentle-wave"
-            x="48"
-            y="0"
-            fill={`hsla(var(--w-bg) / 0.7)`}
-          />
-          <use
-            // @ts-expect-error
-            xlink:href="#gentle-wave"
-            x="48"
-            y="3"
-            fill={`hsla(var(--w-bg) / 0.5)`}
-          />
-          <use
-            // @ts-expect-error
-            xlink:href="#gentle-wave"
-            x="48"
-            y="5"
-            fill={`hsla(var(--w-bg) / 0.3)`}
-          />
-          <use
-            // @ts-expect-error
-            xlink:href="#gentle-wave"
-            x="48"
-            y="7"
-            fill={`hsla(var(--w-bg) / 1)`}
-          />
+          <use xlink:href="#gentle-wave" x="48" y="0" fill={`hsla(var(--w-bg) / 0.7)`} />
+          <use xlink:href="#gentle-wave" x="48" y="3" fill={`hsla(var(--w-bg) / 0.5)`} />
+          <use xlink:href="#gentle-wave" x="48" y="5" fill={`hsla(var(--w-bg) / 0.3)`} />
+          <use xlink:href="#gentle-wave" x="48" y="7" fill={`hsla(var(--w-bg) / 1)`} />
         </g>
       </svg>
     </div>

@@ -22,8 +22,6 @@ export const setAuthCookies = (
     .replace(/:\d+$/g, ''); // strip port
   const domain = process.env.NODE_ENV === 'production' ? `.${strippedDomain}` : strippedDomain;
 
-  console.log(domain);
-
   res
     .cookie(AUTH_COOKIE_NAME, tokens.accessToken, {
       expires: new Date(new Date().getTime() + AUTH_COOKIE_EXPIRES),

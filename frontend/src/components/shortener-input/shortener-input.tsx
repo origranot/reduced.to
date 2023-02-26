@@ -3,7 +3,7 @@ import { InputContext, Store } from '~/routes';
 import { ShortenerInputBtn } from './shortener-input-btn';
 
 export interface ShortenerInputProps {
-  onKeyUp$: (event: KeyboardEvent) => void;
+  onKeyUp$: () => void;
   onInput$: (event: InputEvent) => void;
   onSubmit$: () => void;
 }
