@@ -1,27 +1,18 @@
-import { component$, useBrowserVisibleTask$, useLexicalScope } from '@builder.io/qwik';
-import { useLocation } from '@builder.io/qwik-city';
+import { RequestHandler } from '@builder.io/qwik-city';
 
-export default component$(() => {
-  const location = useLocation();
+export const onGet: RequestHandler = async ({ params: { urlId }, redirect }) => {
+  let originalUrl: string;
 
-  useBrowserVisibleTask$(async () => {
-    const urlId = location.params.urlId.replace(/\//g, '');
+  try {
+    const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`);
+    originalUrl = await res.text();
 
-    const [store] = useLexicalScope();
-    store.url = '/unknown';
-    try {
-      const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`);
-
-      if (res.status !== 200) {
-        throw new Error('failed to fetch original url...');
-      }
-      store.url = await res.text();
-    } catch (err) {
-      console.error(err);
+    if (res.status !== 200 || !originalUrl) {
+      throw new Error('failed to fetch original url...');
     }
+  } catch (err) {
+    originalUrl = '/unknown';
+  }
 
-    window.location.replace(store.url);
-  });
-
-  return <div />;
-});
+  throw redirect(302, originalUrl);
+};

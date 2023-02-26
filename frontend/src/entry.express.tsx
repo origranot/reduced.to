@@ -30,5 +30,5 @@ app.use(notFound);
 
 // Start the express server
 app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}/`);
+  console.log(`App started on port ${PORT}`);
 });

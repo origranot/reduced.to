@@ -9,7 +9,6 @@ export const Navbar = component$(() => {
   useStylesScoped$(styles);
 
   const userCtx = useGetCurrentUser().value;
-  console.log(userCtx);
 
   return (
     <div class="navbar bg-base-100 drop-shadow-md">

@@ -50,6 +50,8 @@ export class AuthController {
   @Post('/signup')
   async signup(@Res() res: Response, @Body() signupDto: SignupDto) {
     const user = await this.authService.signup(signupDto);
+
+    // Send verification email to user
     await this.novuService.sendVerificationEmail(user);
 
     const tokens = await this.authService.login(user);
