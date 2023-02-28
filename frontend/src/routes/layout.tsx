@@ -1,8 +1,8 @@
 import { component$, Slot } from '@builder.io/qwik';
-import { loader$, RequestHandler } from '@builder.io/qwik-city';
+import { RequestHandler, routeLoader$ } from '@builder.io/qwik-city';
 import MainLayout from '~/layouts/MainLayout';
-import { isAuthorized } from '~/shared/auth.service';
 import jwt_decode from 'jwt-decode';
+import { ACCESS_COOKIE_NAME, refreshTokens, REFRESH_COOKIE_NAME } from '../shared/auth.service';
 
 interface UserCtx {
   id: string;
@@ -12,15 +12,45 @@ interface UserCtx {
   validated: boolean;
 }
 
-export const useGetCurrentUser = loader$<UserCtx | null>(({ cookie }) => {
-  const token = cookie.get('accessToken');
+export const useGetCurrentUser = routeLoader$<UserCtx | null>(({ cookie }) => {
+  const token = cookie.get(ACCESS_COOKIE_NAME);
   if (!token) return null;
 
   return jwt_decode(token.value);
 });
 
-export const onGet: RequestHandler = async ({ cookie }) => {
-  await isAuthorized(cookie);
+// Verify that that the access token is valid and if not, refresh it
+export const onGet: RequestHandler = async (ev) => {
+  const accessToken = ev.cookie.get(ACCESS_COOKIE_NAME)?.value;
+  const refreshToken = ev.cookie.get(REFRESH_COOKIE_NAME)?.value;
+
+  ev.headers.set('set-cookie', `test=123; Domain=localhost; Path=/; HttpOnly;`);
+
+  if (refreshToken && !accessToken) {
+    const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await refreshTokens({
+      headers: {
+        cookie: `${REFRESH_COOKIE_NAME}=${refreshToken}`,
+      },
+    });
+
+    const domain = process.env.NODE_ENV === 'production' ? `.${process.env.DOMAIN}` : 'localhost';
+
+    if (newAccessToken && newRefreshToken) {
+      ev.headers.set(
+        'set-cookie',
+        `${ACCESS_COOKIE_NAME}=${newAccessToken}; Path=/; Domain=${domain}; HttpOnly; SameSite=Strict; Expires=${new Date(
+          new Date().getTime() + 15 * 60 * 1000
+        )}`
+      );
+
+      ev.headers.set(
+        'set-cookie',
+        `${REFRESH_COOKIE_NAME}=${newRefreshToken}; Path=/; Domain=${domain}; HttpOnly; SameSite=Strict; Expires=${new Date(
+          new Date().getTime() + 7 * 24 * 60 * 60 * 1000
+        )})`
+      );
+    }
+  }
 };
 
 export default component$(() => {

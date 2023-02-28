@@ -1,5 +1,4 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik';
-import { Link } from '@builder.io/qwik-city';
 import { useGetCurrentUser } from '../../routes/layout';
 import { ThemeSwitcher } from '../theme-switcher/theme-switcher';
 import styles from './navbar.css?inline';
@@ -13,9 +12,9 @@ export const Navbar = component$(() => {
   return (
     <div class="navbar bg-base-100 drop-shadow-md">
       <div class="flex-1">
-        <Link href="/" class="btn btn-ghost normal-case text-xl">
+        <a href="/" class="btn btn-ghost normal-case text-xl">
           Reduced.to
-        </Link>
+        </a>
       </div>
       <div class="flex-none">
         {userCtx ? (

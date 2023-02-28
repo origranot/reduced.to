@@ -1,6 +1,6 @@
 import { component$, useStore } from '@builder.io/qwik';
 import { RequestHandler, useNavigate } from '@builder.io/qwik-city';
-import { isAuthorized } from '../../shared/auth.service';
+import { ACCESS_COOKIE_NAME, validateAccessToken } from '../../shared/auth.service';
 
 interface LoginStore {
   email: string;
@@ -9,7 +9,8 @@ interface LoginStore {
 }
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
-  if (await isAuthorized(cookie)) {
+  const acccessToken = cookie.get(ACCESS_COOKIE_NAME)?.value;
+  if (await validateAccessToken(acccessToken)) {
     throw redirect(302, '/');
   }
 };
