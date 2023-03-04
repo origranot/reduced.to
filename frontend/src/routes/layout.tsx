@@ -1,10 +1,15 @@
 import { component$, Slot } from '@builder.io/qwik';
 import { RequestHandler, routeLoader$ } from '@builder.io/qwik-city';
-import MainLayout from '~/layouts/MainLayout';
 import jwt_decode from 'jwt-decode';
-import { ACCESS_COOKIE_NAME, refreshTokens, REFRESH_COOKIE_NAME } from '../shared/auth.service';
+import {
+  ACCESS_COOKIE_NAME,
+  refreshTokens,
+  REFRESH_COOKIE_NAME,
+  setTokensAsCookies,
+} from '../shared/auth.service';
+import { Navbar } from '../components/navbar/navbar';
 
-interface UserCtx {
+export interface UserCtx {
   id: string;
   name: string;
   email: string;
@@ -20,45 +25,30 @@ export const useGetCurrentUser = routeLoader$<UserCtx | null>(({ cookie }) => {
 });
 
 // Verify that that the access token is valid and if not, refresh it
-export const onGet: RequestHandler = async (ev) => {
-  const accessToken = ev.cookie.get(ACCESS_COOKIE_NAME)?.value;
-  const refreshToken = ev.cookie.get(REFRESH_COOKIE_NAME)?.value;
+export const onGet: RequestHandler = async ({ cookie }) => {
+  const accessToken = cookie.get(ACCESS_COOKIE_NAME)?.value;
+  const refreshToken = cookie.get(REFRESH_COOKIE_NAME)?.value;
 
-  ev.headers.set('set-cookie', `test=123; Domain=localhost; Path=/; HttpOnly;`);
+  if (!accessToken && refreshToken) {
+    const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await refreshTokens(
+      refreshToken
+    );
 
-  if (refreshToken && !accessToken) {
-    const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await refreshTokens({
-      headers: {
-        cookie: `${REFRESH_COOKIE_NAME}=${refreshToken}`,
-      },
-    });
-
-    const domain = process.env.NODE_ENV === 'production' ? `.${process.env.DOMAIN}` : 'localhost';
-
-    if (newAccessToken && newRefreshToken) {
-      ev.headers.set(
-        'set-cookie',
-        `${ACCESS_COOKIE_NAME}=${newAccessToken}; Path=/; Domain=${domain}; HttpOnly; SameSite=Strict; Expires=${new Date(
-          new Date().getTime() + 15 * 60 * 1000
-        )}`
-      );
-
-      ev.headers.set(
-        'set-cookie',
-        `${REFRESH_COOKIE_NAME}=${newRefreshToken}; Path=/; Domain=${domain}; HttpOnly; SameSite=Strict; Expires=${new Date(
-          new Date().getTime() + 7 * 24 * 60 * 60 * 1000
-        )})`
-      );
-    }
+    setTokensAsCookies(newAccessToken, newRefreshToken, cookie);
   }
 };
 
 export default component$(() => {
+  const userCtx = useGetCurrentUser().value;
+
   return (
     <>
-      <MainLayout>
-        <Slot />
-      </MainLayout>
+      <Navbar user={userCtx} />
+      <main>
+        <section>
+          <Slot />
+        </section>
+      </main>
     </>
   );
 });

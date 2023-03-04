@@ -1,13 +1,15 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik';
-import { useGetCurrentUser } from '../../routes/layout';
+import { UserCtx } from '../../routes/layout';
 import { ThemeSwitcher } from '../theme-switcher/theme-switcher';
 import styles from './navbar.css?inline';
 import { Profile } from './profile/profile';
 
-export const Navbar = component$(() => {
-  useStylesScoped$(styles);
+interface NavbarProps {
+  user: UserCtx | null;
+}
 
-  const userCtx = useGetCurrentUser().value;
+export const Navbar = component$(({ user }: NavbarProps) => {
+  useStylesScoped$(styles);
 
   return (
     <div class="navbar bg-base-100 drop-shadow-md">
@@ -17,10 +19,10 @@ export const Navbar = component$(() => {
         </a>
       </div>
       <div class="flex-none">
-        {userCtx ? (
+        {user ? (
           //TODO: change to Links after issue resolved
           // https://github.com/BuilderIO/qwik/issues/2751
-          <Profile name={userCtx.name} />
+          <Profile name={user.name} />
         ) : (
           <a href="/login" class="btn btn-primary btn-sm">
             Login

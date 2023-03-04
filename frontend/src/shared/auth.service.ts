@@ -1,3 +1,5 @@
+import { Cookie } from '@builder.io/qwik-city';
+
 export const ACCESS_COOKIE_NAME = 'accessToken';
 export const REFRESH_COOKIE_NAME = 'refreshToken';
 
@@ -13,6 +15,22 @@ export const validateAccessToken = async (token: string | undefined): Promise<bo
   });
 
   return res.ok;
+};
+
+export const setTokensAsCookies = (accessToken: string, refreshToken: string, cookie: Cookie) => {
+  const domain = process.env.NODE_ENV === 'production' ? `.${process.env.DOMAIN}` : 'localhost';
+  cookie.set(ACCESS_COOKIE_NAME, accessToken, {
+    path: '/',
+    sameSite: 'strict',
+    domain,
+    httpOnly: true,
+  });
+  cookie.set(REFRESH_COOKIE_NAME, refreshToken, {
+    path: '/',
+    sameSite: 'strict',
+    domain,
+    httpOnly: true,
+  });
 };
 
 export const authorizedFetch = async (url: string, options = {}) => {
@@ -33,12 +51,14 @@ export const authorizedFetch = async (url: string, options = {}) => {
 };
 
 export const refreshTokens = async (
-  options = {}
+  refreshToken: string
 ): Promise<{ accessToken: string; refreshToken: string }> => {
   const res = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/refresh`, {
     method: 'POST',
     credentials: 'include',
-    ...options,
+    headers: {
+      cookie: `${REFRESH_COOKIE_NAME}=${refreshToken}`,
+    },
   });
 
   if (res.ok) {

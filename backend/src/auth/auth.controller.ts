@@ -36,7 +36,7 @@ export class AuthController {
     const tokens = await this.authService.login(req.user as UserContext);
     res = setAuthCookies(res, this.appConfigService.getConfig().front.domain, tokens);
 
-    res.send({ user: req.user });
+    res.send(tokens);
   }
 
   @Post('/signup')
@@ -49,7 +49,7 @@ export class AuthController {
     const tokens = await this.authService.login(user);
     res = setAuthCookies(res, this.appConfigService.getConfig().front.domain, tokens);
 
-    res.send({ user: user });
+    res.send(tokens);
   }
 
   @UseGuards(JwtRefreshAuthGuard)

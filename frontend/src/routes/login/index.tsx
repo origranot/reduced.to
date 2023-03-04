@@ -1,28 +1,66 @@
 import { component$, useStore } from '@builder.io/qwik';
-import { RequestHandler, useNavigate } from '@builder.io/qwik-city';
-import { ACCESS_COOKIE_NAME, validateAccessToken } from '../../shared/auth.service';
+import { Form, globalAction$, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
+import {
+  ACCESS_COOKIE_NAME,
+  setTokensAsCookies,
+  validateAccessToken,
+} from '../../shared/auth.service';
 
-interface LoginStore {
-  email: string;
-  password: string;
-  loading: boolean;
-}
-
-export const onGet: RequestHandler = async ({ cookie, redirect }) => {
+export const onGet: RequestHandler = async ({ cookie, redirect, request }) => {
   const acccessToken = cookie.get(ACCESS_COOKIE_NAME)?.value;
   if (await validateAccessToken(acccessToken)) {
     throw redirect(302, '/');
   }
 };
 
-export default component$(() => {
-  const loginStore = useStore<LoginStore>({
-    email: '',
-    password: '',
-    loading: false,
-  });
+export const useLogin = globalAction$(
+  async ({ email, password }, { fail, redirect, cookie }) => {
+    const data = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
 
-  const navigate = useNavigate();
+    const { accessToken, refreshToken } = await data.json();
+
+    if (!data.ok || !accessToken || !refreshToken) {
+      return fail(401, {
+        message: 'Invalid email or password',
+      });
+    }
+
+    setTokensAsCookies(accessToken, refreshToken, cookie);
+    redirect(302, '/');
+  },
+  zod$({
+    email: z
+      .string({
+        required_error: 'Email is required',
+      })
+      .email({
+        message: 'Please enter a valid email',
+      }),
+    password: z
+      .string({
+        required_error: 'Password is required',
+      })
+      .min(6, {
+        message: 'Password must be at least 6 characters',
+      })
+      .max(25, {
+        message: 'Password must be less than 25 characters',
+      }),
+  })
+);
+
+export default component$(() => {
+  const action = useLogin();
 
   return (
     <div class="min-h-screen flex flex-col register-bg">
@@ -32,30 +70,30 @@ export default component$(() => {
             <div class="prose prose-slate">
               <h1 class="m-0">Welcome back!</h1>
               <p class="mt-2 mb-8">We're so excited to see you again!</p>
-              <div class="form-control w-full max-w-xs inline-flex">
+              <Form action={action} class="form-control w-full max-w-xs inline-flex">
                 <label class="label">
                   <span class="label-text text-xs font-semibold">EMAIL</span>
                 </label>
                 <input
+                  name="email"
                   type="text"
                   class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
-                  value={loginStore.email}
-                  onInput$={(event) =>
-                    (loginStore.email = (event.target as HTMLInputElement).value)
-                  }
                 />
+                {action.value?.fieldErrors?.email && (
+                  <span class="text-error text-left">{action.value?.fieldErrors?.email}</span>
+                )}{' '}
                 <br />
                 <label class="label">
                   <span class="label-text text-xs font-semibold">PASSWORD</span>
                 </label>
                 <input
-                  type={'password'}
+                  name="password"
+                  type="password"
                   class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
-                  value={loginStore.password}
-                  onInput$={(event) =>
-                    (loginStore.password = (event.target as HTMLInputElement).value)
-                  }
-                />
+                />{' '}
+                {action.value?.fieldErrors?.password && (
+                  <span class="text-error text-left">{action.value?.fieldErrors?.password}</span>
+                )}
                 <label class="label">
                   <span class="label-text text-xs font-semibold">
                     Need an account?{' '}
@@ -65,34 +103,13 @@ export default component$(() => {
                   </span>
                 </label>
                 <br />
-                <button
-                  class={`btn btn-primary ${loginStore.loading ? 'loading' : ''}`}
-                  onClick$={async () => {
-                    loginStore.loading = true;
-                    fetch(`${process.env.API_DOMAIN}/api/v1/auth/login`, {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      credentials: 'include',
-                      body: JSON.stringify({
-                        email: loginStore.email,
-                        password: loginStore.password,
-                      }),
-                    })
-                      .then(async (response) => {
-                        if (response.ok) {
-                          navigate('/');
-                        }
-                      })
-                      .finally(() => {
-                        loginStore.loading = false;
-                      });
-                  }}
-                >
+                <button class={`btn btn-primary ${action.isRunning ? 'loading' : ''}`}>
                   Log In
                 </button>
-              </div>
+                {action.value?.message && (
+                  <span class="text-error text-left">Invalid email or password</span>
+                )}
+              </Form>
             </div>
           </div>
         </div>

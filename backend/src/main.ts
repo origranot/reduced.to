@@ -16,7 +16,7 @@ async function bootstrap() {
   });
 
   app.use(cookieParser());
-  app.enableCors({ origin: 'http://localhost:5173', credentials: true });
+  app.enableCors({ origin: true, credentials: true });
   app.useGlobalPipes(new ValidationPipe());
 
   // Enable DI in class-validator

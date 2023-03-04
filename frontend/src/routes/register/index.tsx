@@ -1,13 +1,13 @@
 import { component$, useStore } from '@builder.io/qwik';
-import { RequestHandler, useNavigate } from '@builder.io/qwik-city';
-import { ACCESS_COOKIE_NAME, validateAccessToken } from '../../shared/auth.service';
+import { Form, globalAction$, RequestHandler, useNavigate, z, zod$ } from '@builder.io/qwik-city';
+import {
+  ACCESS_COOKIE_NAME,
+  setTokensAsCookies,
+  validateAccessToken,
+} from '../../shared/auth.service';
 
 interface RegisterStore {
-  name: string;
-  email: string;
-  password: string;
   passwordVisible: boolean;
-  loading: boolean;
 }
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
@@ -16,6 +16,71 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
     throw redirect(302, '/');
   }
 };
+
+export const useRegister = globalAction$(
+  async ({ displayName, email, password }, { fail, redirect, cookie }) => {
+    const data = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        name: displayName,
+        email: email,
+        password: password,
+      }),
+    });
+
+    const { accessToken, refreshToken, message } = await data.json();
+
+    const errorMessage = message
+      ? message[0]
+      : 'There was an error creating your account. Please try again.';
+
+    if (!data.ok || !accessToken || !refreshToken) {
+      return fail(400, {
+        message: errorMessage,
+      });
+    }
+
+    setTokensAsCookies(accessToken, refreshToken, cookie);
+    redirect(302, '/register/verify');
+  },
+  zod$({
+    displayName: z
+      .string({
+        required_error: 'Display name is required',
+      })
+      .min(3, {
+        message: 'Display name must be at least 3 characters',
+      })
+      .max(25, {
+        message: 'Display name must be less than 25 characters',
+      }),
+    email: z
+      .string({
+        required_error: 'Email is required',
+      })
+      .email({
+        message: 'Please enter a valid email',
+      }),
+    password: z
+      .string({
+        required_error: 'Password is required',
+      })
+      .min(6, {
+        message: 'Password must be at least 6 characters',
+      })
+      .max(25, {
+        message: 'Password must be less than 25 characters',
+      })
+      .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/, {
+        message:
+          'Password must contain at least six characters, including at least 1 letter and 1 number',
+      }),
+  })
+);
 
 export const PasswordVisible = () => {
   return (
@@ -58,14 +123,10 @@ export const PasswordMasked = () => {
 
 export default component$(() => {
   const store = useStore<RegisterStore>({
-    name: '',
-    email: '',
-    password: '',
     passwordVisible: false,
-    loading: false,
   });
 
-  const navigate = useNavigate();
+  const action = useRegister();
 
   return (
     <div class="min-h-screen flex flex-col register-bg">
@@ -74,39 +135,40 @@ export default component$(() => {
           <div class="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
             <div class="prose prose-slate">
               <h1>Create an account</h1>
-              <div class="form-control w-full max-w-xs inline-flex">
+              <Form action={action} class="form-control w-full max-w-xs inline-flex">
                 <label class="label">
                   <span class="label-text text-xs font-semibold">DISPLAY NAME</span>
                 </label>
                 <input
+                  name="displayName"
                   type="text"
                   class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
-                  value={store.name}
-                  onInput$={(event) => (store.name = (event.target as HTMLInputElement).value)}
                 />
+                {action.value?.fieldErrors?.displayName && (
+                  <span class="text-error text-left">{action.value?.fieldErrors?.displayName}</span>
+                )}{' '}
                 <br />
                 <label class="label">
                   <span class="label-text text-xs font-semibold">EMAIL</span>
                 </label>
                 <input
+                  name="email"
                   type="text"
                   class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
-                  value={store.email}
-                  onInput$={(event) => (store.email = (event.target as HTMLInputElement).value)}
                 />
+                {action.value?.fieldErrors?.email && (
+                  <span class="text-error text-left">{action.value?.fieldErrors?.email}</span>
+                )}{' '}
                 <br />
                 <label class="label">
                   <span class="label-text text-xs font-semibold">PASSWORD</span>
                 </label>
                 <div class="flex items-center relative">
                   <input
+                    name="password"
                     type={store.passwordVisible ? 'text' : 'password'}
                     class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
-                    value={store.password}
                     autoComplete="on"
-                    onInput$={(event) =>
-                      (store.password = (event.target as HTMLInputElement).value)
-                    }
                   />
 
                   <span
@@ -124,42 +186,26 @@ export default component$(() => {
                   </span>
                 </div>
                 <label class="label">
-                  <span class="label-text text-xs text-left">
-                    Passwords must contain at least eight characters, including at least 1 letter
-                    and 1 number.
+                  <span
+                    class={`label-text text-xs text-left ${
+                      action.value?.fieldErrors?.password ? 'text-error text-left' : ''
+                    }`}
+                  >
+                    Password must contain at least six characters, including at least 1 letter and 1
+                    number.
                   </span>
                 </label>
-
                 <br />
                 <button
-                  class={`btn btn-primary ${store.loading ? ' loading' : ''}`}
-                  onClick$={() => {
-                    store.loading = true;
-                    fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      credentials: 'include',
-                      body: JSON.stringify({
-                        name: store.name,
-                        email: store.email,
-                        password: store.password,
-                      }),
-                    })
-                      .then((res) => {
-                        if (res.ok && res.status === 201) {
-                          navigate('/register/verify');
-                        }
-                      })
-                      .finally(() => {
-                        store.loading = false;
-                      });
-                  }}
+                  class={`btn btn-primary ${action.isRunning ? ' loading' : ''}`}
+                  type="submit"
                 >
                   Continue
                 </button>
-              </div>
+                {action.value?.message && (
+                  <span class="text-error text-left">{action.value.message}</span>
+                )}
+              </Form>
             </div>
           </div>
         </div>
