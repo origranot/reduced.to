@@ -26,15 +26,13 @@ export const useGetCurrentUser = routeLoader$<UserCtx | null>(({ cookie }) => {
 
 // Verify that that the access token is valid and if not, refresh it
 export const onGet: RequestHandler = async ({ cookie }) => {
-  const accessToken = cookie.get(ACCESS_COOKIE_NAME)?.value;
-  const refreshToken = cookie.get(REFRESH_COOKIE_NAME)?.value;
+  const accessCookie = cookie.get(ACCESS_COOKIE_NAME)?.value;
+  const refreshCookie = cookie.get(REFRESH_COOKIE_NAME)?.value;
 
-  if (!accessToken && refreshToken) {
-    const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await refreshTokens(
-      refreshToken
-    );
+  if (!accessCookie && refreshCookie) {
+    const { accessToken, refreshToken } = await refreshTokens(refreshCookie);
 
-    setTokensAsCookies(newAccessToken, newRefreshToken, cookie);
+    setTokensAsCookies(accessToken, refreshToken, cookie);
   }
 };
 

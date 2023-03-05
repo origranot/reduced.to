@@ -1,4 +1,4 @@
-import { component$, useStore } from '@builder.io/qwik';
+import { component$ } from '@builder.io/qwik';
 import { Form, globalAction$, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
 import {
   ACCESS_COOKIE_NAME,
@@ -6,7 +6,7 @@ import {
   validateAccessToken,
 } from '../../shared/auth.service';
 
-export const onGet: RequestHandler = async ({ cookie, redirect, request }) => {
+export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   const acccessToken = cookie.get(ACCESS_COOKIE_NAME)?.value;
   if (await validateAccessToken(acccessToken)) {
     throw redirect(302, '/');
@@ -14,7 +14,7 @@ export const onGet: RequestHandler = async ({ cookie, redirect, request }) => {
 };
 
 export const useLogin = globalAction$(
-  async ({ email, password }, { fail, redirect, cookie }) => {
+  async ({ email, password }, { fail, cookie, headers }) => {
     const data = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/login`, {
       method: 'POST',
       headers: {
@@ -36,7 +36,9 @@ export const useLogin = globalAction$(
     }
 
     setTokensAsCookies(accessToken, refreshToken, cookie);
-    redirect(302, '/');
+
+    // Redirect using location header instead of redirect becuase we need to reload the routeLoader to get the new user data
+    headers.set('location', '/');
   },
   zod$({
     email: z

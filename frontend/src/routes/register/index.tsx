@@ -1,5 +1,5 @@
 import { component$, useStore } from '@builder.io/qwik';
-import { Form, globalAction$, RequestHandler, useNavigate, z, zod$ } from '@builder.io/qwik-city';
+import { Form, globalAction$, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
 import {
   ACCESS_COOKIE_NAME,
   setTokensAsCookies,
@@ -18,7 +18,7 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 };
 
 export const useRegister = globalAction$(
-  async ({ displayName, email, password }, { fail, redirect, cookie }) => {
+  async ({ displayName, email, password }, { fail, headers, cookie }) => {
     const data = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
       method: 'POST',
       headers: {
@@ -45,7 +45,9 @@ export const useRegister = globalAction$(
     }
 
     setTokensAsCookies(accessToken, refreshToken, cookie);
-    redirect(302, '/register/verify');
+
+    // Redirect using location header instead of redirect becuase we need to reload the routeLoader to get the new user data
+    headers.set('location', '/register/verify');
   },
   zod$({
     displayName: z
