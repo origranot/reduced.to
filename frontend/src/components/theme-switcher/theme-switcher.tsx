@@ -80,7 +80,7 @@ export const ThemeSwitcher = component$(() => {
           d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
         />
       </svg>
-      <span class="rounded-full ml-0.5 pl-0.5 rounded-full toggle-switch w-5 h-5 transition-all -ml-6 absolute dark:translate-x-[24px]"></span>
+      <span class="rounded-full pl-0.5 toggle-switch w-5 h-5 transition-all -ml-6 absolute dark:translate-x-[24px]"></span>
     </button>
   );
 });

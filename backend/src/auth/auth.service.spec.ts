@@ -1,10 +1,11 @@
-import { PrismaService } from './../prisma/prisma.service';
+import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
+import { Role, User } from '@prisma/client';
 import * as argon2 from 'argon2';
-import { Rule, User } from '@prisma/client';
-import { UnauthorizedException } from '@nestjs/common';
+import { AppConfigModule } from '../config/config.module';
+import { PrismaService } from './../prisma/prisma.service';
+import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -14,6 +15,7 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [AppConfigModule],
       providers: [
         AuthService,
         JwtService,
@@ -40,7 +42,8 @@ describe('AuthService', () => {
       password: await argon2.hash('password'),
       verified: false,
       verificationToken: 'verification_token',
-      rule: Rule.USER,
+      role: Role.USER,
+      refreshToken: 'refresh',
     };
   });
 
@@ -78,7 +81,9 @@ describe('AuthService', () => {
     it('should throw an unauthorized exception if the verification token is invalid', async () => {
       jest.spyOn(prismaService.user, 'update').mockResolvedValueOnce(null);
       expect(async () => {
-        await authService.verify('invalidtoken');
+        await authService.verify({
+          ...mockData,
+        });
       }).rejects.toThrow(UnauthorizedException);
     });
 
