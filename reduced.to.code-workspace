@@ -24,7 +24,10 @@
     },
     "[prisma]": {
       "editor.defaultFormatter": "Prisma.prisma"
-    }
+    },
+    "jest.disabledWorkspaceFolders": [
+      "🎨 reduced.to/frontend"
+    ]
   },
   "extensions": {
     "recommendations": [

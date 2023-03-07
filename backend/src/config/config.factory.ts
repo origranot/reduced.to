@@ -27,7 +27,8 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
         ttl: +process.env.REDIS_TTL || 60 * 60 * 24 * 7, // Seconds
       },
       jwt: {
-        secret: process.env.JWT_SECRET,
+        accessSecret: process.env.JWT_ACCESS_SECRET,
+        refreshSecret: process.env.JWT_REFRESH_SECRET,
       },
       novu: {
         apiKey: process.env.NOVU_API_KEY,
@@ -64,7 +65,8 @@ export interface RedisConfig {
 }
 
 export interface JWTConfig {
-  secret: string;
+  accessSecret: string;
+  refreshSecret: string;
 }
 
 export interface NovuConfig {

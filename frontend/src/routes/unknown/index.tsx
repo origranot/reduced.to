@@ -1,7 +1,6 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik';
 import { DocumentHead } from '@builder.io/qwik-city';
 import animations from '../../assets/css/animations.css?inline';
-import { ThemeSwitcher } from '../../components/theme-switcher/theme-switcher';
 import { Waves } from '../../components/waves/waves';
 
 export default component$(() => {
@@ -9,10 +8,6 @@ export default component$(() => {
 
   return (
     <section class="h-screen flex flex-col">
-      <div class="flex justify-end m-4">
-        <ThemeSwitcher />
-      </div>
-
       <div class="grow container flex flex-col items-center justify-center px-5 mx-auto my-8">
         <div class="max-w-md text-center mb-8">
           <h2 class="mb-8 font-extrabold text-9xl text-gray-600 dark:text-gray-300">

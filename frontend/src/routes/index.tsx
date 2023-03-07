@@ -1,6 +1,6 @@
 import {
   component$,
-  createContext,
+  createContextId,
   useContextProvider,
   useSignal,
   useStore,
@@ -8,21 +8,19 @@ import {
 } from '@builder.io/qwik';
 import { DocumentHead } from '@builder.io/qwik-city';
 import animations from '~/assets/css/animations.css?inline';
-import { GithubButton } from '~/components/home-buttons/github-button/github-button';
-import { TwitterButton } from '~/components/home-buttons/twitter-button/twitter-button';
 import { handleShareOnTwitter } from '~/components/home-buttons/actions';
+import { TwitterButton } from '~/components/home-buttons/twitter-button/twitter-button';
 import { Loader } from '~/components/loader/loader';
 import { generateQRCode } from '~/components/qr-code/handleQRCode';
 import { QRCode } from '~/components/qr-code/qr-code';
 import { handleShortener } from '~/components/shortener-input/handleShortener';
 import { ShortenerInput } from '~/components/shortener-input/shortener-input';
-import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
 import { Tooltip } from '~/components/tooltip/tooltip';
 import { Waves } from '~/components/waves/waves';
 import { copyToClipboard, openUrl } from '~/utils';
 import styles from './index.css?inline';
 
-export const InputContext = createContext('input');
+export const InputContext = createContextId('input');
 
 export interface Store {
   inputValue: string;
@@ -58,30 +56,11 @@ export default component$(() => {
   useContextProvider(InputContext, state);
 
   return (
-    <div className="h-screen overflow-x-hidden overflow-y-auto md:overflow-hidden">
+    <div class="h-screen overflow-x-hidden overflow-y-auto md:overflow-hidden">
       <div class="min-h-screen flex flex-col">
         <div class="mx-auto container grid grid-cols-12 flex-1">
           <div class="col-start-2 col-end-12 md:col-start-3 md:col-end-11">
-            <div className="flex flex-col">
-              <div className="flex justify-end my-5">
-                <div className="flex">
-                  <div className="grid  flex-grow place-items-center">
-                    <span className="h-5">
-                      <GithubButton
-                        type="Star"
-                        user="origranot"
-                        repo="reduced.to"
-                        showCount
-                        label="Star"
-                      ></GithubButton>
-                    </span>
-                  </div>
-                  <div className="divider divider-horizontal"></div>
-                  <div className="grid  flex-grow place-items-center">
-                    <ThemeSwitcher></ThemeSwitcher>
-                  </div>
-                </div>
-              </div>
+            <div class="flex flex-col">
               <article class="prose mx-auto max-w-4xl pb-16">
                 <div class="mx-auto">
                   <img class="mx-auto" src="logo.svg" width="410" height="73" alt="Logo" />
@@ -105,27 +84,27 @@ export default component$(() => {
                 }}
               />
               <Loader visible={state.loading} />
-              <div id="result" className={state.showResult ? '' : 'hidden'}>
-                <p id="error" className="fade-in">
+              <div id="result" class={state.showResult ? '' : 'hidden'}>
+                <p id="error" class="fade-in">
                   {state.urlError}
                 </p>
                 <span
                   id="text"
-                  className="fade-in cursor-pointer block"
+                  class="fade-in cursor-pointer block"
                   onClick$={() => copyToClipboard(state.reducedUrl)}
                 >
                   {state.reducedUrl}
                 </span>
                 <div
                   id="action"
-                  className={`${
+                  class={`${
                     state.reducedUrl ? '' : 'hidden'
                   } btn-group p-4 relative [&>:first-child>.btn]:rounded-l-lg [&>:last-child>.btn]:rounded-r-lg [&>*>.btn]:rounded-none`}
                 >
                   <button
                     type="button"
                     title="Copy"
-                    className="btn relative"
+                    class="btn relative"
                     onClick$={() => {
                       copyToClipboard(state.reducedUrl);
                       tooltipCopyRef.value = true;
@@ -137,7 +116,7 @@ export default component$(() => {
                       viewBox="0 0 24 24"
                       stroke-width={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      class="w-6 h-6"
                     >
                       <path
                         stroke-linecap="round"
@@ -150,7 +129,7 @@ export default component$(() => {
                   <button
                     type="button"
                     title="Open in new tab"
-                    className="btn"
+                    class="btn"
                     onClick$={() => openUrl(state.reducedUrl)}
                   >
                     <svg
@@ -159,7 +138,7 @@ export default component$(() => {
                       viewBox="0 0 24 24"
                       stroke-width={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      class="w-6 h-6"
                     >
                       <path
                         stroke-linecap="round"
@@ -171,7 +150,7 @@ export default component$(() => {
                   <button
                     type="button"
                     title="QR Code"
-                    className="btn"
+                    class="btn"
                     onClick$={() => {
                       generateQRCode(state.reducedUrl, 150);
                       state.showQRCode = true;
@@ -183,7 +162,7 @@ export default component$(() => {
                       viewBox="0 0 24 24"
                       stroke-width={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      class="w-6 h-6"
                     >
                       <path
                         stroke-linecap="round"
@@ -200,7 +179,7 @@ export default component$(() => {
                   <TwitterButton handleClick$={() => handleShareOnTwitter(state.reducedUrl)} />
                 </div>
               </div>
-              <div id="qrcode" className={`${state.showQRCode ? '' : 'hidden'} mx-auto`}>
+              <div id="qrcode" class={`${state.showQRCode ? '' : 'hidden'} mx-auto`}>
                 <QRCode showDownload />
               </div>
             </div>

@@ -212,6 +212,8 @@ For the minimal configuration the following settings have to be changed in their
 
 #### Frontend configuration
 
+- **DOMAIN**: Domain of your frontend app (used for cookies)
+
 - **API_DOMAIN**: Domain of your backend instance
 
 Happy Hacking !

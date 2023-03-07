@@ -16,12 +16,13 @@ model User {
   name              String
   email             String  @unique
   password          String
-  rule              Rule    @default(USER)
+  role              Role    @default(USER)
   verified          Boolean @default(false) // Is the mail verification
   verificationToken String? // Verification token of the mail
+  refreshToken      String?
 }
 
-enum Rule {
+enum Role {
   USER
   ADMIN
 }

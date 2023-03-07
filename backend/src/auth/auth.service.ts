@@ -1,13 +1,19 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Rule } from '@prisma/client';
-import { SignupDto } from './dto/signup.dto';
+import { Role } from '@prisma/client';
 import * as argon2 from 'argon2';
+import { AppConfigService } from '../config/config.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { SignupDto } from './dto/signup.dto';
+import { UserContext } from './interfaces/user-context';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly jwtService: JwtService,
+    private readonly appConfigService: AppConfigService
+  ) {}
 
   async validateUser(email: string, password: string) {
     const user = await this.prisma.user.findUnique({
@@ -29,20 +35,10 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = {
-      sub: user.id,
-      email: user.email,
-      firstName: user.name,
-      rule: user.rule,
-      iss: 'reduced.to',
-    };
-
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    return this.generateTokens(user);
   }
 
-  async signup(signupDto: SignupDto) {
+  async signup(signupDto: SignupDto): Promise<UserContext> {
     const hash = await argon2.hash(signupDto.password);
 
     const userInformation = {
@@ -54,15 +50,24 @@ export class AuthService {
       data: {
         ...userInformation,
         password: hash,
-        rule: Rule.USER,
+        role: Role.USER,
         verificationToken: this.jwtService.sign(userInformation, {
           expiresIn: '1d',
         }),
       },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        refreshToken: true,
+        role: true,
+        verificationToken: true,
+        verified: true,
+      },
     });
   }
 
-  async verify(user: any) {
+  async verify(user: UserContext): Promise<{ verified: boolean }> {
     const fetchedUser = await this.prisma.user.findUnique({
       where: {
         email: user.email,
@@ -72,12 +77,93 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    return this.prisma.user.update({
+    const updatedUser = await this.prisma.user.update({
       where: { email: user.email },
       data: {
         verified: true,
         verificationToken: null,
       },
+    });
+
+    return { verified: updatedUser.verified };
+  }
+
+  async checkVerification({ id }: UserContext) {
+    const fetchedUser = await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!fetchedUser) {
+      throw new UnauthorizedException();
+    }
+
+    return { verified: fetchedUser.verified };
+  }
+
+  async refreshTokens(user: any) {
+    return this.generateTokens(user);
+  }
+
+  async validateRefreshToken(userId: string, refreshToken: string): Promise<any> {
+    if (!refreshToken) {
+      return false;
+    }
+
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    const verified = await argon2.verify(user.refreshToken, refreshToken);
+    if (!verified) {
+      return null;
+    }
+
+    return user;
+  }
+
+  async generateTokens(user: UserContext) {
+    const tokens = {
+      accessToken: this.generateToken(user),
+      refreshToken: this.generateToken(
+        user,
+        '7d',
+        this.appConfigService.getConfig().jwt.refreshSecret
+      ),
+    };
+
+    await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        refreshToken: await argon2.hash(tokens.refreshToken),
+      },
+    });
+
+    return tokens;
+  }
+
+  generateToken(user: UserContext, expiresIn?: string, secret?: string) {
+    const payload = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      verified: user.verified,
+      iss: 'reduced.to',
+    };
+
+    return this.jwtService.sign(payload, {
+      ...(expiresIn && { expiresIn }),
+      ...(secret && { secret }),
     });
   }
 }

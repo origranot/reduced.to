@@ -25,7 +25,7 @@ export const GithubButton = component$((props: GithubButtonProps) => {
     };
   };
   return (
-    <a className="github-button" {...getAttributes()}>
+    <a class="github-button" {...getAttributes()}>
       {' '}
       {props.label ?? ''}
     </a>
