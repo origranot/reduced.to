@@ -1,5 +1,5 @@
 import { component$, Slot } from '@builder.io/qwik';
-import { RequestHandler, routeLoader$ } from '@builder.io/qwik-city';
+import { routeLoader$ } from '@builder.io/qwik-city';
 import jwt_decode from 'jwt-decode';
 import {
   ACCESS_COOKIE_NAME,
@@ -17,24 +17,21 @@ export interface UserCtx {
   validated: boolean;
 }
 
-export const useGetCurrentUser = routeLoader$<UserCtx | null>(({ cookie }) => {
-  const token = cookie.get(ACCESS_COOKIE_NAME);
-  if (!token) return null;
-
-  return jwt_decode(token.value);
-});
-
-// Verify that that the access token is valid and if not, refresh it
-export const onGet: RequestHandler = async ({ cookie }) => {
+export const useGetCurrentUser = routeLoader$<UserCtx | null>(async ({ cookie }) => {
   const accessCookie = cookie.get(ACCESS_COOKIE_NAME)?.value;
   const refreshCookie = cookie.get(REFRESH_COOKIE_NAME)?.value;
 
-  if (!accessCookie && refreshCookie) {
+  if (accessCookie) {
+    return jwt_decode(accessCookie);
+  } else if (refreshCookie) {
     const { accessToken, refreshToken } = await refreshTokens(refreshCookie);
 
     setTokensAsCookies(accessToken, refreshToken, cookie);
+    return jwt_decode(accessToken);
   }
-};
+
+  return null;
+});
 
 export default component$(() => {
   const userCtx = useGetCurrentUser().value;
