@@ -9,7 +9,7 @@ export const Loader = component$((props: LoaderProps) => {
   useStylesScoped$(styles);
 
   return (
-    <div id="loading" className={`${props.visible ? '' : 'hidden'} fade-in`}>
+    <div id="loading" class={`${props.visible ? '' : 'hidden'} fade-in`}>
       <span class="loader" />
     </div>
   );

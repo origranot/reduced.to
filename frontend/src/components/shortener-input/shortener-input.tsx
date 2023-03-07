@@ -1,9 +1,16 @@
-import { component$, useContext, $, useOnDocument, useSignal } from '@builder.io/qwik';
+import {
+  component$,
+  useContext,
+  $,
+  useOnDocument,
+  useSignal,
+  QwikKeyboardEvent,
+} from '@builder.io/qwik';
 import { InputContext, Store } from '~/routes';
 import { ShortenerInputBtn } from './shortener-input-btn';
 
 export interface ShortenerInputProps {
-  onKeyUp$: (event: KeyboardEvent) => void;
+  onKeyUp$: (event: QwikKeyboardEvent<HTMLInputElement>) => void;
   onInput$: (event: InputEvent) => void;
   onSubmit$: () => void;
 }
@@ -23,7 +30,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
   );
 
   return (
-    <div className="form-control">
+    <div class="form-control">
       <div class="sm:input-group mb-3 flex-col sm:flex-row gap-2 sm:gap-0">
         <input
           ref={searchInput}

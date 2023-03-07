@@ -7,9 +7,13 @@ import { AppConfigService } from '../../config/config.service';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(appConfigService: AppConfigService) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (req) => {
+          return req?.cookies?.accessToken;
+        },
+      ]),
       ignoreExpiration: false,
-      secretOrKey: appConfigService.getConfig().jwt.secret,
+      secretOrKey: appConfigService.getConfig().jwt.accessSecret,
     });
   }
 
@@ -17,6 +21,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!payload) {
       throw new UnauthorizedException();
     }
-    return { userId: payload.sub, email: payload.email, role: payload.role };
+    return { id: payload.id, email: payload.email, role: payload.role };
   }
 }

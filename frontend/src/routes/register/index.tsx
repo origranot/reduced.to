@@ -1,13 +1,88 @@
 import { component$, useStore } from '@builder.io/qwik';
-import { RequestHandler, useNavigate } from '@builder.io/qwik-city';
-import { ThemeSwitcher } from '~/components/theme-switcher/theme-switcher';
+import { Form, globalAction$, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
+import {
+  ACCESS_COOKIE_NAME,
+  setTokensAsCookies,
+  validateAccessToken,
+} from '../../shared/auth.service';
 
-export interface Store {
-  name: string;
-  email: string;
-  password: string;
+interface RegisterStore {
   passwordVisible: boolean;
 }
+
+export const onGet: RequestHandler = async ({ cookie, redirect }) => {
+  const acccessToken = cookie.get(ACCESS_COOKIE_NAME)?.value;
+  if (await validateAccessToken(acccessToken)) {
+    throw redirect(302, '/');
+  }
+};
+
+export const useRegister = globalAction$(
+  async ({ displayName, email, password }, { fail, headers, cookie }) => {
+    const data = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        name: displayName,
+        email: email,
+        password: password,
+      }),
+    });
+
+    const { accessToken, refreshToken, message } = await data.json();
+
+    const errorMessage = message
+      ? message[0]
+      : 'There was an error creating your account. Please try again.';
+
+    if (!data.ok || !accessToken || !refreshToken) {
+      return fail(400, {
+        message: errorMessage,
+      });
+    }
+
+    setTokensAsCookies(accessToken, refreshToken, cookie);
+
+    // Redirect using location header instead of redirect becuase we need to reload the routeLoader to get the new user data
+    headers.set('location', '/register/verify');
+  },
+  zod$({
+    displayName: z
+      .string({
+        required_error: 'Display name is required',
+      })
+      .min(3, {
+        message: 'Display name must be at least 3 characters',
+      })
+      .max(25, {
+        message: 'Display name must be less than 25 characters',
+      }),
+    email: z
+      .string({
+        required_error: 'Email is required',
+      })
+      .email({
+        message: 'Please enter a valid email',
+      }),
+    password: z
+      .string({
+        required_error: 'Password is required',
+      })
+      .min(6, {
+        message: 'Password must be at least 6 characters',
+      })
+      .max(25, {
+        message: 'Password must be less than 25 characters',
+      })
+      .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/, {
+        message:
+          'Password must contain at least six characters, including at least 1 letter and 1 number',
+      }),
+  })
+);
 
 export const PasswordVisible = () => {
   return (
@@ -17,7 +92,7 @@ export const PasswordVisible = () => {
       viewBox="0 0 24 24"
       stroke-width={1.5}
       stroke="currentColor"
-      className="w-6 h-6"
+      class="w-6 h-6"
     >
       <path
         stroke-linecap="round"
@@ -36,7 +111,7 @@ export const PasswordMasked = () => {
       viewBox="0 0 24 24"
       stroke-width={1.5}
       stroke="currentColor"
-      className="w-6 h-6"
+      class="w-6 h-6"
     >
       <path
         stroke-linecap="round"
@@ -49,61 +124,57 @@ export const PasswordMasked = () => {
 };
 
 export default component$(() => {
-  const navigate = useNavigate();
-
-  const store = useStore<Store>({
-    name: '',
-    email: '',
-    password: '',
+  const store = useStore<RegisterStore>({
     passwordVisible: false,
   });
 
+  const action = useRegister();
+
   return (
     <div class="min-h-screen flex flex-col register-bg">
-      <div class="flex justify-end m-4">
-        <ThemeSwitcher />
-      </div>
       <div class="flex flex-1 content-center justify-center items-center">
         <div class="w-96 max-w-md">
-          <div className="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
+          <div class="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
             <div class="prose prose-slate">
               <h1>Create an account</h1>
-              <div className="form-control w-full max-w-xs inline-flex">
-                <label className="label">
-                  <span className="label-text text-xs font-semibold">DISPLAY NAME</span>
+              <Form action={action} class="form-control w-full max-w-xs inline-flex">
+                <label class="label">
+                  <span class="label-text text-xs font-semibold">DISPLAY NAME</span>
                 </label>
                 <input
+                  name="displayName"
                   type="text"
-                  className="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
-                  value={store.name}
-                  onInput$={(event) => (store.name = (event.target as HTMLInputElement).value)}
+                  class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
                 />
+                {action.value?.fieldErrors?.displayName && (
+                  <span class="text-error text-left">{action.value?.fieldErrors?.displayName}</span>
+                )}{' '}
                 <br />
-                <label className="label">
-                  <span className="label-text text-xs font-semibold">EMAIL</span>
+                <label class="label">
+                  <span class="label-text text-xs font-semibold">EMAIL</span>
                 </label>
                 <input
+                  name="email"
                   type="text"
-                  className="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
-                  value={store.email}
-                  onInput$={(event) => (store.email = (event.target as HTMLInputElement).value)}
+                  class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
                 />
+                {action.value?.fieldErrors?.email && (
+                  <span class="text-error text-left">{action.value?.fieldErrors?.email}</span>
+                )}{' '}
                 <br />
-                <label className="label">
-                  <span className="label-text text-xs font-semibold">PASSWORD</span>
+                <label class="label">
+                  <span class="label-text text-xs font-semibold">PASSWORD</span>
                 </label>
-                <div className="flex items-center relative">
+                <div class="flex items-center relative">
                   <input
+                    name="password"
                     type={store.passwordVisible ? 'text' : 'password'}
-                    className="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
-                    value={store.password}
-                    onInput$={(event) =>
-                      (store.password = (event.target as HTMLInputElement).value)
-                    }
+                    class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
+                    autoComplete="on"
                   />
 
                   <span
-                    className="absolute right-2.5 cursor-pointer flex items-center"
+                    class="absolute right-2.5 cursor-pointer flex items-center"
                     onClick$={() => {
                       store.passwordVisible = !store.passwordVisible;
                     }}
@@ -116,37 +187,27 @@ export default component$(() => {
                     </div>
                   </span>
                 </div>
-                <label className="label">
-                  <span className="label-text text-xs text-left">
-                    Passwords must contain at least eight characters, including at least 1 letter
-                    and 1 number.
+                <label class="label">
+                  <span
+                    class={`label-text text-xs text-left ${
+                      action.value?.fieldErrors?.password ? 'text-error text-left' : ''
+                    }`}
+                  >
+                    Password must contain at least six characters, including at least 1 letter and 1
+                    number.
                   </span>
                 </label>
-
                 <br />
                 <button
-                  class="btn btn-primary"
-                  onClick$={() => {
-                    fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({
-                        name: store.name,
-                        email: store.email,
-                        password: store.password,
-                      }),
-                    }).then((res) => {
-                      if (res.status === 201) {
-                        navigate.path = '/';
-                      }
-                    });
-                  }}
+                  class={`btn btn-primary ${action.isRunning ? ' loading' : ''}`}
+                  type="submit"
                 >
                   Continue
                 </button>
-              </div>
+                {action.value?.message && (
+                  <span class="text-error text-left">{action.value.message}</span>
+                )}
+              </Form>
             </div>
           </div>
         </div>
@@ -154,7 +215,3 @@ export default component$(() => {
     </div>
   );
 });
-
-export const onGet: RequestHandler = async ({ response }) => {
-  throw response.redirect('/');
-};

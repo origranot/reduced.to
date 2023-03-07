@@ -79,7 +79,7 @@ export const Tooltip = component$<TooltipProps>(({ label, position, open }) => {
 
   return (
     <div
-      className={`${
+      class={`${
         classes.container
       } r-tooltip absolute whitespace-nowrap rounded py-[6px] px-4 text-sm font-semibold ${
         store.hidden ? 'hidden' : ''
