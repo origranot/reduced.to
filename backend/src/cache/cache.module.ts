@@ -1,5 +1,5 @@
 import { CacheModule, CacheStore, Global, Module } from '@nestjs/common';
-import { redisStore } from 'cache-manager-redis-store';
+import { RedisStore, redisStore } from 'cache-manager-redis-store';
 import { AppConfigModule } from '../config/config.module';
 import { AppConfigService } from '../config/config.service';
 import { AppCacheService } from './cache.service';
@@ -10,23 +10,22 @@ import { AppCacheService } from './cache.service';
     CacheModule.registerAsync({
       imports: [AppConfigModule],
       useFactory: async (config: AppConfigService) => {
-        if (!config.getConfig().redis.enable) {
-          return CacheModule.register({
-            ttl: 0, // Unlimited time
+        let store: string | RedisStore = 'memory';
+
+        if (config.getConfig().redis.enable) {
+          store = await redisStore({
+            socket: {
+              host: config.getConfig().redis.host,
+              port: config.getConfig().redis.port,
+            },
+            password: config.getConfig().redis.password,
+            ttl: config.getConfig().redis.ttl,
           });
         }
 
-        const store = await redisStore({
-          socket: {
-            host: config.getConfig().redis.host,
-            port: config.getConfig().redis.port,
-          },
-          password: config.getConfig().redis.password,
-          ttl: config.getConfig().redis.ttl,
-        });
-
         return {
           store: store as unknown as CacheStore,
+          ttl: 0, // 0 = infinite
         };
       },
       inject: [AppConfigService],

@@ -2,6 +2,7 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { useContainer } from 'class-validator';
+import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { AppConfigService } from './config/config.service';
 
@@ -14,7 +15,8 @@ async function bootstrap() {
     prefix: 'api/v',
   });
 
-  app.enableCors();
+  app.use(cookieParser());
+  app.enableCors({ origin: true, credentials: true });
   app.useGlobalPipes(new ValidationPipe());
 
   // Enable DI in class-validator
