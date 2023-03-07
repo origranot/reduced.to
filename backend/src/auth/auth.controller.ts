@@ -1,8 +1,17 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { Request, Response } from 'express';
-import { AppConfigService } from 'src/config/config.service';
-import { NovuService } from 'src/novu/novu.service';
-import { UserService } from 'src/user/user.service';
+import { AppConfigService } from '../config/config.service';
+import { NovuService } from '../novu/novu.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dto/signup.dto';
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh.guard';
@@ -18,9 +27,9 @@ import { setAuthCookies } from './utils/cookies';
 })
 export class AuthController {
   constructor(
+    private readonly prismaService: PrismaService,
     private readonly authService: AuthService,
     private readonly novuService: NovuService,
-    private readonly userService: UserService,
     private readonly appConfigService: AppConfigService
   ) {}
 
@@ -67,15 +76,34 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('/resend')
   async resendVerification(@Req() req: Request) {
-    const reqUser: any = req.user;
-    const user = await this.userService.get(reqUser.userId);
+    const reqUser = req.user as UserContext;
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: reqUser.id,
+      },
+    });
     return this.novuService.sendVerificationEmail(user);
   }
 
   @UseGuards(VerifyAuthGuard)
   @Get('/verify')
-  async verify(@Req() req: Request) {
-    return this.authService.verify(req.user as UserContext);
+  async verify(@Req() req: Request, @Res() res: Response) {
+    const verificationData = await this.authService.verify(req.user as UserContext);
+
+    if (!verificationData.verified) {
+      throw new UnauthorizedException();
+    }
+
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        email: (req.user as UserContext).email,
+      },
+    });
+
+    const tokens = await this.authService.generateTokens(user);
+    res = setAuthCookies(res, this.appConfigService.getConfig().front.domain, tokens);
+
+    res.send(verificationData);
   }
 
   @UseGuards(JwtAuthGuard)

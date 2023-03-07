@@ -67,7 +67,7 @@ export class AuthService {
     });
   }
 
-  async verify(user: UserContext) {
+  async verify(user: UserContext): Promise<{ verified: boolean }> {
     const fetchedUser = await this.prisma.user.findUnique({
       where: {
         email: user.email,

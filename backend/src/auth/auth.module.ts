@@ -3,8 +3,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { NovuModule } from 'src/novu/novu.module';
 import { NovuService } from 'src/novu/novu.service';
-import { UserModule } from 'src/user/user.module';
-import { UserService } from 'src/user/user.service';
 import { AppConfigService } from '../config/config.service';
 import { PrismaModule } from '../prisma/prisma.module';
 import { AuthController } from './auth.controller';
@@ -26,7 +24,6 @@ import { VerifyStrategy } from './strategies/verify.strategy';
       }),
     }),
     NovuModule,
-    UserModule,
   ],
   controllers: [AuthController],
   providers: [
@@ -36,7 +33,6 @@ import { VerifyStrategy } from './strategies/verify.strategy';
     JwtRefreshStrategy,
     VerifyStrategy,
     NovuService,
-    UserService,
   ],
   exports: [AuthService],
 })

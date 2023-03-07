@@ -68,7 +68,6 @@ describe('setAuthCookies', () => {
 
     expect(spy.mock.calls.length).toEqual(2);
 
-    console.log((spy.mock.calls[0] as any)[2].expires);
     expect((spy.mock.calls[0] as any)[2].expires).toEqual(expectedAuthExpires);
     expect((spy.mock.calls[1] as any)[2].expires).toEqual(expectedRefreshExpires);
 

@@ -1,5 +1,5 @@
 import { component$, useBrowserVisibleTask$, useStore } from '@builder.io/qwik';
-import { Link, useLocation } from '@builder.io/qwik-city';
+import { useLocation } from '@builder.io/qwik-city';
 
 export default component$(() => {
   const { params } = useLocation();
@@ -18,10 +18,12 @@ export default component$(() => {
       headers: {
         token: store.token,
       },
+      credentials: 'include',
     }).then(async (v) => {
       const { verified } = await v.json();
       store.verified = verified;
       store.loading = false;
+      window.location.href = '/register/verify';
     });
   });
 
@@ -36,9 +38,9 @@ export default component$(() => {
                   ? 'Your account has been verified successfully'
                   : "We couldn't verify your account. Try again later")}
             </p>
-            <Link href="/" class="btn btn-primary">
+            <a href="/" class="btn btn-primary">
               Go back
-            </Link>
+            </a>
           </div>
         </div>
       </div>

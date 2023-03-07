@@ -9,7 +9,6 @@ import { NovuModule } from './novu/novu.module';
 import { PrismaService } from './prisma/prisma.service';
 import { UniqueConstraint } from './shared/decorators/unique.decorator';
 import { ShortenerModule } from './shortener/shortener.module';
-import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -26,7 +25,6 @@ import { UserModule } from './user/user.module';
     ShortenerModule,
     AuthModule,
     NovuModule,
-    UserModule,
   ],
   providers: [PrismaService, UniqueConstraint],
 })

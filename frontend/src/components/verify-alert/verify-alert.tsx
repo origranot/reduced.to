@@ -25,7 +25,7 @@ export const VerifyAlert = component$(() => {
       </div>
       <div class="flex-none">
         <Link href="/register/verify" class="btn btn-sm btn-ghost">
-          Verify
+          Click here to Verify
         </Link>
       </div>
     </div>
