@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Rule" AS ENUM ('USER', 'ADMIN');
+CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -7,9 +7,10 @@ CREATE TABLE "User" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "rule" "Rule" NOT NULL DEFAULT 'USER',
+    "role" "Role" NOT NULL DEFAULT 'USER',
     "verified" BOOLEAN NOT NULL DEFAULT false,
-    "verificationToken" TEXT NOT NULL,
+    "verificationToken" TEXT,
+    "refreshToken" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

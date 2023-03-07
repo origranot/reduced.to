@@ -3,6 +3,9 @@ import { Cookie } from '@builder.io/qwik-city';
 export const ACCESS_COOKIE_NAME = 'accessToken';
 export const REFRESH_COOKIE_NAME = 'refreshToken';
 
+export const ACCESS_COOKIE_EXPIRES = 5 * 60 * 1000; //5 min
+export const REFRESH_COOKIE_EXPIRES = 7 * 24 * 60 * 60 * 1000; //7 days
+
 export const validateAccessToken = async (token: string | undefined): Promise<boolean> => {
   if (!token) {
     return false;
@@ -24,12 +27,14 @@ export const setTokensAsCookies = (accessToken: string, refreshToken: string, co
     sameSite: 'strict',
     domain,
     httpOnly: true,
+    expires: new Date(new Date().getTime() + ACCESS_COOKIE_EXPIRES),
   });
   cookie.set(REFRESH_COOKIE_NAME, refreshToken, {
     path: '/',
     sameSite: 'strict',
     domain,
     httpOnly: true,
+    expires: new Date(new Date().getTime() + REFRESH_COOKIE_EXPIRES),
   });
 };
 

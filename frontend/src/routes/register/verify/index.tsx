@@ -1,13 +1,20 @@
 import { component$, useBrowserVisibleTask$, useStore } from '@builder.io/qwik';
-import { Link } from '@builder.io/qwik-city';
+import { Link, RequestHandler } from '@builder.io/qwik-city';
 import { Loader } from '~/components/loader/loader';
-import { authorizedFetch } from '~/shared/auth.service';
+import { ACCESS_COOKIE_NAME, authorizedFetch, validateAccessToken } from '~/shared/auth.service';
 
 export interface Store {
   isVerified: boolean;
   loading: boolean;
   resent: boolean;
 }
+
+export const onGet: RequestHandler = async ({ cookie, redirect }) => {
+  const acccessToken = cookie.get(ACCESS_COOKIE_NAME)?.value;
+  if (!acccessToken || !(await validateAccessToken(acccessToken))) {
+    throw redirect(302, '/');
+  }
+};
 
 export default component$(() => {
   const store = useStore<Store>({

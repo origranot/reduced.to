@@ -8,13 +8,14 @@ import {
   setTokensAsCookies,
 } from '../shared/auth.service';
 import { Navbar } from '../components/navbar/navbar';
+import { VerifyAlert } from '../components/verify-alert/verify-alert';
 
 export interface UserCtx {
   id: string;
   name: string;
   email: string;
   role: 'ADMIN' | 'USER';
-  validated: boolean;
+  verified: boolean;
 }
 
 export const useGetCurrentUser = routeLoader$<UserCtx | null>(async ({ cookie }) => {
@@ -39,6 +40,7 @@ export default component$(() => {
   return (
     <>
       <Navbar user={userCtx} />
+      {userCtx?.verified === false ? <VerifyAlert /> : ''}
       <main>
         <section>
           <Slot />
