@@ -96,6 +96,7 @@ jobs:
           push: true
           build-args: |
             API_DOMAIN=${{ secrets.API_DOMAIN }}
+            DOMAIN=${{ secrets.DOMAIN }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
