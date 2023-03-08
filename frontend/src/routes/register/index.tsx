@@ -24,7 +24,6 @@ export const useRegister = globalAction$(
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include',
       body: JSON.stringify({
         name: displayName,
         email: email,
