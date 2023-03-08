@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
     plugins: [qwikCity(), qwikVite(), tsconfigPaths(), qwikReact()],
     define: {
       'process.env.API_DOMAIN': JSON.stringify(env.API_DOMAIN),
+      'process.env.DOMAIN': JSON.stringify(env.DOMAIN),
     },
     optimizeDeps: {
       include: ['canvas-confetti'],
