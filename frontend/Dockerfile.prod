@@ -9,8 +9,9 @@ COPY *.json ./
 # Copy all files to build stage
 COPY . .
 
-# Define Buildtime vairable from workflow
+# Define Buildtime vairables from workflow
 ARG API_DOMAIN=${API_DOMAIN}
+ARG DOMAIN=${DOMAIN}
 
 # Install dependencies for production
 RUN npm install
