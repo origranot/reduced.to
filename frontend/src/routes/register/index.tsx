@@ -1,10 +1,6 @@
 import { component$, useStore } from '@builder.io/qwik';
 import { Form, globalAction$, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
-import {
-  ACCESS_COOKIE_NAME,
-  setTokensAsCookies,
-  validateAccessToken,
-} from '../../shared/auth.service';
+import { ACCESS_COOKIE_NAME, validateAccessToken } from '../../shared/auth.service';
 
 interface RegisterStore {
   passwordVisible: boolean;
