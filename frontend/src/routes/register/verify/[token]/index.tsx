@@ -1,4 +1,4 @@
-import { component$, useBrowserVisibleTask$, useStore } from '@builder.io/qwik';
+import { component$, useVisibleTask$, useStore } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
 
 export default component$(() => {
@@ -10,7 +10,7 @@ export default component$(() => {
     loading: true,
   });
 
-  useBrowserVisibleTask$(() => {
+  useVisibleTask$(() => {
     store.token = params.token;
 
     fetch(`${process.env.API_DOMAIN}/api/v1/auth/verify?token=${store.token}`, {

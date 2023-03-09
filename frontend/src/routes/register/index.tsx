@@ -19,34 +19,38 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 
 export const useRegister = globalAction$(
   async ({ displayName, email, password }, { fail, headers, cookie }) => {
-    const data = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: displayName,
-        email: email,
-        password: password,
-      }),
-    });
+    // const data = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     name: displayName,
+    //     email: email,
+    //     password: password,
+    //   }),
+    // });
 
-    const { accessToken, refreshToken, message } = await data.json();
+    // const { accessToken, refreshToken, message } = await data.json();
 
-    const errorMessage = message
-      ? message[0]
-      : 'There was an error creating your account. Please try again.';
+    // const errorMessage = message
+    //   ? message[0]
+    //   : 'There was an error creating your account. Please try again.';
 
-    if (!data.ok || !accessToken || !refreshToken) {
-      return fail(400, {
-        message: errorMessage,
-      });
-    }
+    // if (!data.ok || !accessToken || !refreshToken) {
+    //   return fail(400, {
+    //     message: errorMessage,
+    //   });
+    // }
 
-    setTokensAsCookies(accessToken, refreshToken, cookie);
+    // setTokensAsCookies(accessToken, refreshToken, cookie);
 
-    // Redirect using location header instead of redirect becuase we need to reload the routeLoader to get the new user data
-    headers.set('location', '/register/verify');
+    // // Redirect using location header instead of redirect becuase we need to reload the routeLoader to get the new user data
+    // headers.set('location', '/register/verify');
+
+    return {
+      message: 'Account created successfully',
+    };
   },
   zod$({
     displayName: z
