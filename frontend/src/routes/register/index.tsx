@@ -18,7 +18,8 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 };
 
 export const useRegister = globalAction$(
-  async ({ displayName, email, password }, { fail, headers, cookie }) => {
+  () => {
+    // async ({ displayName, email, password }, { fail, headers, cookie }) => {
     // const data = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
     //   method: 'POST',
     //   headers: {
