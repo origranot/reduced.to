@@ -15,6 +15,9 @@ COPY --chown=node:node . .
 # Generate prisma files
 RUN npx prisma generate
 
+# Migrate Prisma database
+RUN npx prisma migrate deploy --name init --preview-feature
+
 # Run the build command which creates the production bundle
 RUN npm run build
 
