@@ -35,4 +35,4 @@ COPY --from=build /app/server/ ./server/
 
 EXPOSE 5000
 
-CMD [ "origin=https://${DOMAIN}","node", "server/entry.express.js" ]
+CMD ["sh", "-c", "origin=${DOMAIN}","node", "server/entry.express.js" ]
