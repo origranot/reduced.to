@@ -15,9 +15,6 @@ COPY --chown=node:node . .
 # Generate prisma files
 RUN npx prisma generate
 
-# Migrate Prisma database
-RUN npx prisma migrate deploy --name init --preview-feature
-
 # Run the build command which creates the production bundle
 RUN npm run build
 
@@ -33,4 +30,4 @@ COPY --chown=node:node --from=build /svr/app/dist ./dist
 EXPOSE 3000
 
 # Start the server using the production build
-CMD [ "node", "dist/main.js" ]
+CMD [ "npm", "run", "start:migrate:prod" ]
