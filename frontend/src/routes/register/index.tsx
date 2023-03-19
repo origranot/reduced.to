@@ -19,7 +19,7 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 
 export const useRegister = globalAction$(
   async ({ displayName, email, password }, { fail, headers, cookie }) => {
-    const data = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
+    const data: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ export const useRegister = globalAction$(
       .max(25, {
         message: 'Password must be less than 25 characters',
       })
-      .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/, {
+      .regex(/^(?=.*[0-9])(?=.*[a-zA-Z])(?!.* ).{6,}$/, {
         message:
           'Password must contain at least six characters, including at least 1 letter and 1 number',
       }),
