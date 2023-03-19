@@ -6,7 +6,7 @@ import {
   useSignal,
   QwikKeyboardEvent,
 } from '@builder.io/qwik';
-import { InputContext, Store } from '~/routes';
+import { InputContext } from '~/routes';
 import { ShortenerInputBtn } from './shortener-input-btn';
 
 export interface ShortenerInputProps {
@@ -16,7 +16,7 @@ export interface ShortenerInputProps {
 }
 
 export const ShortenerInput = component$((props: ShortenerInputProps) => {
-  const state: Store = useContext(InputContext) as Store;
+  const state = useContext(InputContext);
   const searchInput = useSignal<HTMLInputElement>();
 
   useOnDocument(
