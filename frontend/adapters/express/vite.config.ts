@@ -13,7 +13,7 @@ export default extendConfig(baseConfig, () => {
     plugins: [
       expressAdapter({
         ssg: {
-          origin: `httpps://${process.env.DOMAIN}`,
+          origin: `https://${process.env.DOMAIN}`,
           include: [],
         },
       }),
