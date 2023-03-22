@@ -41,24 +41,24 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('/login')
-  async login(@Req() req: Request, @Res() res: Response) {
+  async login(@Req() req: Request) {
     const tokens = await this.authService.login(req.user as UserContext);
-    res = setAuthCookies(res, this.appConfigService.getConfig().front.domain, tokens);
+    // res = setAuthCookies(res, this.appConfigService.getConfig().front.domain, tokens);
 
-    res.send(tokens);
+    return tokens;
   }
 
   @Post('/signup')
-  async signup(@Res() res: Response, @Body() signupDto: SignupDto) {
+  async signup(@Body() signupDto: SignupDto) {
     const user = await this.authService.signup(signupDto);
 
     // Send verification email to user
     await this.novuService.sendVerificationEmail(user);
 
     const tokens = await this.authService.login(user);
-    res = setAuthCookies(res, this.appConfigService.getConfig().front.domain, tokens);
+    //res = setAuthCookies(res, this.appConfigService.getConfig().front.domain, tokens);
 
-    res.send(tokens);
+    return tokens;
   }
 
   @UseGuards(JwtRefreshAuthGuard)
@@ -87,7 +87,7 @@ export class AuthController {
 
   @UseGuards(VerifyAuthGuard)
   @Get('/verify')
-  async verify(@Req() req: Request, @Res() res: Response) {
+  async verify(@Req() req: Request) {
     const verificationData = await this.authService.verify(req.user as UserContext);
 
     if (!verificationData.verified) {
@@ -101,9 +101,9 @@ export class AuthController {
     });
 
     const tokens = await this.authService.generateTokens(user);
-    res = setAuthCookies(res, this.appConfigService.getConfig().front.domain, tokens);
+    //res = setAuthCookies(res, this.appConfigService.getConfig().front.domain, tokens);
 
-    res.send(verificationData);
+    return verificationData;
   }
 
   @UseGuards(JwtAuthGuard)
