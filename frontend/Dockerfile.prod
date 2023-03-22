@@ -11,7 +11,6 @@ COPY . .
 
 # Define Buildtime vairables from workflow
 ARG API_DOMAIN=${API_DOMAIN}
-ARG DOMAIN=${DOMAIN}
 
 # Install dependencies for production
 RUN npm install
@@ -35,4 +34,4 @@ COPY --from=build /app/server/ ./server/
 
 EXPOSE 5000
 
-CMD ["sh", "-c", "ORIGIN=https://${DOMAIN} node server/entry.express.js" ]
+CMD ["sh", "-c", "ORIGIN=https://reduced.to node server/entry.express.js" ]
