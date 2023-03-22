@@ -9,7 +9,7 @@
     "build": "qwik build",
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
-    "build.server": "vite build -c vite.config.ts",
+    "build.server": "vite build --ssr src/entry.express.tsx",
     "build.types": "tsc --incremental --noEmit",
     "serve": "node server/entry.express",
     "dev": "vite --mode ssr",
