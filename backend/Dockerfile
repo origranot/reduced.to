@@ -1,13 +1,19 @@
-FROM node:latest AS build
+FROM node:18 AS build
 
 # Required for Prisma Client to work in container
 RUN apt-get update && apt-get install -y openssl
+
+# Install Argon2 dependencies
+RUN apt-get update && \
+    apt-get -y install build-essential \
+    python3 \
+    make \
+    g++
 
 WORKDIR /svr/app
 
 COPY --chown=node:node package*.json ./
 COPY --chown=node:node prisma ./prisma/
-
 
 # Install npm dependencies
 RUN npm ci
