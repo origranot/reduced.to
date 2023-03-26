@@ -39,17 +39,12 @@ export class AuthService {
   }
 
   async signup(signupDto: SignupDto): Promise<UserContext> {
-    console.log('signup service entered');
     const hash = await bcrypt.hash(signupDto.password, 10);
-
-    console.log('hash created', { hash: hash });
 
     const userInformation = {
       name: signupDto.name,
       email: signupDto.email,
     };
-
-    console.log('creating user', { userInformation: userInformation });
 
     return this.prisma.user.create({
       data: {
