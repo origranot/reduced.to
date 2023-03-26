@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  LoggerService,
   Post,
   Req,
   Res,
@@ -30,7 +31,8 @@ export class AuthController {
     private readonly prismaService: PrismaService,
     private readonly authService: AuthService,
     private readonly novuService: NovuService,
-    private readonly appConfigService: AppConfigService
+    private readonly appConfigService: AppConfigService,
+    private readonly logger: LoggerService
   ) {}
 
   cookieOptions = {
@@ -50,6 +52,7 @@ export class AuthController {
 
   @Post('/signup')
   async signup(@Res() res: Response, @Body() signupDto: SignupDto) {
+    this.logger.log('received signup request', signupDto);
     const user = await this.authService.signup(signupDto);
 
     // Send verification email to user
