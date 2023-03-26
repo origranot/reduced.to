@@ -39,7 +39,10 @@ export class AuthService {
   }
 
   async signup(signupDto: SignupDto): Promise<UserContext> {
+    console.log('signup service entered');
     const hash = await argon2.hash(signupDto.password);
+
+    console.log('hash created', { hash: hash });
 
     const userInformation = {
       name: signupDto.name,

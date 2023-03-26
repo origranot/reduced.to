@@ -36,7 +36,7 @@
     "@novu/node": "^0.6.0",
     "@origranot/ts-logger": "^1.9.1",
     "@prisma/client": "^4.5.0",
-    "argon2": "^0.30.1",
+    "argon2": "^0.30.3",
     "body-parser": "^1.19.0",
     "cache-manager": "^5.0.0",
     "cache-manager-redis-store": "^3.0.1",
