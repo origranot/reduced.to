@@ -5,6 +5,7 @@ import {
   setTokensAsCookies,
   validateAccessToken,
 } from '../../shared/auth.service';
+import fetch from 'node-fetch';
 
 interface RegisterStore {
   passwordVisible: boolean;
@@ -19,7 +20,7 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 
 export const useRegister = globalAction$(
   async ({ displayName, email, password }, { fail, headers, cookie }) => {
-    const data: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
+    const data = (await fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +30,7 @@ export const useRegister = globalAction$(
         email: email,
         password: password,
       }),
-    });
+    })) as any;
 
     const { accessToken, refreshToken, message } = await data.json();
 
