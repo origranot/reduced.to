@@ -53,6 +53,8 @@ export class AuthController {
     console.log('recieved signup request', { signupDto: signupDto });
     const user = await this.authService.signup(signupDto);
 
+    console.log('created user', { user: user });
+
     // Send verification email to user
     await this.novuService.sendVerificationEmail(user);
 
