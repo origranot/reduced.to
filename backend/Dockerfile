@@ -1,4 +1,4 @@
-FROM node:18 AS build
+FROM node:latest AS build
 
 # Required for Prisma Client to work in container
 RUN apt-get update && apt-get install -y openssl
