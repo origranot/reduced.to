@@ -18,6 +18,9 @@ RUN npm run build
 # Build static files
 RUN npm run build.server
 
+# Set NODE_ENV environment variable
+ENV NODE_ENV production
+
 # Final stage
 FROM node:18-alpine3.15 as production
 
