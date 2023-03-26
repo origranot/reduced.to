@@ -46,6 +46,8 @@ export class AuthService {
       email: signupDto.email,
     };
 
+    console.log('creating user', { userInformation: userInformation });
+
     return this.prisma.user.create({
       data: {
         ...userInformation,
