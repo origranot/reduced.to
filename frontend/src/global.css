@@ -11,7 +11,7 @@
 
 body {
   text-align: center;
-  overflow: hidden;
+  overflow: auto;
 }
 
 /* Custom variables for themes */

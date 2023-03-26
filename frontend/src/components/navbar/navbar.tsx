@@ -18,7 +18,7 @@ export const Navbar = component$(({ user }: NavbarProps) => {
           Reduced.to
         </a>
       </div>
-      <div class="flex-none">
+      <div class="md:contents lg:flex">
         {user ? (
           //TODO: change to Links after issue resolved
           // https://github.com/BuilderIO/qwik/issues/2751
