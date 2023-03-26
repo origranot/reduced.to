@@ -22,7 +22,6 @@ export const validateAccessToken = async (token: string | undefined): Promise<bo
 
 export const setTokensAsCookies = (accessToken: string, refreshToken: string, cookie: Cookie) => {
   const domain = process.env.NODE_ENV === 'production' ? `.${process.env.DOMAIN}` : 'localhost';
-  console.log(domain, { domain: domain, process: process.env.DOMAIN });
   cookie.set(ACCESS_COOKIE_NAME, accessToken, {
     path: '/',
     sameSite: 'strict',
