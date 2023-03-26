@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '@prisma/client';
-import * as argon2 from 'argon2';
+import * as bcrypt from 'bcrypt';
 import { AppConfigService } from '../config/config.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { SignupDto } from './dto/signup.dto';
@@ -25,7 +25,7 @@ export class AuthService {
       return null;
     }
 
-    const verified = await argon2.verify(user.password, password);
+    const verified = await bcrypt.compare(password, user.password);
     if (verified) {
       const { password, ...result } = user;
       return result;
@@ -40,7 +40,7 @@ export class AuthService {
 
   async signup(signupDto: SignupDto): Promise<UserContext> {
     console.log('signup service entered');
-    const hash = await argon2.hash(signupDto.password);
+    const hash = await bcrypt.hash(signupDto.password, 10);
 
     console.log('hash created', { hash: hash });
 
@@ -126,7 +126,7 @@ export class AuthService {
       return null;
     }
 
-    const verified = await argon2.verify(user.refreshToken, refreshToken);
+    const verified = await bcrypt.compare(refreshToken, user.refreshToken);
     if (!verified) {
       return null;
     }
@@ -149,7 +149,7 @@ export class AuthService {
         id: user.id,
       },
       data: {
-        refreshToken: await argon2.hash(tokens.refreshToken),
+        refreshToken: await bcrypt.hash(tokens.refreshToken, 10),
       },
     });
 
