@@ -2,7 +2,7 @@ import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Role, User } from '@prisma/client';
-import * as argon2 from 'argon2';
+import * as bcrypt from 'bcrypt';
 import { AppConfigModule } from '../config/config.module';
 import { PrismaService } from './../prisma/prisma.service';
 import { AuthService } from './auth.service';
@@ -39,7 +39,7 @@ describe('AuthService', () => {
       id: 'some-id',
       name: 'John Doe',
       email: 'johndoe@email.com',
-      password: await argon2.hash('password'),
+      password: await bcrypt.hash('password', 10),
       verified: false,
       verificationToken: 'verification_token',
       role: Role.USER,
