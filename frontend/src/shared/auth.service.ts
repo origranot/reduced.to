@@ -21,11 +21,13 @@ export const validateAccessToken = async (token: string | undefined): Promise<bo
 };
 
 export const setTokensAsCookies = (accessToken: string, refreshToken: string, cookie: Cookie) => {
-  const domain = process.env.NODE_ENV === 'production' ? `.${process.env.DOMAIN}` : 'localhost';
+  const isProduction = process.env.NODE_ENV === 'production';
+  const domain = isProduction ? `.${process.env.DOMAIN}` : 'localhost';
   cookie.set(ACCESS_COOKIE_NAME, accessToken, {
     path: '/',
     sameSite: 'strict',
     domain,
+    secure: isProduction,
     httpOnly: true,
     expires: new Date(new Date().getTime() + ACCESS_COOKIE_EXPIRES),
   });
@@ -33,6 +35,7 @@ export const setTokensAsCookies = (accessToken: string, refreshToken: string, co
     path: '/',
     sameSite: 'strict',
     domain,
+    secure: isProduction,
     httpOnly: true,
     expires: new Date(new Date().getTime() + REFRESH_COOKIE_EXPIRES),
   });
