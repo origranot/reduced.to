@@ -1,7 +1,7 @@
 import { RequestHandler } from '@builder.io/qwik-city';
 
-export const onGet: RequestHandler = async ({ cookie, headers }) => {
-  cookie.delete('accessToken');
-  cookie.delete('refreshToken');
-  headers.set('location', '/');
+export const onGet: RequestHandler = async ({ cookie, redirect }) => {
+  cookie.delete('accessToken', { path: '/' });
+  cookie.delete('refreshToken', { path: '/' });
+  throw redirect(302, '/');
 };
