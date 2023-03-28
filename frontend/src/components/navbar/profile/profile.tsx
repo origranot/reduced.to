@@ -1,4 +1,5 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik';
+import { Link } from '@builder.io/qwik-city';
 import styles from './profile.css?inline';
 
 interface ProfileProps {
@@ -26,7 +27,7 @@ export const Profile = component$(({ name }: ProfileProps) => {
           </a>
         </li>
         <li>
-          <a href="/logout">Logout</a>
+          <Link href="/logout">Logout</Link>
         </li>
       </ul>
     </div>

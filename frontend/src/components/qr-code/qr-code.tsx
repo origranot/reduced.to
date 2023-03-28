@@ -1,4 +1,5 @@
 import { component$ } from '@builder.io/qwik';
+import { Link } from '@builder.io/qwik-city';
 import { downloadQRCode } from './handleQRCode';
 
 export interface QRCodeProps {
@@ -10,9 +11,9 @@ export const QRCode = component$((props: QRCodeProps) => {
     <>
       <canvas class="mx-auto mb-2 rounded-lg shadow-lg"></canvas>
       {props.showDownload && (
-        <a href="#qrcode" class="text-center" onClick$={() => downloadQRCode()}>
+        <Link href="#qrcode" class="text-center" onClick$={() => downloadQRCode()}>
           Download QRCode
-        </a>
+        </Link>
       )}
     </>
   );

@@ -1,5 +1,5 @@
 import { component$ } from '@builder.io/qwik';
-import { Form, globalAction$, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
+import { Form, globalAction$, Link, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
 import {
   ACCESS_COOKIE_NAME,
   setTokensAsCookies,
@@ -98,9 +98,9 @@ export default component$(() => {
                 <label class="label">
                   <span class="label-text text-xs font-semibold">
                     Need an account?{' '}
-                    <a href="/register" class="link link-primary">
+                    <Link href="/register" class="link link-primary">
                       Register
-                    </a>
+                    </Link>
                   </span>
                 </label>
                 <br />
