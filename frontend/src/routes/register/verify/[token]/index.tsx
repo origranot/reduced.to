@@ -1,5 +1,5 @@
 import { component$, useVisibleTask$, useStore } from '@builder.io/qwik';
-import { useLocation } from '@builder.io/qwik-city';
+import { Link, useLocation } from '@builder.io/qwik-city';
 
 export default component$(() => {
   const { params } = useLocation();
@@ -38,9 +38,9 @@ export default component$(() => {
                   ? 'Your account has been verified successfully'
                   : "We couldn't verify your account. Try again later")}
             </p>
-            <a href="/" class="btn btn-primary">
+            <Link href="/" class="btn btn-primary">
               Go back
-            </a>
+            </Link>
           </div>
         </div>
       </div>
