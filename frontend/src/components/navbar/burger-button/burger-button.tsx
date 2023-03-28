@@ -6,7 +6,12 @@ export interface BurgerProps {
 
 export const BurgerButton = component$((props: BurgerProps) => {
   return (
-    <button type="button" title={props?.buttonTitle} class={'btn btn-ghost dark:fill-white'}>
+    <button
+      type="button"
+      tabIndex={0}
+      title={props?.buttonTitle}
+      class={'btn btn-ghost dark:fill-white'}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="current"
