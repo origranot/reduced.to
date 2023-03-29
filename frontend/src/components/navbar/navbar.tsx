@@ -31,7 +31,10 @@ export const Navbar = component$(({ user }: NavbarProps) => {
       </div>
       <div class="block sm:hidden dropdown dropdown-end md:hidden lg:hidden">
         <BurgerButton buttonTitle="Open" />
-        <ul tabIndex={0} class="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4 px-2 py-2">
+        <ul
+          tabIndex={0}
+          class="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4 px-2 py-2"
+        >
           <li class={user ? 'px-4 py-2' : ''}>
             {user ? (
               `Welcome ${user.name}!`
