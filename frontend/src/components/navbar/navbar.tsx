@@ -25,9 +25,9 @@ export const Navbar = component$(({ user }: NavbarProps) => {
   return (
     <div class="navbar bg-base-100 drop-shadow-md">
       <div class="flex-1">
-        <Link href="/" class="btn btn-ghost normal-case text-xl">
+        <a href="/" class="btn btn-ghost normal-case text-xl">
           Reduced.to
-        </Link>
+        </a>
       </div>
       <div class="block sm:hidden dropdown dropdown-end">
         <BurgerButton buttonTitle="Open" />
