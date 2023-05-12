@@ -23,7 +23,6 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
     'keydown',
     $((event) => {
       if ((event as KeyboardEvent).key === '/') {
-        event.preventDefault();
         searchInput.value?.focus();
       }
     })
