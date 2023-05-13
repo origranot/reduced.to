@@ -7,8 +7,9 @@
 }
 
 .waves-div {
-  margin-bottom: 0px;
+  margin-top: auto;
   position: relative;
+  margin-bottom: 0px;
   bottom: 0px;
   left: 0px;
   width: 100vw;
