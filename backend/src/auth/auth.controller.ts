@@ -53,7 +53,7 @@ export class AuthController {
     const user = await this.authService.signup(signupDto);
 
     // Send verification email to user if in production
-    if(this.appConfigService.getConfig().app.env === 'production') {
+    if (this.appConfigService.getConfig().app.env === 'production') {
       await this.novuService.sendVerificationEmail(user);
     }
 
