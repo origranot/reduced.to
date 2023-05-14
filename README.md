@@ -108,7 +108,7 @@ List of things you need to run the project locally and how to install them.
 5. Copy `frontend/example.env` to `.env` and fill it properly ([see below](#frontend-configuration)).
 6. Make sure you have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
    ```sh
-   docker run --name reduced_to_db -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres
+   docker run --name reduced_to_db -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
    ```
 7. Run Prisma migration to create the database schema:
    ```sh
