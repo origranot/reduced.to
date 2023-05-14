@@ -45,12 +45,9 @@ export const Navbar = component$(({ user }: NavbarProps) => {
             <>
               <li class="pr-2 border-black"></li>
               <li>
-                <label class="btn-ghost py-2 text-sm justify-between">
+                <Link href="/dashboard" class="btn-ghost py-2 text-sm justify-between">
                   Dashboard
-                  <span class="badge">Soon</span>
-                </label>
-                <Link href="/dashboard/settings" class="btn-ghost py-2 text-sm">
-                  Settings
+                  <span class="badge">New</span>
                 </Link>
                 <Link href="/logout" class="btn-ghost py-2 text-sm">
                   Logout
