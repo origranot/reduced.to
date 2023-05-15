@@ -168,6 +168,10 @@ You will find 3 folders
   docker build backend/ -t reduced.to-back
   docker run -p 3000:3000 reduced.to-back
   ```
+- Make sure to have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
+  ```sh
+  docker run --name reduced_to_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
+  ```
 
 - Simply go to your favourite browser and visit `http://localhost:5000/` to see your application.
 
