@@ -110,7 +110,7 @@ List of things you need to run the project locally and how to install them.
    ```sh
    docker run --name reduced_to_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
    ```
-7. Run Prisma migration to create the database schema:
+7. Run Prisma migration inside the backend folder:
    ```sh
    npx prisma migrate dev --name init
    ```
@@ -164,11 +164,10 @@ You will find 3 folders
   docker run -p 5000:5000 reduced.to-front
   ```
 - Build and run backend instance
-
-```sh
-docker build backend/ -t reduced.to-back
-docker run -p 3000:3000 reduced.to-back
-```
+  ```sh
+  docker build backend/ -t reduced.to-back
+  docker run -p 3000:3000 reduced.to-back
+  ```
 
 - Simply go to your favourite browser and visit `http://localhost:5000/` to see your application.
 
