@@ -52,8 +52,10 @@ export class AuthController {
   async signup(@Res() res: Response, @Body() signupDto: SignupDto) {
     const user = await this.authService.signup(signupDto);
 
-    // Send verification email to user
-    await this.novuService.sendVerificationEmail(user);
+    // Send verification email to user if in production
+    if (this.appConfigService.getConfig().app.env === 'production') {
+      await this.novuService.sendVerificationEmail(user);
+    }
 
     const tokens = await this.authService.login(user);
     res = setAuthCookies(res, this.appConfigService.getConfig().front.domain, tokens);

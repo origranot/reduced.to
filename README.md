@@ -91,6 +91,10 @@ List of things you need to run the project locally and how to install them.
   ```sh
   npm install npm@latest -g
   ```
+- docker
+  ```sh
+  https://docs.docker.com/get-docker/
+  ```
 
 ### 💻 Installation
 
@@ -102,11 +106,19 @@ List of things you need to run the project locally and how to install them.
    ```
 4. Copy `backend/example.env` to `.env` and fill it properly ([see below](#backend-configuration)).
 5. Copy `frontend/example.env` to `.env` and fill it properly ([see below](#frontend-configuration)).
-6. Run the backend:
+6. Make sure you have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
+   ```sh
+   docker run --name reduced_to_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
+   ```
+7. Run Prisma migration to create the database schema:
+   ```sh
+   npx prisma migrate dev --name init
+   ```
+8. Run the backend:
    ```sh
    npm run start:backend
    ```
-7. Run the frontend:
+9. Run the frontend:
    ```sh
    npm run start:frontend
    ```
@@ -176,6 +188,7 @@ For the minimal configuration the following settings have to be changed in their
 ###### App
 
 - **APP_PORT**: Backend port
+- **NODE_ENV**: Node environment (development / production)
 
 ###### Database
 

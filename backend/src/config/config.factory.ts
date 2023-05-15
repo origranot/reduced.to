@@ -6,6 +6,7 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
     config: {
       app: {
         port: +process.env.APP_PORT || 3000,
+        env: process.env.NODE_ENV || 'development',
       },
       logger: {
         console: {
@@ -39,6 +40,7 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
 
 export interface AppConfig {
   port: number;
+  env: string;
 }
 
 export interface LoggerConfig {
