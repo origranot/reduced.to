@@ -1,9 +1,12 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, useSignal } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
 
+
 export const VerifyAlert = component$(() => {
+  const hide = useSignal<Boolean>(false);
+
   return (
-    <div class="alert alert-warning shadow-lg">
+    <div class={`alert alert-warning shadow-lg ${hide.value ? 'hidden' : ''}`}>
       <div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -27,6 +30,28 @@ export const VerifyAlert = component$(() => {
         <Link href="/register/verify" class="btn btn-sm btn-ghost">
           Click here to Verify
         </Link>
+        <button
+          class="btn btn-sm btn-ghost text-2xl"
+          onClick$={() => {
+            hide.value = true;
+          }}
+        >
+          {/* // TODO: Replace with icons from qwikest-icons (wait for issue https://github.com/qwikest/icons/issues/11) */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </button>
       </div>
     </div>
   );
