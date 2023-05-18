@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Role, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { AppConfigModule } from '../config/config.module';
-import { PrismaService } from './../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
