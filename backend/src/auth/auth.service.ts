@@ -34,7 +34,7 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) {
+  async login(user: UserContext) {
     return this.generateTokens(user);
   }
 
@@ -102,7 +102,7 @@ export class AuthService {
     return { verified: fetchedUser.verified };
   }
 
-  async refreshTokens(user: any) {
+  async refreshTokens(user: UserContext) {
     return this.generateTokens(user);
   }
 
