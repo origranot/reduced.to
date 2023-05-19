@@ -1,5 +1,5 @@
 import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
-import { Link } from '@builder.io/qwik-city';
+import { Link, useLocation } from '@builder.io/qwik-city';
 import { GlobalStore } from '../../context';
 import { UserCtx } from '../../routes/layout';
 import {
@@ -21,10 +21,31 @@ export const Navbar = component$(({ user }: NavbarProps) => {
   useStylesScoped$(styles);
 
   const globalStore = useContext(GlobalStore);
+  const location = useLocation();
 
   return (
-    <div class="navbar bg-base-100 drop-shadow-md">
+    <div class="navbar bg-base-100 drop-shadow-md z-10">
       <div class="flex-1">
+        {location.url.pathname.includes('/dashboard') && ( // Only show the left 3 bars button on the dashboard page
+          <>
+            <label for="drawer" class="btn btn-ghost btn-circle lg:hidden">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                />
+              </svg>
+            </label>
+          </>
+        )}
         <a href="/" class="btn btn-ghost normal-case text-xl">
           Reduced.to
         </a>
