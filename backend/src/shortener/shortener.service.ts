@@ -1,11 +1,15 @@
-import { AppCacheService } from './../cache/cache.service';
-import { Injectable } from '@nestjs/common';
+import { AppCacheService } from '../cache/cache.service';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { AppConfigService } from '../config/config.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { ShortenerDTO, UserShortenerDto } from './dto';
+import { UserContext } from '../auth/interfaces/user-context';
 
 @Injectable()
 export class ShortenerService {
   constructor(
     private readonly appCacheService: AppCacheService,
+    private readonly prisma: PrismaService,
     private readonly appConfigService: AppConfigService
   ) {}
 
@@ -44,7 +48,11 @@ export class ShortenerService {
    */
   isShortUrlAvailable = async (shortUrl: string): Promise<boolean> => {
     const originalUrl = await this.getOriginalUrl(shortUrl);
-    return originalUrl === null;
+    if (originalUrl) {
+      return false;
+    }
+    const userShortUrl = await this.getUserUrl(shortUrl);
+    return userShortUrl === null;
   };
 
   /**
@@ -59,4 +67,56 @@ export class ShortenerService {
     }
     await this.appCacheService.set(shortUrl, originalUrl);
   };
+
+  createShortUrl = async (
+    body: ShortenerDTO
+  ): Promise<{
+    newUrl: string;
+  }> => {
+    let parsedUrl: URL;
+    try {
+      parsedUrl = new URL(body.originalUrl);
+
+      // Checks if the URL is already reduced.
+      if (this.isUrlAlreadyShortend(body.originalUrl)) {
+        throw new Error('The URL is already shortened...');
+      }
+    } catch (err: any) {
+      throw new BadRequestException(err.message || 'URL is invalid');
+    }
+
+    let shortUrl: string;
+
+    do {
+      shortUrl = this.generateShortUrl();
+    } while (!(await this.isShortUrlAvailable(shortUrl)));
+
+    await this.addUrl(parsedUrl.href, shortUrl);
+    return { newUrl: shortUrl };
+  };
+
+  async createUserUrl(body: UserShortenerDto, user: UserContext) {
+    const { newUrl } = await this.createShortUrl({ originalUrl: body.originalUrl });
+    return await this.prisma.shortUrl.create({
+      data: {
+        shortUrl: newUrl,
+        originalUrl: body.originalUrl,
+        userId: user.id,
+        description: body.description,
+        expirationTime: body.expirationTime,
+      },
+    });
+  }
+
+  async getUserUrl(shortUrl: string) {
+    const userUrl = await this.prisma.shortUrl.findFirst({
+      where: {
+        shortUrl,
+        expirationTime: {
+          gt: new Date(),
+        },
+      },
+    });
+    return userUrl ? userUrl.originalUrl : null;
+  }
 }

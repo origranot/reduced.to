@@ -1,6 +1,18 @@
-import { BadRequestException, Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ShortenerDTO } from './dto/shortener.dto';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import { Request } from 'express';
+import { ShortenerDTO, UserShortenerDto } from './dto';
 import { ShortenerService } from './shortener.service';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { UserContext } from '../auth/interfaces/user-context';
 
 @Controller({
   path: 'shortener',
@@ -12,34 +24,25 @@ export class ShortenerController {
   @Get(':shortUrl')
   async findOne(@Param('shortUrl') shortUrl: string) {
     const originalUrl = await this.shortenerService.getOriginalUrl(shortUrl);
-    if (!originalUrl) {
+    if (originalUrl) {
+      return originalUrl;
+    }
+    const userUrl = await this.shortenerService.getUserUrl(shortUrl);
+    if (!userUrl) {
       throw new BadRequestException('Short url is wrong or expired');
     }
-
     return originalUrl;
   }
 
   @Post()
   async shortener(@Body() body: ShortenerDTO) {
-    let parsedUrl: URL;
-    try {
-      parsedUrl = new URL(body.originalUrl);
+    return this.shortenerService.createShortUrl(body);
+  }
 
-      // Checks if the URL is already reduced.
-      if (this.shortenerService.isUrlAlreadyShortend(body.originalUrl)) {
-        throw new Error('The URL is already shortened...');
-      }
-    } catch (err: any) {
-      throw new BadRequestException(err.message || 'URL is invalid');
-    }
-
-    let shortUrl: string;
-
-    do {
-      shortUrl = this.shortenerService.generateShortUrl();
-    } while (!(await this.shortenerService.isShortUrlAvailable(shortUrl)));
-
-    await this.shortenerService.addUrl(parsedUrl.href, shortUrl);
-    return { newUrl: shortUrl };
+  @UseGuards(JwtAuthGuard)
+  @Post('premium')
+  async createUserShortUrl(@Body() body: UserShortenerDto, @Req() req: Request) {
+    const user = req.user as UserContext;
+    return await this.shortenerService.createUserUrl(body, user);
   }
 }

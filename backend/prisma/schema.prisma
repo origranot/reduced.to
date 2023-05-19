@@ -20,6 +20,18 @@ model User {
   verified          Boolean @default(false) // Is the mail verification
   verificationToken String? // Verification token of the mail
   refreshToken      String?
+  shortsUrls        ShortUrl[]
+}
+
+model ShortUrl {
+  id                String  @id @default(uuid())
+  shortUrl          String  @unique
+  originalUrl       String
+  user              User? @relation(fields: [userId], references: [id])
+  userId            String
+  description       String?
+  expirationTime    DateTime?
+  createdAt         DateTime @default(now())
 }
 
 enum Role {
