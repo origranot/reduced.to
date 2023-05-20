@@ -3,7 +3,7 @@ import { Link } from '@builder.io/qwik-city';
 
 
 export const VerifyAlert = component$(() => {
-  const hide = useSignal<Boolean>(false);
+  const hide = useSignal<boolean>(false);
 
   return (
     <div class={`alert alert-warning shadow-lg ${hide.value ? 'hidden' : ''}`}>
@@ -43,7 +43,7 @@ export const VerifyAlert = component$(() => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            class="w-6 h-6"
           >
             <path
               strokeLinecap="round"

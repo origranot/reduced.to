@@ -10,11 +10,15 @@ import {
 import { Navbar } from '../components/navbar/navbar';
 import { VerifyAlert } from '../components/verify-alert/verify-alert';
 
+export enum Role {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}
 export interface UserCtx {
   id: string;
   name: string;
   email: string;
-  role: 'ADMIN' | 'USER';
+  role: Role;
   verified: boolean;
 }
 

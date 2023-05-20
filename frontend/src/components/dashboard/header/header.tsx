@@ -5,8 +5,12 @@ export interface DashboardHeaderProps {
   links: string[];
 }
 
+export const capitalizeFirstLetter = (str: string): string => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 export const DashboardHeader = component$(({ links }: DashboardHeaderProps) => {
-  let pageTitle = capitalizeFirstLetter(links[links.length - 1]);
+  const pageTitle = capitalizeFirstLetter(links[links.length - 1]);
   return (
     <>
       <div class="my-3 lg:my-3 container px-3 mx-auto flex border-gray-300">
@@ -29,7 +33,3 @@ export const DashboardHeader = component$(({ links }: DashboardHeaderProps) => {
     </>
   );
 });
-
-const capitalizeFirstLetter = (str: string): string => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
