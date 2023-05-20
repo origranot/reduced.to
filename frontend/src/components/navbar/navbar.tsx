@@ -24,7 +24,7 @@ export const Navbar = component$(({ user }: NavbarProps) => {
   const location = useLocation();
 
   return (
-    <div class="navbar bg-base-100 drop-shadow-md z-10">
+    <div class="navbar bg-base-100 drop-shadow-md relative" style={{zIndex: 100}}>
       <div class="flex-1">
         {location.url.pathname.includes('/dashboard') && ( // Only show the left 3 bars button on the dashboard page
           <>

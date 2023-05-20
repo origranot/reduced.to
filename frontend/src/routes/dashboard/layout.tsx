@@ -1,6 +1,7 @@
 import { component$, Slot } from '@builder.io/qwik';
 import { Link, RequestHandler, useLocation } from '@builder.io/qwik-city';
 import { ACCESS_COOKIE_NAME, validateAccessToken } from '../../shared/auth.service';
+import { DashboardHeader } from '../../components/dashboard/header/header';
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   const acccessToken = cookie.get(ACCESS_COOKIE_NAME)?.value;
@@ -15,7 +16,8 @@ export default component$(() => {
   return (
     <div class="drawer drawer-mobile h-[calc(100vh-64px)]">
       <input id="drawer" type="checkbox" class="drawer-toggle" />
-      <div class="drawer-content" style={{ zIndex: -5 }}>
+      <div class="drawer-content container" style={{ zIndex: -5 }}>
+        {/* <DashboardHeader links={location.url.pathname.split('/').slice(1, -1)} /> */}
         <Slot />
       </div>
       <div class="drawer-side">
@@ -41,10 +43,7 @@ export default component$(() => {
             </Link>
           </li>
           <li class="py-2 mt-2">
-            <Link
-              href="/dashboard/settings"
-              class={`${currentPath === '/dashboard/settings' ? 'active' : ''}`}
-            >
+            <Link href="#" class={`${currentPath === '/dashboard/settings' ? 'active' : ''}`}>
               <svg
                 class="w-5 h-5"
                 viewBox="0 0 24 24"
@@ -66,12 +65,12 @@ export default component$(() => {
                   stroke-linejoin="round"
                 />
               </svg>
-              <span class="font-medium">Settings</span>
+              <span class="justify-between font-medium cursor-not-allowed">Settings</span>
+              <span class="badge">Soon</span>
             </Link>
           </li>
         </ul>
       </div>
     </div>
-    // {/* <DashboardHeader links={location.url.pathname.split('/').slice(1, -1)} /> */}
   );
 });
