@@ -5,7 +5,7 @@ export default component$(() => {
   return (
     <>
       <h1>Admin panel</h1>
-      <p>//TODO: Implement a table of users</p>
+      <p class="text-red-700">//TODO: Implement a table of users</p>
     </>
   );
 });

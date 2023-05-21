@@ -19,7 +19,6 @@ export default component$(() => {
     <div class="drawer drawer-mobile h-[calc(100vh-64px)]">
       <input id="drawer" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content w-100vh m-5" style={{ zIndex: -5 }}>
-        {/* <DashboardHeader links={location.url.pathname.split('/').slice(1, -1)} /> */}
         <Slot />
       </div>
       <div class="drawer-side">
@@ -45,7 +44,10 @@ export default component$(() => {
             </Link>
           </li>
           <li class="py-2 mt-2">
-            <Link href="#" class={`${currentPath === '/dashboard/settings' ? 'active' : ''} cursor-not-allowed`}>
+            <Link
+              href="#"
+              class={`${currentPath === '/dashboard/settings' ? 'active' : ''} cursor-not-allowed`}
+            >
               <svg
                 class="w-5 h-5"
                 viewBox="0 0 24 24"
