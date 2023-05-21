@@ -9,10 +9,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { ShortenerDTO, UserShortenerDto } from './dto';
+import { ShortenerDto } from './dto';
 import { ShortenerService } from './shortener.service';
-import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { UserContext } from '../auth/interfaces/user-context';
+import { OptionalJwtGuard } from '../auth/guards/optional-jwt.guard';
 
 @Controller({
   path: 'shortener',
@@ -27,22 +27,22 @@ export class ShortenerController {
     if (originalUrl) {
       return originalUrl;
     }
-    const userUrl = await this.shortenerService.getUserUrl(shortUrl);
-    if (!userUrl) {
+    const premiumUrl = await this.shortenerService.getPremiumUrl(shortUrl);
+    if (!premiumUrl) {
       throw new BadRequestException('Short url is wrong or expired');
     }
-    return originalUrl;
+    return premiumUrl;
   }
 
+  @UseGuards(OptionalJwtGuard)
   @Post()
-  async shortener(@Body() body: ShortenerDTO) {
-    return this.shortenerService.createShortUrl(body);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Post('premium')
-  async createUserShortUrl(@Body() body: UserShortenerDto, @Req() req: Request) {
+  async shortener(@Body() body: ShortenerDto, @Req() req: Request) {
     const user = req.user as UserContext;
-    return await this.shortenerService.createUserUrl(body, user);
+    const { newUrl } = await this.shortenerService.createShortUrl(body);
+    const isUserAuthenticated = !!user?.id;
+    if (isUserAuthenticated) {
+      return await this.shortenerService.createPremiumUrl(body, user, newUrl);
+    }
+    return { newUrl, isUserAuthenticated };
   }
 }

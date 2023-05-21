@@ -2,7 +2,7 @@ import { AppCacheService } from '../cache/cache.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AppConfigService } from '../config/config.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { ShortenerDTO, UserShortenerDto } from './dto';
+import { ShortenerDto } from './dto';
 import { UserContext } from '../auth/interfaces/user-context';
 
 @Injectable()
@@ -51,8 +51,8 @@ export class ShortenerService {
     if (originalUrl) {
       return false;
     }
-    const userShortUrl = await this.getUserUrl(shortUrl);
-    return userShortUrl === null;
+    const premiumUrl = await this.getPremiumUrl(shortUrl);
+    return premiumUrl === null;
   };
 
   /**
@@ -68,8 +68,13 @@ export class ShortenerService {
     await this.appCacheService.set(shortUrl, originalUrl);
   };
 
+  /**
+   * Create a short URL based on the provided data.
+   * @param {ShortenerDto} body The data for creating a short URL.
+   * @returns {Promise<{ newUrl: string }>} Returns an object containing the newly created short URL.
+   */
   createShortUrl = async (
-    body: ShortenerDTO
+    body: ShortenerDto
   ): Promise<{
     newUrl: string;
   }> => {
@@ -95,8 +100,14 @@ export class ShortenerService {
     return { newUrl: shortUrl };
   };
 
-  async createUserUrl(body: UserShortenerDto, user: UserContext) {
-    const { newUrl } = await this.createShortUrl({ originalUrl: body.originalUrl });
+  /**
+   * Create a premium URL based on the provided data and user context.
+   * @param {ShortenerDto} body The data for creating a premium URL.
+   * @param {UserContext} user The user context.
+   * @param {string} newUrl The new short URL.
+   * @returns {Promise<any>} Returns the created premium URL.
+   */
+  async createPremiumUrl(body: ShortenerDto, user: UserContext, newUrl: string) {
     return await this.prisma.shortUrl.create({
       data: {
         shortUrl: newUrl,
@@ -108,8 +119,13 @@ export class ShortenerService {
     });
   }
 
-  async getUserUrl(shortUrl: string) {
-    const userUrl = await this.prisma.shortUrl.findFirst({
+  /**
+   * Get the premium URL associated with the given short URL.
+   * @param {string} shortUrl The short URL.
+   * @returns {Promise<string|null>} Returns the original URL if the premium URL is found and valid, null otherwise.
+   */
+  async getPremiumUrl(shortUrl: string) {
+    const premiumUrl = await this.prisma.shortUrl.findFirst({
       where: {
         shortUrl,
         expirationTime: {
@@ -117,6 +133,6 @@ export class ShortenerService {
         },
       },
     });
-    return userUrl ? userUrl.originalUrl : null;
+    return premiumUrl ? premiumUrl.originalUrl : null;
   }
 }
