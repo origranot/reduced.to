@@ -20,12 +20,12 @@ model User {
   verified          Boolean @default(false) // Is the mail verification
   verificationToken String? // Verification token of the mail
   refreshToken      String?
-  shortsUrls        ShortUrl[]
+  urls              Url[]
 }
 
-model ShortUrl {
+model Url {
   id                String  @id @default(uuid())
-  shortUrl          String  @unique
+  shortenedUrl      String  @unique
   originalUrl       String
   user              User? @relation(fields: [userId], references: [id])
   userId            String

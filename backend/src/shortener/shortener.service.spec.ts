@@ -7,7 +7,6 @@ import { AppCacheService } from '../cache/cache.service';
 import { AppConfigModule } from '../config/config.module';
 import { PrismaService } from '../prisma/prisma.service';
 import { ShortenerDto } from './dto';
-import { Request } from 'express';
 import { BadRequestException } from '@nestjs/common';
 
 describe('ShortenerService', () => {
@@ -119,21 +118,21 @@ describe('ShortenerService', () => {
     it('should return true because the url is already shortened', async () => {
       const shortenUrl = `${config.getConfig().front.domain}/test123`;
 
-      const result = service.isUrlAlreadyShortend(shortenUrl);
+      const result = service.isUrlAlreadyShortened(shortenUrl);
       expect(result).toBeTruthy();
     });
 
     it('should return false because the url is not shortened', async () => {
       const url = 'https://github.com/origranot/reduced.to';
 
-      const result = service.isUrlAlreadyShortend(url);
+      const result = service.isUrlAlreadyShortened(url);
       expect(result).toBe(false);
     });
   });
 
   describe('getPremiumUrl', () => {
     it('should return the premium url', async () => {
-      prisma.shortUrl.findFirst = jest.fn().mockReturnValueOnce({
+      prisma.url.findFirst = jest.fn().mockReturnValueOnce({
         originalUrl: 'original_url',
       });
       const result = await service.getPremiumUrl('good_url');
@@ -141,7 +140,7 @@ describe('ShortenerService', () => {
     });
 
     it('should return null if the premium url is not found', async () => {
-      prisma.shortUrl.findMany = jest.fn().mockReturnValueOnce(undefined);
+      prisma.url.findMany = jest.fn().mockReturnValueOnce(undefined);
       const result = await service.getPremiumUrl('expired_url');
       expect(result).toBe(null);
     });
@@ -152,10 +151,9 @@ describe('ShortenerService', () => {
       jest.spyOn(service, 'generateShortUrl').mockReturnValue('best');
       jest.spyOn(service, 'isShortUrlAvailable').mockResolvedValue(true);
       jest.spyOn(service, 'addUrl').mockResolvedValue(undefined);
-      jest.spyOn(service, 'isUrlAlreadyShortend').mockReturnValue(false);
+      jest.spyOn(service, 'isUrlAlreadyShortened').mockReturnValue(false);
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      const req = {} as any as Request;
       const short = await service.createShortUrl(body);
       expect(short).toStrictEqual({ newUrl: 'best' });
     });
@@ -168,7 +166,7 @@ describe('ShortenerService', () => {
     });
 
     it('should throw an error if the original URL is already shortened', async () => {
-      jest.spyOn(service, 'isUrlAlreadyShortend').mockReturnValue(true);
+      jest.spyOn(service, 'isUrlAlreadyShortened').mockReturnValue(true);
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
       try {
         await service.createShortUrl(body);

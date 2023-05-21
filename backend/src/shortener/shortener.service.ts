@@ -24,11 +24,11 @@ export class ShortenerService {
   };
 
   /**
-   * Checks if the url has already been shortend by a using a Regular Expression.
+   * Checks if the url has already been shortened by a using a Regular Expression.
    * @param {String} shortUrl The short url
    * @returns {Boolean} Returns a boolean
    */
-  isUrlAlreadyShortend = (shortUrl: string): boolean => {
+  isUrlAlreadyShortened = (shortUrl: string): boolean => {
     const domainRegex = new RegExp(this.appConfigService.getConfig().front.domain);
     return domainRegex.test(shortUrl);
   };
@@ -83,7 +83,7 @@ export class ShortenerService {
       parsedUrl = new URL(body.originalUrl);
 
       // Checks if the URL is already reduced.
-      if (this.isUrlAlreadyShortend(body.originalUrl)) {
+      if (this.isUrlAlreadyShortened(body.originalUrl)) {
         throw new Error('The URL is already shortened...');
       }
     } catch (err: any) {
@@ -108,9 +108,9 @@ export class ShortenerService {
    * @returns {Promise<any>} Returns the created premium URL.
    */
   async createPremiumUrl(body: ShortenerDto, user: UserContext, newUrl: string) {
-    return await this.prisma.shortUrl.create({
+    return await this.prisma.url.create({
       data: {
-        shortUrl: newUrl,
+        shortenedUrl: newUrl,
         originalUrl: body.originalUrl,
         userId: user.id,
         description: body.description,
@@ -121,13 +121,13 @@ export class ShortenerService {
 
   /**
    * Get the premium URL associated with the given short URL.
-   * @param {string} shortUrl The short URL.
+   * @param {string} shortenedUrl The short URL.
    * @returns {Promise<string|null>} Returns the original URL if the premium URL is found and valid, null otherwise.
    */
-  async getPremiumUrl(shortUrl: string) {
-    const premiumUrl = await this.prisma.shortUrl.findFirst({
+  async getPremiumUrl(shortenedUrl: string) {
+    const premiumUrl = await this.prisma.url.findFirst({
       where: {
-        shortUrl,
+        shortenedUrl,
         expirationTime: {
           gt: new Date(),
         },

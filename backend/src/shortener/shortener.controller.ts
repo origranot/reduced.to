@@ -12,7 +12,7 @@ import { Request } from 'express';
 import { ShortenerDto } from './dto';
 import { ShortenerService } from './shortener.service';
 import { UserContext } from '../auth/interfaces/user-context';
-import { OptionalJwtGuard } from '../auth/guards/optional-jwt.guard';
+import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 
 @Controller({
   path: 'shortener',
@@ -34,7 +34,7 @@ export class ShortenerController {
     return premiumUrl;
   }
 
-  @UseGuards(OptionalJwtGuard)
+  @UseGuards(OptionalJwtAuthGuard)
   @Post()
   async shortener(@Body() body: ShortenerDto, @Req() req: Request) {
     const user = req.user as UserContext;

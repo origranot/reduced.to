@@ -32,7 +32,7 @@ describe('ShortenerController', () => {
       jest.spyOn(shortenerService, 'generateShortUrl').mockReturnValue('best');
       jest.spyOn(shortenerService, 'isShortUrlAvailable').mockResolvedValue(true);
       jest.spyOn(shortenerService, 'addUrl').mockResolvedValue(undefined);
-      jest.spyOn(shortenerService, 'isUrlAlreadyShortend').mockReturnValue(false);
+      jest.spyOn(shortenerService, 'isUrlAlreadyShortened').mockReturnValue(false);
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
       const req = {} as any as Request;
@@ -49,7 +49,7 @@ describe('ShortenerController', () => {
     });
 
     it('should throw an error if the original URL is already shortened', async () => {
-      jest.spyOn(shortenerService, 'isUrlAlreadyShortend').mockReturnValue(true);
+      jest.spyOn(shortenerService, 'isUrlAlreadyShortened').mockReturnValue(true);
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
       const req = { user: { id: 'user_id' } } as any as Request;
 
