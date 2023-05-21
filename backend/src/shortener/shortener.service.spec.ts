@@ -5,6 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppCacheModule } from '../cache/cache.module';
 import { AppCacheService } from '../cache/cache.service';
 import { AppConfigModule } from '../config/config.module';
+import { PrismaModule } from '../prisma/prisma.module';
 
 describe('ShortenerService', () => {
   let service: ShortenerService;
@@ -13,7 +14,7 @@ describe('ShortenerService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppConfigModule, AppCacheModule, ShortenerModule],
+      imports: [AppConfigModule, AppCacheModule, ShortenerModule, PrismaModule],
       providers: [ShortenerService],
     }).compile();
 

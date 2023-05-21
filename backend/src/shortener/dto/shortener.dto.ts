@@ -6,9 +6,9 @@ export class ShortenerDto {
 
   @IsString()
   @IsOptional()
-  description: string;
+  description?: string;
 
   @IsDateString()
   @IsOptional()
-  expirationTime: string;
+  expirationTime?: string;
 }

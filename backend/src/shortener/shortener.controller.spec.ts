@@ -1,10 +1,12 @@
-import { AppConfigModule } from './../config/config.module';
-import { AppCacheModule } from './../cache/cache.module';
+import { AppConfigModule } from '../config/config.module';
+import { AppCacheModule } from '../cache/cache.module';
 import { ShortenerService } from './shortener.service';
 import { ShortenerController } from './shortener.controller';
 import { Test } from '@nestjs/testing';
-import { ShortenerDTO } from './dto';
+import { ShortenerDto } from './dto';
 import { BadRequestException } from '@nestjs/common';
+import { Request } from 'express';
+import { PrismaModule } from '../prisma/prisma.module';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
@@ -13,7 +15,7 @@ describe('ShortenerController', () => {
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [ShortenerController],
-      imports: [AppConfigModule, AppCacheModule],
+      imports: [AppConfigModule, AppCacheModule, PrismaModule],
       providers: [ShortenerService],
     }).compile();
 
@@ -32,15 +34,17 @@ describe('ShortenerController', () => {
       jest.spyOn(shortenerService, 'addUrl').mockResolvedValue(undefined);
       jest.spyOn(shortenerService, 'isUrlAlreadyShortend').mockReturnValue(false);
 
-      const body: ShortenerDTO = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      const short = await shortenerController.shortener(body);
-      expect(short).toStrictEqual({ newUrl: 'best' });
+      const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const req = {} as any as Request;
+      const short = await shortenerController.shortener(body, req);
+      expect(short).toStrictEqual({ newUrl: 'best', isUserAuthenticated: false });
     });
 
     it('should throw an error of invalid url', () => {
-      const body: ShortenerDTO = { originalUrl: 'invalid-url' };
+      const body: ShortenerDto = { originalUrl: 'invalid-url' };
+      const req = { user: { id: 'user_id' } } as any as Request;
       expect(async () => {
-        await shortenerController.shortener(body);
+        await shortenerController.shortener(body, req);
       }).rejects.toThrow(BadRequestException);
     });
 
@@ -55,6 +59,7 @@ describe('ShortenerController', () => {
 
     it('should return an error if the short URL is not found in the database', async () => {
       jest.spyOn(shortenerService, 'getOriginalUrl').mockResolvedValue(null);
+      jest.spyOn(shortenerService, 'getPremiumUrl').mockResolvedValue(null);
       const shortUrl = 'not-found';
       try {
         await shortenerController.findOne(shortUrl);
@@ -66,9 +71,11 @@ describe('ShortenerController', () => {
 
     it('should throw an error if the original URL is already shortened', async () => {
       jest.spyOn(shortenerService, 'isUrlAlreadyShortend').mockReturnValue(true);
-      const body: ShortenerDTO = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const req = { user: { id: 'user_id' } } as any as Request;
+
       try {
-        await shortenerController.shortener(body);
+        await shortenerController.shortener(body, req);
         throw new Error('Expected an error to be thrown!');
       } catch (err) {
         expect(err.message).toBe('The URL is already shortened...');
@@ -81,9 +88,10 @@ describe('ShortenerController', () => {
       jest
         .spyOn(shortenerService, 'addUrl')
         .mockRejectedValue(new Error('Error adding URL to the database'));
-      const body: ShortenerDTO = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const req = { user: { id: 'user_id' } } as any as Request;
       expect(async () => {
-        await shortenerController.shortener(body);
+        await shortenerController.shortener(body, req);
       }).rejects.toThrow();
     });
   });
