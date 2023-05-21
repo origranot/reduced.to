@@ -1,7 +1,6 @@
 import { component$, useSignal } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
 
-
 export const VerifyAlert = component$(() => {
   const hide = useSignal<boolean>(false);
 
