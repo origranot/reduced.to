@@ -48,7 +48,7 @@ describe('ShortenerController', () => {
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
       const req = {} as any as Request;
       const short = await shortenerController.shortener(body, req);
-      expect(short).toStrictEqual({ newUrl: 'best', isUserAuthenticated: false });
+      expect(short).toStrictEqual({ newUrl: 'best' });
     });
 
     it('should throw an error of invalid url', () => {
