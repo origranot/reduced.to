@@ -1,5 +1,4 @@
 import { AppConfigService } from '../config/config.service';
-import { ShortenerModule } from './shortener.module';
 import { ShortenerService } from './shortener.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppCacheModule } from '../cache/cache.module';
@@ -17,17 +16,17 @@ describe('ShortenerService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppConfigModule, AppCacheModule, ShortenerModule],
+      imports: [AppConfigModule, AppCacheModule],
       providers: [
         ShortenerService,
         {
           provide: PrismaService,
-          useValue: {
-            shortUrl: {
+          useFactory: () => ({
+            url: {
               create: jest.fn(),
               findFirst: jest.fn(),
             },
-          },
+          }),
         },
       ],
     }).compile();

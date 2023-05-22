@@ -6,7 +6,7 @@ import { Test } from '@nestjs/testing';
 import { ShortenerDto } from './dto';
 import { BadRequestException } from '@nestjs/common';
 import { Request } from 'express';
-import { PrismaModule } from '../prisma/prisma.module';
+import { PrismaService } from '../prisma/prisma.service';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
@@ -15,8 +15,19 @@ describe('ShortenerController', () => {
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [ShortenerController],
-      imports: [AppConfigModule, AppCacheModule, PrismaModule],
-      providers: [ShortenerService],
+      imports: [AppConfigModule, AppCacheModule],
+      providers: [
+        ShortenerService,
+        {
+          provide: PrismaService,
+          useFactory: () => ({
+            url: {
+              create: jest.fn(),
+              findFirst: jest.fn(),
+            },
+          }),
+        },
+      ],
     }).compile();
 
     shortenerService = moduleRef.get<ShortenerService>(ShortenerService);
