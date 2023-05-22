@@ -37,8 +37,8 @@ export class ShortenerController {
     const { newUrl } = await this.shortenerService.createShortUrl(body);
     const isUserAuthenticated = !!user?.id;
     if (isUserAuthenticated) {
-      return await this.shortenerService.createDbUrl(body, user, newUrl);
+      await this.shortenerService.createDbUrl(body, user, newUrl);
     }
-    return { newUrl, isUserAuthenticated };
+    return { newUrl };
   }
 }

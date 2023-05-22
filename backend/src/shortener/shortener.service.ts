@@ -137,11 +137,11 @@ export class ShortenerService {
     const url = await this.prisma.url.findFirst({
       where: {
         shortenedUrl,
-        expirationTime: {
-          gt: new Date(),
-        },
       },
     });
+    if (url?.expirationTime && url.expirationTime < new Date()) {
+      return null;
+    }
     return url ? url.originalUrl : null;
   }
 }
