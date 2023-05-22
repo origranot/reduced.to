@@ -114,7 +114,7 @@ describe('ShortenerController', () => {
         await shortenerController.findOne(shortUrl);
         throw new Error('Expected an error to be thrown!');
       } catch (err) {
-        expect(err.message).toBe('Shortenedurl is wrong or expired');
+        expect(err.message).toBe('Shortened url is wrong or expired');
       }
     });
   });

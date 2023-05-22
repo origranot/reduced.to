@@ -25,7 +25,7 @@ export class ShortenerController {
   async findOne(@Param('shortenedUrl') shortenedUrl: string) {
     const originalUrl = await this.shortenerService.getOriginalUrl(shortenedUrl);
     if (!originalUrl) {
-      throw new BadRequestException('Shortenedurl is wrong or expired');
+      throw new BadRequestException('Shortened url is wrong or expired');
     }
     return originalUrl;
   }
