@@ -14,12 +14,25 @@ export class ShortenerService {
   ) {}
 
   /**
-   * Return the original url of the specific url.
-   * @param {String} shortUrl The short url
-   * @returns {String} Returns the original url or null
+   * Retrieves the original URL associated with a given shortened URL.
+   * @param {string} shortenedUrl - The shortened URL.
+   * @returns {Promise<string|null>} - The original URL if found, otherwise null.
    */
-  getOriginalUrl = async (shortUrl: string): Promise<string> => {
-    const originalUrl = await this.appCacheService.get(shortUrl);
+  getOriginalUrl = async (shortenedUrl: string): Promise<string | null> => {
+    const originalUrl = await this.getUrlFromCache(shortenedUrl);
+    if (originalUrl) {
+      return originalUrl;
+    }
+    return this.getUrlFromDb(shortenedUrl);
+  };
+
+  /**
+   * Retrieves the original URL from the cache based on a given shortened URL.
+   * @param {string} shortenedUrl - The shortened URL.
+   * @returns {Promise<string|null>} - The original URL if found in the cache, otherwise null.
+   */
+  getUrlFromCache = async (shortenedUrl: string): Promise<string> => {
+    const originalUrl = await this.appCacheService.get(shortenedUrl);
     return originalUrl ? originalUrl.toString() : null;
   };
 
@@ -37,35 +50,31 @@ export class ShortenerService {
    * Generating the short url
    * @returns {String} Returns a random 5 characters url
    */
-  generateShortUrl = (): string => {
+  generateShortenedUrl = (): string => {
     return Math.random().toString(36).substring(2, 7);
   };
 
   /**
-   * Check if the short url is not in use.
-   * @param {String} shortUrl The shorten url.
-   * @returns {Boolean} Is the shortener url taken
+   * Checks if a shortened URL is available (not in use).
+   * @param {string} shortenedUrl - The shortened URL.
+   * @returns {Promise<boolean>} - True if the shortened URL is available, false otherwise.
    */
-  isShortUrlAvailable = async (shortUrl: string): Promise<boolean> => {
-    const originalUrl = await this.getOriginalUrl(shortUrl);
-    if (originalUrl) {
-      return false;
-    }
-    const premiumUrl = await this.getPremiumUrl(shortUrl);
-    return premiumUrl === null;
+  isShortenedUrlAvailable = async (shortenedUrl: string): Promise<boolean> => {
+    const originalUrl = await this.getOriginalUrl(shortenedUrl);
+    return originalUrl === null;
   };
 
   /**
    * Add the short url to the server routes.
    * @param {String} originalUrl The original url.
-   * @param {String} shortUrl The shorten url.
+   * @param {String} shortenedUrl The shorten url.
    */
-  addUrl = async (originalUrl: string, shortUrl: string) => {
-    const isShortUrlAvailable = await this.isShortUrlAvailable(shortUrl);
-    if (!isShortUrlAvailable) {
-      throw new Error('Short URL already taken');
+  addUrl = async (originalUrl: string, shortenedUrl: string) => {
+    const isShortenedUrlAvailable = await this.isShortenedUrlAvailable(shortenedUrl);
+    if (!isShortenedUrlAvailable) {
+      throw new Error('ShortenedURL already taken');
     }
-    await this.appCacheService.set(shortUrl, originalUrl);
+    await this.appCacheService.set(shortenedUrl, originalUrl);
   };
 
   /**
@@ -93,21 +102,21 @@ export class ShortenerService {
     let shortUrl: string;
 
     do {
-      shortUrl = this.generateShortUrl();
-    } while (!(await this.isShortUrlAvailable(shortUrl)));
+      shortUrl = this.generateShortenedUrl();
+    } while (!(await this.isShortenedUrlAvailable(shortUrl)));
 
     await this.addUrl(parsedUrl.href, shortUrl);
     return { newUrl: shortUrl };
   };
 
   /**
-   * Create a premium URL based on the provided data and user context.
-   * @param {ShortenerDto} body The data for creating a premium URL.
+   * Create a db URL based on the provided data and user context.
+   * @param {ShortenerDto} body The data for creating a db URL.
    * @param {UserContext} user The user context.
    * @param {string} newUrl The new short URL.
-   * @returns {Promise<any>} Returns the created premium URL.
+   * @returns {Promise<any>} Returns the created db URL.
    */
-  async createPremiumUrl(body: ShortenerDto, user: UserContext, newUrl: string) {
+  async createDbUrl(body: ShortenerDto, user: UserContext, newUrl: string) {
     return await this.prisma.url.create({
       data: {
         shortenedUrl: newUrl,
@@ -120,12 +129,12 @@ export class ShortenerService {
   }
 
   /**
-   * Get the premium URL associated with the given short URL.
-   * @param {string} shortenedUrl The short URL.
-   * @returns {Promise<string|null>} Returns the original URL if the premium URL is found and valid, null otherwise.
+   * Retrieves the original URL associated with a given short URL from the database.
+   * @param {string} shortenedUrl - The short URL.
+   * @returns {Promise<string|null>} - The original URL if the original URL is found and valid, otherwise null.
    */
-  async getPremiumUrl(shortenedUrl: string) {
-    const premiumUrl = await this.prisma.url.findFirst({
+  async getUrlFromDb(shortenedUrl: string) {
+    const url = await this.prisma.url.findFirst({
       where: {
         shortenedUrl,
         expirationTime: {
@@ -133,6 +142,6 @@ export class ShortenerService {
         },
       },
     });
-    return premiumUrl ? premiumUrl.originalUrl : null;
+    return url ? url.originalUrl : null;
   }
 }

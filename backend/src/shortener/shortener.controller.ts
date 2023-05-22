@@ -21,17 +21,13 @@ import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 export class ShortenerController {
   constructor(private readonly shortenerService: ShortenerService) {}
 
-  @Get(':shortUrl')
-  async findOne(@Param('shortUrl') shortUrl: string) {
-    const originalUrl = await this.shortenerService.getOriginalUrl(shortUrl);
-    if (originalUrl) {
-      return originalUrl;
+  @Get(':shortenedUrl')
+  async findOne(@Param('shortenedUrl') shortenedUrl: string) {
+    const originalUrl = await this.shortenerService.getOriginalUrl(shortenedUrl);
+    if (!originalUrl) {
+      throw new BadRequestException('Shortenedurl is wrong or expired');
     }
-    const premiumUrl = await this.shortenerService.getPremiumUrl(shortUrl);
-    if (!premiumUrl) {
-      throw new BadRequestException('Short url is wrong or expired');
-    }
-    return premiumUrl;
+    return originalUrl;
   }
 
   @UseGuards(OptionalJwtAuthGuard)
@@ -41,7 +37,7 @@ export class ShortenerController {
     const { newUrl } = await this.shortenerService.createShortUrl(body);
     const isUserAuthenticated = !!user?.id;
     if (isUserAuthenticated) {
-      return await this.shortenerService.createPremiumUrl(body, user, newUrl);
+      return await this.shortenerService.createDbUrl(body, user, newUrl);
     }
     return { newUrl, isUserAuthenticated };
   }

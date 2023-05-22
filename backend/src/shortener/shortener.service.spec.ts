@@ -44,12 +44,12 @@ describe('ShortenerService', () => {
   });
 
   it('should generate a short url with 5 random characters', () => {
-    const shortUrl = service.generateShortUrl();
+    const shortUrl = service.generateShortenedUrl();
     expect(shortUrl).toHaveLength(5);
   });
 
   it('should generate a short url with only alphanumeric characters', () => {
-    const shortUrl = service.generateShortUrl();
+    const shortUrl = service.generateShortenedUrl();
     expect(shortUrl).toMatch(/^[a-z0-9]+$/i);
   });
 
@@ -62,26 +62,13 @@ describe('ShortenerService', () => {
     const keys = await cache.getCacheManager.store.keys();
     expect(keys).toHaveLength(1);
 
-    const orignalUrl = await service.getOriginalUrl(SHORT_URL);
-    expect(orignalUrl).toBe(ORIGINAL_URL);
-  });
-
-  it('should add url to cache store', async () => {
-    const ORIGINAL_URL = 'https://github.com/origranot/reduced.to';
-    const SHORT_URL = 'best_url_shortener';
-
-    await service.addUrl(ORIGINAL_URL, SHORT_URL);
-
-    const keys = await cache.getCacheManager.store.keys();
-    expect(keys).toHaveLength(1);
-
-    const orignalUrl = await service.getOriginalUrl(SHORT_URL);
+    const orignalUrl = await service.getUrlFromCache(SHORT_URL);
     expect(orignalUrl).toBe(ORIGINAL_URL);
   });
 
   it('should return null if short url not found in cache', async () => {
     const SHORT_URL = 'best_url_shortener';
-    const originalUrl = await service.getOriginalUrl(SHORT_URL);
+    const originalUrl = await service.getUrlFromCache(SHORT_URL);
     expect(originalUrl).toBeNull();
   });
 
@@ -89,7 +76,7 @@ describe('ShortenerService', () => {
     it('should return true because short url is avaliable', async () => {
       const SHORT_URL = 'best_url_shortener';
 
-      const isAvailable = await service.isShortUrlAvailable(SHORT_URL);
+      const isAvailable = await service.isShortenedUrlAvailable(SHORT_URL);
       expect(isAvailable).toBeTruthy();
     });
 
@@ -98,7 +85,7 @@ describe('ShortenerService', () => {
       const SHORT_URL = 'best_url_shortener';
 
       await service.addUrl(ORIGINAL_URL, SHORT_URL);
-      const isAvailable = await service.isShortUrlAvailable(SHORT_URL);
+      const isAvailable = await service.isShortenedUrlAvailable(SHORT_URL);
       expect(isAvailable).toBeFalsy();
     });
   });
@@ -110,7 +97,7 @@ describe('ShortenerService', () => {
     await service.addUrl(originalUrl, shortUrl);
     await expect(async () => {
       await service.addUrl(originalUrl, shortUrl);
-    }).rejects.toThrowError('Short URL already taken');
+    }).rejects.toThrowError('ShortenedURL already taken');
   });
 
   describe('isUrlAlreadyShortend', () => {
@@ -129,26 +116,26 @@ describe('ShortenerService', () => {
     });
   });
 
-  describe('getPremiumUrl', () => {
+  describe('getUrlFromDb', () => {
     it('should return the premium url', async () => {
       prisma.url.findFirst = jest.fn().mockReturnValueOnce({
         originalUrl: 'original_url',
       });
-      const result = await service.getPremiumUrl('good_url');
+      const result = await service.getUrlFromDb('good_url');
       expect(result).toBe('original_url');
     });
 
     it('should return null if the premium url is not found', async () => {
       prisma.url.findMany = jest.fn().mockReturnValueOnce(undefined);
-      const result = await service.getPremiumUrl('expired_url');
+      const result = await service.getUrlFromDb('expired_url');
       expect(result).toBe(null);
     });
   });
 
   describe('getShortUrl', () => {
     it('should return a shortern url', async () => {
-      jest.spyOn(service, 'generateShortUrl').mockReturnValue('best');
-      jest.spyOn(service, 'isShortUrlAvailable').mockResolvedValue(true);
+      jest.spyOn(service, 'generateShortenedUrl').mockReturnValue('best');
+      jest.spyOn(service, 'isShortenedUrlAvailable').mockResolvedValue(true);
       jest.spyOn(service, 'addUrl').mockResolvedValue(undefined);
       jest.spyOn(service, 'isUrlAlreadyShortened').mockReturnValue(false);
 
@@ -186,8 +173,8 @@ describe('ShortenerService', () => {
     });
 
     it('should return an error if addUrl method throws an error', () => {
-      jest.spyOn(service, 'generateShortUrl').mockReturnValue('best');
-      jest.spyOn(service, 'isShortUrlAvailable').mockResolvedValue(true);
+      jest.spyOn(service, 'generateShortenedUrl').mockReturnValue('best');
+      jest.spyOn(service, 'isShortenedUrlAvailable').mockResolvedValue(true);
       jest
         .spyOn(service, 'addUrl')
         .mockRejectedValue(new Error('Error adding URL to the database'));
