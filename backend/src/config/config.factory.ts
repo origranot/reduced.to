@@ -34,6 +34,9 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
       novu: {
         apiKey: process.env.NOVU_API_KEY,
       },
+      cache: {
+        ttl: +process.env.CACHE_DEFAULT_TTL || 60 * 60 * 24 * 7, // Seconds
+      },
     },
   };
 };
@@ -75,12 +78,17 @@ export interface NovuConfig {
   apiKey: string;
 }
 
+export interface CacheConfig {
+  ttl: number;
+}
+
 export interface Configuration {
   app: AppConfig;
   logger: LoggerConfig;
   front: FrontConfig;
   rateLimit: RateLimitConfig;
   redis: RedisConfig;
+  cache: CacheConfig;
   jwt: JWTConfig;
   novu: NovuConfig;
 }

@@ -34,11 +34,11 @@ export class ShortenerController {
   @Post()
   async shortener(@Body() body: ShortenerDto, @Req() req: Request) {
     const user = req.user as UserContext;
-    const { newUrl } = await this.shortenerService.createShortUrl(body);
     const isUserAuthenticated = !!user?.id;
     if (isUserAuthenticated) {
-      await this.shortenerService.createDbUrl(body, user, newUrl);
+      return await this.shortenerService.createUsersShortUrl(user, body);
+    } else {
+      return await this.shortenerService.createShortUrl(body.originalUrl);
     }
-    return { newUrl };
   }
 }

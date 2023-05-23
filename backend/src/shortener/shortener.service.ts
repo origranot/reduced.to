@@ -68,31 +68,40 @@ export class ShortenerService {
    * Add the short url to the server routes.
    * @param {String} originalUrl The original url.
    * @param {String} shortenedUrl The shorten url.
+   * @param {String} expirationTime The expiration time.
    */
-  addUrl = async (originalUrl: string, shortenedUrl: string) => {
+  addUrl = async (originalUrl: string, shortenedUrl: string, expirationTime?: string) => {
     const isShortenedUrlAvailable = await this.isShortenedUrlAvailable(shortenedUrl);
     if (!isShortenedUrlAvailable) {
       throw new Error('ShortenedURL already taken');
     }
-    await this.appCacheService.set(shortenedUrl, originalUrl);
+    const ttl = this.appCacheService.convertExpirationTimeToTtl(expirationTime);
+    if (!ttl) {
+      await this.appCacheService.set(shortenedUrl, originalUrl);
+    } else {
+      const smallerTtl = this.appCacheService.getSmallerTtl(ttl);
+      await this.appCacheService.set(shortenedUrl, originalUrl, smallerTtl);
+    }
   };
 
   /**
    * Create a short URL based on the provided data.
-   * @param {ShortenerDto} body The data for creating a short URL.
+   * @param {string} originalUrl - The original URL.
+   * @param {string} [expirationTime] - The expiration time.
    * @returns {Promise<{ newUrl: string }>} Returns an object containing the newly created short URL.
    */
   createShortUrl = async (
-    body: ShortenerDto
+    originalUrl: string,
+    expirationTime?: string
   ): Promise<{
     newUrl: string;
   }> => {
     let parsedUrl: URL;
     try {
-      parsedUrl = new URL(body.originalUrl);
+      parsedUrl = new URL(originalUrl);
 
       // Checks if the URL is already reduced.
-      if (this.isUrlAlreadyShortened(body.originalUrl)) {
+      if (this.isUrlAlreadyShortened(originalUrl)) {
         throw new Error('The URL is already shortened...');
       }
     } catch (err: any) {
@@ -105,7 +114,7 @@ export class ShortenerService {
       shortUrl = this.generateShortenedUrl();
     } while (!(await this.isShortenedUrlAvailable(shortUrl)));
 
-    await this.addUrl(parsedUrl.href, shortUrl);
+    await this.addUrl(parsedUrl.href, shortUrl, expirationTime);
     return { newUrl: shortUrl };
   };
 
@@ -143,5 +152,17 @@ export class ShortenerService {
       return null;
     }
     return url ? url.originalUrl : null;
+  }
+
+  /**
+   * Creates a shortened URL for a user based on the provided data.
+   * @param {UserContext} user - The user context.
+   * @param {ShortenerDto} body - The request body containing the original URL and optional expiration time.
+   * @returns {Promise<{ newUrl: string }>} - Returns an object containing the newly created short URL.
+   */
+  async createUsersShortUrl(user: UserContext, body: ShortenerDto) {
+    const { newUrl } = await this.createShortUrl(body.originalUrl, body.expirationTime);
+    await this.createDbUrl(body, user, newUrl);
+    return { newUrl };
   }
 }

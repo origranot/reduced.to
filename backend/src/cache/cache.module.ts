@@ -25,7 +25,7 @@ import { AppCacheService } from './cache.service';
 
         return {
           store: store as unknown as CacheStore,
-          ttl: 0, // 0 = infinite
+          ttl: config.getConfig().cache.ttl,
         };
       },
       inject: [AppConfigService],
