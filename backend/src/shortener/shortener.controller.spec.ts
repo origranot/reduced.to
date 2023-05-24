@@ -39,7 +39,7 @@ describe('ShortenerController', () => {
   });
 
   describe('shortener', () => {
-    it('should return a shortern url', async () => {
+    it('should return a shortened url', async () => {
       jest.spyOn(shortenerService, 'generateShortenedUrl').mockReturnValue('best');
       jest.spyOn(shortenerService, 'isShortenedUrlAvailable').mockResolvedValue(true);
       jest.spyOn(shortenerService, 'addUrl').mockResolvedValue(undefined);

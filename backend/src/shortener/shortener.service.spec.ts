@@ -43,37 +43,41 @@ describe('ShortenerService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should generate a short url with 5 random characters', () => {
-    const shortUrl = service.generateShortenedUrl();
-    expect(shortUrl).toHaveLength(5);
+  describe('getUrlFromCache', () => {
+    it('should add url to cache store', async () => {
+      const ORIGINAL_URL = 'https://github.com/origranot/reduced.to';
+      const SHORT_URL = 'best_url_shortener';
+
+      await service.addUrl(ORIGINAL_URL, SHORT_URL);
+
+      const keys = await cache.getCacheManager.store.keys();
+      expect(keys).toHaveLength(1);
+
+      const originalUrl = await service.getUrlFromCache(SHORT_URL);
+      expect(originalUrl).toBe(ORIGINAL_URL);
+    });
+
+    it('should return null if short url not found in cache', async () => {
+      const SHORT_URL = 'best_url_shortener';
+      const originalUrl = await service.getUrlFromCache(SHORT_URL);
+      expect(originalUrl).toBeNull();
+    });
   });
 
-  it('should generate a short url with only alphanumeric characters', () => {
-    const shortUrl = service.generateShortenedUrl();
-    expect(shortUrl).toMatch(/^[a-z0-9]+$/i);
-  });
+  describe('generateShortenedUrl', () => {
+    it('should generate a short url with 5 random characters', () => {
+      const shortUrl = service.generateShortenedUrl();
+      expect(shortUrl).toHaveLength(5);
+    });
 
-  it('should add url to cache store', async () => {
-    const ORIGINAL_URL = 'https://github.com/origranot/reduced.to';
-    const SHORT_URL = 'best_url_shortener';
-
-    await service.addUrl(ORIGINAL_URL, SHORT_URL);
-
-    const keys = await cache.getCacheManager.store.keys();
-    expect(keys).toHaveLength(1);
-
-    const orignalUrl = await service.getUrlFromCache(SHORT_URL);
-    expect(orignalUrl).toBe(ORIGINAL_URL);
-  });
-
-  it('should return null if short url not found in cache', async () => {
-    const SHORT_URL = 'best_url_shortener';
-    const originalUrl = await service.getUrlFromCache(SHORT_URL);
-    expect(originalUrl).toBeNull();
+    it('should generate a short url with only alphanumeric characters', () => {
+      const shortUrl = service.generateShortenedUrl();
+      expect(shortUrl).toMatch(/^[a-z0-9]+$/i);
+    });
   });
 
   describe('isShortUrlAvailable', () => {
-    it('should return true because short url is avaliable', async () => {
+    it('should return true because short url is available', async () => {
       const SHORT_URL = 'best_url_shortener';
 
       const isAvailable = await service.isShortenedUrlAvailable(SHORT_URL);
@@ -100,7 +104,7 @@ describe('ShortenerService', () => {
     }).rejects.toThrowError('Shortened URL already taken');
   });
 
-  describe('isUrlAlreadyShortend', () => {
+  describe('isUrlAlreadyShortened', () => {
     it('should return true because the url is already shortened', async () => {
       const shortenUrl = `${config.getConfig().front.domain}/test123`;
 
@@ -126,13 +130,13 @@ describe('ShortenerService', () => {
     });
 
     it('should return null if url not found', async () => {
-      prisma.url.findMany = jest.fn().mockReturnValueOnce(undefined);
+      prisma.url.findFirst = jest.fn().mockReturnValueOnce(undefined);
       const result = await service.getUrlFromDb('expired_url');
       expect(result).toBe(null);
     });
   });
 
-  describe('getShortUrl', () => {
+  describe('createShortenedUrl', () => {
     it('should return a shortened url', async () => {
       jest.spyOn(service, 'generateShortenedUrl').mockReturnValue('best');
       jest.spyOn(service, 'isShortenedUrlAvailable').mockResolvedValue(true);
