@@ -56,6 +56,7 @@
     "vite-tsconfig-paths": "3.5.0"
   },
   "dependencies": {
+    "@tanstack/table-core": "^8.9.1",
     "axios": "^1.1.2",
     "canvas-confetti": "^1.5.1",
     "daisyui": "^2.51.5",
