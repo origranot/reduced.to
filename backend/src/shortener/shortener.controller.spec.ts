@@ -96,7 +96,7 @@ describe('ShortenerController', () => {
       expect(originalUrl).toBe('https://github.com/origranot/reduced.to');
     });
 
-    it('should return the original URL when given a premium short URL', async () => {
+    it('should return the original URL when given a short URL', async () => {
       jest.spyOn(shortenerService, 'getUrlFromCache').mockResolvedValue(null);
       jest
         .spyOn(shortenerService, 'getUrlFromDb')

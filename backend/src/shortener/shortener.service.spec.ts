@@ -117,7 +117,7 @@ describe('ShortenerService', () => {
   });
 
   describe('getUrlFromDb', () => {
-    it('should return the premium url', async () => {
+    it('should return url', async () => {
       prisma.url.findFirst = jest.fn().mockReturnValueOnce({
         originalUrl: 'original_url',
       });
@@ -125,7 +125,7 @@ describe('ShortenerService', () => {
       expect(result).toBe('original_url');
     });
 
-    it('should return null if the premium url is not found', async () => {
+    it('should return null if url not found', async () => {
       prisma.url.findMany = jest.fn().mockReturnValueOnce(undefined);
       const result = await service.getUrlFromDb('expired_url');
       expect(result).toBe(null);
