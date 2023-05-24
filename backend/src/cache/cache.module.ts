@@ -3,6 +3,7 @@ import { RedisStore, redisStore } from 'cache-manager-redis-store';
 import { AppConfigModule } from '../config/config.module';
 import { AppConfigService } from '../config/config.service';
 import { AppCacheService } from './cache.service';
+import { TtlUtil } from '../auth/utils/ttl.util';
 
 @Global()
 @Module({
@@ -31,7 +32,7 @@ import { AppCacheService } from './cache.service';
       inject: [AppConfigService],
     }),
   ],
-  providers: [AppCacheService],
-  exports: [AppCacheService],
+  providers: [AppCacheService, TtlUtil],
+  exports: [AppCacheService, TtlUtil],
 })
 export class AppCacheModule {}

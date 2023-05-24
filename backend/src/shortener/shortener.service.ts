@@ -4,11 +4,13 @@ import { AppConfigService } from '../config/config.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { ShortenerDto } from './dto';
 import { UserContext } from '../auth/interfaces/user-context';
+import { TtlUtil } from '../auth/utils/ttl.util';
 
 @Injectable()
 export class ShortenerService {
   constructor(
     private readonly appCacheService: AppCacheService,
+    private readonly ttlUtil: TtlUtil,
     private readonly prisma: PrismaService,
     private readonly appConfigService: AppConfigService
   ) {}
@@ -75,11 +77,11 @@ export class ShortenerService {
     if (!isShortenedUrlAvailable) {
       throw new Error('Shortened URL already taken');
     }
-    const ttl = this.appCacheService.convertExpirationTimeToTtl(expirationTime);
+    const ttl = this.ttlUtil.convertExpirationTimeToTtl(expirationTime);
     if (!ttl) {
       await this.appCacheService.set(shortenedUrl, originalUrl);
     } else {
-      const smallerTtl = this.appCacheService.getSmallerTtl(ttl);
+      const smallerTtl = this.ttlUtil.getSmallerTtl(ttl);
       await this.appCacheService.set(shortenedUrl, originalUrl, smallerTtl);
     }
   };
