@@ -38,7 +38,7 @@ export class ShortenerController {
     if (isUserAuthenticated) {
       return await this.shortenerService.createUsersShortUrl(user, body);
     } else {
-      return await this.shortenerService.createShortUrl(body.originalUrl);
+      return await this.shortenerService.createShortenedUrl(body.originalUrl);
     }
   }
 }

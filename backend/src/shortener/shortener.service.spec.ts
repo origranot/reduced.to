@@ -140,14 +140,14 @@ describe('ShortenerService', () => {
       jest.spyOn(service, 'isUrlAlreadyShortened').mockReturnValue(false);
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      const short = await service.createShortUrl(body);
+      const short = await service.createShortenedUrl(body);
       expect(short).toStrictEqual({ newUrl: 'best' });
     });
 
     it('should throw an error of invalid url', () => {
       const body: ShortenerDto = { originalUrl: 'invalid-url' };
       expect(async () => {
-        await service.createShortUrl(body);
+        await service.createShortenedUrl(body);
       }).rejects.toThrow(BadRequestException);
     });
 
@@ -155,7 +155,7 @@ describe('ShortenerService', () => {
       jest.spyOn(service, 'isUrlAlreadyShortened').mockReturnValue(true);
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
       try {
-        await service.createShortUrl(body);
+        await service.createShortenedUrl(body);
         throw new Error('Expected an error to be thrown!');
       } catch (err) {
         expect(err.message).toBe('The URL is already shortened...');
@@ -165,7 +165,7 @@ describe('ShortenerService', () => {
     it('should throw an Invalid URL error if the original URL is not url', async () => {
       const body: ShortenerDto = { originalUrl: 'some_non_url_string' };
       try {
-        await service.createShortUrl(body);
+        await service.createShortenedUrl(body);
         throw new Error('Expected an error to be thrown!');
       } catch (err) {
         expect(err.message).toBe('Invalid URL');
@@ -180,7 +180,7 @@ describe('ShortenerService', () => {
         .mockRejectedValue(new Error('Error adding URL to the database'));
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
       expect(async () => {
-        await service.createShortUrl(body);
+        await service.createShortenedUrl(body);
       }).rejects.toThrow();
     });
   });

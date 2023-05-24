@@ -73,7 +73,7 @@ export class ShortenerService {
   addUrl = async (originalUrl: string, shortenedUrl: string, expirationTime?: string) => {
     const isShortenedUrlAvailable = await this.isShortenedUrlAvailable(shortenedUrl);
     if (!isShortenedUrlAvailable) {
-      throw new Error('ShortenedURL already taken');
+      throw new Error('Shortened URL already taken');
     }
     const ttl = this.appCacheService.convertExpirationTimeToTtl(expirationTime);
     if (!ttl) {
@@ -90,7 +90,7 @@ export class ShortenerService {
    * @param {string} [expirationTime] - The expiration time.
    * @returns {Promise<{ newUrl: string }>} Returns an object containing the newly created short URL.
    */
-  createShortUrl = async (
+  createShortenedUrl = async (
     originalUrl: string,
     expirationTime?: string
   ): Promise<{
@@ -161,7 +161,7 @@ export class ShortenerService {
    * @returns {Promise<{ newUrl: string }>} - Returns an object containing the newly created short URL.
    */
   async createUsersShortUrl(user: UserContext, body: ShortenerDto) {
-    const { newUrl } = await this.createShortUrl(body.originalUrl, body.expirationTime);
+    const { newUrl } = await this.createShortenedUrl(body.originalUrl, body.expirationTime);
     await this.createDbUrl(body, user, newUrl);
     return { newUrl };
   }
