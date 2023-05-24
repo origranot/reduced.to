@@ -97,7 +97,7 @@ describe('ShortenerService', () => {
     await service.addUrl(originalUrl, shortUrl);
     await expect(async () => {
       await service.addUrl(originalUrl, shortUrl);
-    }).rejects.toThrowError('ShortenedURL already taken');
+    }).rejects.toThrowError('Shortened URL already taken');
   });
 
   describe('isUrlAlreadyShortend', () => {
@@ -133,21 +133,21 @@ describe('ShortenerService', () => {
   });
 
   describe('getShortUrl', () => {
-    it('should return a shortern url', async () => {
+    it('should return a shortened url', async () => {
       jest.spyOn(service, 'generateShortenedUrl').mockReturnValue('best');
       jest.spyOn(service, 'isShortenedUrlAvailable').mockResolvedValue(true);
       jest.spyOn(service, 'addUrl').mockResolvedValue(undefined);
       jest.spyOn(service, 'isUrlAlreadyShortened').mockReturnValue(false);
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      const short = await service.createShortenedUrl(body);
+      const short = await service.createShortenedUrl(body.originalUrl);
       expect(short).toStrictEqual({ newUrl: 'best' });
     });
 
     it('should throw an error of invalid url', () => {
       const body: ShortenerDto = { originalUrl: 'invalid-url' };
       expect(async () => {
-        await service.createShortenedUrl(body);
+        await service.createShortenedUrl(body.originalUrl);
       }).rejects.toThrow(BadRequestException);
     });
 
@@ -155,7 +155,7 @@ describe('ShortenerService', () => {
       jest.spyOn(service, 'isUrlAlreadyShortened').mockReturnValue(true);
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
       try {
-        await service.createShortenedUrl(body);
+        await service.createShortenedUrl(body.originalUrl);
         throw new Error('Expected an error to be thrown!');
       } catch (err) {
         expect(err.message).toBe('The URL is already shortened...');
@@ -165,7 +165,7 @@ describe('ShortenerService', () => {
     it('should throw an Invalid URL error if the original URL is not url', async () => {
       const body: ShortenerDto = { originalUrl: 'some_non_url_string' };
       try {
-        await service.createShortenedUrl(body);
+        await service.createShortenedUrl(body.originalUrl);
         throw new Error('Expected an error to be thrown!');
       } catch (err) {
         expect(err.message).toBe('Invalid URL');
@@ -180,7 +180,7 @@ describe('ShortenerService', () => {
         .mockRejectedValue(new Error('Error adding URL to the database'));
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
       expect(async () => {
-        await service.createShortenedUrl(body);
+        await service.createShortenedUrl(body.originalUrl);
       }).rejects.toThrow();
     });
   });
