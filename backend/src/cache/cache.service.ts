@@ -26,12 +26,7 @@ export class AppCacheService {
     return (expirationTimeAsNumber - now) / 1000;
   }
 
-  getSmallerTtl(customTtl: number) {
-    const defaultTtl = this.appConfigService.getConfig().cache.ttl;
-    if (defaultTtl) {
-      return Math.min(customTtl, defaultTtl);
-    } else {
-      return customTtl;
-    }
+  getSmallerTtl(ttl: number) {
+    return Math.min(ttl, this.appConfigService.getConfig().redis.ttl);
   }
 }
