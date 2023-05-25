@@ -17,7 +17,7 @@ async function bootstrap() {
 
   app.use(cookieParser());
   app.enableCors({ origin: true, credentials: true });
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   // Enable DI in class-validator
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
