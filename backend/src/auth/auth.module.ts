@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { NovuModule } from 'src/novu/novu.module';
-import { NovuService } from 'src/novu/novu.service';
 import { AppConfigService } from '../config/config.service';
+import { NovuModule } from '../novu/novu.module';
+import { NovuService } from '../novu/novu.service';
 import { PrismaModule } from '../prisma/prisma.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -26,14 +26,7 @@ import { VerifyStrategy } from './strategies/verify.strategy';
     NovuModule,
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    LocalStrategy,
-    JwtStrategy,
-    JwtRefreshStrategy,
-    VerifyStrategy,
-    NovuService,
-  ],
+  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy, VerifyStrategy, NovuService],
   exports: [AuthService],
 })
 export class AuthModule {}
