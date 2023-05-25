@@ -4,10 +4,7 @@ import { AppConfigService } from '../config/config.service';
 
 @Injectable()
 export class ShortenerService {
-  constructor(
-    private readonly appCacheService: AppCacheService,
-    private readonly appConfigService: AppConfigService
-  ) {}
+  constructor(private readonly appCacheService: AppCacheService, private readonly appConfigService: AppConfigService) {}
 
   /**
    * Return the original url of the specific url.

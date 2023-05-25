@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
-import { Unique } from '../../shared/decorators/unique.decorator';
+import { Unique } from '../../shared/decorators/unique/unique.decorator';
 
 export class SignupDto {
   @IsString()

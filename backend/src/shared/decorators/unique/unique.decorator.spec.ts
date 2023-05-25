@@ -1,5 +1,5 @@
 import { UniqueConstraint, Unique } from './unique.decorator';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../../prisma/prisma.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ValidationArguments } from 'class-validator';
 
