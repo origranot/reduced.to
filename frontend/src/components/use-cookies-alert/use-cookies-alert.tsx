@@ -8,7 +8,7 @@ export interface UseCookiesAlertProps {
 export const ACCEPT_COOKIES_COOKIE_NAME = 'accept-cookies';
 
 export const UseCookiesAlert = component$((props: UseCookiesAlertProps) => {
-  let visible = useSignal<boolean>(props.visible);
+  const visible = useSignal<boolean>(props.visible);
   const acceptCookies = $(() => {
     document.cookie = `${ACCEPT_COOKIES_COOKIE_NAME}=true; max-age=31536000; path=/`;
     visible.value = false;
