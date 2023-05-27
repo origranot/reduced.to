@@ -9,6 +9,10 @@ import {
 } from '../shared/auth.service';
 import { Navbar } from '../components/navbar/navbar';
 import { VerifyAlert } from '../components/verify-alert/verify-alert';
+import {
+  ACCEPT_COOKIES_COOKIE_NAME,
+  UseCookiesAlert,
+} from '../components/use-cookies-alert/use-cookies-alert';
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -38,9 +42,13 @@ export const useGetCurrentUser = routeLoader$<UserCtx | null>(async ({ cookie })
   return null;
 });
 
+export const useAcceptCookies = routeLoader$(
+  ({ cookie }) => cookie.get(ACCEPT_COOKIES_COOKIE_NAME)?.value
+);
+
 export default component$(() => {
   const userCtx = useGetCurrentUser().value;
-
+  const acceptedCookies = useAcceptCookies().value === 'true';
   return (
     <>
       <Navbar user={userCtx} />
@@ -50,6 +58,7 @@ export default component$(() => {
           <Slot />
         </section>
       </main>
+      <UseCookiesAlert visible={!acceptedCookies} />
     </>
   );
 });
