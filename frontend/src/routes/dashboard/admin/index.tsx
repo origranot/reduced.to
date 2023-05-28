@@ -1,6 +1,7 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, useStore, useResource$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { DataTable } from '~/components/table/table';
+import { authorizedFetch } from '~/shared/auth.service';
 
 export const userMockData = [
   {
@@ -23,7 +24,25 @@ export const userMockData = [
   },
 ];
 
+export const fetchUsers = async () => {
+  const data = await authorizedFetch(`${process.env.API_DOMAIN}/api/v1/users?limit=10`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+  const result = await data.json();
+  console.log('🚀 ~ file: index.tsx:31 ~ fetchUsers ~ result:', result);
+  return result;
+};
+
 export default component$(() => {
+  const users = useStore({ value: [] });
+
+  useResource$(({ track }) => {
+    track(() => users.value);
+
+    fetchUsers();
+  });
+
   return (
     <>
       <h1>Admin panel</h1>
