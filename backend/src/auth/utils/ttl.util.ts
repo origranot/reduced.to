@@ -9,7 +9,7 @@ export class TtlUtil {
     if (!expirationTime) {
       return null;
     }
-    const expirationTimeAsNumber = Number(expirationTime);
+    const expirationTimeAsNumber = new Date(expirationTime).getTime();
     const now = new Date().getTime();
     if (expirationTimeAsNumber < now) {
       return null;
