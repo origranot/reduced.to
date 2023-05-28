@@ -32,7 +32,12 @@ export class ShortenerController {
 
   @UseGuards(OptionalJwtAuthGuard)
   @Post()
-  async shortener(@Body() body: ShortenerDto, @Req() req: Request) {
+  async shortener(
+    @Body() body: ShortenerDto,
+    @Req() req: Request
+  ): Promise<{
+    newUrl: string;
+  }> {
     const user = req.user as UserContext;
     const isUserAuthenticated = !!user?.id;
     if (isUserAuthenticated) {
