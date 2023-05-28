@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ExecutionContext } from '@nestjs/common';
+import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { RolesGuard } from './roles.guard';
 import { Role } from '@prisma/client';
@@ -52,9 +52,7 @@ describe('RolesGuard', () => {
     const roles = [requiredRole];
     const context = createMockContext(roles, userRole);
 
-    const result = guard.canActivate(context);
-
-    expect(result).toBe(false);
+    expect(() => guard.canActivate(context)).toThrow(UnauthorizedException);
   });
 
   it('should deny access if user does not have role at all and there is a defined roles', () => {
@@ -63,9 +61,7 @@ describe('RolesGuard', () => {
     const roles = [requiredRole];
     const context = createMockContext(roles, userRole);
 
-    const result = guard.canActivate(context);
-
-    expect(result).toBe(false);
+    expect(() => guard.canActivate(context)).toThrow(UnauthorizedException);
   });
 
   function createMockContext(roles: Role[], userRole: Role): ExecutionContext {

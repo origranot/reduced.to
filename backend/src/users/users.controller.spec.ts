@@ -6,6 +6,7 @@ import { UsersService, IFindAllOptions } from './users.service';
 import { User } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { AppConfigModule } from '../config/config.module';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 describe('UsersController', () => {
   let app: INestApplication;
@@ -30,6 +31,12 @@ describe('UsersController', () => {
       ],
     })
       .overrideGuard(JwtAuthGuard)
+      .useValue({
+        canActivate: () => {
+          return true;
+        },
+      })
+      .overrideGuard(RolesGuard)
       .useValue({
         canActivate: () => {
           return true;
