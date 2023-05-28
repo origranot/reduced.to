@@ -1,53 +1,39 @@
-import { component$, useStore, useResource$ } from '@builder.io/qwik';
+import { component$, useResource$, Resource, useSignal } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { DataTable } from '~/components/table/table';
+import { UserCtx } from '~/routes/layout';
 import { authorizedFetch } from '~/shared/auth.service';
 
-export const userMockData = [
-  {
-    id: '1abadc9c-2e8a-4c40-aa43-6f5f3af6f63d',
-    name: 'John Smith',
-    email: 'john@j.com',
-    role: 'ADMIN',
-    verified: true,
-    verificationToken: 'eyJhbGciOiJIUzI1NiIs',
-    refreshToken: '$2b$10$/VwWgAiRYqF6',
-  },
-  {
-    id: '1abadc9c-2e8a-4c40-aa43-6f5f3af6f63d',
-    name: 'Jane Doe',
-    email: 'jane@j.com',
-    role: 'USER',
-    verified: true,
-    verificationToken: 'eyJhbGciOiJIUzI1NiIs',
-    refreshToken: '$2b$10$/VwWgAiRYqF6',
-  },
-];
-
-export const fetchUsers = async () => {
-  const data = await authorizedFetch(`${process.env.API_DOMAIN}/api/v1/users?limit=10`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  });
-  const result = await data.json();
-  console.log('🚀 ~ file: index.tsx:31 ~ fetchUsers ~ result:', result);
-  return result;
-};
-
 export default component$(() => {
-  const users = useStore({ value: [] });
+  const limit = useSignal<number>(0);
 
-  useResource$(({ track }) => {
-    track(() => users.value);
+  const usersResource = useResource$<UserCtx[]>(async ({ track, cleanup }) => {
+    track(() => limit.value);
+    const abortController = new AbortController();
+    cleanup(() => abortController.abort('cleanup'));
 
-    fetchUsers();
+    const data = await authorizedFetch(`${process.env.API_DOMAIN}/api/v1/users?limit=10`, {
+      signal: abortController.signal,
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const result = await data.json();
+    return result;
   });
 
   return (
     <>
       <h1>Admin panel</h1>
-      <p class="text-red-700">//TODO: Implement a table of users</p>
-      <DataTable rows={userMockData} customColumnNames={{ name: 'User-Name' }} />
+
+      <Resource
+        value={usersResource}
+        onPending={() => <p>Loading...</p>}
+        onRejected={() => <p>Failed to fetch users data</p>}
+        onResolved={(users) => {
+          if (!users?.length) return <p>Failed to fetch users data</p>;
+          return <DataTable rows={users} customColumnNames={{ name: 'User-Name' }} />;
+        }}
+      />
     </>
   );
 });
