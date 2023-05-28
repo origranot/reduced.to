@@ -30,13 +30,6 @@ import { UsersModule } from './users/users.module';
     NovuModule,
     UsersModule,
   ],
-  providers: [
-    PrismaService,
-    UniqueConstraint,
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+  providers: [PrismaService, UniqueConstraint],
 })
 export class AppModule {}
