@@ -42,7 +42,7 @@ describe('ShortenerController', () => {
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
       const req = { user: { id: 'has_id' } } as any as Request;
       const short = await shortenerController.shortener(body, req);
-      expect(short).toStrictEqual(null);
+      expect(short).toBeNull();
     });
 
     it('authenticated user should return a shortened url when createUsersShortUrl return it', async () => {
@@ -62,7 +62,7 @@ describe('ShortenerController', () => {
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
       const req = {} as any as Request;
       const short = await shortenerController.shortener(body, req);
-      expect(short).toStrictEqual(null);
+      expect(short).toBeNull();
     });
 
     it('guest user should return a shortened url when createShortenedUrl return it', async () => {

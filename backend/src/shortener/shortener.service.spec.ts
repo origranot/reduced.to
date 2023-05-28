@@ -7,6 +7,7 @@ import { AppConfigModule } from '../config/config.module';
 import { PrismaService } from '../prisma/prisma.service';
 import { ShortenerDto } from './dto';
 import { BadRequestException } from '@nestjs/common';
+import { UserContext } from '../auth/interfaces/user-context';
 
 describe('ShortenerService', () => {
   let service: ShortenerService;
@@ -23,7 +24,15 @@ describe('ShortenerService', () => {
           provide: PrismaService,
           useFactory: () => ({
             url: {
-              create: jest.fn(),
+              create: jest.fn().mockResolvedValue({
+                id: 'cdd49d7b-3ad6-41e6-8010-47887b26cb88',
+                shortenedUrl: 'sqpjf',
+                originalUrl: 'https://support.co-ing.co/notification/dispatchers',
+                userId: '26419f47-97bd-4f28-ba2d-a33c224fa4af',
+                description: null,
+                expirationTime: null,
+                createdAt: '2023-05-28T15:16:06.837Z' as any,
+              }),
               findFirst: jest.fn(),
             },
           }),
@@ -131,8 +140,26 @@ describe('ShortenerService', () => {
 
     it('should return null if url not found', async () => {
       prisma.url.findFirst = jest.fn().mockReturnValueOnce(undefined);
+      const result = await service.getUrlFromDb('not_found_url');
+      expect(result).toBeNull();
+    });
+
+    it('should return null if url is expired', async () => {
+      prisma.url.findFirst = jest.fn().mockReturnValueOnce({
+        originalUrl: 'original_url',
+        expirationTime: new Date(Date.now() - 1000 * 60),
+      });
       const result = await service.getUrlFromDb('expired_url');
-      expect(result).toBe(null);
+      expect(result).toBeNull();
+    });
+
+    it('should return url if expiration time bigger than now', async () => {
+      prisma.url.findFirst = jest.fn().mockReturnValueOnce({
+        originalUrl: 'original_url',
+        expirationTime: new Date(Date.now() + 1000 * 60),
+      });
+      const result = await service.getUrlFromDb('good_url');
+      expect(result).toBe('original_url');
     });
   });
 
@@ -186,6 +213,71 @@ describe('ShortenerService', () => {
       expect(async () => {
         await service.createShortenedUrl(body.originalUrl);
       }).rejects.toThrow();
+    });
+  });
+
+  describe('getOriginalUrl', () => {
+    it('should return original url if it is return form cache', async () => {
+      jest.spyOn(service, 'getUrlFromCache').mockResolvedValue('cached.url');
+      jest.spyOn(service, 'getUrlFromDb').mockResolvedValue('db.url');
+
+      const result = await service.getOriginalUrl('shortened_url');
+      expect(result).toBe('cached.url');
+    });
+
+    it('should return original url if it is return form db', async () => {
+      jest.spyOn(service, 'getUrlFromCache').mockResolvedValue(null);
+      jest.spyOn(service, 'getUrlFromDb').mockResolvedValue('db.url');
+
+      const result = await service.getOriginalUrl('shortened_url');
+      expect(result).toBe('db.url');
+    });
+
+    it('should return null if url not found', async () => {
+      jest.spyOn(service, 'getUrlFromCache').mockResolvedValue(null);
+      jest.spyOn(service, 'getUrlFromDb').mockResolvedValue(null);
+
+      const result = await service.getOriginalUrl('shortened_url');
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('createDbUrl', () => {
+    it('should return url data', async () => {
+      const body = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const user = { id: '26419f47-97bd-4f28-ba2d-a33c224fa4af' } as UserContext;
+      const newUrl = 'best_url_shortener';
+
+      const result = await service.createDbUrl(body, user, newUrl);
+      expect(result).toEqual({
+        id: 'cdd49d7b-3ad6-41e6-8010-47887b26cb88',
+        shortenedUrl: 'sqpjf',
+        originalUrl: 'https://support.co-ing.co/notification/dispatchers',
+        userId: '26419f47-97bd-4f28-ba2d-a33c224fa4af',
+        description: null,
+        expirationTime: null,
+        createdAt: '2023-05-28T15:16:06.837Z' as any,
+      });
+    });
+  });
+
+  describe('createUsersShortUrl', () => {
+    it('should return shortened url', async () => {
+      jest.spyOn(service, 'createShortenedUrl').mockResolvedValue({ newUrl: 'best_url_shortener' });
+
+      const body = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const user = { id: '26419f47-97bd-4f28-ba2d-a33c224fa4af' } as UserContext;
+      const result = await service.createUsersShortUrl(user, body);
+      expect(result).toEqual({ newUrl: 'best_url_shortener' });
+    });
+
+    it('should return null newUrl if createShortenedUrl return it', async () => {
+      jest.spyOn(service, 'createShortenedUrl').mockResolvedValue({ newUrl: null });
+
+      const body = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const user = { id: '26419f47-97bd-4f28-ba2d-a33c224fa4af' } as UserContext;
+      const result = await service.createUsersShortUrl(user, body);
+      expect(result).toEqual({ newUrl: null });
     });
   });
 });
