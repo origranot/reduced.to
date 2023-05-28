@@ -9,14 +9,19 @@ import {
   ColumnDef,
 } from '@tanstack/table-core';
 
-type RowType = { [key: string]: unknown };
+// type RowType = { [key: string]: unknown };
 
-export interface TableProps {
-  rows: RowType[];
-  customColumnNames?: { [key in keyof RowType]?: string };
+export interface TableProps<T> {
+  rows: T[];
+  customColumnNames?: { [key in keyof T]?: string };
 }
 
-export function generateUseTable(columns: ColumnDef<RowType, unknown>[], rows: RowType[]) {
+// export interface TableProps {
+//   rows: RowType[];
+//   customColumnNames?: { [key in keyof RowType]?: string };
+// }
+
+export function generateUseTable<T>(columns: ColumnDef<T, unknown>[], rows: T[]) {
   const defaultTable = createTable({
     columns,
     data: [],
@@ -45,10 +50,10 @@ export function generateUseTable(columns: ColumnDef<RowType, unknown>[], rows: R
   return useTable;
 }
 
-export const DataTable = component$((props: TableProps) => {
+export const DataTable = component$<TableProps<T>>((props: TableProps<T>) => {
   useStylesScoped$(styles);
 
-  const columnHelper = createColumnHelper<RowType>();
+  const columnHelper = createColumnHelper<T>();
   const columns = Object.keys(props.rows[0]).map((colName: string) =>
     columnHelper.accessor(colName, {
       header: props.customColumnNames?.[colName] || colName,
@@ -60,7 +65,7 @@ export const DataTable = component$((props: TableProps) => {
   });
 
   // const table = useTable(state);
-  const table = generateUseTable(columns as ColumnDef<RowType, unknown>[], props.rows)(state);
+  const table = generateUseTable(columns as ColumnDef<T, unknown>[], props.rows)(state);
 
   return (
     <div class="overflow-x-auto">
@@ -80,7 +85,7 @@ export const DataTable = component$((props: TableProps) => {
                       });
 
                       const table = generateUseTable(
-                        columns as ColumnDef<RowType, unknown>[],
+                        columns as ColumnDef<T, unknown>[],
                         props.rows
                       )(state);
 
