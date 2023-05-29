@@ -35,7 +35,7 @@ describe('ShortenerController', () => {
   });
 
   describe('shortener', () => {
-    it('authenticated user should return null when createUsersShortUrl return null', async () => {
+    it('should return null when createUsersShortUrl return null in case of authenticated user', async () => {
       jest.spyOn(shortenerService, 'createUsersShortUrl').mockReturnValue(null);
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ newUrl: 'url' });
 
@@ -45,7 +45,7 @@ describe('ShortenerController', () => {
       expect(short).toBeNull();
     });
 
-    it('authenticated user should return a shortened url when createUsersShortUrl return it', async () => {
+    it('should return a shortened url when createUsersShortUrl return it in case of authenticated user', async () => {
       jest.spyOn(shortenerService, 'createUsersShortUrl').mockResolvedValue({ newUrl: 'url.com' });
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue(null);
 
@@ -55,7 +55,7 @@ describe('ShortenerController', () => {
       expect(short).toStrictEqual({ newUrl: 'url.com' });
     });
 
-    it('guest user should return null when createShortenedUrl return null', async () => {
+    it('should return null when createShortenedUrl return null in case of guest user', async () => {
       jest.spyOn(shortenerService, 'createUsersShortUrl').mockResolvedValue({ newUrl: 'url.com' });
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue(null);
 
@@ -65,7 +65,7 @@ describe('ShortenerController', () => {
       expect(short).toBeNull();
     });
 
-    it('guest user should return a shortened url when createShortenedUrl return it', async () => {
+    it('should return a shortened url when createShortenedUrl return it in case of guest user', async () => {
       jest.spyOn(shortenerService, 'createUsersShortUrl').mockResolvedValue(null);
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ newUrl: 'url.com' });
 
