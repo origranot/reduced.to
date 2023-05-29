@@ -1,14 +1,23 @@
-import { component$, useResource$, Resource, useSignal } from '@builder.io/qwik';
+import { component$, useResource$, Resource, useVisibleTask$, useStore } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { DataTable } from '~/components/table/table';
 import { UserCtx } from '~/routes/layout';
 import { authorizedFetch } from '~/shared/auth.service';
 
 export default component$(() => {
-  const limit = useSignal<number>(0);
+  // const limit = useSignal<number>(0);
+  const firstLoading = useStore({ value: true });
+
+  useVisibleTask$(
+    () => {
+      firstLoading.value = false;
+    },
+    { strategy: 'document-ready' }
+  );
 
   const usersResource = useResource$<UserCtx[]>(async ({ track, cleanup }) => {
-    track(() => limit.value);
+    track(() => firstLoading.value);
+    if (firstLoading.value) return;
     const abortController = new AbortController();
     cleanup(() => abortController.abort('cleanup'));
 
