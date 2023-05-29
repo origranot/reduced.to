@@ -4,13 +4,12 @@ import { AppConfigService } from '../config/config.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { ShortenerDto } from './dto';
 import { UserContext } from '../auth/interfaces/user-context';
-import { TtlUtil } from '../auth/utils/ttl.util';
+import { convertExpirationTimeToTtl } from '../cache/utils/ttl.util';
 
 @Injectable()
 export class ShortenerService {
   constructor(
     private readonly appCacheService: AppCacheService,
-    private readonly ttlUtil: TtlUtil,
     private readonly prisma: PrismaService,
     private readonly appConfigService: AppConfigService
   ) {}
@@ -72,16 +71,16 @@ export class ShortenerService {
    * @param {String} shortenedUrl The shorten url.
    * @param {String} expirationTime The expiration time.
    */
-  addUrl = async (originalUrl: string, shortenedUrl: string, expirationTime?: string) => {
+  addUrl = async (originalUrl: string, shortenedUrl: string, expirationTime?: Date) => {
     const isShortenedUrlAvailable = await this.isShortenedUrlAvailable(shortenedUrl);
     if (!isShortenedUrlAvailable) {
       throw new Error('Shortened URL already taken');
     }
-    const ttl = this.ttlUtil.convertExpirationTimeToTtl(expirationTime);
+    const ttl = convertExpirationTimeToTtl(expirationTime);
     if (!ttl) {
       await this.appCacheService.set(shortenedUrl, originalUrl);
     } else {
-      const smallerTtl = this.ttlUtil.getSmallerTtl(ttl);
+      const smallerTtl = Math.min(ttl, this.appConfigService.getConfig().redis.ttl);
       await this.appCacheService.set(shortenedUrl, originalUrl, smallerTtl);
     }
   };
@@ -94,7 +93,7 @@ export class ShortenerService {
    */
   createShortenedUrl = async (
     originalUrl: string,
-    expirationTime?: string
+    expirationTime?: Date
   ): Promise<{
     newUrl: string;
   }> => {
@@ -163,7 +162,10 @@ export class ShortenerService {
    * @returns {Promise<{ newUrl: string }>} - Returns an object containing the newly created short URL.
    */
   async createUsersShortUrl(user: UserContext, body: ShortenerDto) {
-    const { newUrl } = await this.createShortenedUrl(body.originalUrl, body.expirationTime);
+    const { newUrl } = await this.createShortenedUrl(
+      body.originalUrl,
+      new Date(body.expirationTime)
+    );
     await this.createDbUrl(body, user, newUrl);
     return { newUrl };
   }
