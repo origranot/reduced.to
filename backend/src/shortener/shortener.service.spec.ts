@@ -15,6 +15,19 @@ describe('ShortenerService', () => {
   let cache: AppCacheService;
   let prisma: PrismaService;
 
+  const ORIGINAL_URL = 'https://github.com/origranot/reduced.to';
+  const USER_ID = '26419f47-97bd-4f28-ba2d-a33c224fa4af';
+  const SHORT_URL = 'best_url_shortener';
+  const URL_DB_DATA = {
+    id: USER_ID,
+    shortenedUrl: 'sqpjf',
+    originalUrl: ORIGINAL_URL,
+    userId: USER_ID,
+    description: null,
+    expirationTime: null,
+    createdAt: '2023-05-28T15:16:06.837Z' as any,
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppConfigModule, AppCacheModule],
@@ -24,15 +37,7 @@ describe('ShortenerService', () => {
           provide: PrismaService,
           useFactory: () => ({
             url: {
-              create: jest.fn().mockResolvedValue({
-                id: 'cdd49d7b-3ad6-41e6-8010-47887b26cb88',
-                shortenedUrl: 'sqpjf',
-                originalUrl: 'https://support.co-ing.co/notification/dispatchers',
-                userId: '26419f47-97bd-4f28-ba2d-a33c224fa4af',
-                description: null,
-                expirationTime: null,
-                createdAt: '2023-05-28T15:16:06.837Z' as any,
-              }),
+              create: jest.fn().mockResolvedValue(URL_DB_DATA),
               findFirst: jest.fn(),
             },
           }),
@@ -54,9 +59,6 @@ describe('ShortenerService', () => {
 
   describe('getUrlFromCache', () => {
     it('should add url to cache store', async () => {
-      const ORIGINAL_URL = 'https://github.com/origranot/reduced.to';
-      const SHORT_URL = 'best_url_shortener';
-
       await service.addUrl(ORIGINAL_URL, SHORT_URL);
 
       const keys = await cache.getCacheManager.store.keys();
@@ -67,7 +69,6 @@ describe('ShortenerService', () => {
     });
 
     it('should return null if short url not found in cache', async () => {
-      const SHORT_URL = 'best_url_shortener';
       const originalUrl = await service.getUrlFromCache(SHORT_URL);
       expect(originalUrl).toBeNull();
     });
@@ -87,16 +88,11 @@ describe('ShortenerService', () => {
 
   describe('isShortUrlAvailable', () => {
     it('should return true because short url is available', async () => {
-      const SHORT_URL = 'best_url_shortener';
-
       const isAvailable = await service.isShortenedUrlAvailable(SHORT_URL);
       expect(isAvailable).toBeTruthy();
     });
 
     it('should return false because short url is taken', async () => {
-      const ORIGINAL_URL = 'https://github.com/origranot/reduced.to';
-      const SHORT_URL = 'best_url_shortener';
-
       await service.addUrl(ORIGINAL_URL, SHORT_URL);
       const isAvailable = await service.isShortenedUrlAvailable(SHORT_URL);
       expect(isAvailable).toBeFalsy();
@@ -104,7 +100,7 @@ describe('ShortenerService', () => {
   });
 
   it('should throw an error if short url is already taken', async () => {
-    const originalUrl = 'https://github.com/origranot/reduced.to';
+    const originalUrl = ORIGINAL_URL;
     const shortUrl = 'best_url_shortener';
 
     await service.addUrl(originalUrl, shortUrl);
@@ -122,9 +118,7 @@ describe('ShortenerService', () => {
     });
 
     it('should return false because the url is not shortened', async () => {
-      const url = 'https://github.com/origranot/reduced.to';
-
-      const result = service.isUrlAlreadyShortened(url);
+      const result = service.isUrlAlreadyShortened(ORIGINAL_URL);
       expect(result).toBe(false);
     });
   });
@@ -170,7 +164,7 @@ describe('ShortenerService', () => {
       jest.spyOn(service, 'addUrl').mockResolvedValue(undefined);
       jest.spyOn(service, 'isUrlAlreadyShortened').mockReturnValue(false);
 
-      const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const body: ShortenerDto = { originalUrl: ORIGINAL_URL };
       const short = await service.createShortenedUrl(body.originalUrl);
       expect(short).toStrictEqual({ newUrl: 'best' });
     });
@@ -184,7 +178,7 @@ describe('ShortenerService', () => {
 
     it('should throw an error if the original URL is already shortened', async () => {
       jest.spyOn(service, 'isUrlAlreadyShortened').mockReturnValue(true);
-      const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const body: ShortenerDto = { originalUrl: ORIGINAL_URL };
       try {
         await service.createShortenedUrl(body.originalUrl);
         throw new Error('Expected an error to be thrown!');
@@ -209,7 +203,7 @@ describe('ShortenerService', () => {
       jest
         .spyOn(service, 'addUrl')
         .mockRejectedValue(new Error('Error adding URL to the database'));
-      const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const body: ShortenerDto = { originalUrl: ORIGINAL_URL };
       expect(async () => {
         await service.createShortenedUrl(body.originalUrl);
       }).rejects.toThrow();
@@ -244,20 +238,12 @@ describe('ShortenerService', () => {
 
   describe('createDbUrl', () => {
     it('should return url data', async () => {
-      const body = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      const user = { id: '26419f47-97bd-4f28-ba2d-a33c224fa4af' } as UserContext;
+      const body = { originalUrl: ORIGINAL_URL };
+      const user = { id: USER_ID } as UserContext;
       const newUrl = 'best_url_shortener';
 
       const result = await service.createDbUrl(body, user, newUrl);
-      expect(result).toEqual({
-        id: 'cdd49d7b-3ad6-41e6-8010-47887b26cb88',
-        shortenedUrl: 'sqpjf',
-        originalUrl: 'https://support.co-ing.co/notification/dispatchers',
-        userId: '26419f47-97bd-4f28-ba2d-a33c224fa4af',
-        description: null,
-        expirationTime: null,
-        createdAt: '2023-05-28T15:16:06.837Z' as any,
-      });
+      expect(result).toEqual(URL_DB_DATA);
     });
   });
 
@@ -265,8 +251,8 @@ describe('ShortenerService', () => {
     it('should return shortened url', async () => {
       jest.spyOn(service, 'createShortenedUrl').mockResolvedValue({ newUrl: 'best_url_shortener' });
 
-      const body = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      const user = { id: '26419f47-97bd-4f28-ba2d-a33c224fa4af' } as UserContext;
+      const body = { originalUrl: ORIGINAL_URL };
+      const user = { id: USER_ID } as UserContext;
       const result = await service.createUsersShortUrl(user, body);
       expect(result).toEqual({ newUrl: 'best_url_shortener' });
     });
@@ -274,8 +260,8 @@ describe('ShortenerService', () => {
     it('should return null newUrl if createShortenedUrl return it', async () => {
       jest.spyOn(service, 'createShortenedUrl').mockResolvedValue({ newUrl: null });
 
-      const body = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      const user = { id: '26419f47-97bd-4f28-ba2d-a33c224fa4af' } as UserContext;
+      const body = { originalUrl: ORIGINAL_URL };
+      const user = { id: USER_ID } as UserContext;
       const result = await service.createUsersShortUrl(user, body);
       expect(result).toEqual({ newUrl: null });
     });
