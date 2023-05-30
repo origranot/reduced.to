@@ -253,7 +253,7 @@ describe('ShortenerService', () => {
 
       const body = { originalUrl: ORIGINAL_URL };
       const user = { id: USER_ID } as UserContext;
-      const result = await service.createUsersShortUrl(user, body);
+      const result = await service.createUsersShortenedUrl(user, body);
       expect(result).toEqual({ newUrl: 'best_url_shortener' });
     });
 
@@ -262,7 +262,7 @@ describe('ShortenerService', () => {
 
       const body = { originalUrl: ORIGINAL_URL };
       const user = { id: USER_ID } as UserContext;
-      const result = await service.createUsersShortUrl(user, body);
+      const result = await service.createUsersShortenedUrl(user, body);
       expect(result).toEqual({ newUrl: null });
     });
   });

@@ -36,7 +36,7 @@ describe('ShortenerController', () => {
 
   describe('shortener', () => {
     it('should return null when createUsersShortUrl return null in case of authenticated user', async () => {
-      jest.spyOn(shortenerService, 'createUsersShortUrl').mockReturnValue(null);
+      jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockReturnValue(null);
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ newUrl: 'url' });
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
@@ -46,7 +46,9 @@ describe('ShortenerController', () => {
     });
 
     it('should return a shortened url when createUsersShortUrl return it in case of authenticated user', async () => {
-      jest.spyOn(shortenerService, 'createUsersShortUrl').mockResolvedValue({ newUrl: 'url.com' });
+      jest
+        .spyOn(shortenerService, 'createUsersShortenedUrl')
+        .mockResolvedValue({ newUrl: 'url.com' });
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue(null);
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
@@ -56,7 +58,9 @@ describe('ShortenerController', () => {
     });
 
     it('should return null when createShortenedUrl return null in case of guest user', async () => {
-      jest.spyOn(shortenerService, 'createUsersShortUrl').mockResolvedValue({ newUrl: 'url.com' });
+      jest
+        .spyOn(shortenerService, 'createUsersShortenedUrl')
+        .mockResolvedValue({ newUrl: 'url.com' });
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue(null);
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
@@ -66,7 +70,7 @@ describe('ShortenerController', () => {
     });
 
     it('should return a shortened url when createShortenedUrl return it in case of guest user', async () => {
-      jest.spyOn(shortenerService, 'createUsersShortUrl').mockResolvedValue(null);
+      jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockResolvedValue(null);
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ newUrl: 'url.com' });
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };

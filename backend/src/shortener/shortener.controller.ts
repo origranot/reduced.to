@@ -41,7 +41,7 @@ export class ShortenerController {
     const user = req.user as UserContext;
     const isUserAuthenticated = !!user?.id;
     if (isUserAuthenticated) {
-      return await this.shortenerService.createUsersShortUrl(user, body);
+      return await this.shortenerService.createUsersShortenedUrl(user, body);
     } else {
       return await this.shortenerService.createShortenedUrl(body.originalUrl);
     }

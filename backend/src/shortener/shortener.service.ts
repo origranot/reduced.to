@@ -161,7 +161,7 @@ export class ShortenerService {
    * @param {ShortenerDto} body - The request body containing the original URL and optional expiration time.
    * @returns {Promise<{ newUrl: string }>} - Returns an object containing the newly created short URL.
    */
-  async createUsersShortUrl(user: UserContext, body: ShortenerDto) {
+  async createUsersShortenedUrl(user: UserContext, body: ShortenerDto) {
     const { newUrl } = await this.createShortenedUrl(
       body.originalUrl,
       new Date(body.expirationTime)
