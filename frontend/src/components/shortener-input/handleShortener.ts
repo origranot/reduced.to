@@ -6,11 +6,11 @@ import { copyToClipboard, normalizeUrl } from '~/utils';
  * Returns the shorter link from the server.
  * @param {String} originalUrl - The original url we want to shorten.
  */
-const getShortenUrl = async (originalUrl: string) => {
+const getShortenUrl = async (originalUrl: string, expiredTime: number) => {
   const result = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ originalUrl }),
+    body: JSON.stringify({ originalUrl, expiredTime }),
   });
 
   return result.json();
@@ -18,10 +18,11 @@ const getShortenUrl = async (originalUrl: string) => {
 
 export const handleShortener = async (store: Store) => {
   const urlInput = normalizeUrl(store.inputValue);
+  const expiredTime = store.expiredTime;
 
   store.loading = true;
 
-  const response = await getShortenUrl(urlInput);
+  const response = await getShortenUrl(urlInput, expiredTime);
 
   store.loading = false;
   store.showResult = true;
