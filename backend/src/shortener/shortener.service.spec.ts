@@ -126,10 +126,10 @@ describe('ShortenerService', () => {
   describe('getUrlFromDb', () => {
     it('should return url', async () => {
       prisma.url.findFirst = jest.fn().mockReturnValueOnce({
-        originalUrl: 'original_url',
+        originalUrl: ORIGINAL_URL,
       });
       const result = await service.getUrlFromDb('good_url');
-      expect(result).toBe('original_url');
+      expect(result).toBe(ORIGINAL_URL);
     });
 
     it('should return null if url not found', async () => {
@@ -140,7 +140,7 @@ describe('ShortenerService', () => {
 
     it('should return null if url is expired', async () => {
       prisma.url.findFirst = jest.fn().mockReturnValueOnce({
-        originalUrl: 'original_url',
+        originalUrl: ORIGINAL_URL,
         expirationTime: new Date(Date.now() - 1000 * 60),
       });
       const result = await service.getUrlFromDb('expired_url');
@@ -149,11 +149,11 @@ describe('ShortenerService', () => {
 
     it('should return url if expiration time bigger than now', async () => {
       prisma.url.findFirst = jest.fn().mockReturnValueOnce({
-        originalUrl: 'original_url',
+        originalUrl: ORIGINAL_URL,
         expirationTime: new Date(Date.now() + 1000 * 60),
       });
       const result = await service.getUrlFromDb('good_url');
-      expect(result).toBe('original_url');
+      expect(result).toBe(ORIGINAL_URL);
     });
   });
 
@@ -188,7 +188,7 @@ describe('ShortenerService', () => {
     });
 
     it('should throw an Invalid URL error if the original URL is not url', async () => {
-      const body: ShortenerDto = { originalUrl: 'some_non_url_string' };
+      const body: ShortenerDto = { originalUrl: 'non_url_string' };
       try {
         await service.createShortenedUrl(body.originalUrl);
         throw new Error('Expected an error to be thrown!');
