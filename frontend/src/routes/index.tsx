@@ -19,6 +19,7 @@ import { Tooltip } from '~/components/tooltip/tooltip';
 import { Waves } from '~/components/waves/waves';
 import { copyToClipboard, openUrl } from '~/utils';
 import styles from './index.css?inline';
+import { dayInSeconds } from '~/constants';
 
 export const InputContext = createContextId<Store>('input');
 
@@ -29,6 +30,7 @@ export interface Store {
   showResult: boolean;
   showQRCode: boolean;
   urlError: string;
+  expiredTime: number;
 }
 
 export const clearValues = (state: Store) => {
@@ -51,6 +53,7 @@ export default component$(() => {
     showResult: false,
     showQRCode: false,
     urlError: '',
+    expiredTime: dayInSeconds,
   });
 
   useContextProvider(InputContext, state);
