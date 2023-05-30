@@ -19,7 +19,7 @@ describe('ShortenerController', () => {
           provide: ShortenerService,
           useValue: {
             getOriginalUrl: jest.fn(),
-            createUsersShortUrl: jest.fn(),
+            createUsersShortenedUrl: jest.fn(),
             createShortenedUrl: jest.fn(),
           },
         },
@@ -46,9 +46,7 @@ describe('ShortenerController', () => {
     });
 
     it('should return a shortened url when createUsersShortUrl return it in case of authenticated user', async () => {
-      jest
-        .spyOn(shortenerService, 'createUsersShortenedUrl')
-        .mockResolvedValue({ newUrl: 'url.com' });
+      jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockResolvedValue({ newUrl: 'url.com' });
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue(null);
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
@@ -58,9 +56,7 @@ describe('ShortenerController', () => {
     });
 
     it('should return null when createShortenedUrl return null in case of guest user', async () => {
-      jest
-        .spyOn(shortenerService, 'createUsersShortenedUrl')
-        .mockResolvedValue({ newUrl: 'url.com' });
+      jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockResolvedValue({ newUrl: 'url.com' });
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue(null);
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
@@ -97,25 +93,6 @@ describe('ShortenerController', () => {
       } catch (err) {
         expect(err.message).toBe('Shortened url is wrong or expired');
       }
-    });
-
-    it('should throw an error if the original URL is already shortened', async () => {
-      jest.spyOn(shortenerService, 'isUrlAlreadyShortend').mockReturnValue(true);
-      const body: ShortenerDTO = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      try {
-        await shortenerController.shortener(body);
-        throw new Error('Expected an error to be thrown!');
-      } catch (err) {
-        expect(err.message).toBe('The URL is already shortened...');
-      }
-    });
-
-    it('should return an error if addUrl method throws an error', () => {
-      jest.spyOn(shortenerService, 'generateShortUrl').mockReturnValue('best');
-      jest.spyOn(shortenerService, 'isShortUrlAvailable').mockResolvedValue(true);
-      jest.spyOn(shortenerService, 'addUrl').mockRejectedValue(new Error('Error adding URL to the database'));
-      const body: ShortenerDTO = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      expect(async () => { await shortenerController.shortener(body) }).rejects.toThrow();
     });
   });
 });

@@ -200,9 +200,7 @@ describe('ShortenerService', () => {
     it('should return an error if addUrl method throws an error', () => {
       jest.spyOn(service, 'generateShortenedUrl').mockReturnValue('best');
       jest.spyOn(service, 'isShortenedUrlAvailable').mockResolvedValue(true);
-      jest
-        .spyOn(service, 'addUrl')
-        .mockRejectedValue(new Error('Error adding URL to the database'));
+      jest.spyOn(service, 'addUrl').mockRejectedValue(new Error('Error adding URL to the database'));
       const body: ShortenerDto = { originalUrl: ORIGINAL_URL };
       expect(async () => {
         await service.createShortenedUrl(body.originalUrl);

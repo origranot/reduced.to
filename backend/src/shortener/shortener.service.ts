@@ -162,10 +162,7 @@ export class ShortenerService {
    * @returns {Promise<{ newUrl: string }>} - Returns an object containing the newly created short URL.
    */
   async createUsersShortenedUrl(user: UserContext, body: ShortenerDto) {
-    const { newUrl } = await this.createShortenedUrl(
-      body.originalUrl,
-      new Date(body.expirationTime)
-    );
+    const { newUrl } = await this.createShortenedUrl(body.originalUrl, new Date(body.expirationTime));
     await this.createDbUrl(body, user, newUrl);
     return { newUrl };
   }
