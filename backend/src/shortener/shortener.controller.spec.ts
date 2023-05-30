@@ -5,6 +5,7 @@ import { ShortenerController } from './shortener.controller';
 import { Test } from '@nestjs/testing';
 import { ShortenerDto } from './dto';
 import { Request } from 'express';
+import { AppLoggerModule } from '../logger/logger.module';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
@@ -12,8 +13,8 @@ describe('ShortenerController', () => {
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
+      imports: [AppConfigModule, AppLoggerModule, AppCacheModule],
       controllers: [ShortenerController],
-      imports: [AppConfigModule, AppCacheModule],
       providers: [
         {
           provide: ShortenerService,

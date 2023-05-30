@@ -59,7 +59,7 @@ describe('ShortenerService', () => {
 
   describe('getUrlFromCache', () => {
     it('should add url to cache store', async () => {
-      await service.addUrl(ORIGINAL_URL, SHORT_URL);
+      await service.addUrlToCache(ORIGINAL_URL, SHORT_URL);
 
       const keys = await cache.getCacheManager.store.keys();
       expect(keys).toHaveLength(1);
@@ -93,20 +93,10 @@ describe('ShortenerService', () => {
     });
 
     it('should return false because short url is taken', async () => {
-      await service.addUrl(ORIGINAL_URL, SHORT_URL);
+      await service.addUrlToCache(ORIGINAL_URL, SHORT_URL);
       const isAvailable = await service.isShortenedUrlAvailable(SHORT_URL);
       expect(isAvailable).toBeFalsy();
     });
-  });
-
-  it('should throw an error if short url is already taken', async () => {
-    const originalUrl = ORIGINAL_URL;
-    const shortUrl = 'best_url_shortener';
-
-    await service.addUrl(originalUrl, shortUrl);
-    await expect(async () => {
-      await service.addUrl(originalUrl, shortUrl);
-    }).rejects.toThrowError('Shortened URL already taken');
   });
 
   describe('isUrlAlreadyShortened', () => {
@@ -161,7 +151,7 @@ describe('ShortenerService', () => {
     it('should return a shortened url', async () => {
       jest.spyOn(service, 'generateShortenedUrl').mockReturnValue('best');
       jest.spyOn(service, 'isShortenedUrlAvailable').mockResolvedValue(true);
-      jest.spyOn(service, 'addUrl').mockResolvedValue(undefined);
+      jest.spyOn(service, 'addUrlToCache').mockResolvedValue(undefined);
       jest.spyOn(service, 'isUrlAlreadyShortened').mockReturnValue(false);
 
       const body: ShortenerDto = { originalUrl: ORIGINAL_URL };
@@ -197,10 +187,10 @@ describe('ShortenerService', () => {
       }
     });
 
-    it('should return an error if addUrl method throws an error', () => {
+    it('should return an error if addUrlToCache method throws an error', () => {
       jest.spyOn(service, 'generateShortenedUrl').mockReturnValue('best');
       jest.spyOn(service, 'isShortenedUrlAvailable').mockResolvedValue(true);
-      jest.spyOn(service, 'addUrl').mockRejectedValue(new Error('Error adding URL to the database'));
+      jest.spyOn(service, 'addUrlToCache').mockRejectedValue(new Error('Error adding URL to the cache'));
       const body: ShortenerDto = { originalUrl: ORIGINAL_URL };
       expect(async () => {
         await service.createShortenedUrl(body.originalUrl);
@@ -245,22 +235,22 @@ describe('ShortenerService', () => {
     });
   });
 
-  describe('createUsersShortUrl', () => {
+  describe('createUsersShortenedUrl', () => {
     it('should return shortened url', async () => {
       jest.spyOn(service, 'createShortenedUrl').mockResolvedValue({ newUrl: 'best_url_shortener' });
 
-      const body = { originalUrl: ORIGINAL_URL };
+      const shortenerDto: ShortenerDto = { originalUrl: ORIGINAL_URL };
       const user = { id: USER_ID } as UserContext;
-      const result = await service.createUsersShortenedUrl(user, body);
+      const result = await service.createUsersShortenedUrl(user, shortenerDto);
       expect(result).toEqual({ newUrl: 'best_url_shortener' });
     });
 
     it('should return null newUrl if createShortenedUrl return it', async () => {
       jest.spyOn(service, 'createShortenedUrl').mockResolvedValue({ newUrl: null });
 
-      const body = { originalUrl: ORIGINAL_URL };
+      const shortenerDto: ShortenerDto = { originalUrl: ORIGINAL_URL };
       const user = { id: USER_ID } as UserContext;
-      const result = await service.createUsersShortenedUrl(user, body);
+      const result = await service.createUsersShortenedUrl(user, shortenerDto);
       expect(result).toEqual({ newUrl: null });
     });
   });

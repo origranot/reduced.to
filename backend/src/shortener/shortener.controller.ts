@@ -4,13 +4,14 @@ import { ShortenerDto } from './dto';
 import { ShortenerService } from './shortener.service';
 import { UserContext } from '../auth/interfaces/user-context';
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
+import { AppLoggerSerivce } from '../logger/logger.service';
 
 @Controller({
   path: 'shortener',
   version: '1',
 })
 export class ShortenerController {
-  constructor(private readonly shortenerService: ShortenerService) {}
+  constructor(private readonly logger: AppLoggerSerivce, private readonly shortenerService: ShortenerService) {}
 
   @Get(':shortenedUrl')
   async findOne(@Param('shortenedUrl') shortenedUrl: string) {
@@ -23,18 +24,14 @@ export class ShortenerController {
 
   @UseGuards(OptionalJwtAuthGuard)
   @Post()
-  async shortener(
-    @Body() body: ShortenerDto,
-    @Req() req: Request
-  ): Promise<{
-    newUrl: string;
-  }> {
+  async shortener(@Body() shortenerDto: ShortenerDto, @Req() req: Request): Promise<{ newUrl: string }> {
     const user = req.user as UserContext;
     const isUserAuthenticated = !!user?.id;
     if (isUserAuthenticated) {
-      return await this.shortenerService.createUsersShortenedUrl(user, body);
-    } else {
-      return await this.shortenerService.createShortenedUrl(body.originalUrl);
+      this.logger.log(`User ${user.id} is creating a shortened url for ${shortenerDto.originalUrl}`);
+      return this.shortenerService.createUsersShortenedUrl(user, shortenerDto);
     }
+
+    return this.shortenerService.createShortenedUrl(shortenerDto.originalUrl);
   }
 }
