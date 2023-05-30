@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-  UnauthorizedException,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AppConfigService } from '../config/config.service';
 import { NovuService } from '../novu/novu.service';
@@ -66,7 +57,7 @@ export class AuthController {
   @UseGuards(JwtRefreshAuthGuard)
   @Post('/refresh')
   async refresh(@Req() req: Request) {
-    return this.authService.refreshTokens(req.user);
+    return this.authService.refreshTokens(req.user as UserContext);
   }
 
   @UseGuards(JwtAuthGuard)

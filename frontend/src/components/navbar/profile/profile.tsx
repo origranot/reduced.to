@@ -21,10 +21,10 @@ export const Profile = component$(({ name }: ProfileProps) => {
         class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-48"
       >
         <li>
-          <a class="justify-between">
-            Settings
-            <span class="badge">Soon</span>
-          </a>
+          <Link href="/dashboard" class="justify-between">
+            Dashboard
+            <span class="badge">New</span>
+          </Link>
         </li>
         <li>
           <Link href="/logout">Logout</Link>

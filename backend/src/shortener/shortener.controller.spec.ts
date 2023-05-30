@@ -82,9 +82,7 @@ describe('ShortenerController', () => {
 
   describe('findOne', () => {
     it('should return the original URL when given a valid short URL', async () => {
-      jest
-        .spyOn(shortenerService, 'getOriginalUrl')
-        .mockResolvedValue('https://github.com/origranot/reduced.to');
+      jest.spyOn(shortenerService, 'getOriginalUrl').mockResolvedValue('https://github.com/origranot/reduced.to');
       const shortUrl = 'best';
       const originalUrl = await shortenerController.findOne(shortUrl);
       expect(originalUrl).toBe('https://github.com/origranot/reduced.to');
@@ -99,6 +97,25 @@ describe('ShortenerController', () => {
       } catch (err) {
         expect(err.message).toBe('Shortened url is wrong or expired');
       }
+    });
+
+    it('should throw an error if the original URL is already shortened', async () => {
+      jest.spyOn(shortenerService, 'isUrlAlreadyShortend').mockReturnValue(true);
+      const body: ShortenerDTO = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      try {
+        await shortenerController.shortener(body);
+        throw new Error('Expected an error to be thrown!');
+      } catch (err) {
+        expect(err.message).toBe('The URL is already shortened...');
+      }
+    });
+
+    it('should return an error if addUrl method throws an error', () => {
+      jest.spyOn(shortenerService, 'generateShortUrl').mockReturnValue('best');
+      jest.spyOn(shortenerService, 'isShortUrlAvailable').mockResolvedValue(true);
+      jest.spyOn(shortenerService, 'addUrl').mockRejectedValue(new Error('Error adding URL to the database'));
+      const body: ShortenerDTO = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      expect(async () => { await shortenerController.shortener(body) }).rejects.toThrow();
     });
   });
 });

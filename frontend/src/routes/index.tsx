@@ -77,7 +77,9 @@ export default component$(() => {
                     handleShortener(state);
                   }
                 }}
-                onInput$={(event) => (state.inputValue = (event.target as HTMLInputElement).value)}
+                onInput$={(event) => {
+                  state.inputValue = (event.target as HTMLInputElement).value;
+                }}
                 onSubmit$={() => {
                   clearValues(state);
                   handleShortener(state);

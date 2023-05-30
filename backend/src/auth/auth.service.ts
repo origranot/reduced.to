@@ -34,7 +34,7 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) {
+  async login(user: UserContext) {
     return this.generateTokens(user);
   }
 
@@ -102,7 +102,7 @@ export class AuthService {
     return { verified: fetchedUser.verified };
   }
 
-  async refreshTokens(user: any) {
+  async refreshTokens(user: UserContext) {
     return this.generateTokens(user);
   }
 
@@ -129,14 +129,10 @@ export class AuthService {
     return user;
   }
 
-  async generateTokens(user: UserContext) {
+  async generateTokens(user: UserContext): Promise<{ accessToken: string; refreshToken: string }> {
     const tokens = {
       accessToken: this.generateToken(user),
-      refreshToken: this.generateToken(
-        user,
-        '7d',
-        this.appConfigService.getConfig().jwt.refreshSecret
-      ),
+      refreshToken: this.generateToken(user, '7d', this.appConfigService.getConfig().jwt.refreshSecret),
     };
 
     await this.prisma.user.update({

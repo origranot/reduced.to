@@ -1,11 +1,5 @@
 import { Response } from 'express';
-import {
-  AUTH_COOKIE_EXPIRES,
-  AUTH_COOKIE_NAME,
-  REFRESH_COOKIE_EXPIRES,
-  REFRESH_COOKIE_NAME,
-  setAuthCookies,
-} from './cookies';
+import { AUTH_COOKIE_EXPIRES, AUTH_COOKIE_NAME, REFRESH_COOKIE_EXPIRES, REFRESH_COOKIE_NAME, setAuthCookies } from './cookies';
 
 describe('setAuthCookies', () => {
   let res: Response;
@@ -45,11 +39,7 @@ describe('setAuthCookies', () => {
 
     expect(res.cookie).toHaveBeenCalledTimes(2);
     expect(res.cookie).toHaveBeenCalledWith('accessToken', tokens.accessToken, expectedAuthOptions);
-    expect(res.cookie).toHaveBeenCalledWith(
-      'refreshToken',
-      tokens.refreshToken,
-      expectedRefreshOptions
-    );
+    expect(res.cookie).toHaveBeenCalledWith('refreshToken', tokens.refreshToken, expectedRefreshOptions);
   });
 
   it('should set auth cookies with the correct expiration time', () => {

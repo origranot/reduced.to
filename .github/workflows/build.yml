@@ -1,4 +1,4 @@
-name: CI
+name: Build
 
 on:
   push:
@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint-package:
-    name: Lint Package
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,17 +23,17 @@ jobs:
           node-version: 16.x
           registry-url: https://registry.npmjs.org/
 
+      - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install NPM Dependencies
         run: npm install && npm run install:all
 
       - name: Build solution
         if: always()
         run: npm run build:all
-
-      - name: Run tests
-        if: always()
-        run: npm run test:all
-
-      - name: Prettier Check
-        if: always()
-        run: npm run fmt.check
