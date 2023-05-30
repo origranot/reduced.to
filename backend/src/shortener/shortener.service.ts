@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ShortenerDto } from './dto';
 import { UserContext } from '../auth/interfaces/user-context';
 import { convertExpirationTimeToTtl } from '../cache/utils/ttl.util';
+import { Url } from '@prisma/client';
 
 @Injectable()
 export class ShortenerService {
@@ -66,16 +67,12 @@ export class ShortenerService {
   };
 
   /**
-   * Add the short url to the server routes.
+   * Add the short url to the cache
    * @param {String} originalUrl The original url.
    * @param {String} shortenedUrl The shorten url.
    * @param {String} expirationTime The expiration time.
    */
-  addUrl = async (originalUrl: string, shortenedUrl: string, expirationTime?: Date) => {
-    const isShortenedUrlAvailable = await this.isShortenedUrlAvailable(shortenedUrl);
-    if (!isShortenedUrlAvailable) {
-      throw new Error('Shortened URL already taken');
-    }
+  addUrlToCache = async (originalUrl: string, shortenedUrl: string, expirationTime?: Date) => {
     const ttl = convertExpirationTimeToTtl(expirationTime);
     if (!ttl) {
       await this.appCacheService.set(shortenedUrl, originalUrl);
@@ -91,12 +88,7 @@ export class ShortenerService {
    * @param {string} [expirationTime] - The expiration time.
    * @returns {Promise<{ newUrl: string }>} Returns an object containing the newly created short URL.
    */
-  createShortenedUrl = async (
-    originalUrl: string,
-    expirationTime?: Date
-  ): Promise<{
-    newUrl: string;
-  }> => {
+  createShortenedUrl = async (originalUrl: string, expirationTime?: Date): Promise<{ newUrl: string }> => {
     let parsedUrl: URL;
     try {
       parsedUrl = new URL(originalUrl);
@@ -115,35 +107,35 @@ export class ShortenerService {
       shortUrl = this.generateShortenedUrl();
     } while (!(await this.isShortenedUrlAvailable(shortUrl)));
 
-    await this.addUrl(parsedUrl.href, shortUrl, expirationTime);
+    await this.addUrlToCache(parsedUrl.href, shortUrl, expirationTime);
     return { newUrl: shortUrl };
   };
 
   /**
    * Create a db URL based on the provided data and user context.
-   * @param {ShortenerDto} body The data for creating a db URL.
+   * @param {ShortenerDto} shortenerDto The data for creating a db URL.
    * @param {UserContext} user The user context.
-   * @param {string} newUrl The new short URL.
+   * @param {string} shortenedUrl The shortened URL.
    * @returns {Promise<any>} Returns the created db URL.
    */
-  async createDbUrl(body: ShortenerDto, user: UserContext, newUrl: string) {
-    return await this.prisma.url.create({
+  createDbUrl = async (shortenerDto: ShortenerDto, user: UserContext, shortenedUrl: string): Promise<Url> => {
+    return this.prisma.url.create({
       data: {
-        shortenedUrl: newUrl,
-        originalUrl: body.originalUrl,
+        shortenedUrl: shortenedUrl,
+        originalUrl: shortenerDto.originalUrl,
         userId: user.id,
-        description: body.description,
-        expirationTime: body.expirationTime,
+        description: shortenerDto.description,
+        expirationTime: shortenerDto.expirationTime,
       },
     });
-  }
+  };
 
   /**
    * Retrieves the original URL associated with a given short URL from the database.
    * @param {string} shortenedUrl - The short URL.
    * @returns {Promise<string|null>} - The original URL if the original URL is found and valid, otherwise null.
    */
-  async getUrlFromDb(shortenedUrl: string) {
+  getUrlFromDb = async (shortenedUrl: string): Promise<string | null> => {
     const url = await this.prisma.url.findFirst({
       where: {
         shortenedUrl,
@@ -153,17 +145,17 @@ export class ShortenerService {
       return null;
     }
     return url ? url.originalUrl : null;
-  }
+  };
 
   /**
    * Creates a shortened URL for a user based on the provided data.
    * @param {UserContext} user - The user context.
-   * @param {ShortenerDto} body - The request body containing the original URL and optional expiration time.
+   * @param {ShortenerDto} shortenerDto - The request body containing the original URL and optional expiration time.
    * @returns {Promise<{ newUrl: string }>} - Returns an object containing the newly created short URL.
    */
-  async createUsersShortenedUrl(user: UserContext, body: ShortenerDto) {
-    const { newUrl } = await this.createShortenedUrl(body.originalUrl, new Date(body.expirationTime));
-    await this.createDbUrl(body, user, newUrl);
+  createUsersShortenedUrl = async (user: UserContext, shortenerDto: ShortenerDto): Promise<{ newUrl: string }> => {
+    const { newUrl } = await this.createShortenedUrl(shortenerDto.originalUrl, new Date(shortenerDto.expirationTime));
+    await this.createDbUrl(shortenerDto, user, newUrl);
     return { newUrl };
-  }
+  };
 }
