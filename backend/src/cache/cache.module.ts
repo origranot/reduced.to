@@ -1,4 +1,5 @@
-import { CacheModule, CacheStore, Global, Module } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
+import { CacheStore, Global, Module } from '@nestjs/common';
 import { RedisStore, redisStore } from 'cache-manager-redis-store';
 import { AppConfigModule } from '../config/config.module';
 import { AppConfigService } from '../config/config.service';
@@ -25,7 +26,7 @@ import { AppCacheService } from './cache.service';
 
         return {
           store: store as unknown as CacheStore,
-          ttl: 0, // 0 = infinite
+          ttl: config.getConfig().redis.ttl,
         };
       },
       inject: [AppConfigService],

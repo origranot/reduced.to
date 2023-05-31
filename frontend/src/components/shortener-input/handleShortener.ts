@@ -9,6 +9,7 @@ import { copyToClipboard, normalizeUrl } from '~/utils';
 const getShortenUrl = async (originalUrl: string, expiredTime: number) => {
   const result = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener`, {
     method: 'POST',
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ originalUrl, expiredTime }),
   });
