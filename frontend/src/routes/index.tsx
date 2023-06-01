@@ -30,7 +30,7 @@ export interface Store {
   showResult: boolean;
   showQRCode: boolean;
   urlError: string;
-  expiredTime: number;
+  expirationTime: number;
 }
 
 export const clearValues = (state: Store) => {
@@ -53,7 +53,7 @@ export default component$(() => {
     showResult: false,
     showQRCode: false,
     urlError: '',
-    expiredTime: dayInSeconds,
+    expirationTime: dayInSeconds,
   });
 
   useContextProvider(InputContext, state);

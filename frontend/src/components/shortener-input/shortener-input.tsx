@@ -27,7 +27,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
   const userCtx = useGetCurrentUser().value;
 
   const handleSelectExpiredTime = $((event: QwikChangeEvent<HTMLSelectElement>) => {
-    state.expiredTime = +event.target.value;
+    state.expirationTime = +event.target.value;
   });
 
   useOnDocument(
