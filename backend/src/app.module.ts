@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule } from './auth/auth.module';
-import { RolesGuard } from './auth/guards/roles.guard';
 import { AppCacheModule } from './cache/cache.module';
 import { AppConfigModule } from './config/config.module';
 import { AppConfigService } from './config/config.service';
