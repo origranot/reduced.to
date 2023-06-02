@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ShortenerDto } from './dto';
 import { UserContext } from '../auth/interfaces/user-context';
 import { Url } from '@prisma/client';
+import { calculateDateFromTtl } from '../shared/utils';
 
 @Injectable()
 export class ShortenerService {
@@ -20,7 +21,7 @@ export class ShortenerService {
    * @returns {Promise<string|null>} - The original URL if found, otherwise null.
    */
   getOriginalUrl = async (shortenedUrl: string): Promise<string | null> => {
-    let originalUrl = await this.getUrlFromCache(shortenedUrl);
+    const originalUrl = await this.getUrlFromCache(shortenedUrl);
     if (originalUrl) {
       return originalUrl;
     }
@@ -72,8 +73,8 @@ export class ShortenerService {
    * @param {number} ttl The time to live.
    */
   addUrlToCache = async (originalUrl: string, shortenedUrl: string, ttl?: number) => {
-    const minTtl = Math.min(this.appConfigService.getConfig().redis.ttl, ttl) || this.appConfigService.getConfig().redis.ttl;
-    await this.appCacheService.set(shortenedUrl, originalUrl, minTtl);
+    const minTtl = Math.min(this.appConfigService.getConfig().redis.ttl, ttl);
+    await this.appCacheService.set(shortenedUrl, originalUrl, minTtl || this.appConfigService.getConfig().redis.ttl);
   };
 
   /**
@@ -122,7 +123,7 @@ export class ShortenerService {
         userId: user.id,
         description,
         // If the ttl is provided, set the expiration time to the current time plus the ttl.
-        ...(ttl && { expirationTime: new Date(new Date().getTime() + ttl) }),
+        ...(ttl && { expirationTime: calculateDateFromTtl(ttl) }),
       },
     });
   };
