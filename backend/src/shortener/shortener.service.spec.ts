@@ -307,7 +307,7 @@ describe('ShortenerService', () => {
     it('should create url with correct expiration time', async () => {
       const body = {
         originalUrl: ORIGINAL_URL,
-        ttl: 1000 * 60 * 60 * 24, // Day
+        ttl: 1000 * 60 * 60 * 24, // Day in ms
       };
       const user = { id: USER_ID } as UserContext;
       const newUrl = 'best_url_shortener';
