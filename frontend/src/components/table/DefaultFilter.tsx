@@ -1,19 +1,18 @@
-import { component$, QRL } from '@builder.io/qwik';
+import { component$, PropFunction, Signal } from '@builder.io/qwik';
 
 export interface FilterInputProps {
-  column: { filterValue: string; setFilter: QRL<(ev: Event) => void> };
+  filterValue: Signal<string>;
+  setFilter$: PropFunction<(val: string) => void>;
 }
 
-export const FilterInput = component$<FilterInputProps>(
-  ({ column: { filterValue = '', setFilter } }) => {
-    return (
-      <input
-        type="text"
-        value={filterValue}
-        onInput$={(ev: Event) => setFilter(ev)}
-        placeholder={`Search...`}
-        style={{ width: '100%' }}
-      />
-    );
-  }
-);
+export const FilterInput = component$<FilterInputProps>(({ filterValue = '', setFilter$ }) => {
+  return (
+    <input
+      type="text"
+      value={(filterValue as Signal<string>).value}
+      onInput$={(ev: InputEvent) => setFilter$((ev.target as HTMLInputElement)?.value || '')}
+      placeholder={`Search...`}
+      style={{ width: '100%' }}
+    />
+  );
+});

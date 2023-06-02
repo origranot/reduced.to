@@ -293,7 +293,7 @@ export default component$(() => {
   });
 
   return (
-    <>
+    <div class="p-10">
       <h1>Admin panel</h1>
 
       <Resource
@@ -302,11 +302,11 @@ export default component$(() => {
         onRejected={() => <p>Failed to fetch users data</p>}
         onResolved={(users) => {
           if (!users?.length) return <p>Failed to fetch users data</p>;
-          return <DataTable rows={bullshit} customColumnNames={{ ['USER-NAME']: 'User-Name' }} />;
+          return <DataTable rows={bullshit} customColumnNames={{ ['USER-NAME']: 'UserName' }} />;
           // return <DataTable rows={users} customColumnNames={{ name: 'User-Name' }} />;
         }}
       />
-    </>
+    </div>
   );
 });
 
