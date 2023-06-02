@@ -11,6 +11,7 @@ import { InputContext } from '~/routes';
 import { ShortenerInputBtn } from './shortener-input-btn';
 import { timeFrameArr } from '~/constants';
 import { useGetCurrentUser } from '~/routes/layout';
+import { Select } from '~/components/select/Select';
 
 export interface ShortenerInputProps {
   onKeyUp$: (event: QwikKeyboardEvent<HTMLInputElement>) => void;
@@ -21,13 +22,16 @@ export interface ShortenerInputProps {
 export const ShortenerInput = component$((props: ShortenerInputProps) => {
   const state = useContext(InputContext);
   const searchInput = useSignal<HTMLInputElement>();
+  const selectInputValue = useSignal<string>(timeFrameArr[0].key);
 
   // TODO: add role functionality
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const userCtx = useGetCurrentUser().value;
+  const role = useGetCurrentUser().value?.role;
 
-  const handleSelectExpiredTime = $((event: QwikChangeEvent<HTMLSelectElement>) => {
-    state.expirationTime = +event.target.value;
+  const handleSelectExpiredTime = $((value: any, key: any) => {
+    console.log(value, key);
+    selectInputValue.value = key;
+    state.expirationTime = value;
   });
 
   useOnDocument(
@@ -55,19 +59,31 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
           aria-describedby="shortenerBtn"
         />
         <div>
-          <label class="label">
-            <div class="label-text bg-transparent">Pick Url expiration Time</div>
-          </label>
-          <select
-            class="select select-bordered mb-2 w-full rounded-none focus:outline-0"
-            onChange$={handleSelectExpiredTime}
-          >
+          <Select disabled={role ? false : true} selectInputValue={selectInputValue}>
             {timeFrameArr.map(({ key, value }) => (
-              <option value={value} key={key} class="shadow bg-base-100 rounded-box">
+              <li
+                value={value}
+                key={key}
+                class="w-auto cursor-pointer pl-4 py-1 hover:bg-gray-200"
+                onClick$={$(() => handleSelectExpiredTime(value, key))}
+              >
                 {key}
-              </option>
+              </li>
             ))}
-          </select>
+
+            {role === 'ADMIN' && (
+              <>
+                <hr />
+                <li
+                  key={'never'}
+                  class="w-auto cursor-pointer pl-4 py-1 hover:bg-gray-200"
+                  onClick$={$(() => handleSelectExpiredTime(null, 'Never'))}
+                >
+                  Never
+                </li>
+              </>
+            )}
+          </Select>
         </div>
         <ShortenerInputBtn disabled={state.inputValue.length === 0} onClick$={props.onSubmit$} />
       </div>
