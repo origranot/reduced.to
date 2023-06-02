@@ -38,14 +38,14 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/origranot/reduced.to',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/origranot/reduced.to',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -68,11 +68,16 @@ const config = {
             label: 'Tutorial',
           },
           {
+            type: 'search',
+            position: 'right',
+          },
+          {
             href: 'https://github.com/origranot/reduced.to',
             label: 'GitHub',
             position: 'right',
           },
         ],
+        
       },
       footer: {
         style: 'dark',
@@ -83,15 +88,6 @@ const config = {
               {
                 label: 'Tutorial',
                 to: '/docs/intro',
-              },
-            ],
-          },
-          {
-            title: 'Community',
-            items: [
-              {
-                label: 'Discord',
-                href: '',
               },
             ],
           },
