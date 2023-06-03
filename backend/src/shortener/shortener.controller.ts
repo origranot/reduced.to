@@ -14,7 +14,7 @@ export class ShortenerController {
   constructor(private readonly logger: AppLoggerSerivce, private readonly shortenerService: ShortenerService) {}
 
   @Get(':shortenedUrl')
-  async findOne(@Param('shortenedUrl') shortenedUrl: string) {
+  async findOne(@Param('shortenedUrl') shortenedUrl: string): Promise<string> {
     const originalUrl = await this.shortenerService.getOriginalUrl(shortenedUrl);
     if (!originalUrl) {
       throw new BadRequestException('Shortened url is wrong or expired');
