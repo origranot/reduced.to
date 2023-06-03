@@ -11,16 +11,18 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
       <button
         disabled={disabled}
         tabIndex={0}
-        class=" select-btn w-full md:border-r-0 md:border-l-0 md:rounded-none border-[#c8cacd] hover:bg-transparent hover:text-inherit "
+        class="select-btn w-full md:border-r-0 md:border-l-0 md:rounded-none hover:text-inherit"
         onClick$={() => {
-          if (disabled) return;
+          if (disabled) {
+            return;
+          }
           openMenu.value = !openMenu.value;
         }}
         onFocusout$={() => (openMenu.value = false)}
       >
         {selectInputValue.value}
         <svg
-          fill={`${disabled ? 'hsl(var(--n) / var(--tw-bg-opacity))' : 'black'}`}
+          fill={`${'hsl(var(--bc) )'}`}
           height="15px"
           width="15px"
           version="1.1"
@@ -30,7 +32,7 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
           viewBox="-105.6 -105.6 541.20 541.20"
           xml:space="preserve"
           transform={`rotate(${openMenu.value ? '180' : '0'})`}
-          stroke="#000000"
+          stroke={'hsl(var(--n))'}
           stroke-width="16.169999999999998"
         >
           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -48,7 +50,7 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
         <ul
           class={`menu p-2 w-full bg-white shadow rounded-box absolute min-w-[120px] text-left  opacity-0 ${
             openMenu.value && 'opacity-100'
-          } ${openMenu.value && 'animate-fade'}`}
+          } ${openMenu.value && 'animate-fade'} z-[100]`}
         >
           <Slot />
         </ul>
