@@ -7,8 +7,6 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  border-color: transparent;
-  border-color: hsl(var(--n) / var(--tw-border-opacity));
   text-align: center;
   border-radius: var(--rounded-btn, 0.5rem);
   height: 3rem;
@@ -27,6 +25,8 @@
   --tw-border-opacity: 1;
   --tw-bg-opacity: 1;
   --tw-text-opacity: 1;
+  border-color: hsl(var(--outline-border-color));
+  background-color: hsl(var(--b2) / var(--tw-text-opacity));
 }
 
 .select-btn-disabled,
