@@ -1,4 +1,5 @@
 import { Signal, Slot, component$, useSignal } from '@builder.io/qwik';
+import './select.css';
 
 type SelectProps = { disabled: boolean; selectInputValue: Signal<string | number> };
 
@@ -9,7 +10,7 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
       <button
         disabled={disabled}
         tabIndex={0}
-        class="transition-none btn btn-outline w-full justify-between border-r-0 border-l-0 rounded-none border-[#c8cacd] hover:bg-transparent hover:text-inherit "
+        class="select-btn w-full md:border-r-0 md:border-l-0 md:rounded-none border-[#c8cacd] hover:bg-transparent hover:text-inherit "
         onClick$={() => (openMenu.value = !openMenu.value)}
         onFocusout$={() => (openMenu.value = false)}
       >
@@ -39,43 +40,15 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
           </g>
         </svg>
       </button>
-      <ul
-        class={`menu p-2  shadow rounded-box absolute min-w-[120px] text-left  opacity-0 opacity-${
-          openMenu.value && '100'
-        } animate-${openMenu.value ? 'fade' : 'none'}`}
-      >
+      <div class="relative">
         <ul
-          class={`menu p-2  shadow rounded-box absolute min-w-[120px] text-left  opacity-0 opacity-${
+          class={`menu p-2 w-full bg-white shadow rounded-box absolute min-w-[120px] text-left  opacity-0 opacity-${
             openMenu.value && '100'
-          } animate-${openMenu.value ? 'fade' : 'none'}`}
+          } ${openMenu.value && 'animate-fade'}`}
         >
           <Slot />
         </ul>
-
-        {/* {timeFrameArr.map(({ key, value }) => (
-          <li
-            value={value}
-            key={key}
-            class="w-auto cursor-pointer pl-4 py-1 hover:bg-gray-200"
-            onClick$={$(() => handleSelectExpiredTime(value, key))}
-          >
-            {key}
-          </li>
-        ))}
-
-        {role === 'ADMIN' && (
-          <>
-            <hr />
-            <li
-              key={'never'}
-              class="w-auto cursor-pointer pl-4 py-1 hover:bg-gray-200"
-              onClick$={$(() => handleSelectExpiredTime(null, 'Never'))}
-            >
-              Never
-            </li>
-          </>
-        )} */}
-      </ul>
+      </div>
     </div>
   );
 });
