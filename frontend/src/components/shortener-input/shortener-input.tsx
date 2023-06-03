@@ -9,8 +9,9 @@ import {
 import { InputContext } from '~/routes';
 import { ShortenerInputBtn } from './shortener-input-btn';
 import { timeFrameArr } from '~/constants';
-import { useGetCurrentUser } from '~/routes/layout';
+import { Role, useGetCurrentUser } from '~/routes/layout';
 import { Select } from '~/components/select/Select';
+import { ArrowDoodle } from '~/components/arrow-doodle/ArrowDoodle';
 
 export interface ShortenerInputProps {
   onKeyUp$: (event: QwikKeyboardEvent<HTMLInputElement>) => void;
@@ -28,7 +29,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
   const handleSelectExpiredTime = $((value: any, key: any) => {
     console.log(value, key);
     selectInputValue.value = key;
-    state.expirationTime = value;
+    state.ttl = value;
   });
 
   useOnDocument(
@@ -46,7 +47,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
         <p class="ml-[100px] text-2xl absolute " style={'font-family:Shadows Into Light Two'}>
           Expiration Time
         </p>
-        <img src="/images/arrrow-doodle.svg" class="max-w-[100px] rotate-[25deg]" />
+        <ArrowDoodle />
       </div>
       <div class="md:input-group flex items-stretch mb-3 flex-col md:flex-row gap-2 md:gap-0 ">
         <input
@@ -56,7 +57,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
           value={state.inputValue}
           type="text"
           id="urlInput"
-          class="input input-bordered focus:outline-0 bg-base-200 flex-auto w-full md:w-auto mb-2 self-end"
+          class="input input-bordered border-[hsl(var(--outline-border-color)] focus:outline-0 bg-base-200 flex-auto w-full md:w-auto mb-2 self-end"
           placeholder="Very long url..."
           aria-label="url"
           aria-describedby="shortenerBtn"
@@ -68,19 +69,19 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
                 <li
                   value={value}
                   key={key}
-                  class="w-auto cursor-pointer pl-4 py-1 hover:bg-gray-200"
+                  class="w-auto cursor-pointer text-neutral pl-4 py-1 hover:bg-gray-200"
                   onClick$={$(() => handleSelectExpiredTime(value, key))}
                 >
                   {key}
                 </li>
               ))}
 
-              {role === 'ADMIN' && (
+              {role === Role.ADMIN && (
                 <>
                   <hr />
                   <li
                     key={'never'}
-                    class="w-auto cursor-pointer pl-4 py-1 hover:bg-gray-200"
+                    class="w-auto cursor-pointer text-neutral pl-4 py-1 hover:bg-gray-200"
                     onClick$={$(() => handleSelectExpiredTime(null, 'Never'))}
                   >
                     Never
