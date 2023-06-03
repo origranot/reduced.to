@@ -19,7 +19,7 @@ import { Tooltip } from '~/components/tooltip/tooltip';
 import { Waves } from '~/components/waves/waves';
 import { copyToClipboard, openUrl } from '~/utils';
 import styles from './index.css?inline';
-import { dayInSeconds } from '~/constants';
+import { dayInSeconds, todayEpochTime } from '~/constants';
 
 export const InputContext = createContextId<Store>('input');
 
@@ -53,7 +53,7 @@ export default component$(() => {
     showResult: false,
     showQRCode: false,
     urlError: '',
-    expirationTime: dayInSeconds,
+    expirationTime: todayEpochTime + dayInSeconds,
   });
 
   useContextProvider(InputContext, state);
