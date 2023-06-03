@@ -1,4 +1,4 @@
-import { IsDateString, IsOptional, IsString, IsUrl } from 'class-validator';
+import { IsNumber, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export class ShortenerDto {
   @IsUrl()
@@ -8,7 +8,7 @@ export class ShortenerDto {
   @IsOptional()
   description?: string;
 
-  @IsDateString()
+  @IsNumber()
   @IsOptional()
-  expirationTime?: string;
+  ttl?: number;
 }

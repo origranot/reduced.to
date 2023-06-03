@@ -9,11 +9,16 @@ import { ShortenerDto } from './dto';
 import { BadRequestException } from '@nestjs/common';
 import { UserContext } from '../auth/interfaces/user-context';
 
+const FIXED_SYSTEM_TIME = '1999-01-01T00:00:00Z';
+
 describe('ShortenerService', () => {
   let service: ShortenerService;
   let config: AppConfigService;
   let cache: AppCacheService;
   let prisma: PrismaService;
+
+  let createUrlPrismaSpy: jest.SpyInstance;
+  let setRedisKeySpy: jest.SpyInstance;
 
   const ORIGINAL_URL = 'https://github.com/origranot/reduced.to';
   const USER_ID = '26419f47-97bd-4f28-ba2d-a33c224fa4af';
@@ -27,6 +32,11 @@ describe('ShortenerService', () => {
     expirationTime: null,
     createdAt: '2023-05-28T15:16:06.837Z' as any,
   };
+
+  beforeAll(async () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(Date.parse(FIXED_SYSTEM_TIME));
+  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -49,6 +59,9 @@ describe('ShortenerService', () => {
     config = module.get<AppConfigService>(AppConfigService);
     service = module.get<ShortenerService>(ShortenerService);
     prisma = module.get<PrismaService>(PrismaService);
+
+    createUrlPrismaSpy = jest.spyOn(prisma.url, 'create');
+    setRedisKeySpy = jest.spyOn(cache.getCacheManager.store, 'set');
 
     await cache.getCacheManager.reset();
   });
@@ -86,6 +99,33 @@ describe('ShortenerService', () => {
     });
   });
 
+  describe('addUrlToCache', () => {
+    it('should add url to cache store', async () => {
+      await service.addUrlToCache(ORIGINAL_URL, SHORT_URL);
+
+      const keys = await cache.getCacheManager.store.keys();
+      expect(keys).toHaveLength(1);
+
+      const originalUrl = await service.getUrlFromCache(SHORT_URL);
+      expect(originalUrl).toBe(ORIGINAL_URL);
+    });
+
+    it('should add url to cache store with correct ttl if ttl is not provided', async () => {
+      await service.addUrlToCache(ORIGINAL_URL, SHORT_URL);
+      expect(setRedisKeySpy).toBeCalledWith(SHORT_URL, ORIGINAL_URL, config.getConfig().redis.ttl);
+    });
+
+    it('should add url to cache store with correct ttl if ttl is bigger than default ttl', async () => {
+      await service.addUrlToCache(ORIGINAL_URL, SHORT_URL, config.getConfig().redis.ttl + 10000000000);
+      expect(setRedisKeySpy).toBeCalledWith(SHORT_URL, ORIGINAL_URL, config.getConfig().redis.ttl);
+    });
+
+    it('should add url to cache store with correct ttl if ttl is smaller than default ttl', async () => {
+      await service.addUrlToCache(ORIGINAL_URL, SHORT_URL, config.getConfig().redis.ttl - 1000);
+      expect(setRedisKeySpy).toBeCalledWith(SHORT_URL, ORIGINAL_URL, config.getConfig().redis.ttl - 1000);
+    });
+  });
+
   describe('isShortUrlAvailable', () => {
     it('should return true because short url is available', async () => {
       const isAvailable = await service.isShortenedUrlAvailable(SHORT_URL);
@@ -114,17 +154,26 @@ describe('ShortenerService', () => {
   });
 
   describe('getUrlFromDb', () => {
+    let addUrlToCache: jest.SpyInstance;
+
+    beforeEach(() => {
+      addUrlToCache = jest.spyOn(service, 'addUrlToCache');
+    });
+
     it('should return url', async () => {
       prisma.url.findFirst = jest.fn().mockReturnValueOnce({
         originalUrl: ORIGINAL_URL,
       });
       const result = await service.getUrlFromDb('good_url');
+      expect(addUrlToCache).toBeCalledTimes(1);
+      expect(addUrlToCache).toBeCalledWith(ORIGINAL_URL, 'good_url', undefined);
       expect(result).toBe(ORIGINAL_URL);
     });
 
     it('should return null if url not found', async () => {
       prisma.url.findFirst = jest.fn().mockReturnValueOnce(undefined);
       const result = await service.getUrlFromDb('not_found_url');
+      expect(addUrlToCache).toBeCalledTimes(0);
       expect(result).toBeNull();
     });
 
@@ -134,15 +183,19 @@ describe('ShortenerService', () => {
         expirationTime: new Date(Date.now() - 1000 * 60),
       });
       const result = await service.getUrlFromDb('expired_url');
+      expect(addUrlToCache).toBeCalledTimes(0);
       expect(result).toBeNull();
     });
 
-    it('should return url if expiration time bigger than now', async () => {
+    it('should return url if expiration time bigger than now and add the url to the cache', async () => {
+      const mockedExpirationTime = new Date(Date.now() + 1000 * 60);
       prisma.url.findFirst = jest.fn().mockReturnValueOnce({
         originalUrl: ORIGINAL_URL,
-        expirationTime: new Date(Date.now() + 1000 * 60),
+        expirationTime: mockedExpirationTime,
       });
       const result = await service.getUrlFromDb('good_url');
+      expect(addUrlToCache).toBeCalledTimes(1);
+      expect(addUrlToCache).toBeCalledWith(ORIGINAL_URL, 'good_url', mockedExpirationTime.getTime() - Date.now());
       expect(result).toBe(ORIGINAL_URL);
     });
   });
@@ -230,7 +283,44 @@ describe('ShortenerService', () => {
       const user = { id: USER_ID } as UserContext;
       const newUrl = 'best_url_shortener';
 
-      const result = await service.createDbUrl(body, user, newUrl);
+      const result = await service.createDbUrl(user, body, newUrl);
+      expect(result).toEqual(URL_DB_DATA);
+    });
+
+    it('should create url with description', async () => {
+      const body = { originalUrl: ORIGINAL_URL, description: 'best description' };
+      const user = { id: USER_ID } as UserContext;
+      const newUrl = 'best_url_shortener';
+
+      const result = await service.createDbUrl(user, body, newUrl);
+      expect(createUrlPrismaSpy).toBeCalledWith({
+        data: {
+          shortenedUrl: newUrl,
+          originalUrl: body.originalUrl,
+          userId: user.id,
+          description: body.description,
+        },
+      });
+      expect(result).toEqual(URL_DB_DATA);
+    });
+
+    it('should create url with correct expiration time', async () => {
+      const body = {
+        originalUrl: ORIGINAL_URL,
+        ttl: 1000 * 60 * 60 * 24, // Day in ms
+      };
+      const user = { id: USER_ID } as UserContext;
+      const newUrl = 'best_url_shortener';
+
+      const result = await service.createDbUrl(user, body, newUrl);
+      expect(createUrlPrismaSpy).toBeCalledWith({
+        data: {
+          shortenedUrl: newUrl,
+          originalUrl: body.originalUrl,
+          userId: user.id,
+          expirationTime: new Date(new Date(FIXED_SYSTEM_TIME).getTime() + body.ttl),
+        },
+      });
       expect(result).toEqual(URL_DB_DATA);
     });
   });
