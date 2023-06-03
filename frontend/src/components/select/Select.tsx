@@ -5,18 +5,22 @@ type SelectProps = { disabled: boolean; selectInputValue: Signal<string | number
 
 export const Select = component$(({ disabled, selectInputValue }: SelectProps) => {
   const openMenu = useSignal(false);
+
   return (
     <div class=" min-w-[120px]">
       <button
         disabled={disabled}
         tabIndex={0}
-        class="select-btn w-full md:border-r-0 md:border-l-0 md:rounded-none border-[#c8cacd] hover:bg-transparent hover:text-inherit "
-        onClick$={() => (openMenu.value = !openMenu.value)}
+        class=" select-btn w-full md:border-r-0 md:border-l-0 md:rounded-none border-[#c8cacd] hover:bg-transparent hover:text-inherit "
+        onClick$={() => {
+          if (disabled) return;
+          openMenu.value = !openMenu.value;
+        }}
         onFocusout$={() => (openMenu.value = false)}
       >
-        {selectInputValue}
+        {selectInputValue.value}
         <svg
-          fill="#000000"
+          fill={`${disabled ? 'hsl(var(--n) / var(--tw-bg-opacity))' : 'black'}`}
           height="15px"
           width="15px"
           version="1.1"
@@ -42,8 +46,8 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
       </button>
       <div class="relative">
         <ul
-          class={`menu p-2 w-full bg-white shadow rounded-box absolute min-w-[120px] text-left  opacity-0 opacity-${
-            openMenu.value && '100'
+          class={`menu p-2 w-full bg-white shadow rounded-box absolute min-w-[120px] text-left  opacity-0 ${
+            openMenu.value && 'opacity-100'
           } ${openMenu.value && 'animate-fade'}`}
         >
           <Slot />
