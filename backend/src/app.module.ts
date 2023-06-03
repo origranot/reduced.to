@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule } from './auth/auth.module';
 import { AppCacheModule } from './cache/cache.module';
@@ -8,6 +9,7 @@ import { AppLoggerModule } from './logger/logger.module';
 import { NovuModule } from './novu/novu.module';
 import { PrismaService } from './prisma/prisma.service';
 import { UniqueConstraint } from './shared/decorators/unique/unique.decorator';
+import { CustomThrottlerGuard } from './shared/guards/custom-throttler/custom-throttler';
 import { ShortenerModule } from './shortener/shortener.module';
 import { UsersModule } from './users/users.module';
 
@@ -28,6 +30,13 @@ import { UsersModule } from './users/users.module';
     NovuModule,
     UsersModule,
   ],
-  providers: [PrismaService, UniqueConstraint],
+  providers: [
+    PrismaService,
+    UniqueConstraint,
+    {
+      provide: APP_GUARD,
+      useClass: CustomThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
