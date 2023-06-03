@@ -89,7 +89,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
               )}
             </>
           </Select>
-          <div class="text-xs text-gray-500 text-start px-2 pt-1 md:none">Expiration Time</div>
+          <div class="text-xs text-gray-500 text-start px-2 pt-1 md:hidden">Expiration Time</div>
         </div>
 
         <ShortenerInputBtn disabled={state.inputValue.length === 0} onClick$={props.onSubmit$} />
