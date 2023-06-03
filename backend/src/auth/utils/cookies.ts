@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { calculateDateFromTtl } from '../../shared/utils';
 
 export const AUTH_COOKIE_EXPIRES = 5 * 60 * 1000; //5 min
 export const REFRESH_COOKIE_EXPIRES = 7 * 24 * 60 * 60 * 1000; //7 days
@@ -24,14 +25,14 @@ export const setAuthCookies = (
 
   res
     .cookie(AUTH_COOKIE_NAME, tokens.accessToken, {
-      expires: new Date(new Date().getTime() + AUTH_COOKIE_EXPIRES),
+      expires: calculateDateFromTtl(AUTH_COOKIE_EXPIRES),
       domain,
       path: '/',
       sameSite: 'strict',
       httpOnly: true,
     })
     .cookie(REFRESH_COOKIE_NAME, tokens.refreshToken, {
-      expires: new Date(new Date().getTime() + REFRESH_COOKIE_EXPIRES),
+      expires: calculateDateFromTtl(REFRESH_COOKIE_EXPIRES),
       domain,
       path: '/',
       sameSite: 'strict',
