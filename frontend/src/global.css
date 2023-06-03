@@ -5,9 +5,12 @@
  * the styles in here will be applied to the Document, without any sort of CSS scoping.
  *
  */
+@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 body {
   text-align: center;
