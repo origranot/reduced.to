@@ -29,3 +29,12 @@
     --tw-bg-opacity: 1;
     --tw-text-opacity: 1;
 }
+
+.select-btn-disabled, .select-btn-disabled:hover, .select-btn[disabled], .select-btn[disabled]:hover {
+    --tw-border-opacity: 0;
+    background-color: hsl(var(--n) / var(--tw-bg-opacity));
+    --tw-bg-opacity: 0.2;
+    color: hsl(var(--bc) / var(--tw-text-opacity));
+    --tw-text-opacity: 0.2;
+
+}
