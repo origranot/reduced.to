@@ -3,7 +3,7 @@ import { Role, User } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../shared/decorators/roles/roles.decorator';
-import { calculateSkip } from '../shared/utils';
+import { calculateSkip, IPaginationResult } from '../shared/utils';
 import { FindAllQueryDto } from './dto';
 import { UsersService } from './users.service';
 
@@ -17,7 +17,7 @@ export class UsersController {
 
   @Get()
   @Roles(Role.ADMIN)
-  async findAll(@Query() query: FindAllQueryDto): Promise<Partial<User>[]> {
+  async findAll(@Query() query: FindAllQueryDto): Promise<IPaginationResult<User>> {
     const { page, limit, filter } = query;
 
     return this.usersService.findAll({

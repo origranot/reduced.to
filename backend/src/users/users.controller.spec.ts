@@ -7,15 +7,20 @@ import { User } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { AppConfigModule } from '../config/config.module';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { IPaginationResult } from '../shared/utils';
 
 describe('UsersController', () => {
   let app: INestApplication;
   let usersService: UsersService;
 
-  const mockedUsers: Partial<User>[] = [
+  const MOCKED_USERS: Partial<User>[] = [
     { id: '1', name: 'John' },
     { id: '2', name: 'Jane' },
   ];
+  const MOCK_FIND_ALL_RESULT: IPaginationResult<User> = {
+    total: MOCKED_USERS.length,
+    data: MOCKED_USERS,
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,7 +30,7 @@ describe('UsersController', () => {
         {
           provide: UsersService,
           useValue: {
-            findAll: jest.fn().mockResolvedValue(mockedUsers),
+            findAll: jest.fn().mockResolvedValue(MOCK_FIND_ALL_RESULT),
           },
         },
       ],
@@ -58,12 +63,12 @@ describe('UsersController', () => {
 
   describe('GET /users', () => {
     it('should return an array of users without skip when page is not defined', async () => {
-      jest.spyOn(usersService, 'findAll').mockResolvedValue(mockedUsers);
+      jest.spyOn(usersService, 'findAll').mockResolvedValue(MOCK_FIND_ALL_RESULT);
 
       const response = await request(app.getHttpServer()).get('/users?limit=100').expect(200);
 
       expect(usersService.findAll).toHaveBeenCalledWith({ limit: 100, filter: undefined });
-      expect(response.body).toEqual(mockedUsers);
+      expect(response.body).toEqual(MOCK_FIND_ALL_RESULT);
     });
 
     it('should call findAll with correct parameters and add caluclate skip when page is defined', async () => {
