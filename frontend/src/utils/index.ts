@@ -10,8 +10,8 @@ export const openUrl = (url: string | URL, target: string = '_blank'): void => {
  * Normalize input url
  *  - add protocol 'http' if missing.
  *  - correct protocol http/https if mistyped one character.
- * @param {String} url
- * @returns {String} Normalized url
+ * @param {string} url
+ * @returns {string} Normalized url
  */
 export const normalizeUrl = (url: string): string => {
   const regexBadPrefix = new RegExp(/^(:\/*|\/+|https:\/*)/); // Check if starts with  ':', '/' and 'https:example.com' etc.
