@@ -10,8 +10,16 @@ export class UsersService {
   findAll = async (options: IFindAllOptions): Promise<IPaginationResult<User>> => {
     const { skip, limit, filter } = options;
 
+    const WHERE_CLAUSE = {
+      OR: [{ email: { contains: filter } }, { name: { contains: filter } }],
+    };
+
     const result = await this.prismaService.$transaction([
-      this.prismaService.user.count(),
+      this.prismaService.user.count({
+        ...(filter && {
+          where: WHERE_CLAUSE,
+        }),
+      }),
       this.prismaService.user.findMany({
         select: {
           id: true,
@@ -23,9 +31,7 @@ export class UsersService {
         ...(skip && { skip }),
         take: limit,
         ...(filter && {
-          where: {
-            OR: [{ email: { contains: filter } }, { name: { contains: filter } }],
-          },
+          where: WHERE_CLAUSE,
         }),
       }),
     ]);
