@@ -11,7 +11,7 @@ export class UsersService {
     const { skip, limit, filter } = options;
 
     const result = await this.prismaService.$transaction([
-      this.prismaService.user.count({}),
+      this.prismaService.user.count(),
       this.prismaService.user.findMany({
         select: {
           id: true,
