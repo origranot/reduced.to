@@ -3,8 +3,8 @@ import { Role, User } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../shared/decorators/roles/roles.decorator';
-import { calculateSkip } from '../shared/utils/pagination';
-import { FindAllQueryDto } from './dto/findAllQuery.dto';
+import { calculateSkip } from '../shared/utils';
+import { FindAllQueryDto } from './dto';
 import { UsersService } from './users.service';
 
 @UseGuards(JwtAuthGuard, RolesGuard)

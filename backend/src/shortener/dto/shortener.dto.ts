@@ -1,6 +1,14 @@
-import { IsUrl } from 'class-validator';
+import { IsNumber, IsOptional, IsString, IsUrl } from 'class-validator';
 
-export class ShortenerDTO {
+export class ShortenerDto {
   @IsUrl()
   originalUrl: string;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
+
+  @IsNumber()
+  @IsOptional()
+  ttl?: number;
 }

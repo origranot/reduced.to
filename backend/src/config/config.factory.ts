@@ -25,7 +25,7 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
         host: process.env.REDIS_HOST || 'localhost',
         port: +process.env.REDIS_PORT || 4000,
         password: process.env.REDIS_PASSWORD || 'password',
-        ttl: +process.env.REDIS_TTL || 60 * 60 * 24 * 7, // Seconds
+        ttl: +process.env.REDIS_TTL || 1000 * 60 * 60 * 24 * 7, // 7 days in ms
       },
       jwt: {
         accessSecret: process.env.JWT_ACCESS_SECRET,
