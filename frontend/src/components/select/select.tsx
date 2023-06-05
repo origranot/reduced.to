@@ -56,7 +56,7 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
       </button>
       <div class="relative">
         <ul
-          class={`menu p-2 w-full shadow rounded-box absolute min-w-[120px] text-left  hidden ${
+          class={`menu p-2 w-full shadow rounded-box absolute min-w-[120px] text-left hidden ${
             isMenuOpen.value ? 'select-btn-block animate-fade' : ''
           }
          z-[100]`}
