@@ -10,8 +10,8 @@ import { InputContext } from '~/routes';
 import { ShortenerInputBtn } from './shortener-input-btn';
 import { timeFrameArr } from './constants';
 import { useGetCurrentUser } from '~/routes/layout';
-import { Select } from '~/components/select/Select';
-import { ArrowDoodle } from '~/components/arrow-doodle/ArrowDoodle';
+import { Select } from '~/components/select/select';
+import { ArrowDoodle } from '~/components/arrow-doodle/arrow-doodle';
 
 export interface ShortenerInputProps {
   onKeyUp$: (event: QwikKeyboardEvent<HTMLInputElement>) => void;
