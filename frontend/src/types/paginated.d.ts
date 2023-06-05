@@ -3,10 +3,15 @@ export interface PaginatedRows<T> {
   total: number;
 }
 
+export enum SortOrder {
+  DESC = 'desc',
+  ASC = 'asc',
+}
+
 export interface PaginationParams {
   limit: number;
   page: number;
   filter: string;
-  sort: 'asc' | 'desc';
+  sort: SortOrder;
   sortColumn: string;
 }

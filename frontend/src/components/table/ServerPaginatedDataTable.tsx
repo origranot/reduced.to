@@ -9,7 +9,7 @@ import {
   useResource$,
   Resource,
 } from '@builder.io/qwik';
-import { PaginationParams } from '~/types/paginated';
+import { PaginationParams, SortOrder } from '~/types/paginated';
 import { FilterInput } from './DefaultFilter';
 import styles from './table.css?inline';
 
@@ -59,7 +59,7 @@ export const ServerPaginatedDataTable = component$(<T extends string>(props: Tab
       page: currentPage.value,
       limit: rowsPerPage.value,
       filter: filter.value,
-      sort: sortDesc.value ? 'desc' : 'asc',
+      sort: sortDesc.value ? SortOrder.DESC : SortOrder.ASC,
       sortColumn: sortColumn.value as string,
     });
 
