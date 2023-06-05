@@ -19,7 +19,7 @@ import { Tooltip } from '~/components/tooltip/tooltip';
 import { Waves } from '~/components/waves/waves';
 import { copyToClipboard, openUrl } from '~/utils';
 import styles from './index.css?inline';
-import { DAY_IN_MILLISECONDS } from '~/constants';
+import { DAY_IN_MILLISECONDS } from '~/components/shortener-input/constants';
 
 export const InputContext = createContextId<Store>('input');
 
@@ -53,7 +53,7 @@ export default component$(() => {
     showResult: false,
     showQRCode: false,
     urlError: '',
-    ttl: DAY_IN_MILLISECONDS,
+    ttl: 7 * DAY_IN_MILLISECONDS,
   });
 
   useContextProvider(InputContext, state);

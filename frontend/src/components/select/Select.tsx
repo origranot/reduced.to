@@ -1,7 +1,10 @@
 import { Signal, Slot, component$, useSignal } from '@builder.io/qwik';
 import './select.css';
 
-type SelectProps = { disabled: boolean; selectInputValue: Signal<string | number> };
+type SelectProps = {
+  disabled: boolean;
+  selectInputValue: Signal<string | number>;
+};
 
 export const Select = component$(({ disabled, selectInputValue }: SelectProps) => {
   const openMenu = useSignal(false);
@@ -19,7 +22,11 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
           }
           openMenu.value = !openMenu.value;
         }}
-        onFocusout$={() => (openMenu.value = false)}
+        onFocusout$={() => {
+          setTimeout(() => {
+            openMenu.value = false;
+          }, 200);
+        }}
       >
         {selectInputValue.value}
         <svg
@@ -50,8 +57,9 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
       <div class="relative">
         <ul
           class={`menu p-2 w-full bg-white shadow rounded-box absolute min-w-[120px] text-left  hidden ${
-            openMenu.value && 'select-btn-block'
-          } ${openMenu.value && 'animate-fade'} z-[100]`}
+            openMenu.value ? 'select-btn-block animate-fade' : undefined
+          }
+         z-[100]`}
         >
           <Slot />
         </ul>
