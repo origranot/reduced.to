@@ -22,9 +22,9 @@ export interface ShortenerInputProps {
 export const ShortenerInput = component$((props: ShortenerInputProps) => {
   const state = useContext(InputContext);
   const urlInput = useSignal<HTMLInputElement>();
-  const selectExpirationTimeInputValue = useSignal<string>(TIME_FRAME_DIR.ONE_WEEK.key);
+  const selectExpirationTimeInputValue = useSignal<string>(TIME_FRAME_DIR.ONE_WEEK.name);
 
-  const { role, verified } = useGetCurrentUser().value || {};
+  const { verified } = useGetCurrentUser().value || {};
 
   const handleSelectExpiredTime = $((value: any, key: any) => {
     selectExpirationTimeInputValue.value = key;
@@ -62,12 +62,15 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
           aria-describedby="shortenerBtn"
         />
         <div>
-          <Select disabled={role ? false : true} selectInputValue={selectExpirationTimeInputValue}>
+          <Select
+            disabled={verified ? false : true}
+            selectInputValue={selectExpirationTimeInputValue}
+          >
             <>
               {Object.values(TIME_FRAME_DIR).map(
-                ({ key: expirationTimeName, value: expirationTimeValue }) => (
+                ({ name: expirationTimeName, value: expirationTimeValue }) => (
                   <li
-                    value={expirationTimeValue}
+                    value={expirationTimeValue || undefined}
                     key={expirationTimeName}
                     class="w-auto cursor-pointer text-neutral pl-4 py-1 hover:bg-gray-200"
                     onClick$={$(() =>
@@ -77,19 +80,6 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
                     {expirationTimeName}
                   </li>
                 )
-              )}
-
-              {role !== null && verified && (
-                <>
-                  <hr />
-                  <li
-                    key={'never'}
-                    class="w-auto cursor-pointer text-neutral pl-4 py-1 hover:bg-gray-200"
-                    onClick$={$(() => handleSelectExpiredTime(null, 'Never'))}
-                  >
-                    Never
-                  </li>
-                </>
               )}
             </>
           </Select>
