@@ -1,6 +1,5 @@
 import {
   component$,
-  useStylesScoped$,
   JSXChildren,
   useSignal,
   $,
@@ -11,7 +10,6 @@ import {
 } from '@builder.io/qwik';
 import { PaginationParams, SortOrder } from '~/types/paginated';
 import { FilterInput } from './DefaultFilter';
-import styles from './table.css?inline';
 
 export interface TableProps<T extends string> {
   rows: Record<T, JSXChildren>[];
@@ -26,7 +24,6 @@ export interface TableProps<T extends string> {
 }
 
 export const ServerPaginatedDataTable = component$(<T extends string>(props: TableProps<T>) => {
-  useStylesScoped$(styles);
   const rowsPerPage = useSignal(10);
   const currentPage = useSignal(0);
   const filter = useSignal('');
