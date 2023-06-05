@@ -13,6 +13,7 @@ export const FilterInput = component$<FilterInputProps>(({ filterValue = '', set
       onInput$={(ev: InputEvent) => setFilter$((ev.target as HTMLInputElement)?.value || '')}
       placeholder={`Search...`}
       style={{ width: '100%' }}
+      class="input input-bordered w-full max-w-xs my-5"
     />
   );
 });

@@ -83,7 +83,7 @@ export const ServerPaginatedDataTable = component$(<T extends string>(props: Tab
   });
 
   return (
-    <div class="overflow-x-auto">
+    <div class="flex flex-col justify-start">
       <FilterInput filterValue={filter} setFilter$={filterSetter$} />
       <table id="table" class="table table-zebra w-full">
         <thead>
@@ -116,81 +116,86 @@ export const ServerPaginatedDataTable = component$(<T extends string>(props: Tab
           }}
         />
         <tfoot>
-          <div class="flex items-center gap-2">
-            {/* first page */}
-            <button
-              class="btn border rounded p-1"
-              onClick$={async () => {
-                currentPage.value = 0;
-              }}
-              disabled={isOnFirstPage}
-            >
-              {'<<'}
-            </button>
-            {/* prev page -1 */}
-            <button
-              class="btn border rounded p-1"
-              onClick$={() => {
-                setPageNumber('prev');
-              }}
-              disabled={isOnFirstPage}
-            >
-              {'<'}
-            </button>
-            {/* next page +1 */}
-            <button
-              class="btn border rounded p-1"
-              onClick$={async () => {
-                setPageNumber('next');
-              }}
-              disabled={isOnLastPage}
-            >
-              {'>'}
-            </button>
-            {/* last page */}
-            <button
-              class="btn border rounded p-1"
-              onClick$={async () => {
-                currentPage.value = maxPages.value - 1;
-              }}
-              disabled={isOnLastPage}
-            >
-              {'>>'}
-            </button>
-            {/* pages of totalpages */}
-            <span class="flex items-center gap-1">
-              <div>Page</div>
-              <strong>
-                {currentPage.value + 1} of {maxPages.value}
-              </strong>
-            </span>
-            {/* got to page input */}
-            <span class="flex items-center gap-1">
-              | Go to page:
-              <input
-                type="number"
-                value={currentPage.value + 1}
-                min="1"
-                max={maxPages.value}
-                onChange$={(e) => {
-                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                  currentPage.value = page;
-                }}
-                class="border p-1 rounded w-16"
-              />
-            </span>
-            {/* rowsperpage select */}
-            <select
-              value={rowsPerPage.value}
-              onChange$={(ev: QwikChangeEvent<HTMLSelectElement>) => {
-                rowsPerPage.value = +ev.target.value;
-              }}
-            >
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <option value={pageSize}>{'Show ' + pageSize}</option>
-              ))}
-            </select>
-          </div>
+          <tr>
+            <td colSpan={100}>
+              <div class="flex gap-2">
+                {/* first page */}
+                <button
+                  class="btn border rounded p-1 "
+                  onClick$={async () => {
+                    currentPage.value = 0;
+                  }}
+                  disabled={isOnFirstPage}
+                >
+                  {'<<'}
+                </button>
+                {/* prev page -1 */}
+                <button
+                  class="btn border rounded p-1"
+                  onClick$={() => {
+                    setPageNumber('prev');
+                  }}
+                  disabled={isOnFirstPage}
+                >
+                  {'<'}
+                </button>
+                {/* next page +1 */}
+                <button
+                  class="btn border rounded p-1"
+                  onClick$={async () => {
+                    setPageNumber('next');
+                  }}
+                  disabled={isOnLastPage}
+                >
+                  {'>'}
+                </button>
+                {/* last page */}
+                <button
+                  class="btn border rounded p-1"
+                  onClick$={async () => {
+                    currentPage.value = maxPages.value - 1;
+                  }}
+                  disabled={isOnLastPage}
+                >
+                  {'>>'}
+                </button>
+                {/* pages of totalpages */}
+                <span class="flex items-center gap-1">
+                  <div>Page</div>
+                  <strong>
+                    {currentPage.value + 1} of {maxPages.value}
+                  </strong>
+                </span>
+                {/* got to page input */}
+                <span class="flex items-center gap-2 mx-3">
+                  <span>Go to page:</span>
+                  <input
+                    type="number"
+                    value={currentPage.value + 1}
+                    min="1"
+                    max={maxPages.value}
+                    onChange$={(e) => {
+                      const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                      currentPage.value = page;
+                    }}
+                    class="border p-1 rounded w-16"
+                  />
+                </span>
+                {/* rowsperpage select */}
+                <select
+                  value={rowsPerPage.value}
+                  onChange$={(ev: QwikChangeEvent<HTMLSelectElement>) => {
+                    rowsPerPage.value = +ev.target.value;
+                  }}
+                  class="select-text px-2 mx-3 rounded-md"
+                >
+                  {[10, 20, 30, 40, 50].map((pageSize) => (
+                    <option value={pageSize}>{'Show ' + pageSize}</option>
+                  ))}
+                </select>
+              </div>
+            </td>
+          </tr>
         </tfoot>
       </table>
     </div>
