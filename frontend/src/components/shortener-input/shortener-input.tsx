@@ -8,7 +8,7 @@ import {
 } from '@builder.io/qwik';
 import { InputContext } from '~/routes';
 import { ShortenerInputBtn } from './shortener-input-btn';
-import { timeFrameArr } from './constants';
+import { TIME_FRAME_DIR } from './constants';
 import { useGetCurrentUser } from '~/routes/layout';
 import { Select } from '~/components/select/select';
 import { ArrowDoodle } from '~/components/arrow-doodle/arrow-doodle';
@@ -22,7 +22,7 @@ export interface ShortenerInputProps {
 export const ShortenerInput = component$((props: ShortenerInputProps) => {
   const state = useContext(InputContext);
   const urlInput = useSignal<HTMLInputElement>();
-  const selectExpirationTimeInputValue = useSignal<string>(timeFrameArr.at(-1)!.key);
+  const selectExpirationTimeInputValue = useSignal<string>(TIME_FRAME_DIR.ONE_WEEK.key);
 
   const { role, verified } = useGetCurrentUser().value || {};
 
@@ -64,18 +64,20 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
         <div>
           <Select disabled={role ? false : true} selectInputValue={selectExpirationTimeInputValue}>
             <>
-              {timeFrameArr.map(({ key: expirationTimeName, value: expirationTimeValue }) => (
-                <li
-                  value={expirationTimeValue}
-                  key={expirationTimeName}
-                  class="w-auto cursor-pointer text-neutral pl-4 py-1 hover:bg-gray-200"
-                  onClick$={$(() =>
-                    handleSelectExpiredTime(expirationTimeValue, expirationTimeName)
-                  )}
-                >
-                  {expirationTimeName}
-                </li>
-              ))}
+              {Object.values(TIME_FRAME_DIR).map(
+                ({ key: expirationTimeName, value: expirationTimeValue }) => (
+                  <li
+                    value={expirationTimeValue}
+                    key={expirationTimeName}
+                    class="w-auto cursor-pointer text-neutral pl-4 py-1 hover:bg-gray-200"
+                    onClick$={$(() =>
+                      handleSelectExpiredTime(expirationTimeValue, expirationTimeName)
+                    )}
+                  >
+                    {expirationTimeName}
+                  </li>
+                )
+              )}
 
               {role !== null && verified && (
                 <>
