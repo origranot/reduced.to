@@ -1,6 +1,5 @@
 import {
   component$,
-  useStylesScoped$,
   JSXChildren,
   useSignal,
   useComputed$,
@@ -8,7 +7,6 @@ import {
   QwikChangeEvent,
 } from '@builder.io/qwik';
 import { FilterInput } from './DefaultFilter';
-import styles from './table.css?inline';
 
 export interface TableProps<T extends string> {
   rows: Record<T, JSXChildren>[];
@@ -24,7 +22,6 @@ export function paginateArray(array: unknown[], currentPage: number, pageSize: n
 }
 
 export const DataTable = component$(<T extends string>(props: TableProps<T>) => {
-  useStylesScoped$(styles);
   const rowsPerPage = useSignal(10);
   const currentPage = useSignal(0);
   const filter = useSignal('');
