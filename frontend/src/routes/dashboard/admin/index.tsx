@@ -28,10 +28,10 @@ export default component$(() => {
     const isPageInRange = startIdx >= rowsCache.startIdx && endIdx <= rowsCache.endIdx;
     const isPageInLocalCache = isPageInRange && rowsCache.rows.length === rowsCache.total;
 
-    console.log('trying to fetch cached', {
-      params: { limit, page, filter, sort, sortColumn },
-      rowsCache: JSON.parse(JSON.stringify(rowsCache)),
-    });
+    // console.log('trying to fetch cached', {
+    //   params: { limit, page, filter, sort, sortColumn },
+    //   rowsCache: JSON.parse(JSON.stringify(rowsCache)),
+    // });
 
     if (
       !isPageInLocalCache ||
@@ -51,21 +51,21 @@ export default component$(() => {
       rowsCache.total = payload.total;
       rowsCache.rows = payload.data as any;
 
-      console.log('caching...', { payload, rowsCache: JSON.parse(JSON.stringify(rowsCache)) });
+      // console.log('caching...', { payload, rowsCache: JSON.parse(JSON.stringify(rowsCache)) });
     }
 
     const startIdxPartial = isPageInLocalCache ? startIdx - rowsCache.startIdx : 0;
     const endIdxPartial = isPageInLocalCache ? startIdxPartial + limit : limit;
 
-    console.log('cached', {
-      limit,
-      limitOnServer,
-      endIdxPartial,
-      startIdxPartial,
-      startIdx,
-      endIdx,
-      page,
-    });
+    // console.log('cached', {
+    //   limit,
+    //   limitOnServer,
+    //   endIdxPartial,
+    //   startIdxPartial,
+    //   startIdx,
+    //   endIdx,
+    //   page,
+    // });
 
     return Promise.resolve({
       total: rowsCache.total,
