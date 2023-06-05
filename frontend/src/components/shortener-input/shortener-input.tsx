@@ -72,7 +72,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
                   <li
                     value={expirationTimeValue || undefined}
                     key={expirationTimeName}
-                    class="w-auto cursor-pointer text-neutral pl-4 py-1 hover:bg-gray-200"
+                    class="w-auto cursor-pointer  pl-4 py-1 hover:bg-gray-200"
                     onClick$={$(() =>
                       handleSelectExpiredTime(expirationTimeValue, expirationTimeName)
                     )}
