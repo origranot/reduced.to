@@ -4,7 +4,24 @@ import { ServerPaginatedDataTable } from '~/components/table/ServerPaginatedData
 import { UserCtx } from '~/routes/layout';
 import { authorizedFetch } from '~/shared/auth.service';
 import { fetchMockUsers } from '~/mockdata/useMockFns';
-import { PaginatedRows, PaginationParams } from '~/types/paginated';
+
+export interface PaginatedRows<T> {
+  data: T[];
+  total: number;
+}
+
+export enum SortOrder {
+  DESC = 'desc',
+  ASC = 'asc',
+}
+
+export interface PaginationParams {
+  limit: number;
+  page: number;
+  filter: string;
+  sort: SortOrder;
+  sortColumn: string;
+}
 
 export default component$(() => {
   const firstLoading = useStore({ value: true });

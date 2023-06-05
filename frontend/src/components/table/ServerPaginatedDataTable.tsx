@@ -8,13 +8,31 @@ import {
   useResource$,
   Resource,
 } from '@builder.io/qwik';
-import { PaginationParams, SortOrder } from '~/types/paginated';
 import { FilterInput } from './DefaultFilter';
+
+export interface PaginatedRows<T> {
+  data: T[];
+  total: number;
+}
+
+export enum SortOrder {
+  DESC = 'desc',
+  ASC = 'asc',
+}
+
+export interface PaginationParams {
+  limit: number;
+  page: number;
+  filter: string;
+  sort: SortOrder;
+  sortColumn: string;
+}
 
 export interface TableProps<T extends string> {
   rows: Record<T, JSXChildren>[];
   customColumnNames?: Partial<Record<T, string>>;
   total: number;
+  rowsPerPage?: number;
   emitFetchRows: PropFunction<
     ({ page, limit, filter, sort, sortColumn }: PaginationParams) => Promise<{
       total: number;
@@ -24,7 +42,7 @@ export interface TableProps<T extends string> {
 }
 
 export const ServerPaginatedDataTable = component$(<T extends string>(props: TableProps<T>) => {
-  const rowsPerPage = useSignal(10);
+  const rowsPerPage = useSignal(props.rowsPerPage || 10);
   const currentPage = useSignal(0);
   const filter = useSignal('');
   const sortColumn = useSignal<keyof T>(Object.keys(props.rows[0])[0] as keyof T);
