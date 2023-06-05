@@ -13,8 +13,10 @@ describe('UsersService', () => {
         {
           provide: PrismaService,
           useValue: {
+            $transaction: jest.fn(),
             user: {
               findMany: jest.fn(),
+              count: jest.fn(),
             },
           },
         },
@@ -23,6 +25,13 @@ describe('UsersService', () => {
 
     service = module.get<UsersService>(UsersService);
     prismaService = module.get<PrismaService>(PrismaService);
+
+    // Mocking the $transaction method, we don't really care about the result
+    jest.spyOn(prismaService, '$transaction').mockResolvedValue([null, null]);
+  });
+
+  afterEach(async () => {
+    jest.clearAllMocks();
   });
 
   describe('findAll', () => {

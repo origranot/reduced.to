@@ -66,6 +66,10 @@ describe('ShortenerService', () => {
     await cache.getCacheManager.reset();
   });
 
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
