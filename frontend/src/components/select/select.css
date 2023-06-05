@@ -29,6 +29,10 @@
   background-color: hsl(var(--b2) / var(--tw-text-opacity));
 }
 
+.select-btn-block {
+  display: block !important;
+}
+
 .select-btn-disabled,
 .select-btn-disabled:hover,
 .select-btn[disabled],

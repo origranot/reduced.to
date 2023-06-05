@@ -9,9 +9,10 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
   return (
     <div class=" min-w-[120px]">
       <button
+        type="button"
         disabled={disabled}
         tabIndex={0}
-        class="select-btn w-full md:border-r-0 md:border-l-0 md:rounded-none hover:text-inherit"
+        class="select-btn w-full md:border-l-0 md:rounded-none hover:text-inherit"
         onClick$={() => {
           if (disabled) {
             return;
@@ -48,8 +49,8 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
       </button>
       <div class="relative">
         <ul
-          class={`menu p-2 w-full bg-white shadow rounded-box absolute min-w-[120px] text-left  opacity-0 ${
-            openMenu.value && 'opacity-100'
+          class={`menu p-2 w-full bg-white shadow rounded-box absolute min-w-[120px] text-left  hidden ${
+            openMenu.value && 'select-btn-block'
           } ${openMenu.value && 'animate-fade'} z-[100]`}
         >
           <Slot />
