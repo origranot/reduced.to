@@ -6,14 +6,72 @@ import { authorizedFetch } from '~/shared/auth.service';
 import { fetchMockUsers } from '~/mockdata/useMockFns';
 import { PaginatedRows, PaginationParams } from '~/types/paginated';
 
-export const fetchRows = $(({ limit, page, filter, sort, sortColumn }: PaginationParams) => {
-  const result = fetchMockUsers({ limit, page, filter, sort, sortColumn });
-  result.then((d) => console.log({ result: d }));
-  return result;
-});
-
 export default component$(() => {
   const firstLoading = useStore({ value: true });
+  const rowsCache = useStore({
+    limit: 10,
+    startIdx: 0,
+    endIdx: 10,
+    rows: [],
+    sort: 'asc',
+    sortColumn: 'id',
+    filter: '',
+    total: 0,
+  });
+
+  const fetchRows = $(async ({ limit, page, filter, sort, sortColumn }: PaginationParams) => {
+    const startIdx = page * limit;
+    const endIdx = startIdx + limit;
+
+    const limitOnServer = 50;
+
+    const isPageInRange = startIdx >= rowsCache.startIdx && endIdx <= rowsCache.endIdx;
+    const isPageInLocalCache = isPageInRange && rowsCache.rows.length === rowsCache.total;
+
+    console.log('trying to fetch cached', {
+      params: { limit, page, filter, sort, sortColumn },
+      rowsCache: JSON.parse(JSON.stringify(rowsCache)),
+    });
+
+    if (
+      !isPageInLocalCache ||
+      sortColumn !== rowsCache.sortColumn ||
+      filter !== rowsCache.filter ||
+      sort !== rowsCache.sort
+    ) {
+      const result = fetchMockUsers({ limit: limitOnServer, page, filter, sort, sortColumn });
+      const payload = await result;
+
+      rowsCache.filter = filter;
+      rowsCache.sort = sort;
+      rowsCache.sortColumn = sortColumn;
+      rowsCache.limit = limit;
+      rowsCache.startIdx = startIdx;
+      rowsCache.endIdx = startIdx + limit - 1;
+      rowsCache.total = payload.total;
+      rowsCache.rows = payload.data as any;
+
+      console.log('caching...', { payload, rowsCache: JSON.parse(JSON.stringify(rowsCache)) });
+    }
+
+    const startIdxPartial = isPageInLocalCache ? startIdx - rowsCache.startIdx : 0;
+    const endIdxPartial = isPageInLocalCache ? startIdxPartial + limit : limit;
+
+    console.log('cached', {
+      limit,
+      limitOnServer,
+      endIdxPartial,
+      startIdxPartial,
+      startIdx,
+      endIdx,
+      page,
+    });
+
+    return Promise.resolve({
+      total: rowsCache.total,
+      data: rowsCache.rows.slice(startIdxPartial, endIdxPartial),
+    });
+  });
 
   useVisibleTask$(
     () => {
