@@ -26,8 +26,9 @@ export class ShortenerController {
   @Post()
   async shortener(@Body() shortenerDto: ShortenerDto, @Req() req: Request): Promise<{ newUrl: string }> {
     const user = req.user as UserContext;
-    const isUserAuthenticated = !!user?.id;
-    if (isUserAuthenticated) {
+
+    // Only verified users can create shortened urls into the database (otherwise, they are stored in the cache)
+    if (user?.verified) {
       this.logger.log(`User ${user.id} is creating a shortened url for ${shortenerDto.originalUrl}`);
       return this.shortenerService.createUsersShortenedUrl(user, shortenerDto);
     }

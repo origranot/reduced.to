@@ -6,6 +6,7 @@ import { Test } from '@nestjs/testing';
 import { ShortenerDto } from './dto';
 import { Request } from 'express';
 import { AppLoggerModule } from '../logger/logger.module';
+import { UserContext } from '../auth/interfaces/user-context';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
@@ -36,22 +37,22 @@ describe('ShortenerController', () => {
   });
 
   describe('shortener', () => {
-    it('should return null when createUsersShortUrl return null in case of authenticated user', async () => {
+    it('should return null when createUsersShortUrl return null in case of an authenticated and verified user', async () => {
       jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockReturnValue(null);
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ newUrl: 'url' });
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      const req = { user: { id: 'has_id' } } as any as Request;
+      const req = { user: { verified: true } } as any as Request;
       const short = await shortenerController.shortener(body, req);
       expect(short).toBeNull();
     });
 
-    it('should return a shortened url when createUsersShortUrl return it in case of authenticated user', async () => {
+    it('should return a shortened url when createUsersShortUrl return it in case of an authenticated and verified user', async () => {
       jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockResolvedValue({ newUrl: 'url.com' });
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue(null);
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      const req = { user: { id: 'has_id' } } as any as Request;
+      const req = { user: { verified: true } } as any as Request;
       const short = await shortenerController.shortener(body, req);
       expect(short).toStrictEqual({ newUrl: 'url.com' });
     });
