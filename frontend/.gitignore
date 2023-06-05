@@ -39,3 +39,6 @@ lerna-debug.log*
 
 # env
 .env
+
+#mockdata
+src/mockdata
