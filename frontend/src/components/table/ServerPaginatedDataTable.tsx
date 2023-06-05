@@ -193,7 +193,8 @@ export const ServerPaginatedDataTable = component$(<T extends string>(props: Tab
                       const page = e.target.value ? Number(e.target.value) - 1 : 0;
                       currentPage.value = page;
                     }}
-                    class="border p-1 rounded w-16"
+                    // class="border p-1 rounded w-16"
+                    class="input input-bordered w-full"
                   />
                 </span>
                 {/* rowsperpage select */}
