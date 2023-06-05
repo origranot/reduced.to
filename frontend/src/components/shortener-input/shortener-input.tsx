@@ -8,8 +8,8 @@ import {
 } from '@builder.io/qwik';
 import { InputContext } from '~/routes';
 import { ShortenerInputBtn } from './shortener-input-btn';
-import { timeFrameArr } from '~/constants';
-import { Role, useGetCurrentUser } from '~/routes/layout';
+import { timeFrameArr } from './constants';
+import { useGetCurrentUser } from '~/routes/layout';
 import { Select } from '~/components/select/Select';
 import { ArrowDoodle } from '~/components/arrow-doodle/ArrowDoodle';
 
@@ -21,14 +21,13 @@ export interface ShortenerInputProps {
 
 export const ShortenerInput = component$((props: ShortenerInputProps) => {
   const state = useContext(InputContext);
-  const searchInput = useSignal<HTMLInputElement>();
-  const selectInputValue = useSignal<string>(timeFrameArr[0].key);
+  const urlInput = useSignal<HTMLInputElement>();
+  const selectExpirationTimeInputValue = useSignal<string>(timeFrameArr.at(-1)!.key);
 
-  const role = useGetCurrentUser().value?.role;
+  const { role, verified } = useGetCurrentUser().value || {};
 
   const handleSelectExpiredTime = $((value: any, key: any) => {
-    console.log(value, key);
-    selectInputValue.value = key;
+    selectExpirationTimeInputValue.value = key;
     state.ttl = value;
   });
 
@@ -36,7 +35,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
     'keydown',
     $((event) => {
       if ((event as KeyboardEvent).key === '/') {
-        searchInput.value?.focus();
+        urlInput.value?.focus();
       }
     })
   );
@@ -51,7 +50,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
       </div>
       <div class="md:input-group flex items-stretch mb-3 flex-col md:flex-row gap-2 md:gap-0 ">
         <input
-          ref={searchInput}
+          ref={urlInput}
           onKeyUp$={props.onKeyUp$}
           onInput$={props.onInput$}
           value={state.inputValue}
@@ -63,20 +62,22 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
           aria-describedby="shortenerBtn"
         />
         <div>
-          <Select disabled={role ? false : true} selectInputValue={selectInputValue}>
+          <Select disabled={role ? false : true} selectInputValue={selectExpirationTimeInputValue}>
             <>
-              {timeFrameArr.map(({ key, value }) => (
+              {timeFrameArr.map(({ key: expirationTimeName, value: expirationTimeValue }) => (
                 <li
-                  value={value}
-                  key={key}
+                  value={expirationTimeValue}
+                  key={expirationTimeName}
                   class="w-auto cursor-pointer text-neutral pl-4 py-1 hover:bg-gray-200"
-                  onClick$={$(() => handleSelectExpiredTime(value, key))}
+                  onClick$={$(() =>
+                    handleSelectExpiredTime(expirationTimeValue, expirationTimeName)
+                  )}
                 >
-                  {key}
+                  {expirationTimeName}
                 </li>
               ))}
 
-              {role === Role.ADMIN && (
+              {role !== null && verified && (
                 <>
                   <hr />
                   <li
