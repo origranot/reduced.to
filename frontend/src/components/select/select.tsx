@@ -7,7 +7,7 @@ type SelectProps = {
 };
 
 export const Select = component$(({ disabled, selectInputValue }: SelectProps) => {
-  const openMenu = useSignal(false);
+  const isMenuOpen = useSignal(false);
 
   return (
     <div class=" min-w-[120px]">
@@ -20,11 +20,11 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
           if (disabled) {
             return;
           }
-          openMenu.value = !openMenu.value;
+          isMenuOpen.value = !isMenuOpen.value;
         }}
         onFocusout$={() => {
           setTimeout(() => {
-            openMenu.value = false;
+            isMenuOpen.value = false;
           }, 200);
         }}
       >
@@ -39,7 +39,7 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
           xmlns:xlink="http://www.w3.org/1999/xlink"
           viewBox="-105.6 -105.6 541.20 541.20"
           xml:space="preserve"
-          transform={`rotate(${openMenu.value ? '180' : '0'})`}
+          transform={`rotate(${isMenuOpen.value ? '180' : '0'})`}
           stroke={'hsl(var(--n))'}
           stroke-width="16.169999999999998"
         >
@@ -57,7 +57,7 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
       <div class="relative">
         <ul
           class={`menu p-2 w-full bg-white shadow rounded-box absolute min-w-[120px] text-left  hidden ${
-            openMenu.value ? 'select-btn-block animate-fade' : undefined
+            isMenuOpen.value ? 'select-btn-block animate-fade' : ''
           }
          z-[100]`}
         >
