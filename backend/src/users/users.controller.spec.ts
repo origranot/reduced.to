@@ -2,12 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { UsersController } from './users.controller';
-import { UsersService, IFindAllOptions } from './users.service';
+import { IFindAllOptions, UsersService } from './users.service';
 import { User } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { AppConfigModule } from '../config/config.module';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { IPaginationResult } from '../shared/utils';
+import { SortOrder } from '../shared/enums/sort-order.enum';
 
 describe('UsersController', () => {
   let app: INestApplication;
@@ -92,6 +93,36 @@ describe('UsersController', () => {
       };
 
       await request(app.getHttpServer()).get('/users?limit=10&page=2&filter=test@test.com').expect(200);
+
+      expect(usersService.findAll).toHaveBeenCalledWith(findAllOptions);
+    });
+
+    it('should call findAll with correct parameters including sort', async () => {
+      const findAllOptions: IFindAllOptions = {
+        skip: 10,
+        limit: 10,
+        filter: 'test@test.com',
+        sort: { name: SortOrder.ASCENDING, role: SortOrder.DESCENDING },
+      };
+
+      await request(app.getHttpServer())
+        .get('/users?limit=10&page=2&filter=test@test.com&sort[name]=asc&sort[role]=desc')
+        .expect(200);
+
+      expect(usersService.findAll).toHaveBeenCalledWith(findAllOptions);
+    });
+
+    it('should call findAll with correct parameters including sort, only with recognized field', async () => {
+      const findAllOptions: IFindAllOptions = {
+        skip: 10,
+        limit: 10,
+        filter: 'test@test.com',
+        sort: { name: SortOrder.ASCENDING },
+      };
+
+      await request(app.getHttpServer())
+        .get('/users?limit=10&page=2&filter=test@test.com&sort[name]=asc&sort[unrecognized]=desc')
+        .expect(200);
 
       expect(usersService.findAll).toHaveBeenCalledWith(findAllOptions);
     });
