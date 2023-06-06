@@ -5,7 +5,7 @@ import { RolesGuard } from './roles.guard';
 import { Role } from '@prisma/client';
 import { UserContext } from '../interfaces/user-context';
 
-describe('RolesGuard', () => {
+describe('Roles Guard', () => {
   let guard: RolesGuard;
   let reflector: Reflector;
 
