@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Role, User } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -18,6 +18,7 @@ export class UsersController {
 
   @Get()
   @Roles(Role.ADMIN)
+  @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
   async findAll(@Query() query: FindAllQueryDto, @Query('sort') sort: SortUserDto): Promise<IPaginationResult<User>> {
     const { page, limit, filter } = query;
 
