@@ -36,7 +36,12 @@ describe('UsersService', () => {
 
   describe('findAll', () => {
     it('should call findMany with correct parameters', async () => {
-      const findAllOptions: IFindAllOptions = { skip: 5, limit: 10, filter: 'test' };
+      const findAllOptions: IFindAllOptions = {
+        skip: 5,
+        limit: 10,
+        filter: 'test',
+        sort: {},
+      };
 
       await service.findAll(findAllOptions);
       expect(prismaService.user.findMany).toHaveBeenCalledWith(

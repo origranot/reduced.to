@@ -8,19 +8,14 @@ import { SortUserDto } from './dto/sort-user.dto';
 export class UsersService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  findAll = async (options: {
-    filter: string;
-    limit: number;
-    skip: number;
-    sort: SortUserDto;
-  }): Promise<IPaginationResult<User>> => {
+  findAll = async (options: IFindAllOptions): Promise<IPaginationResult<User>> => {
     const { skip, limit, filter, sort } = options;
 
     const WHERE_CLAUSE = {
       OR: [{ email: { contains: filter } }, { name: { contains: filter } }],
     };
 
-    const orderBy = { orderBy: orderByBuilder<SortUserDto>(sort) };
+    const orderBy = { orderBy: orderByBuilder<SortUserDto>(sort as SortUserDto) };
 
     const result = await this.prismaService.$transaction([
       this.prismaService.user.count({
@@ -56,4 +51,5 @@ export interface IFindAllOptions {
   skip?: number;
   limit: number;
   filter?: string;
+  sort?: Partial<SortUserDto>;
 }

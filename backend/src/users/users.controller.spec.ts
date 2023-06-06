@@ -67,12 +67,16 @@ describe('UsersController', () => {
 
       const response = await request(app.getHttpServer()).get('/users?limit=100').expect(200);
 
-      expect(usersService.findAll).toHaveBeenCalledWith({ limit: 100, filter: undefined });
+      expect(usersService.findAll).toHaveBeenCalledWith({
+        limit: 100,
+        filter: undefined,
+        sort: {},
+      });
       expect(response.body).toEqual(MOCK_FIND_ALL_RESULT);
     });
 
     it('should call findAll with correct parameters and add caluclate skip when page is defined', async () => {
-      const findAllOptions: IFindAllOptions = { skip: 10, limit: 10 };
+      const findAllOptions: IFindAllOptions = { skip: 10, limit: 10, sort: {} };
 
       await request(app.getHttpServer()).get('/users?limit=10&page=2').expect(200);
 
@@ -80,7 +84,12 @@ describe('UsersController', () => {
     });
 
     it('should call findAll with correct parameters', async () => {
-      const findAllOptions: IFindAllOptions = { skip: 10, limit: 10, filter: 'test@test.com' };
+      const findAllOptions: IFindAllOptions = {
+        skip: 10,
+        limit: 10,
+        filter: 'test@test.com',
+        sort: {},
+      };
 
       await request(app.getHttpServer()).get('/users?limit=10&page=2&filter=test@test.com').expect(200);
 
