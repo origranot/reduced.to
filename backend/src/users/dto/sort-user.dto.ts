@@ -14,3 +14,5 @@ export class SortUserDto {
   @IsOptional()
   role: SortOrder;
 }
+
+export const SORT = 'sort';
