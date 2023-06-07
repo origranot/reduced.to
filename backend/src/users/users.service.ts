@@ -15,9 +15,9 @@ export class UsersService {
       OR: [{ email: { contains: filter } }, { name: { contains: filter } }],
     };
 
-    const orderBy = { orderBy: orderByBuilder<SortUserDto>(sort as SortUserDto) };
+    const ORDER_BY_CLAUSE = orderByBuilder<SortUserDto>(sort as SortUserDto);
 
-    const result = await this.prismaService.$transaction([
+    const [total, data] = await this.prismaService.$transaction([
       this.prismaService.user.count({
         ...(filter && {
           where: WHERE_CLAUSE,
@@ -36,13 +36,13 @@ export class UsersService {
         ...(filter && {
           where: WHERE_CLAUSE,
         }),
-        ...orderBy,
+        ...ORDER_BY_CLAUSE,
       }),
     ]);
 
     return {
-      total: result[0],
-      data: result[1],
+      total,
+      data,
     };
   };
 }
