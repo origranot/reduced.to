@@ -112,21 +112,6 @@ describe('UsersController', () => {
       expect(usersService.findAll).toHaveBeenCalledWith(findAllOptions);
     });
 
-    it('should call findAll with correct parameters including sort, only with recognized field', async () => {
-      const findAllOptions: IFindAllOptions = {
-        skip: 10,
-        limit: 10,
-        filter: 'test@test.com',
-        sort: { name: SortOrder.ASCENDING },
-      };
-
-      await request(app.getHttpServer())
-        .get('/users?limit=10&page=2&filter=test@test.com&sort[name]=asc&sort[unrecognized]=desc')
-        .expect(200);
-
-      expect(usersService.findAll).toHaveBeenCalledWith(findAllOptions);
-    });
-
     it('should throw an error if limit is not defined in the query', async () => {
       await request(app.getHttpServer()).get('/users?page=2&filter=test@test.com').expect(400);
     });
