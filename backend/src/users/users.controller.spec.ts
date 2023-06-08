@@ -117,9 +117,15 @@ describe('UsersController', () => {
     });
 
     it('should throw an error if one of the parameters is invalid', async () => {
-      await request(app.getHttpServer()).get('/users?limit=-5').expect(400); // limit is negative
+      await request(app.getHttpServer()).get('/users?limit=-5').expect(400);
       await request(app.getHttpServer()).get('/users?limit=101').expect(400); // limit is above maximum value of 100
-      await request(app.getHttpServer()).get('/users?page=-5').expect(400); // page is negative
+      await request(app.getHttpServer()).get('/users?page=-5').expect(400);
+    });
+
+    it('should throw an error if sort is sent with invalid parameters', async () => {
+      await request(app.getHttpServer()).get('/users?sort[name]=invalid').expect(400);
+      await request(app.getHttpServer()).get('/users?sort[invalid]=asc').expect(400);
+      await request(app.getHttpServer()).get('/users?sort[invalid]=invalid').expect(400);
     });
   });
 });
