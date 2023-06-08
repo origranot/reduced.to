@@ -36,7 +36,9 @@ export class UsersService {
         ...(filter && {
           where: WHERE_CLAUSE,
         }),
-        ...ORDER_BY_CLAUSE,
+        ...(sort && {
+          orderBy: ORDER_BY_CLAUSE,
+        }),
       }),
     ]);
 

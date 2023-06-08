@@ -1,19 +1,13 @@
 import { SortOrder } from '../../enums/sort-order.enum';
 
-export const orderByBuilder = <DTO>(
-  sortDto: Record<keyof DTO, SortOrder>
-): {
-  orderBy: Record<string, SortOrder>[];
-} => {
-  if (!sortDto) {
-    return;
+export const orderByBuilder = <T>(dto: Record<keyof T, SortOrder>): IOrderByResult => {
+  if (!dto || !Object.keys(dto).length) {
+    return null;
   }
-  const entries = Object.entries(sortDto);
-  if (!entries.length) {
-    return;
-  }
-  const orderByObjects = entries.map(([key, value]: [string, SortOrder]) => ({
-    [key]: value,
-  }));
-  return { orderBy: orderByObjects };
+
+  const result = Object.keys(dto).map((key) => ({ [key]: dto[key] }));
+
+  return result;
 };
+
+export type IOrderByResult = Record<string, SortOrder>[] | null;
