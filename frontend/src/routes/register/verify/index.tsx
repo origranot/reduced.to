@@ -32,7 +32,7 @@ export default component$(() => {
   });
 
   return (
-    <div class="min-h-screen flex flex-col">
+    <div class="flex flex-col h-[calc(100vh-64px)]">
       <div class="flex flex-1 content-center justify-center items-center">
         <div class="w-full max-w-md">
           <div class="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
