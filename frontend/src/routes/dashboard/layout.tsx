@@ -16,7 +16,7 @@ export default component$(() => {
   const userCtx = useGetCurrentUser().value;
 
   return (
-    <div class="drawer drawer-mobile h-[calc(100vh-64px)]">
+    <div class="drawer lg:drawer-open h-[calc(100vh-64px)]">
       <input id="drawer" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content w-100vh m-5" style={{ zIndex: -5 }}>
         <Slot />

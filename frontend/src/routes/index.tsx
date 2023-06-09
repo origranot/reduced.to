@@ -134,7 +134,7 @@ export default component$(() => {
                   <button
                     type="button"
                     title="Open in new tab"
-                    class="btn"
+                    class="btn btn-neutral"
                     onClick$={() => openUrl(state.reducedUrl)}
                   >
                     <svg
@@ -155,7 +155,7 @@ export default component$(() => {
                   <button
                     type="button"
                     title="QR Code"
-                    class="btn"
+                    class="btn btn-neutral"
                     onClick$={() => {
                       generateQRCode(state.reducedUrl, 150);
                       state.showQRCode = true;
