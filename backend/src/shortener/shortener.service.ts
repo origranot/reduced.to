@@ -40,8 +40,8 @@ export class ShortenerService {
 
   /**
    * Checks if the url has already been shortened by a using a Regular Expression.
-   * @param {String} shortUrl The short url
-   * @returns {Boolean} Returns a boolean
+   * @param {string} shortUrl The short url
+   * @returns {boolean} Returns a boolean
    */
   isUrlAlreadyShortened = (shortUrl: string): boolean => {
     const domainRegex = new RegExp(this.appConfigService.getConfig().front.domain);
@@ -50,7 +50,7 @@ export class ShortenerService {
 
   /**
    * Generating the short url
-   * @returns {String} Returns a random 5 characters url
+   * @returns {string} Returns a random 5 characters url
    */
   generateShortenedUrl = (): string => {
     return Math.random().toString(36).substring(2, 7);
@@ -68,8 +68,8 @@ export class ShortenerService {
 
   /**
    * Add the short url to the cache
-   * @param {String} originalUrl The original url.
-   * @param {String} shortenedUrl The shorten url.
+   * @param {string} originalUrl The original url.
+   * @param {string} shortenedUrl The shorten url.
    * @param {number} ttl The time to live.
    */
   addUrlToCache = async (originalUrl: string, shortenedUrl: string, ttl?: number) => {

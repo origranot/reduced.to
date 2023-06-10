@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { IFindAllOptions, UsersService } from './users.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { SortOrder } from '../shared/enums/sort-order.enum';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -13,8 +14,10 @@ describe('UsersService', () => {
         {
           provide: PrismaService,
           useValue: {
+            $transaction: jest.fn(),
             user: {
               findMany: jest.fn(),
+              count: jest.fn(),
             },
           },
         },
@@ -23,11 +26,23 @@ describe('UsersService', () => {
 
     service = module.get<UsersService>(UsersService);
     prismaService = module.get<PrismaService>(PrismaService);
+
+    // Mocking the $transaction method, we don't really care about the result
+    jest.spyOn(prismaService, '$transaction').mockResolvedValue([null, null]);
+  });
+
+  afterEach(async () => {
+    jest.clearAllMocks();
   });
 
   describe('findAll', () => {
-    it('should call findMany with correct parameters', async () => {
-      const findAllOptions: IFindAllOptions = { skip: 5, limit: 10, filter: 'test' };
+    it('should call findMany with correct parameters without sort', async () => {
+      const findAllOptions: IFindAllOptions = {
+        skip: 5,
+        limit: 10,
+        filter: 'test',
+        sort: {},
+      };
 
       await service.findAll(findAllOptions);
       expect(prismaService.user.findMany).toHaveBeenCalledWith(
@@ -48,6 +63,25 @@ describe('UsersService', () => {
       expect(prismaService.user.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           take: findAllOptions.limit,
+        })
+      );
+    });
+
+    it('should not call findMany with take and sort', async () => {
+      const findAllOptions: IFindAllOptions = { limit: 10, sort: { name: SortOrder.ASCENDING, email: SortOrder.DESCENDING } };
+
+      await service.findAll(findAllOptions);
+      expect(prismaService.user.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          take: findAllOptions.limit,
+          orderBy: [
+            {
+              name: SortOrder.ASCENDING,
+            },
+            {
+              email: SortOrder.DESCENDING,
+            },
+          ],
         })
       );
     });
