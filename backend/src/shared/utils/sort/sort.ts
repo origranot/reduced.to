@@ -1,11 +1,11 @@
 import { SortOrder } from '../../enums/sort-order.enum';
 
-export const orderByBuilder = <T>(dto: Record<keyof T, SortOrder>): IOrderByResult => {
-  if (!dto || !Object.keys(dto).length) {
+export const orderByBuilder = <T>(sort: Record<keyof T, SortOrder>): IOrderByResult => {
+  if (!sort || !Object.keys(sort).length) {
     return undefined;
   }
 
-  const result = Object.keys(dto).map((key) => ({ [key]: dto[key] }));
+  const result = Object.keys(sort).map((key) => ({ [key]: sort[key] }));
 
   return result;
 };

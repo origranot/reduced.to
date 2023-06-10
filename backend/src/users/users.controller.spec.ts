@@ -71,13 +71,13 @@ describe('UsersController', () => {
       expect(usersService.findAll).toHaveBeenCalledWith({
         limit: 100,
         filter: undefined,
-        sort: {},
+        sort: undefined,
       });
       expect(response.body).toEqual(MOCK_FIND_ALL_RESULT);
     });
 
     it('should call findAll with correct parameters and add caluclate skip when page is defined', async () => {
-      const findAllOptions: IFindAllOptions = { skip: 10, limit: 10, sort: {} };
+      const findAllOptions: IFindAllOptions = { skip: 10, limit: 10 };
 
       await request(app.getHttpServer()).get('/users?limit=10&page=2').expect(200);
 
@@ -89,7 +89,7 @@ describe('UsersController', () => {
         skip: 10,
         limit: 10,
         filter: 'test@test.com',
-        sort: {},
+        sort: undefined,
       };
 
       await request(app.getHttpServer()).get('/users?limit=10&page=2&filter=test@test.com').expect(200);
@@ -126,6 +126,11 @@ describe('UsersController', () => {
       await request(app.getHttpServer()).get('/users?sort[name]=invalid').expect(400);
       await request(app.getHttpServer()).get('/users?sort[invalid]=asc').expect(400);
       await request(app.getHttpServer()).get('/users?sort[invalid]=invalid').expect(400);
+      await request(app.getHttpServer()).get('/users?sort=name').expect(400);
+    });
+
+    it('test', async () => {
+      await request(app.getHttpServer()).get('/users?sort=name').expect(400);
     });
   });
 });

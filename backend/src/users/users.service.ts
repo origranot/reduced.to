@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { User } from '@prisma/client';
 import { IPaginationResult, orderByBuilder } from '../shared/utils';
-import { SortUserDto } from './dto/sort-user.dto';
+import { SortOrder } from '../shared/enums/sort-order.enum';
 
 @Injectable()
 export class UsersService {
@@ -15,7 +15,7 @@ export class UsersService {
       OR: [{ email: { contains: filter } }, { name: { contains: filter } }],
     };
 
-    const ORDER_BY_CLAUSE = orderByBuilder<SortUserDto>(sort as SortUserDto);
+    const ORDER_BY_CLAUSE = orderByBuilder<Partial<User>>(sort);
 
     const [total, data] = await this.prismaService.$transaction([
       this.prismaService.user.count({
@@ -53,5 +53,5 @@ export interface IFindAllOptions {
   skip?: number;
   limit: number;
   filter?: string;
-  sort?: Partial<SortUserDto>;
+  sort?: Record<string, SortOrder>;
 }
