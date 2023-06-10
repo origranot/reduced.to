@@ -2,7 +2,7 @@ import { SortOrder } from '../../enums/sort-order.enum';
 
 export const orderByBuilder = <T>(dto: Record<keyof T, SortOrder>): IOrderByResult => {
   if (!dto || !Object.keys(dto).length) {
-    return null;
+    return undefined;
   }
 
   const result = Object.keys(dto).map((key) => ({ [key]: dto[key] }));
@@ -10,4 +10,4 @@ export const orderByBuilder = <T>(dto: Record<keyof T, SortOrder>): IOrderByResu
   return result;
 };
 
-export type IOrderByResult = Record<string, SortOrder>[] | null;
+export type IOrderByResult = Record<string, SortOrder>[] | undefined;
