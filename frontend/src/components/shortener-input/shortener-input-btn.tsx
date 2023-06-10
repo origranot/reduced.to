@@ -11,10 +11,11 @@ export const ShortenerInputBtn = component$((props: ShortenerInputBtnProps) => {
 
   return (
     <button
+      disabled={props.disabled}
       onClick$={props.onClick$}
       type="button"
       id="shortenerBtn"
-      class={`btn btn-primary w-full sm:w-auto ${props.disabled ? 'btn-disabled' : ''}`}
+      class={`btn btn-primary w-full md:w-auto self-end mb-2`}
     >
       Shorten URL
     </button>

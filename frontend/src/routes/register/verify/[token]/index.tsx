@@ -28,7 +28,7 @@ export default component$(() => {
   });
 
   return (
-    <div class="min-h-screen flex flex-col register-bg">
+    <div class="min-h-screen flex flex-col">
       <div class="hero min-h-screen">
         <div class="hero-content text-center">
           <div class="max-w-md">

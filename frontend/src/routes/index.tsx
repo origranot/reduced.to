@@ -19,6 +19,7 @@ import { Tooltip } from '~/components/tooltip/tooltip';
 import { Waves } from '~/components/waves/waves';
 import { copyToClipboard, openUrl } from '~/utils';
 import styles from './index.css?inline';
+import { TIME_FRAME_DIR } from '~/components/shortener-input/constants';
 
 export const InputContext = createContextId<Store>('input');
 
@@ -29,6 +30,7 @@ export interface Store {
   showResult: boolean;
   showQRCode: boolean;
   urlError: string;
+  ttl: number;
 }
 
 export const clearValues = (state: Store) => {
@@ -51,6 +53,7 @@ export default component$(() => {
     showResult: false,
     showQRCode: false,
     urlError: '',
+    ttl: TIME_FRAME_DIR.ONE_WEEK.value,
   });
 
   useContextProvider(InputContext, state);
