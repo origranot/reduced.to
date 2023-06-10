@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Reduced.to',
   tagline: 'Highly Efficient Open Source URL Shortener',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
   url: 'https://reduced.to/',
   baseUrl: '/',  
   projectName: 'reduced.to', 
@@ -32,13 +32,7 @@ const config = {
           editUrl:
             '/',
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/origranot/reduced.to',
-        },
+        
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
