@@ -1,0 +1,29 @@
+
+ @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+
+:root {
+  --ifm-color-primary: #8B1874;
+  --ifm-color-primary-dark: #B71375;
+  --ifm-color-primary-darker: #81188b;
+  --ifm-color-primary-darkest: #600a3d;
+  --ifm-color-primary-light: #600a3d;
+  --ifm-color-primary-lighter: #B71375;
+  --ifm-color-primary-lightest: #600a3d;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  font-family: 'Quicksand', sans-serif;
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  background-color: #111;
+  --ifm-color-primary: #b11e94;
+  --ifm-color-primary-dark: #B71375;
+  --ifm-color-primary-darker: #600a3d;
+  --ifm-color-primary-darkest: #600a3d;
+  --ifm-color-primary-light: #600a3d;
+  --ifm-color-primary-lighter: #B71375;
+  --ifm-color-primary-lightest: #600a3d;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  font-family: 'Quicksand', sans-serif;
+}
