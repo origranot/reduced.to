@@ -23,7 +23,7 @@ export default component$(() => {
       </div>
       <div class="drawer-side">
         <label for="drawer" class="drawer-overlay"></label>
-        <ul class="menu p-4 w-64 text-base-content border-r bg-base-100 dark:border-gray-700 block">
+        <ul class="menu p-4 pt-16 md:pt-2 sm:h-full md:pt-0 w-64 text-base-content border-r bg-base-100 dark:border-gray-700 block">
           <li class="py-2 mt-2">
             <Link href="/dashboard" class={`${currentPath === '/dashboard' ? 'active' : ''}`}>
               <svg
@@ -70,7 +70,7 @@ export default component$(() => {
                 />
               </svg>
               <span class="justify-between font-medium">Settings</span>
-              <span class="badge">Soon</span>
+              <span class="badge badge-neutral">Soon</span>
             </Link>
           </li>
           {userCtx?.role === Role.ADMIN && (

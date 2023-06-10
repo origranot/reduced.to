@@ -68,7 +68,7 @@ export const Navbar = component$(({ user }: NavbarProps) => {
               <li>
                 <Link href="/dashboard" class="btn-ghost py-2 text-sm justify-between">
                   Dashboard
-                  <span class="badge">New</span>
+                  <span class="badge badge-neutral">New</span>
                 </Link>
                 <Link href="/logout" class="btn-ghost py-2 text-sm">
                   Logout
