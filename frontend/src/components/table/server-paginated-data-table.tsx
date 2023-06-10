@@ -8,11 +8,11 @@ import {
   useResource$,
   Resource,
 } from '@builder.io/qwik';
-import { FilterInput } from './DefaultFilter';
+import { FilterInput } from './default-filter';
 
 export interface PaginatedRows<T> {
   data: T[];
-  total: number;
+  totalRowCount: number;
 }
 
 export enum SortOrder {
@@ -31,11 +31,11 @@ export interface PaginationParams {
 export interface TableProps<T extends string> {
   rows: Record<T, JSXChildren>[];
   customColumnNames?: Partial<Record<T, string>>;
-  total: number;
+  totalRowCount: number;
   rowsPerPage?: number;
   emitFetchRows: PropFunction<
     ({ page, limit, filter, sort, sortColumn }: PaginationParams) => Promise<{
-      total: number;
+      totalRowCount: number;
       data: Record<T, JSXChildren>[];
     }>
   >;
@@ -46,8 +46,9 @@ export const ServerPaginatedDataTable = component$(<T extends string>(props: Tab
   const currentPage = useSignal(0);
   const filter = useSignal('');
   const sortColumn = useSignal<keyof T>(Object.keys(props.rows[0])[0] as keyof T);
+  // TODO switch to null
   const sortDesc = useSignal(true);
-  const maxPages = useSignal(props.total);
+  const maxPages = useSignal(props.totalRowCount);
 
   const headers = Object.keys(props.rows[0]).map((colName) => ({
     name: colName,
@@ -114,8 +115,8 @@ export const ServerPaginatedDataTable = component$(<T extends string>(props: Tab
         <Resource
           value={paginatedRows}
           onPending={() => <p>Loading...</p>}
-          onResolved={({ data, total }) => {
-            maxPages.value = total;
+          onResolved={({ data, totalRowCount }) => {
+            maxPages.value = totalRowCount;
             return (
               <tbody>
                 {/* ts inference bug atm with useresource */}
