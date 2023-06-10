@@ -53,9 +53,15 @@ const config = {
             label: 'Reduced.to',
           },
           {
-            href: 'https://github.com/origranot/reduced.to',
-            label: 'GitHub',
             position: 'right',
+              href:"https://github.com/origranot/reduced.to",
+              html: `
+                <a  aria-label="GitHub" class="navbar-github-link">
+                  <img src="img/github-logo.png" alt="GitHub Logo" class="navbar-github-logo" />
+                </a>
+              `,
+            
+            
           },
         ],
         
