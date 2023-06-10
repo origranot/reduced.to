@@ -1,6 +1,6 @@
 import { component$, useResource$, Resource, useVisibleTask$, useStore, $ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
-import { ServerPaginatedDataTable } from '~/components/table/ServerPaginatedDataTable';
+import { ServerPaginatedDataTable } from '~/components/table/server-paginated-data-table';
 import { UserCtx } from '~/routes/layout';
 import { authorizedFetch } from '~/shared/auth.service';
 import { fetchMockUsers } from '~/mockdata/useMockFns';
@@ -45,11 +45,6 @@ export default component$(() => {
     const isPageInRange = startIdx >= rowsCache.startIdx && endIdx <= rowsCache.endIdx;
     const isPageInLocalCache = isPageInRange && rowsCache.rows.length === rowsCache.total;
 
-    // console.log('trying to fetch cached', {
-    //   params: { limit, page, filter, sort, sortColumn },
-    //   rowsCache: JSON.parse(JSON.stringify(rowsCache)),
-    // });
-
     if (
       !isPageInLocalCache ||
       sortColumn !== rowsCache.sortColumn ||
@@ -85,7 +80,7 @@ export default component$(() => {
     // });
 
     return Promise.resolve({
-      total: rowsCache.total,
+      totalRowCount: rowsCache.total,
       data: rowsCache.rows.slice(startIdxPartial, endIdxPartial),
     });
   });
@@ -103,11 +98,14 @@ export default component$(() => {
     const abortController = new AbortController();
     cleanup(() => abortController.abort('cleanup'));
 
-    const data = await authorizedFetch(`${process.env.API_DOMAIN}/api/v1/users?limit=10`, {
-      signal: abortController.signal,
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    });
+    const data = await authorizedFetch(
+      `${process.env.API_DOMAIN}/api/v1/users?limit=10&sort[name]=asc`,
+      {
+        signal: abortController.signal,
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
     return await data.json();
   });
 
@@ -125,7 +123,7 @@ export default component$(() => {
           return (
             <ServerPaginatedDataTable
               rows={data}
-              total={total}
+              totalRowCount={total}
               emitFetchRows={fetchRows}
               customColumnNames={{ name: 'User-Name' }}
             />
