@@ -9,18 +9,9 @@ const config = {
   title: 'Reduced.to',
   tagline: 'Highly Efficient Open Source URL Shortener',
   favicon: 'img/favicon.ico',
-
-
   url: 'https://reduced.to/',
-
-
-  baseUrl: '/',
-
-
-
-  
+  baseUrl: '/',  
   projectName: 'reduced.to', 
-
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   i18n: {
@@ -37,8 +28,9 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
+          routeBasePath: '/',
           editUrl:
-            'https://github.com/origranot/reduced.to',
+            '/',
         },
         blog: {
           showReadingTime: true,
@@ -59,17 +51,12 @@ const config = {
     ({
       
       navbar: {
-        title: 'Reduced.to',
         items: [
           {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Tutorial',
-          },
-          {
-            type: 'search',
-            position: 'right',
+            label: 'Reduced.to',
           },
           {
             href: 'https://github.com/origranot/reduced.to',
