@@ -2,18 +2,18 @@ import { orderByBuilder } from './sort';
 import { SortOrder } from '../../enums/sort-order.enum';
 
 describe('orderByBuilder', () => {
-  it('should return null if dto is undefined', () => {
+  it('should return undefined if dto is undefined', () => {
     const dto = undefined;
 
     const result = orderByBuilder(dto);
-    expect(result).toBeNull();
+    expect(result).toBeUndefined();
   });
 
-  it('should return null if dto is an empty object', () => {
+  it('should return undefined if dto is an empty object', () => {
     const sortDto = {};
 
     const result = orderByBuilder(sortDto);
-    expect(result).toBeNull();
+    expect(result).toBeUndefined();
   });
 
   it('should return orderBy clause if dto is with properties', () => {
