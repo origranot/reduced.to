@@ -1,89 +1,146 @@
-import { component$, useResource$, Resource, useVisibleTask$, useStore, $ } from '@builder.io/qwik';
+import {
+  component$,
+  useResource$,
+  Resource,
+  useVisibleTask$,
+  useStore,
+  $,
+  PropFunction,
+} from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
-import { ServerPaginatedDataTable } from '~/components/table/server-paginated-data-table';
 import { UserCtx } from '~/routes/layout';
 import { authorizedFetch } from '~/shared/auth.service';
-import { fetchMockUsers } from '~/mockdata/useMockFns';
+import type {
+  PaginatedRows,
+  PaginationParams,
+} from '~/components/table/server-paginated-data-table';
+import { ServerPaginatedDataTable } from '~/components/table/server-paginated-data-table';
 
-export interface PaginatedRows<T> {
-  data: T[];
+export interface LocalPaginationCache {
+  limit: number;
+  startIdx: number;
+  endIdx: number;
+  cachedPages: { rangeStart: number; rangeEnd: number; rows: any[] }[];
+  sort: 'asc' | 'desc' | null;
+  sortColumn: string | null;
+  filter: string;
   total: number;
 }
 
-export enum SortOrder {
-  DESC = 'desc',
-  ASC = 'asc',
-}
+export type PaginationFetcher = ({
+  limit,
+  page,
+  filter,
+  sort,
+  sortColumn,
+}: PaginationParams) => Promise<{
+  data: unknown[];
+  total: number;
+}>;
 
-export interface PaginationParams {
-  limit: number;
-  page: number;
-  filter: string;
-  sort: SortOrder;
-  sortColumn: string;
-}
+export const serializeQueryUserPaginationParams = (paginationParams: PaginationParams) => {
+  const paramsForQuery = {
+    limit: '' + paginationParams.limit,
+    filter: paginationParams.filter,
+    page: '' + paginationParams.page,
+    [`sort[${paginationParams.sortColumn}]`]: paginationParams.sort,
+  };
 
-export default component$(() => {
-  const firstLoading = useStore({ value: true });
-  const rowsCache = useStore({
+  return new URLSearchParams(paramsForQuery).toString().replace(/%5B/g, '[').replace(/%5D/g, ']');
+};
+
+export const hybridPaginationHook = (fetchRows: PropFunction<PaginationFetcher>) => {
+  const rowsCache = useStore<LocalPaginationCache>({
     limit: 10,
     startIdx: 0,
     endIdx: 10,
-    rows: [],
-    sort: 'asc',
-    sortColumn: 'id',
+    cachedPages: [],
+    sort: null,
+    sortColumn: null,
     filter: '',
     total: 0,
   });
 
-  const fetchRows = $(async ({ limit, page, filter, sort, sortColumn }: PaginationParams) => {
-    const startIdx = page * limit;
-    const endIdx = startIdx + limit;
+  const fetchRowsHandler = $(
+    async ({ limit, page, filter, sort, sortColumn }: PaginationParams) => {
+      const startIdx = page * limit;
+      const endIdx = startIdx + limit;
+      const serverLimit = 100;
 
-    const limitOnServer = 50;
+      const targetCachedPage = rowsCache.cachedPages.find((cachedPage) => {
+        const { rangeStart, rangeEnd } = cachedPage;
+        return startIdx >= rangeStart && endIdx <= rangeEnd;
+      });
 
-    const isPageInRange = startIdx >= rowsCache.startIdx && endIdx <= rowsCache.endIdx;
-    const isPageInLocalCache = isPageInRange && rowsCache.rows.length === rowsCache.total;
+      if (
+        Array.isArray(targetCachedPage) === false ||
+        sortColumn !== rowsCache.sortColumn ||
+        filter !== rowsCache.filter ||
+        sort !== rowsCache.sort ||
+        limit !== rowsCache.limit
+      ) {
+        rowsCache.cachedPages = [];
 
-    if (
-      !isPageInLocalCache ||
-      sortColumn !== rowsCache.sortColumn ||
-      filter !== rowsCache.filter ||
-      sort !== rowsCache.sort
-    ) {
-      const result = fetchMockUsers({ limit: limitOnServer, page, filter, sort, sortColumn });
-      const payload = await result;
+        const result = fetchRows({
+          limit: serverLimit,
+          page,
+          filter,
+          sort,
+          sortColumn,
+        });
+        const payload = await result;
+        console.log('🚀 ~ file: index.tsx:53 ~ fetchRows ~ result:', payload);
+
+        rowsCache.total = payload.total;
+        rowsCache.cachedPages.push({
+          rangeStart: page * limit,
+          rangeEnd: startIdx + limit,
+          rows: payload.data as any,
+        });
+      }
 
       rowsCache.filter = filter;
+      rowsCache.limit = limit;
       rowsCache.sort = sort;
       rowsCache.sortColumn = sortColumn;
       rowsCache.limit = limit;
       rowsCache.startIdx = startIdx;
       rowsCache.endIdx = startIdx + limit - 1;
-      rowsCache.total = payload.total;
-      rowsCache.rows = payload.data as any;
 
-      // console.log('caching...', { payload, rowsCache: JSON.parse(JSON.stringify(rowsCache)) });
+      const startIdxPartial = startIdx - rowsCache.startIdx;
+      const endIdxPartial = startIdxPartial + limit;
+
+      return Promise.resolve({
+        totalRowCount: rowsCache.total,
+        data: targetCachedPage?.rows.slice(startIdxPartial, endIdxPartial),
+      });
     }
+  );
 
-    const startIdxPartial = isPageInLocalCache ? startIdx - rowsCache.startIdx : 0;
-    const endIdxPartial = isPageInLocalCache ? startIdxPartial + limit : limit;
+  return { fetchRowsHandler };
+};
 
-    // console.log('cached', {
-    //   limit,
-    //   limitOnServer,
-    //   endIdxPartial,
-    //   startIdxPartial,
-    //   startIdx,
-    //   endIdx,
-    //   page,
-    // });
+export default component$(() => {
+  const firstLoading = useStore({ value: true });
 
-    return Promise.resolve({
-      totalRowCount: rowsCache.total,
-      data: rowsCache.rows.slice(startIdxPartial, endIdxPartial),
-    });
-  });
+  const fetchUserData: PropFunction<PaginationFetcher> = $(
+    async (paginationParams: PaginationParams) => {
+      const headers = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      };
+
+      const data = await authorizedFetch(
+        `${process.env.API_DOMAIN}/api/v1/users?${serializeQueryUserPaginationParams(
+          paginationParams
+        )}`,
+        headers
+      );
+      return await data.json();
+    }
+  );
+
+  const { fetchRowsHandler } = hybridPaginationHook(fetchUserData);
 
   useVisibleTask$(
     () => {
@@ -92,22 +149,24 @@ export default component$(() => {
     { strategy: 'document-ready' }
   );
 
-  const usersResource = useResource$<PaginatedRows<UserCtx>>(async ({ track, cleanup }) => {
-    track(() => firstLoading.value);
-    if (firstLoading.value) return;
-    const abortController = new AbortController();
-    cleanup(() => abortController.abort('cleanup'));
+  const usersResource = useResource$<{ data: PaginatedRows<UserCtx>; total: number }>(
+    async ({ track, cleanup }) => {
+      track(() => firstLoading.value);
+      if (firstLoading.value) return;
+      const abortController = new AbortController();
+      cleanup(() => abortController.abort('cleanup'));
 
-    const data = await authorizedFetch(
-      `${process.env.API_DOMAIN}/api/v1/users?limit=10&sort[name]=asc`,
-      {
-        signal: abortController.signal,
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-    return await data.json();
-  });
+      const data = await authorizedFetch(
+        `${process.env.API_DOMAIN}/api/v1/users?limit=10&sort[name]=asc`,
+        {
+          signal: abortController.signal,
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+      return await data.json();
+    }
+  );
 
   return (
     <div class="p-10">
@@ -124,10 +183,10 @@ export default component$(() => {
             <ServerPaginatedDataTable
               rows={data}
               totalRowCount={total}
-              emitFetchRows={fetchRows}
+              emitFetchRows={fetchRowsHandler as any} //TODO check type issue
               customColumnNames={{
                 id: { name: 'id', hide: true },
-                name: { name: 'name', displayName: 'User-Name' },
+                name: { name: 'name', customName: 'User-Name' },
               }}
             />
           );
