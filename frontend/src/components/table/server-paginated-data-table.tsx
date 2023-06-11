@@ -30,7 +30,7 @@ export interface PaginationParams {
 
 export interface TableProps<T extends string> {
   rows: Record<T, JSXChildren>[];
-  customColumnNames?: Partial<Record<T, { customName: string; hide: true }>>;
+  customColumnNames?: Partial<Record<T, { name: string; customName?: string; hide?: true }>>;
   totalRowCount: number;
   rowsPerPage?: number;
   emitFetchRows: PropFunction<
@@ -120,7 +120,7 @@ export const ServerPaginatedDataTable = component$(<T extends string>(props: Tab
           onPending={() => <p>Loading...</p>}
           onResolved={({ data, totalRowCount }) => {
             // update signal for total count
-            maxPages.value = totalRowCount;
+            maxPages.value = Math.ceil(totalRowCount / rowsPerPage.value);
             const filteredData = (data as unknown as Record<T, JSXChildren>[]).map((row) => {
               return Object.keys(row).reduce((acc: { [key: string]: unknown }, k) => {
                 const key = k as T;
