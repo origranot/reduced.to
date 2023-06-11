@@ -125,7 +125,10 @@ export default component$(() => {
               rows={data}
               totalRowCount={total}
               emitFetchRows={fetchRows}
-              customColumnNames={{ name: 'User-Name' }}
+              customColumnNames={{
+                id: { name: 'id', hide: true },
+                name: { name: 'name', displayName: 'User-Name' },
+              }}
             />
           );
         }}

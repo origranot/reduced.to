@@ -30,7 +30,7 @@ export interface PaginationParams {
 
 export interface TableProps<T extends string> {
   rows: Record<T, JSXChildren>[];
-  customColumnNames?: Partial<Record<T, string>>;
+  customColumnNames?: Partial<Record<T, { customName: string; hide: true }>>;
   totalRowCount: number;
   rowsPerPage?: number;
   emitFetchRows: PropFunction<
@@ -50,10 +50,13 @@ export const ServerPaginatedDataTable = component$(<T extends string>(props: Tab
   const sortDesc = useSignal(true);
   const maxPages = useSignal(props.totalRowCount);
 
-  const headers = Object.keys(props.rows[0]).map((colName) => ({
-    name: colName,
-    displayName: props.customColumnNames?.[colName as T] || colName,
-  }));
+  const headers = Object.keys(props.rows[0])
+    .map((colName) => ({
+      name: colName,
+      displayName: props.customColumnNames?.[colName as T]?.customName || colName,
+      hide: props.customColumnNames?.[colName as T]?.hide,
+    }))
+    .filter((header) => (header.hide ? false : true));
 
   const filterSetter$ = $((val: string) => {
     filter.value = val;
@@ -116,14 +119,23 @@ export const ServerPaginatedDataTable = component$(<T extends string>(props: Tab
           value={paginatedRows}
           onPending={() => <p>Loading...</p>}
           onResolved={({ data, totalRowCount }) => {
+            // update signal for total count
             maxPages.value = totalRowCount;
+            const filteredData = (data as unknown as Record<T, JSXChildren>[]).map((row) => {
+              return Object.keys(row).reduce((acc: { [key: string]: unknown }, k) => {
+                const key = k as T;
+                if (props.customColumnNames?.[key]?.hide) return acc;
+                acc[k] = row[key];
+                return acc;
+              }, {});
+            });
             return (
               <tbody>
                 {/* ts inference bug atm with useresource */}
-                {(data as unknown as Record<T, JSXChildren>[]).map((row) => (
+                {filteredData.map((row) => (
                   <tr>
                     {(Object.values(row) as JSXChildren[]).map((cell) => (
-                      <td>{cell}</td>
+                      <td>{cell?.toString()}</td>
                     ))}
                   </tr>
                 ))}
