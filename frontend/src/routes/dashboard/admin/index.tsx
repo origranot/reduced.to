@@ -39,12 +39,16 @@ export type PaginationFetcher = ({
 }>;
 
 export const serializeQueryUserPaginationParams = (paginationParams: PaginationParams) => {
-  const paramsForQuery = {
+  const paramsForQuery: { [key: string]: string } = {
     limit: '' + paginationParams.limit,
-    filter: paginationParams.filter,
     page: '' + paginationParams.page,
-    [`sort[${paginationParams.sortColumn}]`]: paginationParams.sort,
   };
+  if (paginationParams.filter) {
+    paramsForQuery.filter = paginationParams.filter;
+  }
+  if (paginationParams.sortColumn && paginationParams.sort) {
+    paramsForQuery[`sort[${paginationParams.sortColumn}]`] = paginationParams.sort;
+  }
 
   return new URLSearchParams(paramsForQuery).toString().replace(/%5B/g, '[').replace(/%5D/g, ']');
 };
