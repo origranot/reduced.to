@@ -5,20 +5,31 @@ import { ShortenerService } from './shortener.service';
 import { UserContext } from '../auth/interfaces/user-context';
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import { AppLoggerSerivce } from '../logger/logger.service';
+import { AnalyticsProducer } from '../broker/producers/analytics.producer';
+import { AnalyticsService } from './analytics/analytics.service';
 
 @Controller({
   path: 'shortener',
   version: '1',
 })
 export class ShortenerController {
-  constructor(private readonly logger: AppLoggerSerivce, private readonly shortenerService: ShortenerService) {}
+  constructor(
+    private readonly logger: AppLoggerSerivce,
+    private readonly shortenerService: ShortenerService,
+    private readonly analyticsProducer: AnalyticsProducer,
+    private readonly analyticsService: AnalyticsService
+  ) {}
 
   @Get(':shortenedUrl')
-  async findOne(@Param('shortenedUrl') shortenedUrl: string): Promise<string> {
+  async findOne(@Req() req: Request, @Param('shortenedUrl') shortenedUrl: string): Promise<string> {
     const originalUrl = await this.shortenerService.getOriginalUrl(shortenedUrl);
     if (!originalUrl) {
       throw new BadRequestException('Shortened url is wrong or expired');
     }
+
+    // TODO: This should be handle in one service (analyticsService) (maybe in a middleware?)
+    this.analyticsProducer.produce(this.analyticsService.getDataFromRequest(req));
+
     return originalUrl;
   }
 

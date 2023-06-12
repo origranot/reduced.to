@@ -46,6 +46,7 @@
     "cookie-parser": "^1.4.6",
     "express": "^4.17.1",
     "jest": "^29.2.0",
+    "memphis-dev": "^1.0.5",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
