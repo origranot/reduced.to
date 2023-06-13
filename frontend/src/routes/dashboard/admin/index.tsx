@@ -15,28 +15,7 @@ import type {
   PaginationParams,
 } from '~/components/table/server-paginated-data-table';
 import { ServerPaginatedDataTable } from '~/components/table/server-paginated-data-table';
-
-export interface LocalPaginationCache {
-  limit: number;
-  startIdx: number;
-  endIdx: number;
-  cachedPages: { rangeStart: number; rangeEnd: number; rows: any[] }[];
-  sort: 'asc' | 'desc' | null;
-  sortColumn: string | null;
-  filter: string;
-  total: number;
-}
-
-export type PaginationFetcher = ({
-  limit,
-  page,
-  filter,
-  sort,
-  sortColumn,
-}: PaginationParams) => Promise<{
-  data: unknown[];
-  total: number;
-}>;
+import { hybridPaginationHook, PaginationFetcher } from '~/hooks/hybridPaginationHook';
 
 export const serializeQueryUserPaginationParams = (paginationParams: PaginationParams) => {
   const paramsForQuery: { [key: string]: string } = {
@@ -53,77 +32,6 @@ export const serializeQueryUserPaginationParams = (paginationParams: PaginationP
   return new URLSearchParams(paramsForQuery).toString().replace(/%5B/g, '[').replace(/%5D/g, ']');
 };
 
-export const hybridPaginationHook = (fetchRows: PropFunction<PaginationFetcher>) => {
-  const rowsCache = useStore<LocalPaginationCache>({
-    limit: 10,
-    startIdx: 0,
-    endIdx: 10,
-    cachedPages: [],
-    sort: null,
-    sortColumn: null,
-    filter: '',
-    total: 0,
-  });
-
-  const fetchRowsHandler = $(
-    async ({ limit, page, filter, sort, sortColumn }: PaginationParams) => {
-      const startIdx = page * limit;
-      const endIdx = startIdx + limit;
-      const serverLimit = 100;
-
-      const targetCachedPage = rowsCache.cachedPages.find((cachedPage) => {
-        const { rangeStart, rangeEnd } = cachedPage;
-        return startIdx >= rangeStart && endIdx <= rangeEnd;
-      });
-
-      if (
-        Array.isArray(targetCachedPage) === false ||
-        sortColumn !== rowsCache.sortColumn ||
-        filter !== rowsCache.filter ||
-        sort !== rowsCache.sort ||
-        limit !== rowsCache.limit
-      ) {
-        rowsCache.cachedPages = [];
-
-        const result = fetchRows({
-          limit: serverLimit,
-          page,
-          filter,
-          sort,
-          sortColumn,
-        });
-        const payload = await result;
-        console.log('🚀 ~ file: index.tsx:53 ~ fetchRows ~ result:', payload);
-
-        rowsCache.total = payload.total;
-        rowsCache.cachedPages.push({
-          rangeStart: page * limit,
-          rangeEnd: startIdx + limit,
-          rows: payload.data as any,
-        });
-      }
-
-      rowsCache.filter = filter;
-      rowsCache.limit = limit;
-      rowsCache.sort = sort;
-      rowsCache.sortColumn = sortColumn;
-      rowsCache.limit = limit;
-      rowsCache.startIdx = startIdx;
-      rowsCache.endIdx = startIdx + limit - 1;
-
-      const startIdxPartial = startIdx - rowsCache.startIdx;
-      const endIdxPartial = startIdxPartial + limit;
-
-      return Promise.resolve({
-        totalRowCount: rowsCache.total,
-        data: targetCachedPage?.rows.slice(startIdxPartial, endIdxPartial),
-      });
-    }
-  );
-
-  return { fetchRowsHandler };
-};
-
 export default component$(() => {
   const firstLoading = useStore({ value: true });
 
@@ -134,10 +42,10 @@ export default component$(() => {
         headers: { 'Content-Type': 'application/json' },
       };
 
+      const queryParams = serializeQueryUserPaginationParams(paginationParams);
+
       const data = await authorizedFetch(
-        `${process.env.API_DOMAIN}/api/v1/users?${serializeQueryUserPaginationParams(
-          paginationParams
-        )}`,
+        `${process.env.API_DOMAIN}/api/v1/users?${queryParams}`,
         headers
       );
       return await data.json();
