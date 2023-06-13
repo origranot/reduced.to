@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppConfigService } from '../config/config.service';
 import { Novu } from '@novu/node';
 
-export const NOVU_INJECTION_TOKEN = 'NOVU';
+export const NOVU_INJECTION_TOKEN = Symbol.for('NOVU');
 
 const novuFactory = {
   provide: NOVU_INJECTION_TOKEN,

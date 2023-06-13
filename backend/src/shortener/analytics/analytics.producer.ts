@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { MEMPHIS_INJECTION_TOKEN } from '../broker.module';
+import { MEMPHIS_INJECTION_TOKEN } from '../../memphis/memphis.module';
 import { MemphisService } from 'memphis-dev';
 
 const PRODUCER_NAME = 'analyticsProducer';

@@ -6,6 +6,7 @@ import { Test } from '@nestjs/testing';
 import { ShortenerDto } from './dto';
 import { Request } from 'express';
 import { AppLoggerModule } from '../logger/logger.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
@@ -13,7 +14,7 @@ describe('ShortenerController', () => {
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppConfigModule, AppLoggerModule, AppCacheModule],
+      imports: [AppConfigModule, AppLoggerModule, AppCacheModule, AnalyticsModule],
       controllers: [ShortenerController],
       providers: [
         {
@@ -78,10 +79,16 @@ describe('ShortenerController', () => {
   });
 
   describe('findOne', () => {
+    const mockRequest = {
+      headers: {
+        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:85.0) Gecko/20100101 Firefox/85.0',
+      },
+    } as Request;
+
     it('should return the original URL when given a valid short URL', async () => {
       jest.spyOn(shortenerService, 'getOriginalUrl').mockResolvedValue('https://github.com/origranot/reduced.to');
       const shortUrl = 'best';
-      const originalUrl = await shortenerController.findOne(shortUrl);
+      const originalUrl = await shortenerController.findOne(mockRequest, shortUrl);
       expect(originalUrl).toBe('https://github.com/origranot/reduced.to');
     });
 
@@ -89,7 +96,7 @@ describe('ShortenerController', () => {
       jest.spyOn(shortenerService, 'getOriginalUrl').mockResolvedValue(null);
       const shortUrl = 'not-found';
       try {
-        await shortenerController.findOne(shortUrl);
+        await shortenerController.findOne(mockRequest, shortUrl);
         throw new Error('Expected an error to be thrown!');
       } catch (err) {
         expect(err.message).toBe('Shortened url is wrong or expired');
