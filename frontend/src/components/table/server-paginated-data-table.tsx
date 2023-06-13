@@ -49,7 +49,7 @@ export const ServerPaginatedDataTable = component$(<T extends string>(props: Tab
   // const sortColumn = useSignal<keyof T|null>(Object.keys(props.rows[0])[0] as keyof T);
   // TODO switch to null
   const sortDesc = useSignal(true);
-  const maxPages = useSignal(props.totalRowCount);
+  const maxPages = useSignal(props.totalRowCount / rowsPerPage.value);
 
   const headers = Object.keys(props.rows[0])
     .map((colName) => ({
@@ -196,7 +196,7 @@ export const ServerPaginatedDataTable = component$(<T extends string>(props: Tab
                   </strong>
                 </span>
                 {/* got to page input */}
-                <span class="flex items-center gap-2 mx-3">
+                {/* <span class="flex items-center gap-2 mx-3">
                   <span>Go to page:</span>
                   <input
                     type="number"
@@ -210,7 +210,7 @@ export const ServerPaginatedDataTable = component$(<T extends string>(props: Tab
                     // class="border p-1 rounded w-16"
                     class="input input-bordered w-full"
                   />
-                </span>
+                </span> */}
                 {/* rowsperpage select */}
                 <select
                   value={rowsPerPage.value}
