@@ -9,7 +9,7 @@ const STATION_NAME = 'analytics';
 export class AnalyticsProducer {
   constructor(@Inject(MEMPHIS_INJECTION_TOKEN) private readonly memphis: MemphisService) {}
 
-  public produce = async (message: any) => {
+  produce = async (message: any) => {
     this.memphis.produce({
       stationName: STATION_NAME,
       producerName: PRODUCER_NAME,

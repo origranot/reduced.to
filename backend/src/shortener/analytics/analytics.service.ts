@@ -1,13 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { Request } from 'express';
+import { AnalyticsProducer } from './analytics.producer';
 
 @Injectable()
 export class AnalyticsService {
-  public getDataFromRequest(req: Request) {
-    return {
-      //TIDO: Fix this (it's not working properly)
-      userAgent: req.headers['user-agent'],
-      ip: req.headers['x-forwarded-for'] || req.socket?.remoteAddress,
-    };
+  constructor(private readonly analyticsProducer: AnalyticsProducer) {}
+
+  async trackRequest(request: Request, shortenedUrl: string): Promise<void> {
+    return this.analyticsProducer.produce({
+      stationName: 'analytics',
+      producerName: 'requestTracker',
+      message: {
+        request,
+        shortenedUrl,
+      },
+    });
   }
 }

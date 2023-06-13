@@ -27,8 +27,7 @@ export class ShortenerController {
       throw new BadRequestException('Shortened url is wrong or expired');
     }
 
-    // TODO: This should be handle in one service (analyticsService) (maybe in a middleware?)
-    this.analyticsProducer.produce(this.analyticsService.getDataFromRequest(req));
+    await this.analyticsService.trackRequest(req, shortenedUrl);
 
     return originalUrl;
   }
