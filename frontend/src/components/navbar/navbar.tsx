@@ -104,7 +104,7 @@ export const Navbar = component$(({ user }: NavbarProps) => {
         {user ? (
           <Profile name={user.name} />
         ) : (
-          <Link href="/login" class="btn btn-primary btn-sm">
+          <Link href="/login" class="btn btn-primary text-white btn-sm">
             Login
           </Link>
         )}
