@@ -1,24 +1,23 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AnalyticsService } from './analytics.service';
 import { Request } from 'express';
-import { AnalyticsProducer } from './analytics.producer';
-import { AppConfigModule } from '../../config/config.module';
-import { AnalyticsModule } from './analytics.module';
+import { AppConfigModule } from '../../../config/config.module';
+import { MemphisModule } from '../../../memphis/memphis.module';
 
 describe('AnalyticsService', () => {
   let service: AnalyticsService;
-  let analyticsProducer: AnalyticsProducer;
-  let producerSpy: jest.SpyInstance;
+  let serviceSpy: jest.SpyInstance;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppConfigModule, AnalyticsModule],
+      imports: [AppConfigModule, MemphisModule],
+      providers: [AnalyticsService],
     }).compile();
 
     service = module.get<AnalyticsService>(AnalyticsService);
-    analyticsProducer = module.get<AnalyticsProducer>(AnalyticsProducer);
 
-    producerSpy = jest.spyOn(analyticsProducer, 'produce');
+    // Spy on the private method
+    serviceSpy = jest.spyOn(service as any, 'produce');
   });
 
   it('should be defined', () => {
@@ -44,14 +43,9 @@ describe('AnalyticsService', () => {
 
       await service.trackRequest(request as Request, shortenedUrl);
 
-      // Assert
-      expect(producerSpy).toHaveBeenCalledWith({
-        stationName: 'analytics',
-        producerName: 'requestTracker',
-        message: {
-          request,
-          shortenedUrl,
-        },
+      expect(serviceSpy).toHaveBeenCalledWith({
+        request,
+        shortenedUrl,
       });
     });
   });

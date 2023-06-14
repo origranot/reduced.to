@@ -5,8 +5,7 @@ import { ShortenerService } from './shortener.service';
 import { UserContext } from '../auth/interfaces/user-context';
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import { AppLoggerSerivce } from '../logger/logger.service';
-import { AnalyticsProducer } from './analytics/analytics.producer';
-import { AnalyticsService } from './analytics/analytics.service';
+import { AnalyticsService } from './services/analytics/analytics.service';
 
 @Controller({
   path: 'shortener',
@@ -16,7 +15,6 @@ export class ShortenerController {
   constructor(
     private readonly logger: AppLoggerSerivce,
     private readonly shortenerService: ShortenerService,
-    private readonly analyticsProducer: AnalyticsProducer,
     private readonly analyticsService: AnalyticsService
   ) {}
 

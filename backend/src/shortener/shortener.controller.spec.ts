@@ -6,7 +6,8 @@ import { Test } from '@nestjs/testing';
 import { ShortenerDto } from './dto';
 import { Request } from 'express';
 import { AppLoggerModule } from '../logger/logger.module';
-import { AnalyticsModule } from './analytics/analytics.module';
+import { AnalyticsService } from './services/analytics/analytics.service';
+import { MemphisModule } from '../memphis/memphis.module';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
@@ -14,7 +15,7 @@ describe('ShortenerController', () => {
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppConfigModule, AppLoggerModule, AppCacheModule, AnalyticsModule],
+      imports: [AppConfigModule, AppLoggerModule, AppCacheModule, MemphisModule],
       controllers: [ShortenerController],
       providers: [
         {
@@ -25,6 +26,7 @@ describe('ShortenerController', () => {
             createShortenedUrl: jest.fn(),
           },
         },
+        AnalyticsService,
       ],
     }).compile();
 

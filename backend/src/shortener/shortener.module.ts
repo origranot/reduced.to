@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { ShortenerController } from './shortener.controller';
 import { ShortenerService } from './shortener.service';
 import { PrismaModule } from '../prisma/prisma.module';
-import { AnalyticsModule } from './analytics/analytics.module';
+import { AnalyticsService } from './services/analytics/analytics.service';
+import { MemphisModule } from '../memphis/memphis.module';
 
 @Module({
-  imports: [PrismaModule, AnalyticsModule],
+  imports: [PrismaModule, MemphisModule],
   controllers: [ShortenerController],
-  providers: [ShortenerService],
+  providers: [ShortenerService, AnalyticsService],
   exports: [ShortenerService],
 })
 export class ShortenerModule {}
