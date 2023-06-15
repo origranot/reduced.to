@@ -1,6 +1,6 @@
 import { AppConfigModule } from '../config/config.module';
 import { AppCacheModule } from '../cache/cache.module';
-import { ShortenerService } from './shortener.service';
+import { ShortenerService } from './services/shortener/shortener.service';
 import { ShortenerController } from './shortener.controller';
 import { Test } from '@nestjs/testing';
 import { ShortenerDto } from './dto';

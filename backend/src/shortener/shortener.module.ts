@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ShortenerController } from './shortener.controller';
-import { ShortenerService } from './shortener.service';
+import { ShortenerService } from './services/shortener/shortener.service';
 import { PrismaModule } from '../prisma/prisma.module';
 import { AnalyticsService } from './services/analytics/analytics.service';
 import { MemphisModule } from '../memphis/memphis.module';

@@ -1,11 +1,11 @@
-import { AppCacheService } from '../cache/cache.service';
+import { AppCacheService } from '../../../cache/cache.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { AppConfigService } from '../config/config.service';
-import { PrismaService } from '../prisma/prisma.service';
-import { ShortenerDto } from './dto';
-import { UserContext } from '../auth/interfaces/user-context';
+import { AppConfigService } from '../../../config/config.service';
+import { PrismaService } from '../../../prisma/prisma.service';
+import { ShortenerDto } from '../../dto';
+import { UserContext } from '../../../auth/interfaces/user-context';
 import { Url } from '@prisma/client';
-import { calculateDateFromTtl } from '../shared/utils';
+import { calculateDateFromTtl } from '../../../shared/utils';
 
 @Injectable()
 export class ShortenerService {

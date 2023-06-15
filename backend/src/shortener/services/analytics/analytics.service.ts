@@ -12,7 +12,8 @@ export class AnalyticsService {
 
   async trackRequest(request: Request, shortenedUrl: string): Promise<void> {
     return this.produce({
-      request,
+      headers: request.headers || {},
+      ip: request.ip || request.socket.remoteAddress || undefined,
       shortenedUrl,
     });
   }
