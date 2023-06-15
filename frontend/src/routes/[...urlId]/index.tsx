@@ -6,6 +6,7 @@ export const onGet: RequestHandler = async ({ params: { urlId }, redirect, heade
 
   try {
     const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`, { headers });
+    console.log(headers);
     originalUrl = await res.text();
 
     if (res.status !== 200 || !originalUrl) {
