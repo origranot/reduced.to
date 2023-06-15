@@ -1,12 +1,10 @@
 import { RequestHandler } from '@builder.io/qwik-city';
 
-export const onGet: RequestHandler = async ({ params: { urlId }, redirect, headers }) => {
+export const onGet: RequestHandler = async ({ params: { urlId }, redirect }) => {
   let originalUrl: string;
-  console.log('urlId', urlId);
 
   try {
-    const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`, { headers });
-    console.log(headers);
+    const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`);
     originalUrl = await res.text();
 
     if (res.status !== 200 || !originalUrl) {
