@@ -6,8 +6,7 @@ import { Request } from 'express';
 export class CustomThrottlerGuard extends ThrottlerGuard {
   protected getTracker(req: Request): string {
     const ip = (req.headers['x-forwarded-for'] as string) || req.socket.remoteAddress;
-    console.log(ip);
-    console.log(req.headers);
+
     return ip;
   }
 
