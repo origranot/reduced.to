@@ -58,7 +58,7 @@
   "dependencies": {
     "axios": "^1.1.2",
     "canvas-confetti": "^1.5.1",
-    "daisyui": "^3.0.20",
+    "daisyui": "^2.51.5",
     "jwt-decode": "^3.1.2",
     "qrcode": "^1.5.1"
   }

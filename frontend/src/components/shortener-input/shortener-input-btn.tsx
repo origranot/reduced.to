@@ -15,7 +15,7 @@ export const ShortenerInputBtn = component$((props: ShortenerInputBtnProps) => {
       onClick$={props.onClick$}
       type="button"
       id="shortenerBtn"
-      class={`btn btn-primary text-white md:join-item w-full md:w-auto self-end mb-2`}
+      class={`btn btn-primary w-full md:w-auto self-end mb-2`}
     >
       Shorten URL
     </button>

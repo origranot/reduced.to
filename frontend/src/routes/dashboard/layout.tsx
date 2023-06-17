@@ -16,19 +16,16 @@ export default component$(() => {
   const userCtx = useGetCurrentUser().value;
 
   return (
-    <div class="drawer lg:drawer-open h-[calc(100vh-64px)]">
+    <div class="drawer drawer-mobile h-[calc(100vh-64px)]">
       <input id="drawer" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content w-100vh m-5" style={{ zIndex: -5 }}>
         <Slot />
       </div>
       <div class="drawer-side">
         <label for="drawer" class="drawer-overlay"></label>
-        <ul class="menu p-4 pt-16 md:pt-2 h-full md:pt-0 w-64 text-base-content border-r bg-base-100 dark:border-gray-700 block">
-          <li class="py-2 mt-2 ">
-            <Link
-              href="/dashboard"
-              class={`${currentPath === '/dashboard' ? 'active-link' : 'p3'}`}
-            >
+        <ul class="menu p-4 w-64 text-base-content border-r bg-base-100 dark:border-gray-700 block">
+          <li class="py-2 mt-2">
+            <Link href="/dashboard" class={`${currentPath === '/dashboard' ? 'active' : ''}`}>
               <svg
                 class="w-5 h-5"
                 viewBox="0 0 24 24"
@@ -49,9 +46,7 @@ export default component$(() => {
           <li class="py-2 mt-2">
             <Link
               href="#"
-              class={`${
-                currentPath === '/dashboard/settings' ? 'active-link' : 'p3'
-              } cursor-not-allowed`}
+              class={`${currentPath === '/dashboard/settings' ? 'active' : ''} cursor-not-allowed`}
             >
               <svg
                 class="w-5 h-5"
@@ -75,7 +70,7 @@ export default component$(() => {
                 />
               </svg>
               <span class="justify-between font-medium">Settings</span>
-              <span class="badge badge-neutral">Soon</span>
+              <span class="badge">Soon</span>
             </Link>
           </li>
           {userCtx?.role === Role.ADMIN && (
@@ -84,7 +79,7 @@ export default component$(() => {
               <li class="py-2 mt-2">
                 <Link
                   href="/dashboard/admin"
-                  class={`${currentPath === '/dashboard/admin' ? 'active-link' : 'p3'}`}
+                  class={`${currentPath === '/dashboard/admin' ? 'active' : ''}`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
