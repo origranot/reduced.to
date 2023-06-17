@@ -37,7 +37,7 @@ export default component$(() => {
         <div class="w-full max-w-md">
           <div class="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
             <div class="prose prose-slate">
-              <h1 class="m-0">Thanks for register!</h1>
+              <h1 class="m-0">Thanks for registering!</h1>
               <Loader visible={store.loading} />
               {!store.loading && !store.isVerified && (
                 <>
