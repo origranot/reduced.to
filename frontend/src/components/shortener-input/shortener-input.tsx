@@ -42,53 +42,51 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
 
   return (
     <div class="form-control">
-      <div class="self-end mr-[55px] hidden md:block">
+      <div class="self-end  mr-[55px] hidden md:block">
         <p class="ml-[100px] text-2xl absolute " style={'font-family:Shadows Into Light Two'}>
           Expiration Time
         </p>
         <ArrowDoodle />
       </div>
-      <div class="md:join md:join-horizontal">
-        <div class="md:input-group md:join-item flex items-stretch mb-3 flex-col md:flex-row gap-2 md:gap-0 ">
-          <input
-            ref={urlInput}
-            onKeyUp$={props.onKeyUp$}
-            onInput$={props.onInput$}
-            value={state.inputValue}
-            type="text"
-            id="urlInput"
-            class="input input-bordered border-[hsl(var(--outline-border-color)] focus:outline-0  flex-auto w-full md:w-auto mb-2 self-end"
-            placeholder="Very long url..."
-            aria-label="url"
-            aria-describedby="shortenerBtn"
-          />
-          <div>
-            <Select
-              disabled={verified ? false : true}
-              selectInputValue={selectExpirationTimeInputValue}
-            >
-              <>
-                {Object.values(TIME_FRAME_DIR).map(
-                  ({ name: expirationTimeName, value: expirationTimeValue }) => (
-                    <li
-                      value={expirationTimeValue || undefined}
-                      key={expirationTimeName}
-                      class="w-auto cursor-pointer  pl-4 py-1 dark:hover:bg-gray-700 hover:bg-gray-100"
-                      onClick$={$(() =>
-                        handleSelectExpiredTime(expirationTimeValue, expirationTimeName)
-                      )}
-                    >
-                      {expirationTimeName}
-                    </li>
-                  )
-                )}
-              </>
-            </Select>
-            <div class="text-xs text-gray-500 text-start px-2 pt-1 md:hidden">Expiration Time</div>
-          </div>
-
-          <ShortenerInputBtn disabled={state.inputValue.length === 0} onClick$={props.onSubmit$} />
+      <div class="md:input-group flex items-stretch mb-3 flex-col md:flex-row gap-2 md:gap-0 ">
+        <input
+          ref={urlInput}
+          onKeyUp$={props.onKeyUp$}
+          onInput$={props.onInput$}
+          value={state.inputValue}
+          type="text"
+          id="urlInput"
+          class="input input-bordered border-[hsl(var(--outline-border-color)] focus:outline-0 bg-base-200 flex-auto w-full md:w-auto mb-2 self-end"
+          placeholder="Very long url..."
+          aria-label="url"
+          aria-describedby="shortenerBtn"
+        />
+        <div>
+          <Select
+            disabled={verified ? false : true}
+            selectInputValue={selectExpirationTimeInputValue}
+          >
+            <>
+              {Object.values(TIME_FRAME_DIR).map(
+                ({ name: expirationTimeName, value: expirationTimeValue }) => (
+                  <li
+                    value={expirationTimeValue || undefined}
+                    key={expirationTimeName}
+                    class="w-auto cursor-pointer  pl-4 py-1 dark:hover:bg-gray-700 hover:bg-gray-100"
+                    onClick$={$(() =>
+                      handleSelectExpiredTime(expirationTimeValue, expirationTimeName)
+                    )}
+                  >
+                    {expirationTimeName}
+                  </li>
+                )
+              )}
+            </>
+          </Select>
+          <div class="text-xs text-gray-500 text-start px-2 pt-1 md:hidden">Expiration Time</div>
         </div>
+
+        <ShortenerInputBtn disabled={state.inputValue.length === 0} onClick$={props.onSubmit$} />
       </div>
     </div>
   );
