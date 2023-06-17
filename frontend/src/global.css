@@ -39,3 +39,10 @@ body {
   --t-sh: calc(var(--handleoffset) * -1) 0 0 2px hsl(var(--ts-bg)) inset,
     0 0 0 2px hsl(var(--ts-bg)) inset;
 }
+
+/* Tailwind extensions */
+@layer components {
+  .active-link {
+    @apply active bg-primary text-white p-3 rounded-md;
+  }
+}

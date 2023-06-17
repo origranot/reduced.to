@@ -104,12 +104,12 @@ export default component$(() => {
                   id="action"
                   class={`${
                     state.reducedUrl ? '' : 'hidden'
-                  } btn-group p-4 relative [&>:first-child>.btn]:rounded-l-lg [&>:last-child>.btn]:rounded-r-lg [&>*>.btn]:rounded-none`}
+                  } join join-horizontal p-4 relative [&>:first-child>.btn]:rounded-l-lg [&>:last-child>.btn]:rounded-r-lg [&>*>.btn]:rounded-none`}
                 >
                   <button
                     type="button"
                     title="Copy"
-                    class="btn relative"
+                    class="btn btn-neutral join-item relative"
                     onClick$={() => {
                       copyToClipboard(state.reducedUrl);
                       tooltipCopyRef.value = true;
@@ -134,7 +134,7 @@ export default component$(() => {
                   <button
                     type="button"
                     title="Open in new tab"
-                    class="btn"
+                    class="btn join-item btn-neutral"
                     onClick$={() => openUrl(state.reducedUrl)}
                   >
                     <svg
@@ -155,7 +155,7 @@ export default component$(() => {
                   <button
                     type="button"
                     title="QR Code"
-                    class="btn"
+                    class="btn btn-neutral join-item"
                     onClick$={() => {
                       generateQRCode(state.reducedUrl, 150);
                       state.showQRCode = true;
@@ -181,7 +181,10 @@ export default component$(() => {
                       />
                     </svg>
                   </button>
-                  <TwitterButton handleClick$={() => handleShareOnTwitter(state.reducedUrl)} />
+                  <TwitterButton
+                    className="btn btn-neutral join-item"
+                    handleClick$={() => handleShareOnTwitter(state.reducedUrl)}
+                  />
                 </div>
               </div>
               <div id="qrcode" class={`${state.showQRCode ? '' : 'hidden'} mx-auto`}>
