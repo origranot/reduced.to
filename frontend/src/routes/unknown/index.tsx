@@ -7,7 +7,7 @@ export default component$(() => {
   useStylesScoped$(animations);
 
   return (
-    <section class="h-screen flex flex-col">
+    <section class="flex flex-col h-[calc(100vh-64px)]">
       <div class="grow container flex flex-col items-center justify-center px-5 mx-auto my-8">
         <div class="max-w-md text-center mb-8">
           <h2 class="mb-8 font-extrabold text-9xl text-gray-600 dark:text-gray-300">
