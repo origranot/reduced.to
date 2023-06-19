@@ -46,8 +46,6 @@ export const ServerPaginatedDataTable = component$(<T extends string>(props: Tab
   const currentPage = useSignal(0);
   const filter = useSignal('');
   const sortColumn = useSignal<keyof T | null>(null);
-  // const sortColumn = useSignal<keyof T|null>(Object.keys(props.rows[0])[0] as keyof T);
-  // TODO switch to null
   const sortDesc = useSignal(true);
   const maxPages = useSignal(props.totalRowCount / rowsPerPage.value);
 
