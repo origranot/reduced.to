@@ -6,7 +6,6 @@ import { Test } from '@nestjs/testing';
 import { ShortenerDto } from './dto';
 import { Request } from 'express';
 import { AppLoggerModule } from '../logger/logger.module';
-import { UserContext } from '../auth/interfaces/user-context';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
