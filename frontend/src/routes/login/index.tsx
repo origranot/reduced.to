@@ -60,6 +60,39 @@ export const useLogin = globalAction$(
   })
 );
 
+/**
+ * @description
+ * This component is used to render the Google Login button and handle the login logic with Google.
+ * To create a Google I use this guide: https://developers.google.com/identity/gsi/web/tools/configurator
+ * 
+ */
+
+export const GoogleLogin = component$(() => {
+  return <>
+    <div>
+      <p>or</p>
+      <div>
+        <div id="g_id_onload"
+            data-client_id="227254915549-j3gsadfbm3st9k8i8jdfugqtn0vqpvjf.apps.googleusercontent.com"
+            data-context="signin"
+            data-ux_mode="popup"
+            data-login_uri="http://localhost:5173"
+            data-itp_support="true">
+        </div>
+
+        <div class="g_id_signin"
+            data-type="standard"
+            data-shape="pill"
+            data-theme="filled_blue"
+            data-text="signin_with"
+            data-size="large"
+            data-logo_alignment="left">
+        </div>
+      </div>
+    </div>
+  </>
+});
+
 export default component$(() => {
   const action = useLogin();
 
@@ -112,9 +145,11 @@ export default component$(() => {
                 )}
               </Form>
             </div>
+            <GoogleLogin />
           </div>
         </div>
       </div>
     </div>
   );
 });
+

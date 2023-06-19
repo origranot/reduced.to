@@ -19,3 +19,5 @@ Thumbs.db
 
 # Ignore built ts files
 dist/
+
+/myFile.txt
