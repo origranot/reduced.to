@@ -19,7 +19,6 @@ export default component$(() => {
     <div class="drawer drawer-mobile h-[calc(100vh-64px)]">
       <input id="drawer" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content w-100vh m-5">
-        {/* <div class="drawer-content w-100vh m-5" style={{ zIndex: -5 }}> */}
         <Slot />
       </div>
       <div class="drawer-side">
