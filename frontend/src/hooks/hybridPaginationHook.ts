@@ -1,7 +1,5 @@
 import { PropFunction, useStore, $ } from '@builder.io/qwik';
 import { PaginationParams } from '~/components/table/server-paginated-data-table';
-import { inRange } from '~/utils/inRange';
-
 export interface LocalPaginationCache {
   limit: number;
   startIdx: number;
@@ -24,6 +22,8 @@ export type PaginationFetcher = ({
   data: unknown[];
   total: number;
 }>;
+
+export const inRange = (x: number, min: number, max: number) => (x - min) * (x - max) <= 0;
 
 export const hybridPaginationHook = (fetchRows: PropFunction<PaginationFetcher>) => {
   const rowsCache = useStore<LocalPaginationCache>({
