@@ -18,12 +18,13 @@ export class UsersController {
   @Get()
   @Roles(Role.ADMIN)
   async findAll(@Query() query: FindAllQueryDto): Promise<IPaginationResult<User>> {
-    const { page, limit, filter } = query;
+    const { page, limit, filter, sort } = query;
 
     return this.usersService.findAll({
       ...(page && { skip: calculateSkip(page, limit) }), // if page is defined, then calculate skip
       limit,
       filter,
+      sort,
     });
   }
 }

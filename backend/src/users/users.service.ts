@@ -1,20 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { User } from '@prisma/client';
-import { IPaginationResult } from '../shared/utils';
+import { IPaginationResult, orderByBuilder } from '../shared/utils';
+import { SortOrder } from '../shared/enums/sort-order.enum';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prismaService: PrismaService) {}
 
   findAll = async (options: IFindAllOptions): Promise<IPaginationResult<User>> => {
-    const { skip, limit, filter } = options;
+    const { skip, limit, filter, sort } = options;
 
     const WHERE_CLAUSE = {
       OR: [{ email: { contains: filter } }, { name: { contains: filter } }],
     };
 
-    const result = await this.prismaService.$transaction([
+    const ORDER_BY_CLAUSE = orderByBuilder<Partial<User>>(sort);
+
+    const [total, data] = await this.prismaService.$transaction([
       this.prismaService.user.count({
         ...(filter && {
           where: WHERE_CLAUSE,
@@ -33,12 +36,15 @@ export class UsersService {
         ...(filter && {
           where: WHERE_CLAUSE,
         }),
+        ...(sort && {
+          orderBy: ORDER_BY_CLAUSE,
+        }),
       }),
     ]);
 
     return {
-      total: result[0],
-      data: result[1],
+      total,
+      data,
     };
   };
 }
@@ -47,4 +53,5 @@ export interface IFindAllOptions {
   skip?: number;
   limit: number;
   filter?: string;
+  sort?: Record<string, SortOrder>;
 }

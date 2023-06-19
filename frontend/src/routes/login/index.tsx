@@ -97,7 +97,7 @@ export default component$(() => {
   const action = useLogin();
 
   return (
-    <div class="min-h-screen flex flex-col register-bg">
+    <div class="flex flex-col h-[calc(100vh-64px)]">
       <div class="flex flex-1 content-center justify-center items-center">
         <div class="w-96 max-w-md">
           <div class="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
