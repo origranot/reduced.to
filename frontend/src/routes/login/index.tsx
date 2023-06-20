@@ -1,4 +1,4 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, useSignal, useVisibleTask$ } from '@builder.io/qwik';
 import { Form, globalAction$, Link, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
 import {
   ACCESS_COOKIE_NAME,
@@ -60,23 +60,49 @@ export const useLogin = globalAction$(
   })
 );
 
+
+
+// export const useGoogleAuth = routeLoader$(async (requestEv) => {
+  
+//   const client = new OAuth2Client(CLIENT_ID);
+//   const ticket = await client.verifyIdToken({
+//       idToken: token,
+//       audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+//       // Or, if multiple clients access the backend:
+//       //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+//   });
+//   const payload = ticket.getPayload();
+//   if (!payload) throw new Error('No payload');
+//   const userid = payload['sub'];
+//   // If request specified a G Suite domain:
+//   // const domain = payload['hd'];
+//   console.log(payload)
+
+// })
+
+
 /**
  * @description
  * This component is used to render the Google Login button and handle the login logic with Google.
  * To create a Google I use this guide: https://developers.google.com/identity/gsi/web/tools/configurator
  * 
  */
-
 export const GoogleLogin = component$(() => {
+  const isVisiable = useSignal(false);
+  useVisibleTask$(() => {
+    isVisiable.value = true;
+    console.log('visible', isVisiable.value)
+  })
   return <>
     <div>
       <p>or</p>
+      {isVisiable.value && <>
       <div>
         <div id="g_id_onload"
             data-client_id="227254915549-j3gsadfbm3st9k8i8jdfugqtn0vqpvjf.apps.googleusercontent.com"
             data-context="signin"
             data-ux_mode="popup"
-            data-login_uri="http://localhost:5173"
+            data-login_uri="onSuccess"
             data-itp_support="true">
         </div>
 
@@ -89,15 +115,15 @@ export const GoogleLogin = component$(() => {
             data-logo_alignment="left">
         </div>
       </div>
+      </>}
     </div>
   </>
 });
 
 export default component$(() => {
   const action = useLogin();
-
   return (
-    <div class="flex flex-col h-[calc(100vh-64px)]">
+    <div class="min-h-screen flex flex-col register-bg">
       <div class="flex flex-1 content-center justify-center items-center">
         <div class="w-96 max-w-md">
           <div class="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
@@ -145,7 +171,8 @@ export default component$(() => {
                 )}
               </Form>
             </div>
-            <GoogleLogin />
+            
+            <GoogleLogin key={'google'} />
           </div>
         </div>
       </div>

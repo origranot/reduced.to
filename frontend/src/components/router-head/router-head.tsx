@@ -30,6 +30,7 @@ export const RouterHead = component$(() => {
         referrerPolicy="no-referrer"
       />
       <script async defer src="https://buttons.github.io/buttons.js"></script>
+      <script async defer src="https://accounts.google.com/gsi/client"></script>
 
       {head.meta.map((m) => (
         <meta {...m} />
