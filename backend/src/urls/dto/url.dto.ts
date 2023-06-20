@@ -1,6 +1,6 @@
 import { IsOptional, IsPositive, IsString, IsUrl } from 'class-validator';
 
-export class ShortenerDto {
+export class UrlDto {
   @IsUrl()
   originalUrl: string;
 
