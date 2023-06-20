@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
-import { ShortenerDto } from './dto';
+import { UrlDto } from '../urls/dto';
 import { ShortenerService } from './shortener.service';
 import { UserContext } from '../auth/interfaces/user-context';
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
@@ -24,7 +24,7 @@ export class ShortenerController {
 
   @UseGuards(OptionalJwtAuthGuard)
   @Post()
-  async shortener(@Body() shortenerDto: ShortenerDto, @Req() req: Request): Promise<{ newUrl: string }> {
+  async shortener(@Body() shortenerDto: UrlDto, @Req() req: Request): Promise<{ newUrl: string }> {
     const user = req.user as UserContext;
 
     // Only verified users can create shortened urls into the database (otherwise, they are stored in the cache)

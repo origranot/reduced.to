@@ -2,7 +2,7 @@ import { AppCacheService } from '../cache/cache.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AppConfigService } from '../config/config.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { ShortenerDto } from './dto';
+import { UrlDto } from '../urls/dto';
 import { UserContext } from '../auth/interfaces/user-context';
 import { Url } from '@prisma/client';
 import { calculateDateFromTtl } from '../shared/utils';
@@ -108,12 +108,12 @@ export class ShortenerService {
 
   /**
    * Create a db URL based on the provided data and user context.
-   * @param {ShortenerDto} shortenerDto The data for creating a db URL.
+   * @param {UrlDto} shortenerDto The data for creating a db URL.
    * @param {UserContext} user The user context.
    * @param {string} shortenedUrl The shortened URL.
    * @returns {Promise<any>} Returns the created db URL.
    */
-  createDbUrl = async (user: UserContext, shortenerDto: ShortenerDto, shortenedUrl: string): Promise<Url> => {
+  createDbUrl = async (user: UserContext, shortenerDto: UrlDto, shortenedUrl: string): Promise<Url> => {
     const { originalUrl, description, ttl } = shortenerDto;
 
     return this.prisma.url.create({
@@ -159,10 +159,10 @@ export class ShortenerService {
   /**
    * Creates a shortened URL for a user based on the provided data.
    * @param {UserContext} user - The user context.
-   * @param {ShortenerDto} shortenerDto - The request body containing the original URL and optional expiration time.
+   * @param {UrlDto} shortenerDto - The request body containing the original URL and optional expiration time.
    * @returns {Promise<{ newUrl: string }>} - Returns an object containing the newly created short URL.
    */
-  createUsersShortenedUrl = async (user: UserContext, shortenerDto: ShortenerDto): Promise<{ newUrl: string }> => {
+  createUsersShortenedUrl = async (user: UserContext, shortenerDto: UrlDto): Promise<{ newUrl: string }> => {
     const { newUrl } = await this.createShortenedUrl(shortenerDto.originalUrl, shortenerDto.ttl);
     await this.createDbUrl(user, shortenerDto, newUrl);
     return { newUrl };

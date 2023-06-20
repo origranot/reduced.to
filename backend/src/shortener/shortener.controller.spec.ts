@@ -3,7 +3,7 @@ import { AppCacheModule } from '../cache/cache.module';
 import { ShortenerService } from './shortener.service';
 import { ShortenerController } from './shortener.controller';
 import { Test } from '@nestjs/testing';
-import { ShortenerDto } from './dto';
+import { UrlDto } from '../urls/dto';
 import { Request } from 'express';
 import { AppLoggerModule } from '../logger/logger.module';
 
@@ -40,7 +40,7 @@ describe('ShortenerController', () => {
       jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockReturnValue(null);
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ newUrl: 'url' });
 
-      const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const body: UrlDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
       const req = { user: { verified: true } } as any as Request;
       const short = await shortenerController.shortener(body, req);
       expect(short).toBeNull();
@@ -50,7 +50,7 @@ describe('ShortenerController', () => {
       jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockResolvedValue({ newUrl: 'url.com' });
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue(null);
 
-      const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const body: UrlDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
       const req = { user: { verified: true } } as any as Request;
       const short = await shortenerController.shortener(body, req);
       expect(short).toStrictEqual({ newUrl: 'url.com' });
@@ -60,7 +60,7 @@ describe('ShortenerController', () => {
       jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockResolvedValue({ newUrl: 'url.com' });
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue(null);
 
-      const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const body: UrlDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
       const req = {} as any as Request;
       const short = await shortenerController.shortener(body, req);
       expect(short).toBeNull();
@@ -70,7 +70,7 @@ describe('ShortenerController', () => {
       jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockResolvedValue(null);
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ newUrl: 'url.com' });
 
-      const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const body: UrlDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
       const req = {} as any as Request;
       const short = await shortenerController.shortener(body, req);
       expect(short).toStrictEqual({ newUrl: 'url.com' });
