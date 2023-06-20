@@ -5,7 +5,7 @@ import {
   setTokensAsCookies,
   validateAccessToken,
 } from '../../shared/auth.service';
-import { useAuthSignin } from '../plugin@auth';
+import { useAuthSession, useAuthSignin, useAuthSignout } from '../plugin@auth';
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   const acccessToken = cookie.get(ACCESS_COOKIE_NAME)?.value;
@@ -129,22 +129,33 @@ export default component$(() => {
 
 export const ProviderLogin = component$(() => {
   const authSignIn = useAuthSignin();
+  
+  // TODO: this should be in a separate logic component when the user is connected
+  const signOut = useAuthSignout();
+  const session = useAuthSession();
   return <>
   <p class={'leading-none m-5'}>or</p>
+  {session.value?.user && <p class={'leading-none m-5'}>Signed in as {session.value.user.name}</p>}
   <div class={'form-control w-full max-w-xs inline-flex space-y-4'}>
     <Form action={authSignIn} class="form-control inline-flex">
       <input type="hidden" name="providerId" value="google" />
-      <input type="hidden" name="options.callbackUrl" />
+      <input type="hidden" name="options.callbackUrl" value={'/'} />
       <LogInButton providerName='Google' >
         <div q:slot='login-icon-button-slot'>{JSX_GOOGLE_ICON}</div>
       </LogInButton>
     </Form>
     <Form action={authSignIn} class="form-control inline-flex">
       <input type="hidden" name="providerId" value="github" />
-      <input type="hidden" name="options.callbackUrl" />
+      <input type="hidden" name="options.callbackUrl" value={'/'} />
       <LogInButton providerName='GitHub'>
         <div q:slot='login-icon-button-slot'>{JSX_GITHUB_ICON}</div>
       </LogInButton>
+    </Form>
+
+    {/* TODO: this should be in a separate logic component when the user is connected */}
+    <Form action={signOut}>
+      <input type="hidden" />
+      <button>Sign Out</button>
     </Form>
   </div>
   </>
@@ -152,12 +163,15 @@ export const ProviderLogin = component$(() => {
 
 
 export const LogInButton = component$((props: {providerName: 'GitHub' | 'Google'}) => {
-  return <button class={'bg-white text-black grid grid-cols-[32px_1fr] rounded-lg p-2 items-center hover:bg-gray-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white'}> 
+  return (
+  <button class={'bg-white text-black grid grid-cols-[32px_1fr] rounded-lg p-2 items-center hover:bg-gray-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white'}
+  
+  > 
     <span class={''}>
       <Slot key={'login-icon-button-slot'} name='login-icon-button-slot'  />
     </span>
     <p class={'font-semibold tracking-tight m-0'}>{props.providerName}</p>
-  </button>
+  </button>)
 });
 
 
