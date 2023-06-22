@@ -6,7 +6,6 @@ import {
   validateAccessToken,
 } from '../../shared/auth.service';
 import { useAuthSession, useAuthSignin, useAuthSignout } from '../plugin@auth';
-import { Session } from '@auth/core/types';
 
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
@@ -160,9 +159,7 @@ export const ProviderLogin = component$(() => {
 
 export const LogInButton = component$((props: {providerName: 'GitHub' | 'Google'}) => {
   return (
-  <button class={'bg-white text-black grid grid-cols-[32px_1fr] rounded-lg p-2 items-center hover:bg-gray-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white'}
-  
-  > 
+  <button class={'bg-white text-black grid grid-cols-[32px_1fr] rounded-lg p-2 items-center hover:bg-gray-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white'}> 
     <span class={''}>
       <Slot key={'login-icon-button-slot'} name='login-icon-button-slot'  />
     </span>
