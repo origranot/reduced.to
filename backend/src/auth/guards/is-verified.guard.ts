@@ -14,6 +14,7 @@ export class IsVerifiedGuard implements CanActivate {
     }
     const request = context.switchToHttp().getRequest();
     const user = request.user as UserContext;
+    console.log('user', user)
 
     if (!user.verified) {
       throw new UnauthorizedException();

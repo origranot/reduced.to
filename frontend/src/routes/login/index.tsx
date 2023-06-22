@@ -6,6 +6,8 @@ import {
   validateAccessToken,
 } from '../../shared/auth.service';
 import { useAuthSession, useAuthSignin, useAuthSignout } from '../plugin@auth';
+import { Session } from '@auth/core/types';
+
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   const acccessToken = cookie.get(ACCESS_COOKIE_NAME)?.value;
@@ -60,10 +62,6 @@ export const useLogin = globalAction$(
       }),
   })
 );
-
-
-
-
 
 export default component$(() => {
   const action = useLogin();
@@ -124,8 +122,6 @@ export default component$(() => {
     </div>
   );
 });
-
-
 
 export const ProviderLogin = component$(() => {
   const authSignIn = useAuthSignin();

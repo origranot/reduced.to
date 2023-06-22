@@ -32,5 +32,24 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
         clientSecret: envs.GOOGLE_API_KEY 
       })
     ] as Provider[],
+    callbacks: {
+      // signIn: async ({account, user, credentials, email, profile}) => {
+      //   console.log('signIn', {account, user, credentials, email, profile})
+
+      //   return {account, user, credentials, email, profile}
+      // },
+      // jwt: async ({token, account, isNewUser, profile, user}) => {
+      //   console.log('jwt', {token, account, isNewUser, profile, user})
+      //   return {token, account, isNewUser, profile, user}
+      // },
+      // session: async ({session, token, user}) => {
+      //   console.log('session', {session, token, user})
+      //   return {session, token, user}
+      // },
+      // redirect: async ({url, baseUrl}) => {
+      //   console.log('redirect', {url, baseUrl})
+      //   return {url, baseUrl}
+      // }
+    }
   }}
 );
