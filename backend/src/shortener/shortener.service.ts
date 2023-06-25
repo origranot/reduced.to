@@ -1,18 +1,18 @@
 import { AppCacheService } from '../cache/cache.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AppConfigService } from '../config/config.service';
-import { PrismaService } from '../prisma/prisma.service';
 import { UrlDto } from '../urls/dto';
 import { UserContext } from '../auth/interfaces/user-context';
 import { Url } from '@prisma/client';
 import { calculateDateFromTtl } from '../shared/utils';
+import { UrlsService } from '../urls/urls.service';
 
 @Injectable()
 export class ShortenerService {
   constructor(
     private readonly appCacheService: AppCacheService,
-    private readonly prisma: PrismaService,
-    private readonly appConfigService: AppConfigService
+    private readonly appConfigService: AppConfigService,
+    private readonly urlsService: UrlsService
   ) {}
 
   /**
@@ -83,7 +83,12 @@ export class ShortenerService {
    * @param {number} ttl The time to live.
    * @returns {Promise<{ newUrl: string }>} Returns an object containing the newly created short URL.
    */
-  createShortenedUrl = async (originalUrl: string, ttl?: number): Promise<{ newUrl: string }> => {
+  createShortenedUrl = async (
+    originalUrl: string,
+    ttl?: number
+  ): Promise<{
+    newUrl: string;
+  }> => {
     let parsedUrl: URL;
     try {
       parsedUrl = new URL(originalUrl);
@@ -116,15 +121,13 @@ export class ShortenerService {
   createDbUrl = async (user: UserContext, shortenerDto: UrlDto, shortenedUrl: string): Promise<Url> => {
     const { originalUrl, description, ttl } = shortenerDto;
 
-    return this.prisma.url.create({
-      data: {
-        shortenedUrl: shortenedUrl,
-        originalUrl,
-        userId: user.id,
-        description,
-        // If the ttl is provided, set the expiration time to the current time plus the ttl.
-        ...(ttl && { expirationTime: calculateDateFromTtl(ttl) }),
-      },
+    return this.urlsService.create({
+      shortenedUrl: shortenedUrl,
+      originalUrl,
+      userId: user.id,
+      description,
+      // If the ttl is provided, set the expiration time to the current time plus the ttl.
+      ...(ttl && { expirationTime: calculateDateFromTtl(ttl) }),
     });
   };
 
@@ -134,10 +137,8 @@ export class ShortenerService {
    * @returns {Promise<string|null>} - The original URL if the original URL is found and valid, otherwise null.
    */
   getUrlFromDb = async (shortenedUrl: string): Promise<string | null> => {
-    const url = await this.prisma.url.findFirst({
-      where: {
-        shortenedUrl,
-      },
+    const url = await this.urlsService.getUrl({
+      shortenedUrl,
     });
 
     if (!url || (url?.expirationTime && url.expirationTime < new Date())) {
@@ -162,7 +163,12 @@ export class ShortenerService {
    * @param {UrlDto} shortenerDto - The request body containing the original URL and optional expiration time.
    * @returns {Promise<{ newUrl: string }>} - Returns an object containing the newly created short URL.
    */
-  createUsersShortenedUrl = async (user: UserContext, shortenerDto: UrlDto): Promise<{ newUrl: string }> => {
+  createUsersShortenedUrl = async (
+    user: UserContext,
+    shortenerDto: UrlDto
+  ): Promise<{
+    newUrl: string;
+  }> => {
     const { newUrl } = await this.createShortenedUrl(shortenerDto.originalUrl, shortenerDto.ttl);
     await this.createDbUrl(user, shortenerDto, newUrl);
     return { newUrl };
