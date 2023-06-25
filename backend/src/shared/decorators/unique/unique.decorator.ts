@@ -20,7 +20,7 @@ export class UniqueConstraint implements ValidatorConstraintInterface {
 
     if (!this.prisma[model]) throw new Error(`Model ${model} is not exist`);
 
-    const record = await this.prisma[model].findUnique({
+    const record = await (this.prisma[model] as any).findUnique({
       where: {
         [args.property]: value,
       },
