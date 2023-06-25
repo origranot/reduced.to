@@ -22,4 +22,10 @@ export class UrlsService {
       where: { userId },
     });
   }
+
+  async deleteUrl(urlId: string) {
+    return this.prisma.url.delete({
+      where: { id: urlId },
+    });
+  }
 }

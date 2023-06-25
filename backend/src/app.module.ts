@@ -8,10 +8,11 @@ import { AppConfigService } from './config/config.service';
 import { AppLoggerModule } from './logger/logger.module';
 import { NovuModule } from './novu/novu.module';
 import { PrismaService } from './prisma/prisma.service';
-import { UniqueConstraint } from './shared/decorators/unique/unique.decorator';
+import { UniqueConstraint } from './shared/decorators';
 import { CustomThrottlerGuard } from './shared/guards/custom-throttler/custom-throttler';
 import { ShortenerModule } from './shortener/shortener.module';
 import { UsersModule } from './users/users.module';
+import { UrlsModule } from './urls/urls.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     NovuModule,
     UsersModule,
+    UrlsModule,
   ],
   providers: [
     PrismaService,

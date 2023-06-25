@@ -10,4 +10,4 @@ import { PrismaModule } from '../prisma/prisma.module';
   providers: [UrlsService],
   exports: [UrlsService],
 })
-class UrlsModule {}
+export class UrlsModule {}
