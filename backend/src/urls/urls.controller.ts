@@ -1,11 +1,12 @@
 import { UrlsService } from './urls.service';
-import { Body, Delete, Get, Param, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put, UseGuards } from '@nestjs/common';
 import { UpdateUrlDto } from './dto';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { User } from '../shared/decorators/user-data/user';
 import { Url } from '@prisma/client';
 
 @UseGuards(JwtAuthGuard)
+@Controller({ path: 'urls', version: '1' })
 export class UrlsController {
   constructor(private readonly urlsService: UrlsService) {}
 
