@@ -17,7 +17,7 @@ ARG API_DOMAIN=${API_DOMAIN}
 ARG DOMAIN=${DOMAIN}
 
 # Install dependencies for production
-RUN npm ci
+RUN npm ci --include=dev
 
 # Building code for production
 RUN npm run build

@@ -9,9 +9,8 @@ WORKDIR /usr/src/app
 COPY ./package.json ./
 COPY ./package-lock.json ./
 
-# Install the dependencies
-# Clean install because we want to install the exact versions
-RUN npm ci
+# Clean install because we want to install the exact versions (Include dev dependencies)
+RUN npm ci --include=dev
 
 # Copy the source code into the build image
 COPY ./ ./
