@@ -135,16 +135,16 @@ export const ProviderLogin = component$(() => {
     <Form action={authSignIn} class="form-control inline-flex">
       <input type="hidden" name="providerId" value="google" />
       <input type="hidden" name="options.callbackUrl" value={'/'} />
-      <LogInButton providerName='Google' >
+      <LogInProviderButton providerName='Google' >
         <div q:slot='login-icon-button-slot'>{JSX_GOOGLE_ICON}</div>
-      </LogInButton>
+      </LogInProviderButton>
     </Form>
     <Form action={authSignIn} class="form-control inline-flex">
       <input type="hidden" name="providerId" value="github" />
       <input type="hidden" name="options.callbackUrl" value={'/'} />
-      <LogInButton providerName='GitHub'>
+      <LogInProviderButton providerName='GitHub'>
         <div q:slot='login-icon-button-slot'>{JSX_GITHUB_ICON}</div>
-      </LogInButton>
+      </LogInProviderButton>
     </Form>
 
     {/* TODO: this should be in a separate logic component when the user is connected */}
@@ -157,7 +157,7 @@ export const ProviderLogin = component$(() => {
 });
 
 
-export const LogInButton = component$((props: {providerName: 'GitHub' | 'Google'}) => {
+export const LogInProviderButton = component$((props: {providerName: 'GitHub' | 'Google'}) => {
   return (
   <button class={'bg-white text-black grid grid-cols-[32px_1fr] rounded-lg p-2 items-center hover:bg-gray-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white'}> 
     <span class={''}>

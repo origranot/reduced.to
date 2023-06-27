@@ -33,11 +33,11 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
       })
     ] as Provider[],
     callbacks: {
-      // signIn: async ({account, user, credentials, email, profile}) => {
-      //   console.log('signIn', {account, user, credentials, email, profile})
+      signIn: async ({account, user, credentials, email, profile}) => {
+        console.log('signIn', {account, user, credentials, email, profile})
 
-      //   return {account, user, credentials, email, profile}
-      // },
+        return true
+      },
       // jwt: async ({token, account, isNewUser, profile, user}) => {
       //   console.log('jwt', {token, account, isNewUser, profile, user})
       //   return {token, account, isNewUser, profile, user}
