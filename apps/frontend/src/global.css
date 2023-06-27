@@ -36,6 +36,5 @@ body {
   /* Theme switcher background */
   /* Theme switcher shadow */
   --handleoffset: 1.5rem;
-  --t-sh: calc(var(--handleoffset) * -1) 0 0 2px hsl(var(--ts-bg)) inset,
-    0 0 0 2px hsl(var(--ts-bg)) inset;
+  --t-sh: calc(var(--handleoffset) * -1) 0 0 2px hsl(var(--ts-bg)) inset, 0 0 0 2px hsl(var(--ts-bg)) inset;
 }
