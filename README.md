@@ -182,8 +182,7 @@ The project is structured in the following way:
   ```sh
   docker compose -f docker/local/docker-compose.yml -p reduced-to up
   ```
-NOTE: There is a known issue with the local docker-compose deployment. Because of the way the containers are communicating with each other, the frontend container will not be able to send requests to the backend container. This is because the backend container is accessible only from within the docker network. To overcome this issue, you can run only the backend locally and the other services using docker-compose.
-
+  NOTE: There is a known issue with the local docker-compose deployment. Because of the way the containers are communicating with each other, the frontend container will not be able to send requests to the backend container. This is because the backend container is accessible only from within the docker network. To overcome this issue, you can run only the backend locally and the other services using docker-compose.
 
 ### 👷 Configuration
 
