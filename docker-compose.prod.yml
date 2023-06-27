@@ -7,7 +7,9 @@ services:
     restart: always
     env_file: database.env
     ports:
-      - '5432:5432'
+      - 5432:5432
+    volumes:
+      - /custom/mount:/var/lib/postgresql/data
     networks:
       - db
 
@@ -18,9 +20,9 @@ services:
       - /bin/sh
       - -c
       - redis-server --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
-    env_file: ./backend/.env
+    env_file: backend.env
     ports:
-      - '6379:6379'
+      - 6379:6379
     networks:
       - db
 
@@ -30,7 +32,7 @@ services:
     restart: always
     env_file: backend.env
     ports:
-      - '3000:3000'
+      - 3000:3000
     networks:
       - db
     depends_on:
@@ -43,7 +45,7 @@ services:
     restart: always
     env_file: frontend.env
     ports:
-      - '5000:5000'
+      - 5000:5000
 
   watchtower:
     image: containrrr/watchtower
