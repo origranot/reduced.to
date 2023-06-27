@@ -99,43 +99,42 @@ List of things you need to run the project locally and how to install them.
 ### 💻 Installation
 
 1. [Fork](https://github.com/origranot/reduced.to/fork) / Clone this repository
-2. Open the repository using the `reduced.to.code-workspace` file (VSCode)
-3. Install NPM packages
+2. Install NPM packages
    ```sh
    npm install && npm run install:all
    ```
-4. Copy `backend/example.env` to `.env` and fill it properly ([see below](#backend-configuration)).
-5. Copy `frontend/example.env` to `.env` and fill it properly ([see below](#frontend-configuration)).
-6. Make sure you have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
+3. Navigate to backend folder, copy `.example.env` to `.env` and fill it properly ([see below](#backend-configuration)).
+4. Navigate to frontend folder, copy `.example.env` to `.env` and fill it properly ([see below](#frontend-configuration)).
+5. Make sure you have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
    ```sh
    docker run --name reduced_to_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
    ```
-7. Run Prisma migration inside the backend folder:
+6. Run Prisma migration inside the backend folder:
    ```sh
    npx prisma migrate dev --name init
    ```
-8. Run the backend:
+7. Run the backend:
    ```sh
    npm run start:backend
    ```
-9. Run the frontend:
+8. Run the frontend:
    ```sh
    npm run start:frontend
    ```
 
 ### 👩‍💻 Development
 
-You will find 3 folders
+The project is structured in the following way:
 
 - 🚀 `root`
-- 🎨 `reduced.to/frontend`
-- 📦 `reduced.to/backend`
+- 🎨 `/apps/frontend`
+- 📦 `/apps/backend`
 
 ### _Running the frontend in dev mode_
 
 1. Move to the frontend folder
    ```sh
-   cd ./frontend
+   cd ./apps/frontend
    ```
 2. Run the project (it will open a new window)
    ```sh
@@ -147,7 +146,7 @@ You will find 3 folders
 
 1. Move to the backend folder
    ```sh
-   cd ./backend
+   cd ./apps/backend
    ```
 2. Run the project (be sure that you built the frontend before)
    ```sh
@@ -157,15 +156,15 @@ You will find 3 folders
 
 ### 🐳 Docker
 
-- You can easily build your application in a docker container and run it.
+- You can easily build your application using docker. Just run the following commands:
 - Build and run frontend instance
   ```sh
-  docker build frontend/ -t reduced.to-front
+  docker build apps/frontend/ -t reduced.to-front
   docker run -p 5000:5000 reduced.to-front
   ```
 - Build and run backend instance
   ```sh
-  docker build backend/ -t reduced.to-back
+  docker build apps/backend/ -t reduced.to-back
   docker run -p 3000:3000 reduced.to-back
   ```
 - Make sure to have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
@@ -179,9 +178,11 @@ You will find 3 folders
 ### 🐙 Docker compose
 
 - In case you have docker installed, you can _single-click_ deploy and test your changes by running the following and going to `http://localhost:5000/` on your browser.
+- When you run the command below, don't forget to change the .env file with the correct values.
   ```sh
-  docker compose -f docker-compose.dev.yml up
+  docker compose -f docker/local/docker-compose.yml -p reduced-to up
   ```
+  NOTE: There is a known issue with the local docker-compose deployment. Because of the way the containers are communicating with each other, the frontend container will not be able to send requests to the backend container. This is because the backend container is accessible only from within the docker network. To overcome this issue, you can run only the backend locally and the other services using docker-compose.
 
 ### 👷 Configuration
 
@@ -225,7 +226,7 @@ For the minimal configuration the following settings have to be changed in their
 
 ###### Novu
 
-- **NOVU_API_KEY**: Get it from https://novu.co/
+- **NOVU_API_KEY**: Get it from https://novu.co/ (Not required for local development)
 
 #### Frontend configuration
 
@@ -262,9 +263,8 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
   - [x] Animations
   - [x] Logo
   - [x] Dark/Light mode
-  - [ ] Fonts?
 - [ ] Improve front-end components
-- [ ] Backend tests
+- [x] Backend tests
 - [ ] Front-end Tests
 - [ ] Logs
 - [ ] Add a statistics page
