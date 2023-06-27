@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=reduced_to_db
+    ports:
+      - '5432:5432'
+
+  redis:
+    image: redis
+    container_name: redis
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
+    env_file: ../../apps/backend/.env
+    ports:
+      - '6379:6379'
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ../../apps/frontend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - '5000:5000'
+    env_file: ../../apps/frontend/.env
+    volumes:
+      - /app
+
+  backend:
+    container_name: backend
+    platform: linux/amd64
+    build:
+      context: ../../apps/backend
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ../../apps/backend:/svr/app/
+      - /svr/app/node_modules
+    ports:
+      - '3000:3000'
+    env_file: ../../apps/backend/.env
+    depends_on:
+      - postgres
+      - redis
+
+
