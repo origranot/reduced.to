@@ -179,6 +179,7 @@ The project is structured in the following way:
 
 - In case you have docker installed, you can _single-click_ deploy and test your changes by running the following and going to `http://localhost:5000/` on your browser.
 - When you run the command below, don't forget to change the .env file with the correct values.
+
   ```sh
   docker compose -f docker/local/docker-compose.yml -p reduced-to up
   ```
