@@ -17,6 +17,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
   const urlInput = useSignal<HTMLInputElement>();
   const selectExpirationTimeInputValue = useSignal<string>(TIME_FRAME_DIR.ONE_WEEK.name);
 
+  //eslint-disable-next-line
   const { verified } = useGetCurrentUser().value || {};
 
   const handleSelectExpiredTime = $((value: any, key: any) => {
