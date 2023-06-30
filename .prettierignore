@@ -2,5 +2,9 @@
 **/*.log
 **/.DS_Store
 *.
-/dist
-/node_modules
+**/dist
+**/node_modules
+
+# Ignore all build directories on frontend
+apps/frontend/server
+
