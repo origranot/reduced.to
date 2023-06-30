@@ -5,7 +5,7 @@ import {
   setTokensAsCookies,
   validateAccessToken,
 } from '../../shared/auth.service';
-import { useAuthSession, useAuthSignin, useAuthSignout } from '../plugin@auth';
+import { useAuthSignin } from '../plugin@auth';
 
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
@@ -62,8 +62,11 @@ export const useLogin = globalAction$(
   })
 );
 
+
+
 export default component$(() => {
   const action = useLogin();
+  const signin = useAuthSignin();
   return (
     <div class="min-h-screen flex flex-col register-bg">
       <div class="flex flex-1 content-center justify-center items-center">
@@ -126,11 +129,8 @@ export const ProviderLogin = component$(() => {
   const authSignIn = useAuthSignin();
   
   // TODO: this should be in a separate logic component when the user is connected
-  const signOut = useAuthSignout();
-  const session = useAuthSession();
   return <>
   <p class={'leading-none m-5'}>or</p>
-  {session.value?.user && <p class={'leading-none m-5'}>Signed in as {session.value.user.name}</p>}
   <div class={'form-control w-full max-w-xs inline-flex space-y-4'}>
     <Form action={authSignIn} class="form-control inline-flex">
       <input type="hidden" name="providerId" value="google" />
@@ -145,12 +145,6 @@ export const ProviderLogin = component$(() => {
       <LogInProviderButton providerName='GitHub'>
         <div q:slot='login-icon-button-slot'>{JSX_GITHUB_ICON}</div>
       </LogInProviderButton>
-    </Form>
-
-    {/* TODO: this should be in a separate logic component when the user is connected */}
-    <Form action={signOut}>
-      <input type="hidden" />
-      <button>Sign Out</button>
     </Form>
   </div>
   </>

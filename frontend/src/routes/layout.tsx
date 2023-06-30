@@ -13,6 +13,7 @@ import {
   ACCEPT_COOKIES_COOKIE_NAME,
   UseCookiesAlert,
 } from '../components/use-cookies-alert/use-cookies-alert';
+import { useAuthSession } from './plugin@auth';
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -49,10 +50,12 @@ export const useAcceptCookies = routeLoader$(
 export default component$(() => {
   const userCtx = useGetCurrentUser().value;
   const acceptedCookies = useAcceptCookies().value === 'true';
+  const user = useAuthSession()
   return (
     <>
-      <Navbar user={userCtx} />
+      <Navbar session={user.value} />
       {userCtx?.verified === false ? <VerifyAlert /> : ''}
+      {/* TODO: NOW I FOCUS ON GETTING THE VERIFIED */}
       <main>
         <section>
           <Slot />

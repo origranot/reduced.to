@@ -1,7 +1,7 @@
 import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
+import { Session } from '@auth/core/types';
 import { Link, useLocation } from '@builder.io/qwik-city';
 import { GlobalStore } from '../../context';
-import { UserCtx } from '../../routes/layout';
 import {
   DARK_THEME,
   LIGHT_THEME,
@@ -11,18 +11,12 @@ import {
 import { BurgerButton } from './burger-button/burger-button';
 import { GithubButton } from './github-button/github-button';
 import styles from './navbar.css?inline';
-import { Profile } from './profile/profile';
+import { Logout, Profile } from './profile/profile';
 
-interface NavbarProps {
-  user: UserCtx | null;
-}
-
-export const Navbar = component$(({ user }: NavbarProps) => {
+export const Navbar = component$((props: { session: Session | null }) => {
   useStylesScoped$(styles);
-
   const globalStore = useContext(GlobalStore);
   const location = useLocation();
-
   return (
     <div class="navbar bg-base-100 drop-shadow-md relative" style={{ zIndex: 100 }}>
       <div class="flex-1">
@@ -53,16 +47,16 @@ export const Navbar = component$(({ user }: NavbarProps) => {
       <div class="block sm:hidden dropdown dropdown-end">
         <BurgerButton buttonTitle="Open" />
         <ul tabIndex={0} class="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4 p-2">
-          <li class={user ? 'px-4 py-2' : ''}>
-            {user ? (
-              `Welcome ${user.name}!`
+          <li class={props.session ? 'px-4 py-2' : ''}>
+            {props.session ? (
+              `Welcome ${props.session?.user?.name}!`
             ) : (
               <Link href="/login" class="btn-ghost">
                 Login
               </Link>
             )}
           </li>
-          {user && (
+          {props.session?.user?.name && (
             <>
               <li class="pr-2 border-black"></li>
               <li>
@@ -70,9 +64,7 @@ export const Navbar = component$(({ user }: NavbarProps) => {
                   Dashboard
                   <span class="badge">New</span>
                 </Link>
-                <Link href="/logout" class="btn-ghost py-2 text-sm">
-                  Logout
-                </Link>
+                <Logout />
               </li>
               <li class="pr-2 border-black"></li>
             </>
@@ -101,8 +93,8 @@ export const Navbar = component$(({ user }: NavbarProps) => {
         </ul>
       </div>
       <div class="sm:flex hidden">
-        {user ? (
-          <Profile name={user.name} />
+        {props.session ? (
+          <Profile name={`${props.session.user?.name}`} />
         ) : (
           <Link href="/login" class="btn btn-primary btn-sm">
             Login
