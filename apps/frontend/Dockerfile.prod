@@ -1,0 +1,41 @@
+FROM node:18-alpine3.15 AS build
+
+# Set NODE_ENV environment variable
+ENV NODE_ENV production
+
+# Create app directory
+WORKDIR /app
+
+# Install app dependencies
+COPY *.json ./
+
+# Copy all files to build stage
+COPY . .
+
+# Define Buildtime vairables from workflow
+ARG API_DOMAIN=${API_DOMAIN}
+ARG DOMAIN=${DOMAIN}
+
+# Install dependencies for production
+RUN npm ci --include=dev
+
+# Building code for production
+RUN npm run build
+
+# Build static files
+RUN npm run build.server
+
+# Final stage
+FROM node:18-alpine3.15 as production
+
+# Create app directory
+WORKDIR /app
+
+# Copy build
+COPY --from=build /app/node_modules/ ./node_modules/
+COPY --from=build /app/dist/ ./dist/
+COPY --from=build /app/server/ ./server/
+
+EXPOSE 5000
+
+CMD ["sh", "-c", "ORIGIN=https://reduced.to node server/entry.express.js" ]
