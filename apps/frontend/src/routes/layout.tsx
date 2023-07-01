@@ -37,13 +37,13 @@ export const useGetCurrentUser = routeLoader$<UserCtx | null>(async ({ cookie })
 export const useAcceptCookies = routeLoader$(({ cookie }) => cookie.get(ACCEPT_COOKIES_COOKIE_NAME)?.value);
 
 export default component$(() => {
-  const userCtx = useGetCurrentUser().value;
+  const user = useGetCurrentUser();
   const acceptedCookies = useAcceptCookies();
 
   return (
     <>
-      <Navbar user={userCtx} />
-      {userCtx?.verified === false ? <VerifyAlert /> : ''}
+      <Navbar />
+      {user.value?.verified === false ? <VerifyAlert /> : ''}
       <main>
         <section>
           <Slot />
