@@ -1,7 +1,7 @@
 import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
 import { Link, useLocation } from '@builder.io/qwik-city';
 import { GlobalStore } from '../../context';
-import { UserCtx, useGetCurrentUser } from '../../routes/layout';
+import { useGetCurrentUser } from '../../routes/layout';
 import { DARK_THEME, LIGHT_THEME, setPreference, ThemeSwitcher } from '../theme-switcher/theme-switcher';
 import { BurgerButton } from './burger-button/burger-button';
 import { GithubButton } from './github-button/github-button';
@@ -85,7 +85,7 @@ export const Navbar = component$(() => {
       </div>
       <div class="sm:flex hidden">
         {user.value ? (
-          <Profile name={user.value?.name!} />
+          <Profile name={user.value?.name} />
         ) : (
           <Link href="/login" class="btn btn-primary btn-sm">
             Login
