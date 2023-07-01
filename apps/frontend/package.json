@@ -1,10 +1,7 @@
 {
-  "name": "reduced.to-frontend",
-  "description": "",
   "engines": {
     "node": ">=15.0.0"
   },
-  "private": true,
   "scripts": {
     "build": "qwik build",
     "build.client": "vite build",

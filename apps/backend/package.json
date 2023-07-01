@@ -1,7 +1,4 @@
 {
-  "name": "reduced.to-backend",
-  "version": "1.0.0",
-  "description": "",
   "scripts": {
     "test": "jest --silent",
     "build": "nest build",
@@ -16,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/origranot/url-shortener.git"
   },
-  "author": "OriG",
+  "author": "origranot",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/origranot/url-shortener/issues"
