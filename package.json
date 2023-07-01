@@ -5,12 +5,12 @@
   "scripts": {
     "test:all": "npm run test:backend",
     "test:backend": "npm --prefix ./apps/backend run test",
-    "install:all": "npm run install:frontend && npm run install:backend",
-    "install:frontend": "cd ./apps/frontend && npm i",
-    "install:backend": "cd ./apps/backend && npm i",
     "build:all": "npm run build:frontend && npm run build:backend",
     "build:frontend": "npm --prefix ./apps/frontend run build && npm --prefix ./apps/frontend run build.server",
     "build:backend": "npm --prefix ./apps/backend run build",
+    "install:all": "npm run install:frontend && npm run install:backend",
+    "install:frontend": "cd ./apps/frontend && npm i",
+    "install:backend": "cd ./apps/backend && npm i",
     "start:frontend": "npm --prefix ./apps/frontend run start",
     "start:backend": "npm --prefix ./apps/backend run start",
     "start:dev": "concurrently --kill-others \"npm:dev --prefix ./apps/frontend\" \"npm:start:dev --prefix ./apps/backend\"",
@@ -28,7 +28,7 @@
     "type": "git",
     "url": "git+https://github.com/origranot/reduced.to.git"
   },
-  "author": "origranot",
+  "author": "OriG",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/origranot/reduced.to/issues"
