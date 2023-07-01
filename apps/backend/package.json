@@ -1,4 +1,6 @@
 {
+  "name": "backend",
+  "version": "0.0.1",
   "scripts": {
     "test": "jest --silent",
     "build": "nest build",
