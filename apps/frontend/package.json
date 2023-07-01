@@ -24,7 +24,6 @@
   "devDependencies": {
     "@builder.io/qwik": "^1.2.3",
     "@builder.io/qwik-city": "^1.2.3",
-    "@builder.io/qwik-react": "^0.5.0",
     "@tailwindcss/typography": "^0.5.9",
     "@types/canvas-confetti": "^1.4.3",
     "@types/eslint": "8.4.6",

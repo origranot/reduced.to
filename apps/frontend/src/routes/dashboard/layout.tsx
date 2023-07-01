@@ -13,7 +13,7 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 export default component$(() => {
   const location = useLocation();
   const currentPath = location.url.pathname.slice(0, -1);
-  const userCtx = useGetCurrentUser().value;
+  const user = useGetCurrentUser();
 
   return (
     <div class="drawer drawer-mobile h-[calc(100vh-64px)]">
@@ -60,7 +60,7 @@ export default component$(() => {
               <span class="badge">Soon</span>
             </Link>
           </li>
-          {userCtx?.role === Role.ADMIN && (
+          {user.value?.role === Role.ADMIN && (
             <>
               <div class="divider"></div>
               <li class="py-2 mt-2">
