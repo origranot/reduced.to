@@ -14,6 +14,7 @@ export class CustomThrottlerGuard extends ThrottlerGuard {
     const ipFromQwik = req.headers['x-qwik-city-client-conn-ip'] as string;
     const ip = ipFromQwik || (req.headers['x-forwarded-for'] as string) || req.socket.remoteAddress;
 
+    console.log('IP', ip);
     return ip;
   }
 }
