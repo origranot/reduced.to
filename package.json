@@ -6,6 +6,10 @@
   "workspaces": [
     "apps/*"
   ],
+  "nohoist": [
+    "**/prisma",
+    "**/@prisma/client"
+  ],
   "scripts": {
     "test:all": "npm run test:backend",
     "test:backend": "npm --prefix ./apps/backend run test",
