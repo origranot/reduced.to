@@ -101,7 +101,7 @@ List of things you need to run the project locally and how to install them.
 1. [Fork](https://github.com/origranot/reduced.to/fork) / Clone this repository
 2. Install NPM packages
    ```sh
-   npm install
+   npm install && npm run install:all
    ```
 3. Navigate to backend folder, copy `.example.env` to `.env` and fill it properly ([see below](#backend-configuration)).
 4. Navigate to frontend folder, copy `.example.env` to `.env` and fill it properly ([see below](#frontend-configuration)).

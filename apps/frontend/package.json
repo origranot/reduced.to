@@ -1,4 +1,6 @@
 {
+  "name": "frontend",
+  "version": "0.0.1",
   "engines": {
     "node": ">=15.0.0"
   },
