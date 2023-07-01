@@ -38,7 +38,8 @@ export const useAcceptCookies = routeLoader$(({ cookie }) => cookie.get(ACCEPT_C
 
 export default component$(() => {
   const userCtx = useGetCurrentUser().value;
-  const acceptedCookies = useAcceptCookies().value === 'true';
+  const acceptedCookies = useAcceptCookies();
+
   return (
     <>
       <Navbar user={userCtx} />
@@ -48,7 +49,7 @@ export default component$(() => {
           <Slot />
         </section>
       </main>
-      <UseCookiesAlert visible={!acceptedCookies} />
+      <UseCookiesAlert visible={acceptedCookies.value !== 'true'} />
     </>
   );
 });

@@ -29,16 +29,17 @@ export const RouterHead = component$(() => {
       <script async defer src="https://buttons.github.io/buttons.js"></script>
 
       {head.meta.map((m) => (
-        <meta {...m} />
+        <meta key={m.key} {...m} />
       ))}
 
       {head.links.map((l) => (
-        <link {...l} />
+        <link key={l.key} {...l} />
       ))}
 
       {head.styles.map((s) => (
-        <style {...s.props} dangerouslySetInnerHTML={s.style} />
+        <style key={s.key} {...s.props} dangerouslySetInnerHTML={s.style} />
       ))}
+
       <ThemeScript />
     </>
   );
