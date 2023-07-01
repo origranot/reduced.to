@@ -1,12 +1,12 @@
 import { component$, Slot } from '@builder.io/qwik';
 import { Link, RequestHandler, useLocation } from '@builder.io/qwik-city';
-import { ACCESS_COOKIE_NAME, validateAccessToken } from '../../shared/auth.service';
+import { validateAccessToken } from '../../shared/auth.service';
 import { Role, useGetCurrentUser } from '../layout';
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
-  const acccessToken = cookie.get(ACCESS_COOKIE_NAME)?.value;
-  if (!(await validateAccessToken(acccessToken))) {
-    throw redirect(302, '/login');
+  const validAccessToken = await validateAccessToken(cookie);
+  if (!validAccessToken) {
+    throw redirect(302, '/');
   }
 };
 
