@@ -1,14 +1,14 @@
 import { component$, useStore } from '@builder.io/qwik';
 import { Form, globalAction$, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
-import { ACCESS_COOKIE_NAME, setTokensAsCookies, validateAccessToken } from '../../shared/auth.service';
+import { setTokensAsCookies, validateAccessToken } from '../../shared/auth.service';
 
 interface RegisterStore {
   passwordVisible: boolean;
 }
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
-  const acccessToken = cookie.get(ACCESS_COOKIE_NAME)?.value;
-  if (await validateAccessToken(acccessToken)) {
+  const validAccessToken = await validateAccessToken(cookie);
+  if (validAccessToken) {
     throw redirect(302, '/');
   }
 };
