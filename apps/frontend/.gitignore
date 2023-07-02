@@ -43,3 +43,7 @@ lerna-debug.log*
 
 # env
 .env
+
+# Playwright tests
+playwright-report
+test-results
