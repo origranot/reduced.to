@@ -8,9 +8,8 @@ export const onGet: RequestHandler = async ({ params: { urlId }, redirect, clien
     ...(clientConn.country && { 'x-qwik-city-client-conn-country': clientConn.country }),
   };
 
-  console.log("clientConn", headers);
-  console.log("all headers", request.headers);
-
+  console.log('clientConn', headers);
+  console.log('all headers', request.headers);
 
   try {
     const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`, {
