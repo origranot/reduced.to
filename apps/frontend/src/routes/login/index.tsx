@@ -7,6 +7,7 @@ import {
 import { useAuthSignin } from '../plugin@auth';
 
 
+
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   const validAccessToken = await validateAccessToken(cookie);
   if (validAccessToken) {
