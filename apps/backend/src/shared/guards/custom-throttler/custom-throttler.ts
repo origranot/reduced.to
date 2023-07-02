@@ -12,8 +12,6 @@ export class CustomThrottlerGuard extends ThrottlerGuard {
 
   private getIp(req: Request): string {
     const ip = (req.headers['x-forwarded-for'] as string) || req.socket.remoteAddress;
-
-    console.log('IP', { ip_from_forward: req.headers['x-forwarded-for'], socket: req.socket.remoteAddress });
     return ip;
   }
 }
