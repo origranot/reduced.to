@@ -17,7 +17,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
   const urlInput = useSignal<HTMLInputElement>();
   const selectExpirationTimeInputValue = useSignal<string>(TIME_FRAME_DIR.ONE_WEEK.name);
 
-  const { verified } = useGetCurrentUser().value || {};
+  const user = useGetCurrentUser();
 
   const handleSelectExpiredTime = $((value: any, key: any) => {
     selectExpirationTimeInputValue.value = key;
@@ -55,7 +55,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
           aria-describedby="shortenerBtn"
         />
         <div>
-          <Select disabled={verified ? false : true} selectInputValue={selectExpirationTimeInputValue}>
+          <Select disabled={user.value?.verified ? false : true} selectInputValue={selectExpirationTimeInputValue}>
             <>
               {Object.values(TIME_FRAME_DIR).map(({ name: expirationTimeName, value: expirationTimeValue }) => (
                 <li
