@@ -1,11 +1,16 @@
 import { RequestHandler } from '@builder.io/qwik-city';
-import { fetchFromServer } from '../../shared/auth.service';
 
 export const onGet: RequestHandler = async ({ params: { urlId }, redirect, request }) => {
   let originalUrl: string;
 
+  const headers = {
+    'x-forwarded-for': request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '',
+  };
+
   try {
-    const res = await fetchFromServer(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`, request);
+    const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`, {
+      headers,
+    });
     originalUrl = await res.text();
 
     if (res.status !== 200 || !originalUrl) {

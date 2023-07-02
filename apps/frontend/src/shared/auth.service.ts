@@ -58,15 +58,6 @@ export const setTokensAsCookies = (accessToken: string, refreshToken: string, co
   });
 };
 
-// This is a wrapper around fetch that adds the x-forwarded-for header (used by the throttler)
-export const fetchFromServer = async (url: string, request: Request, options = {}) => {
-  const headers = {
-    'x-forwarded-for': request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '',
-  };
-
-  return fetch(url, { headers, ...options });
-};
-
 export const authorizedFetch = async (url: string, options = {}) => {
   const response = await fetch(url, { credentials: 'include', ...options });
 

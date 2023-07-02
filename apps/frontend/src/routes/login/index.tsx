@@ -1,6 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 import { Form, globalAction$, Link, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
-import { fetchFromServer, setTokensAsCookies, validateAccessToken } from '../../shared/auth.service';
+import { setTokensAsCookies, validateAccessToken } from '../../shared/auth.service';
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   const validAccessToken = await validateAccessToken(cookie);
@@ -10,9 +10,12 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 };
 
 export const useLogin = globalAction$(
-  async ({ email, password }, { fail, cookie, headers, request }) => {
-    const data = await fetchFromServer(`${process.env.API_DOMAIN}/api/v1/auth/login`, request, {
+  async ({ email, password }, { fail, cookie, headers }) => {
+    const data = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/login`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         email,
         password,

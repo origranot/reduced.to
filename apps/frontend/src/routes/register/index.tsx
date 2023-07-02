@@ -1,6 +1,6 @@
 import { component$, useStore } from '@builder.io/qwik';
 import { Form, globalAction$, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
-import { fetchFromServer, setTokensAsCookies, validateAccessToken } from '../../shared/auth.service';
+import { setTokensAsCookies, validateAccessToken } from '../../shared/auth.service';
 
 interface RegisterStore {
   passwordVisible: boolean;
@@ -14,9 +14,12 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 };
 
 export const useRegister = globalAction$(
-  async ({ displayName, email, password }, { fail, headers, request, cookie }) => {
-    const data: Response = await fetchFromServer(`${process.env.API_DOMAIN}/api/v1/auth/signup`, request, {
+  async ({ displayName, email, password }, { fail, headers, cookie }) => {
+    const data: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         name: displayName,
         email: email,
