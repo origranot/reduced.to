@@ -3,6 +3,7 @@ coverage
 
 # API keys and secrets
 /.env
+*.env
 
 # Dependency directory
 node_modules
@@ -21,3 +22,4 @@ Thumbs.db
 dist/
 
 /myFile.txt
+
