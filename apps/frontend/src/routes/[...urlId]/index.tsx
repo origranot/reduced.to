@@ -1,15 +1,11 @@
 import { RequestHandler } from '@builder.io/qwik-city';
 
-export const onGet: RequestHandler = async ({ params: { urlId }, redirect, clientConn, request }) => {
+export const onGet: RequestHandler = async ({ params: { urlId }, redirect, request }) => {
   let originalUrl: string;
 
   const headers = {
-    ...(clientConn.ip && { 'x-qwik-city-client-conn-ip': clientConn.ip }),
-    ...(clientConn.country && { 'x-qwik-city-client-conn-country': clientConn.country }),
+    'x-forwarded-for': request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '',
   };
-
-  console.log('clientConn', headers);
-  console.log('all headers', request.headers);
 
   try {
     const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`, {
