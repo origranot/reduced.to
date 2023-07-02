@@ -1,6 +1,6 @@
 import { RequestHandler } from '@builder.io/qwik-city';
 
-export const onGet: RequestHandler = async ({ params: { urlId }, redirect, clientConn, headers: h }) => {
+export const onGet: RequestHandler = async ({ params: { urlId }, redirect, clientConn, request }) => {
   let originalUrl: string;
 
   const headers = {
@@ -9,7 +9,7 @@ export const onGet: RequestHandler = async ({ params: { urlId }, redirect, clien
   };
 
   console.log("clientConn", headers);
-  console.log("all headers", h)
+  console.log("all headers", request.headers);
 
 
   try {
