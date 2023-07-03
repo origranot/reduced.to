@@ -34,12 +34,15 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
     ] as Provider[],
     callbacks: {
       jwt: async ({token, user}) => {
-
         if (!user) return token;
         const signInAction = actionAPIFactory({
           path: '/api/v1/auth/signup',
           credentials: {
             email: user.email!,
+            // We are using a generic password for all the users for the provider only.
+            // This done to avoid the failure of the sign in action as the password is required in the database schema.
+            // To overcome using this generic password we can use the user verified option in the database schema
+            // and check if the user is verified or not.             
             password: 'GenricPass@123',
             name: user.name!,
           },

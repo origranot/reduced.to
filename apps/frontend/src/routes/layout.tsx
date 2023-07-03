@@ -35,7 +35,7 @@ export const useGetCurrentUser = routeLoader$<UserCtx | null>(async ({ cookie, s
     const { accessToken, refreshToken } = await refreshTokens(refreshCookie);
     setTokensAsCookies(accessToken, refreshToken, cookie);
     return jwt_decode(accessToken);
-  } else if (sessionAuth.accessToken) {
+  } else if (sessionAuth && sessionAuth.accessToken) {
     // Check if the session is expired or not
     // If expired, refresh the token and return the new access token
     // If not expired, return the access token
@@ -47,6 +47,7 @@ export const useGetCurrentUser = routeLoader$<UserCtx | null>(async ({ cookie, s
       setTokensAsCookies(accessToken, refreshToken, cookie);
       return jwt_decode(accessToken);
     } else {
+      console.log("sessionAuth.accessToken", jwt_decode(sessionAuth.accessToken))
       return jwt_decode(sessionAuth.accessToken);
     }
   }
