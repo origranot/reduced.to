@@ -33,45 +33,6 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
       })
     ] as Provider[],
     callbacks: {
-      signIn: async ({account, profile}) => {
-        if (!profile || !account) return false
-        const data = await signUpAction(profile.email!, account?.providerAccountId, profile.name!)
-        console.log('signIn', profile.email!, account?.providerAccountId, profile.name!)
-        if (data) return true
-        // // try to check if the user is already exist in the database
-        // try {
-        //   const data = await signInAction(profile.email!, account?.providerAccountId)
-        //   if (data) return true
-        //   // if the user is not exist in the database try to create a new user
-        //   try {
-        //     const data = await signUpAction(profile.email!, account?.providerAccountId, profile.name!)
-        //     if (data) return true
-        //   } catch (error) {
-        //     console.error(error)
-
-        //   }
-        // } catch (error) {
-        //   console.error(error)
-
-        // }
-
-        
-        
-        // TODO: handle the error message provide unauthorized error message to the user. (there is for now the built in error massage of auth.js)
-        return false
-      },
-      // jwt: async ({token, account, isNewUser, profile, user}) => {
-      //   return {token, account, isNewUser, profile, user}
-      // },
-      session: async ({ session }) => {
-        // TODO: add role, isVerified and id to the session from the database or from the jwt
-        return { ...session, some: "data" }
-      },
-      // redirect: async ({url, baseUrl}) => {
-      //   console.log('redirect', {url, baseUrl})
-      //   return {url, baseUrl}
-      // },
-
     }
   }}
 );
@@ -119,3 +80,27 @@ export const signInAction = async (email: string, password: string) => {
 
   return true
 }
+
+export const signIn = async (props: {account: any, profile: any}) => {
+  if (!props.profile || !props.account) return false
+  const data = await signUpAction(props.profile.email!, props.account?.providerAccountId, props.profile.name!)
+  if (data) return true
+  // try to check if the user is already exist in the database
+  try {
+    const data = await signInAction(props.profile.email!, props.account?.providerAccountId)
+    if (data) return true
+    // if the user is not exist in the database try to create a new user
+    try {
+      const data = await signUpAction(props.profile.email!, props.account?.providerAccountId, props.profile.name!)
+      if (data) return true
+    } catch (error) {
+      console.error(error)
+
+    }
+  } catch (error) {
+    console.error(error)
+
+  }
+  // TODO: handle the error message provide unauthorized error message to the user. (there is for now the built in error massage of auth.js)
+  return false
+} 

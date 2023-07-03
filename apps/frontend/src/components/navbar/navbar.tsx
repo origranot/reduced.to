@@ -2,7 +2,6 @@ import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
 import { Session } from '@auth/core/types';
 import { Link, useLocation } from '@builder.io/qwik-city';
 import { GlobalStore } from '../../context';
-import { useGetCurrentUser } from '../../routes/layout';
 import { DARK_THEME, LIGHT_THEME, setPreference, ThemeSwitcher } from '../theme-switcher/theme-switcher';
 import { BurgerButton } from './burger-button/burger-button';
 import { GithubButton } from './github-button/github-button';
@@ -12,7 +11,7 @@ import { Logout, Profile } from './profile/profile';
 export const Navbar = component$((props: { session: Session | null }) => {
   useStylesScoped$(styles);
   const globalStore = useContext(GlobalStore);
-  const user = useGetCurrentUser();
+  // const user = useGetCurrentUser();
   const location = useLocation();
   return (
     <div class="navbar bg-base-100 drop-shadow-md relative" style={{ zIndex: 100 }}>
