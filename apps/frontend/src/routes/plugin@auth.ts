@@ -40,9 +40,7 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
           credentials: {
             email: user.email!,
             // We are using a generic password for all the users for the provider only.
-            // This done to avoid the failure of the sign in action as the password is required in the database schema.
-            // To overcome using this generic password we can use the user verified option in the database schema
-            // and check if the user is verified or not.             
+            // This done to avoid the failure of the sign in action as the password is required in the database schema.           
             password: 'GenricPass@123',
             name: user.name!,
           },
