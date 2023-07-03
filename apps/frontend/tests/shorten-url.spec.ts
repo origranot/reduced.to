@@ -1,8 +1,7 @@
 import { expect, test } from '@playwright/test';
-import { HomePage } from './pages/home-page';
 import { routes } from './constants';
 import { mockResponses } from './mock-data/mock-responses';
-import type { MockResponse, ResponseBody } from './mock-data/types';
+import { HomePage } from './pages/home-page';
 
 test.describe('URL Shortener App - guest mode', () => {
   let homePage: HomePage;
