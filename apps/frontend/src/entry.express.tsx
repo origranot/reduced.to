@@ -14,6 +14,7 @@ import render from './entry.ssr';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
+import { IncomingMessage } from 'node:http';
 
 declare global {
   interface QwikCityPlatform extends PlatformNode {}
@@ -29,7 +30,18 @@ const buildDir = join(distDir, 'build');
 const PORT = process.env.PORT ?? 5000;
 
 // Create the Qwik City Node middleware
-const { router, notFound } = createQwikCity({ render, qwikCityPlan, manifest });
+const { router, notFound } = createQwikCity({
+  render,
+  qwikCityPlan,
+  manifest,
+  getClientConn: (request: IncomingMessage) => {
+    // We need to override the default getClientConn function to get the client IP address from the request headers (x-forwarded-for or x-real-ip)
+    return {
+      ip: (request.headers['x-forwarded-for'] as string) || (request.headers['x-real-ip'] as string) || undefined,
+      country: undefined,
+    };
+  },
+});
 
 // Create the express server
 // https://expressjs.com/
