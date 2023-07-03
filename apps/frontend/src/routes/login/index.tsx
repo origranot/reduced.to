@@ -37,7 +37,6 @@ export const useLogin = globalAction$(
       });
     }
     setTokensAsCookies(accessToken, refreshToken, cookie);
-
     // Redirect using location header instead of redirect becuase we need to reload the routeLoader to get the new user data
     headers.set('location', '/');
   },
@@ -66,7 +65,6 @@ export const useLogin = globalAction$(
 
 export default component$(() => {
   const action = useLogin();
-  const signin = useAuthSignin();
   return (
     <div class="min-h-screen flex flex-col register-bg">
       <div class="flex flex-1 content-center justify-center items-center">

@@ -47,7 +47,6 @@ export const useGetCurrentUser = routeLoader$<UserCtx | null>(async ({ cookie, s
       setTokensAsCookies(accessToken, refreshToken, cookie);
       return jwt_decode(accessToken);
     } else {
-      console.log("sessionAuth.accessToken", jwt_decode(sessionAuth.accessToken))
       return jwt_decode(sessionAuth.accessToken);
     }
   }
