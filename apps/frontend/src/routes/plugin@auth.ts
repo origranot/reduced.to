@@ -33,74 +33,73 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
       })
     ] as Provider[],
     callbacks: {
-    }
+      jwt: async ({token, user}) => {
+
+        if (!user) return token;
+        const signInAction = actionAPIFactory({
+          path: '/api/v1/auth/signup',
+          credentials: {
+            email: user.email!,
+            password: 'GenricPass@123',
+            name: user.name!,
+          },
+        });
+        const data = await signInAction();
+        if (data) return {...data, ...token}
+        return null
+      },
+      session: async ({ session, token }) => {
+        return {...session, accessToken: token.accessToken, refreshToken: token.refreshToken}
+      } 
+    },
+
   }}
 );
 
 
-export const signUpAction = async (email: string, password: string, name: string) => {
-  const data: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
+interface Credentials {
+  email: string;
+  password: string;
+  name?: string;
+}
+
+interface Action {
+  path: string;
+  credentials: Credentials;
+}
+
+const actionAPIFactory = ({ path, credentials }: Action) => async () => {
+  const response: Response = await fetch(`${process.env.API_DOMAIN}${path}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      name: name,
-      email: email,
-      password: password,
-    }),
-  });
-  const result = {...await data.json(), ok: data.ok};
-
-  if (!result.ok || !result.accessToken || !result.refreshToken) {
-    return false
-  }
-
-  return true
-
-}
-export const signInAction = async (email: string, password: string) => {
-  const data: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      email: email,
-      password: password,
-    }),
+    body: JSON.stringify(credentials),
   });
 
-  const result = {...await data.json(), ok: data.ok};
-  console.log('signInAction', result)
+  const result = { ...await response.json(), ok: response.ok };
 
   if (!result.ok || !result.accessToken || !result.refreshToken) {
-    return false
+    return false;
   }
 
-  return true
+  return result;
 }
 
-export const signIn = async (props: {account: any, profile: any}) => {
-  if (!props.profile || !props.account) return false
-  const data = await signUpAction(props.profile.email!, props.account?.providerAccountId, props.profile.name!)
-  if (data) return true
-  // try to check if the user is already exist in the database
-  try {
-    const data = await signInAction(props.profile.email!, props.account?.providerAccountId)
-    if (data) return true
-    // if the user is not exist in the database try to create a new user
-    try {
-      const data = await signUpAction(props.profile.email!, props.account?.providerAccountId, props.profile.name!)
-      if (data) return true
-    } catch (error) {
-      console.error(error)
+export const signUpAction = actionAPIFactory({
+  path: '/api/v1/auth/signup',
+  credentials: {
+    email: 'example@example.com',
+    password: 'password',
+    name: 'Example Name',
+  },
+});
 
-    }
-  } catch (error) {
-    console.error(error)
+export const signInAction = actionAPIFactory({
+  path: '/api/v1/auth/login',
+  credentials: {
+    email: 'example@example.com',
+    password: 'password',
+  },
+});
 
-  }
-  // TODO: handle the error message provide unauthorized error message to the user. (there is for now the built in error massage of auth.js)
-  return false
-} 
