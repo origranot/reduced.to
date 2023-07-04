@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Reduced.to',
   staticDirectories: ['public', 'static'],
-  tagline: 'Highly Efficient Open Source URL Shortener',
+  tagline: 'Reduced.to is a modern web application that reduces the length of link URL, so it\'s easier to remember, share and track.',
   favicon: 'images/favicon.png',
   url: 'https://reduced.to/',
   baseUrl: '/',
