@@ -1,4 +1,6 @@
 import { Cookie } from '@builder.io/qwik-city';
+import jwt_decode from 'jwt-decode';
+import { UserCtx } from '../routes/layout';
 
 export const ACCESS_COOKIE_NAME = 'accessToken';
 export const REFRESH_COOKIE_NAME = 'refreshToken';
@@ -6,18 +8,33 @@ export const REFRESH_COOKIE_NAME = 'refreshToken';
 export const ACCESS_COOKIE_EXPIRES = 5 * 60 * 1000; //5 min
 export const REFRESH_COOKIE_EXPIRES = 7 * 24 * 60 * 60 * 1000; //7 days
 
-export const validateAccessToken = async (token: string | undefined): Promise<boolean> => {
-  if (!token) {
+export const validateAccessToken = async (cookies: Cookie): Promise<boolean> => {
+  const accessToken = cookies.get(ACCESS_COOKIE_NAME)?.value;
+  const refreshToken = cookies.get(REFRESH_COOKIE_NAME)?.value;
+
+  if (!accessToken) {
     return false;
   }
 
-  const res = await authorizedFetch(`${process.env.API_DOMAIN}/api/v1/auth/check-auth`, {
-    headers: {
-      Cookie: `${ACCESS_COOKIE_NAME}=${token}`,
-    },
-  });
+  const decodedToken = jwt_decode<UserCtx & { exp: number }>(accessToken);
+  const currentDate = new Date();
 
-  return res.ok;
+  if (!decodedToken) {
+    return false;
+  }
+
+  // Try to refresh access token if it's expired
+  if (decodedToken.exp * 1000 < currentDate.getTime() && refreshToken) {
+    const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await refreshTokens(refreshToken);
+    if (!newAccessToken) {
+      return false;
+    }
+
+    setTokensAsCookies(newAccessToken, newRefreshToken, cookies);
+    return validateAccessToken(cookies);
+  }
+
+  return true;
 };
 
 export const setTokensAsCookies = (accessToken: string, refreshToken: string, cookie: Cookie) => {
@@ -46,8 +63,7 @@ export const authorizedFetch = async (url: string, options = {}) => {
 
   if (response.status === 401) {
     try {
-      const response = await fetch(url, options);
-      return response;
+      return fetch(url, options);
     } catch (error) {
       // Handle error refreshing access token
       console.error('Failed to refresh access token', error);
