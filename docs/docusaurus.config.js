@@ -7,8 +7,9 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Reduced.to',
+  staticDirectories: ['public', 'static'],
   tagline: 'Highly Efficient Open Source URL Shortener',
-  favicon: 'img/favicon.png',
+  favicon: 'images/favicon.png',
   url: 'https://reduced.to/',
   baseUrl: '/',
   projectName: 'reduced.to',
@@ -44,9 +45,9 @@ const config = {
     ({
       navbar: {
         logo: {
-          alt: 'Site Logo',
-          src: `img/logo.svg`,
-          srcDark: `img/logo.svg`,
+          alt: 'Reduced.to Logo',
+          src: `images/logo.svg`,
+          //srcDark: `img/logo.svg`,
           href: '/',
           target: '_self',
         },
@@ -56,15 +57,13 @@ const config = {
             href: 'https://github.com/origranot/reduced.to',
             html: `
                 <a  aria-label="GitHub" class="navbar-github-link">
-                  <img src="img/github-logo.png" alt="GitHub Logo" class="navbar-github-logo" />
+                  <img src="images/github-logo.png" alt="GitHub Logo" class="navbar-github-logo" />
                 </a>
               `,
           },
         ],
       },
       footer: {
-        style: 'dark',
-
         copyright: `Copyright © ${new Date().getFullYear()} Reduced.to, Inc. Built with Docusaurus.`,
       },
       prism: {
