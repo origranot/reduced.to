@@ -8,7 +8,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Reduced.to',
   staticDirectories: ['public', 'static'],
-  tagline: 'Reduced.to is a modern web application that reduces the length of link URL, so it\'s easier to remember, share and track.',
+  tagline:
+    "Reduced.to is a modern web application that reduces the length of link URL, so it's easier to remember, share and track.",
   favicon: 'images/favicon.png',
   url: 'https://reduced.to/',
   baseUrl: '/',
@@ -52,6 +53,16 @@ const config = {
           target: '_self',
         },
         items: [
+          {
+            type: 'search',
+            position: 'right',
+          },
+          {
+            position: 'right',
+            href: 'https://reduced.to',
+            label: 'Visit App',
+          },
+
           {
             position: 'right',
             href: 'https://github.com/origranot/reduced.to',
