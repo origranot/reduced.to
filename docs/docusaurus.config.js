@@ -53,6 +53,16 @@ const config = {
         },
         items: [
           {
+            type: 'search',
+            position: 'right',
+          },
+          {
+            position: 'right',
+            href: 'https://reduced.to',
+            label: 'Visit App',
+          },
+
+          {
             position: 'right',
             href: 'https://github.com/origranot/reduced.to',
             html: `
