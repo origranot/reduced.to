@@ -21,7 +21,6 @@ const sidebars = {
       items: ['api/soon'],
     },
   ],
-
 };
 
 module.exports = sidebars;

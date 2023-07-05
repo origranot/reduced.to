@@ -12,7 +12,6 @@ Reduced.to is a modern web application designed to shorten link URLs, making the
 
 Simply paste a long URL into the input field and click the "Shorten" button. The application will generate a shortened URL that you can copy and share with others. When a user clicks on the shortened URL, they will be redirected to the original long URL. There is also a dashboard for registered users to view their shortened URLs and track their performance.
 
-
 ### Technologies and Services
 
 To ensure optimal performance, the project uses Redis as a cache storage mechanism. Redis is an efficient, in-memory data structure store that enables fast retrieval of key-value pairs. By leveraging Redis, we can store and retrieve mappings between short links and their corresponding long URLs in a highly efficient manner.
