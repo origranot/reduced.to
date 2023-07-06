@@ -3,6 +3,7 @@ import { BasePage } from './base-page';
 
 export class MainPage extends BasePage {
   readonly urlInput: Locator;
+  readonly linkExpDropDown: Locator;
   readonly submitButton: Locator;
   readonly shortenedLink: Locator;
   readonly copyUrlButton: Locator;
@@ -11,17 +12,15 @@ export class MainPage extends BasePage {
   readonly shareOnTwitterButton: Locator;
 
   constructor(page: Page) {
-    super(page);
+    super(page, '');
     this.urlInput = this.page.locator('#urlInput');
+    this.linkExpDropDown = this.page.getByRole('button', { name: '1 Week' });
     this.submitButton = this.page.getByRole('button', { name: 'Shorten URL' });
+    this.shortenedLink = this.page.locator('#result');
     this.copyUrlButton = this.page.getByRole('button', { name: 'Copy' });
     this.openInNewTabButton = this.page.getByRole('button', { name: 'Open in new tab' });
     this.qrCodeButton = this.page.getByRole('button', { name: 'QR Code' });
     this.shareOnTwitterButton = this.page.getByRole('button', { name: 'Share on twitter' });
-  }
-
-  async goto() {
-    await this.page.goto('/');
   }
 
   async fillUrl(url: string) {
@@ -33,8 +32,7 @@ export class MainPage extends BasePage {
   }
 
   async getShortenedUrl(): Promise<string | null> {
-    await this.page.waitForSelector('#result');
-    return await this.page.textContent('#result span');
+    return await this.shortenedLink.textContent();
   }
 
   async copyUrl() {
