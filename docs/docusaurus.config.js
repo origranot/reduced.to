@@ -7,8 +7,10 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Reduced.to',
-  tagline: 'Highly Efficient Open Source URL Shortener',
-  favicon: 'img/favicon.png',
+  staticDirectories: ['public', 'static'],
+  tagline:
+    "Reduced.to is a modern web application that reduces the length of link URL, so it's easier to remember, share and track.",
+  favicon: 'images/favicon.png',
   url: 'https://reduced.to/',
   baseUrl: '/',
   projectName: 'reduced.to',
@@ -44,27 +46,35 @@ const config = {
     ({
       navbar: {
         logo: {
-          alt: 'Site Logo',
-          src: `img/logo.svg`,
-          srcDark: `img/logo.svg`,
+          alt: 'Reduced.to Logo',
+          src: `images/logo.svg`,
+          //srcDark: `img/logo.svg`,
           href: '/',
           target: '_self',
         },
         items: [
           {
+            type: 'search',
+            position: 'right',
+          },
+          {
+            position: 'right',
+            href: 'https://reduced.to',
+            label: 'Visit App',
+          },
+
+          {
             position: 'right',
             href: 'https://github.com/origranot/reduced.to',
             html: `
                 <a  aria-label="GitHub" class="navbar-github-link">
-                  <img src="img/github-logo.png" alt="GitHub Logo" class="navbar-github-logo" />
+                  <img src="images/github-logo.png" alt="GitHub Logo" class="navbar-github-logo" />
                 </a>
               `,
           },
         ],
       },
       footer: {
-        style: 'dark',
-
         copyright: `Copyright © ${new Date().getFullYear()} Reduced.to, Inc. Built with Docusaurus.`,
       },
       prism: {
