@@ -67,6 +67,11 @@ export const Navbar = component$((props: { session: Session | null }) => {
             </a>
           </li>
           <li>
+            <a href="https://docs.reduced.to" target="_blank" title="Documentation" class="btn-ghost">
+              Docs
+            </a>
+          </li>
+          <li>
             <a
               class="btn-ghost"
               onClick$={() => {
@@ -87,6 +92,10 @@ export const Navbar = component$((props: { session: Session | null }) => {
             Login
           </Link>
         )}
+        <div class="divider divider-horizontal"></div>
+        <a href="https://docs.reduced.to" class="btn btn-ghost">
+          Docs
+        </a>
         <div class="divider divider-horizontal"></div>
         <div class="grid flex-grow place-items-center">
           <GithubButton />
