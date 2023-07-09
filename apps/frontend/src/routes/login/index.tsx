@@ -55,8 +55,8 @@ export const useLogin = globalAction$(
       .min(6, {
         message: 'Password must be at least 6 characters',
       })
-      .max(25, {
-        message: 'Password must be less than 25 characters',
+      .max(72, {
+        message: 'Password must be less than 72 characters',
       }),
   })
 );

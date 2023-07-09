@@ -18,4 +18,8 @@ export class SignupDto {
   @MinLength(6)
   @MaxLength(20)
   password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  provider: "email" | "google" | "github";
 }

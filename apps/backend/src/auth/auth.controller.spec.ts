@@ -29,6 +29,7 @@ describe('AuthController', () => {
     name: 'test',
     email: 'test@example.com',
     password: 'password',
+    provider: 'email',
   };
 
   const mockedUserContext: Partial<UserContext> = {

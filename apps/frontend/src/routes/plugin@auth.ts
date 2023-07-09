@@ -2,6 +2,7 @@ import { serverAuth$ } from '@builder.io/qwik-auth';
 import GitHub from '@auth/core/providers/github';
 import Google from '@auth/core/providers/google';
 import type { Provider } from '@auth/core/providers';
+import { UserCtx } from './layout';
 
 export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serverAuth$(
   ({ env }) => {
@@ -33,19 +34,26 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
       })
     ] as Provider[],
     callbacks: {
-      jwt: async ({token, user}) => {
-        if (!user) return token;
+      jwt: async ({token, user, account}) => {
+        if (!user || !account) return token;
         const signInAction = actionAPIFactory({
           path: '/api/v1/auth/signup',
           credentials: {
             email: user.email!,
             // We are using a generic password for all the users for the provider only.
             // This done to avoid the failure of the sign in action as the password is required in the database schema.           
-            password: 'GenricPass@123',
+            // TODO: Error handling for the user that already exists.
+            // TODO: Validate the user was signup with the provider.
+            // TODO: hash the .sub from the provider to avoid the generic password.
+            // TODO: when the user is in register flow then use the signup else use the login if on the login flow.
+            password: token.sub!,
+            // TODO: ADD PROVIDER-ID
             name: user.name!,
+            provider: account.provider as Credentials["provider"],
           },
         });
         const data = await signInAction();
+        
         if (data) return {...data, ...token}
         return null
       },
@@ -53,6 +61,7 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
         return {...session, accessToken: token.accessToken, refreshToken: token.refreshToken}
       } 
     },
+
 
   }}
 );
@@ -62,13 +71,31 @@ interface Credentials {
   email: string;
   password: string;
   name?: string;
+  provider: "google" | "github" | "email";
 }
 
 interface Action {
-  path: string;
+  path: '/api/v1/auth/login' | "/api/v1/auth/signup";
   credentials: Credentials;
 }
 
+
+/**
+ * 
+ * @param param0 
+ * @returns 
+ * 
+ * @example
+ const signInAction = actionAPIFactory({
+  path: '/api/v1/auth/login',
+  credentials: {
+    email: 'example@example.com',
+    password: 'password',
+  },
+});
+
+const result = signInAction()
+ */
 const actionAPIFactory = ({ path, credentials }: Action) => async () => {
   const response: Response = await fetch(`${process.env.API_DOMAIN}${path}`, {
     method: 'POST',
@@ -84,23 +111,8 @@ const actionAPIFactory = ({ path, credentials }: Action) => async () => {
     return false;
   }
 
-  return result;
+  return result as UserCtx;
 }
 
-export const signUpAction = actionAPIFactory({
-  path: '/api/v1/auth/signup',
-  credentials: {
-    email: 'example@example.com',
-    password: 'password',
-    name: 'Example Name',
-  },
-});
 
-export const signInAction = actionAPIFactory({
-  path: '/api/v1/auth/login',
-  credentials: {
-    email: 'example@example.com',
-    password: 'password',
-  },
-});
 
