@@ -19,13 +19,11 @@
     "preview": "qwik build preview && vite preview --open",
     "serve": "node server/entry.express",
     "start": "vite --open --mode ssr",
-    "test.e2e": "playwright test",
     "qwik": "qwik"
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.2.3",
     "@builder.io/qwik-city": "^1.2.3",
-    "@playwright/test": "^1.32.3",
     "@tailwindcss/typography": "^0.5.9",
     "@types/canvas-confetti": "^1.4.3",
     "@types/eslint": "8.4.6",
