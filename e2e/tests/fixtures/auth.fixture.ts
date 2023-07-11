@@ -3,8 +3,11 @@ import { LoginPage } from '../pages/authentication/login.page';
 import prisma from '../helpers/prisma';
 import { faker } from '@faker-js/faker';
 import { RegisterPage } from '../pages/authentication/register-page';
+import { LocalStorage } from '../helpers/local-storage';
+import { generateValidEmail, generateValidName, generateValidPassword } from '../helpers/faker-utils';
 
 interface UserDetails {
+  displayName: string;
   email: string;
   password: string;
 }
@@ -14,50 +17,71 @@ interface AuthFixtures {
   loginPage: LoginPage;
   userCredentials: UserDetails;
   account: UserDetails;
+  storage: LocalStorage;
 }
 
 export const test = base.extend<AuthFixtures>({
   registerPage: async ({ page }, use) => {
     const registerPage = new RegisterPage(page);
     await registerPage.goto();
+    await page.waitForLoadState('networkidle');
     await use(registerPage);
   },
   loginPage: async ({ page }, use) => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
+    await page.waitForLoadState('networkidle');
     await use(loginPage);
   },
   userCredentials: async ({}, use) => {
-    const email = faker.internet.email();
-    const password = faker.internet.password();
+    const displayName = generateValidName();
+    const email = generateValidEmail();
+    const password = generateValidPassword();
 
     await use({
+      displayName,
       email,
       password,
     });
 
-    // await prisma.user.deleteMany({ where: { email } });
+    await prisma.user.deleteMany({ where: { email } });
   },
   account: async ({ browser, userCredentials }, use) => {
     // Create a new tab in the test's browser
     const page = await browser.newPage();
 
     // Navigate to the login page
-    const loginPage = new LoginPage(page);
-    await loginPage.goto();
+    const registerPage = new RegisterPage(page);
+    await registerPage.goto();
 
     // Fill in and submit the sign-up form
-    await loginPage.fillEmail(userCredentials.email);
-    await loginPage.fillPassword(userCredentials.password);
+    await registerPage.fillName(userCredentials.displayName);
+    await registerPage.fillEmail(userCredentials.email);
+    await registerPage.fillPassword(userCredentials.password);
 
-    await loginPage.submit();
-    await page.waitForLoadState('networkidle');
+    await registerPage.submit();
+    await page.waitForURL(/.*register\/verify.*/);
+
+    // Verify the user
+    console.log(await prisma.user.findMany());
+
+    await prisma.user.update({
+      where: {
+        email: userCredentials.email,
+      },
+      data: {
+        verified: true,
+      },
+    });
 
     // Close the tab
     await page.close();
 
     // Provide the credentials to the test
     await use(userCredentials);
+  },
+  storage: async ({ page }, use) => {
+    await use(new LocalStorage(page.context()));
   },
 });
 
