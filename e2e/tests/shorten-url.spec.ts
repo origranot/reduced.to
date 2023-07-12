@@ -1,12 +1,13 @@
 import { expect, test } from './fixtures/main.fixture';
 import { routes } from './helpers/constants';
-import { faker } from '@faker-js/faker';
+import { generateInvalidURL, generateValidURL } from './helpers/faker-utils';
 
 test.describe('URL Shortener App', () => {
+  let url = generateValidURL();
+
   test.beforeEach(async ({ page, mainPage }) => {
     // Enter the URL in the input field
-    const inputUrl = faker.internet.url();
-    await mainPage.fillUrl(inputUrl);
+    await mainPage.fillUrl(url);
 
     // Click the `SHORTEN URL` button
     await mainPage.shorten();
@@ -31,17 +32,18 @@ test.describe('URL Shortener App', () => {
     expect(clipboardData).toBe(shortenedUrl);
   });
 
-  test('Open shortened URL in a new tab', async ({ page, mainPage }) => {
+  test('Open shortened URL in a new tab', async ({ page, mainPage, context }) => {
     // Assert that the correct URL is opened in a new tab
     const [shortenedLinkTab] = await Promise.all([page.waitForEvent('popup'), mainPage.openLinkInNewTab()]);
-    await shortenedLinkTab.waitForLoadState();
+    await shortenedLinkTab.waitForLoadState('networkidle');
 
     // Check if a new tab has been opened
-    const title = await shortenedLinkTab.title();
-    expect(title).toBeTruthy();
+    const pages = context.pages();
+
+    expect(pages.length).toBeGreaterThan(1);
   });
 
-  test('Generate shortened URL QR code', async ({ page, mainPage }) => {
+  test('Generate shortened URL QR code', async ({ mainPage }) => {
     // Click the `QR code` button
     await mainPage.showQRCode();
 
@@ -62,8 +64,7 @@ test.describe('URL Shortener App', () => {
 
 test.describe('Invalid input URL', () => {
   test('Should raise an error', async ({ page, mainPage }) => {
-    const invalidUrl = faker.internet.domainWord();
-    await mainPage.fillUrl(invalidUrl);
+    await mainPage.fillUrl(generateInvalidURL());
     await mainPage.shorten();
 
     const response = await page.waitForResponse(routes.SHORTEN_URL);
