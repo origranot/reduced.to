@@ -72,6 +72,6 @@ test.describe('Invalid input URL', () => {
 
     expect(response.status()).toBe(400); // Assert status code
     expect(jsonResponse.newUrl).toBeUndefined(); // Assert `newUrl` value
-    await expect(mainPage.errorMsg).toBeVisible(); // Assert that am error is displayed
+    await expect(mainPage.errorMsg).toBeVisible(); // Assert that an error is displayed
   });
 });
