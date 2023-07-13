@@ -23,14 +23,14 @@
   },
   "devDependencies": {
     "@auth/core": "^0.7.1",
+    "@builder.io/qwik": "^1.2.3",
     "@builder.io/qwik-auth": "~0.1.0",
+    "@builder.io/qwik-city": "^1.2.3",
     "@builder.io/qwik-react": "^0.5.0",
     "@emotion/react": "^11.9.3",
     "@emotion/server": "11.4.0",
     "@emotion/styled": "11.9.3",
     "@mui/material": "5.8.6",
-    "@builder.io/qwik": "^1.2.3",
-    "@builder.io/qwik-city": "^1.2.3",
     "@tailwindcss/typography": "^0.5.9",
     "@types/canvas-confetti": "^1.4.3",
     "@types/eslint": "8.4.6",
@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "axios": "^1.1.2",
+    "bcrypt": "^5.1.0",
     "canvas-confetti": "^1.5.1",
     "jwt-decode": "^3.1.2",
     "qrcode": "^1.5.1"

@@ -3,6 +3,9 @@ import GitHub from '@auth/core/providers/github';
 import Google from '@auth/core/providers/google';
 import type { Provider } from '@auth/core/providers';
 import { UserCtx } from './layout';
+import { JWT } from '@auth/core/jwt';
+import { Account, Profile, Session, User } from '@auth/core/types';
+import { AdapterUser } from '@auth/core/adapters';
 
 export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serverAuth$(
   ({ env }) => {
@@ -31,38 +34,13 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
       Google({ 
         clientId: envs.GOOGLE_CLIENT_ID, 
         clientSecret: envs.GOOGLE_API_KEY,
-      })
+      }),
+
     ] as Provider[],
     callbacks: {
-      jwt: async ({token, user, account}) => {
-        if (!user || !account) return token;
-        const signInAction = actionAPIFactory({
-          path: '/api/v1/auth/signup',
-          credentials: {
-            email: user.email!,
-            // We are using a generic password for all the users for the provider only.
-            // This done to avoid the failure of the sign in action as the password is required in the database schema.           
-            // TODO: Error handling for the user that already exists.
-            // TODO: Validate the user was signup with the provider.
-            // TODO: hash the .sub from the provider to avoid the generic password.
-            // TODO: when the user is in register flow then use the signup else use the login if on the login flow.
-            password: token.sub!,
-            // TODO: ADD PROVIDER-ID
-            name: user.name!,
-            provider: account.provider as Credentials["provider"],
-          },
-        });
-        const data = await signInAction();
-        
-        if (data) return {...data, ...token}
-        return null
-      },
-      session: async ({ session, token }) => {
-        return {...session, accessToken: token.accessToken, refreshToken: token.refreshToken}
-      } 
+      jwt: useSignUp,
+      session: updateSesstion,
     },
-
-
   }}
 );
 
@@ -81,9 +59,6 @@ interface Action {
 
 
 /**
- * 
- * @param param0 
- * @returns 
  * 
  * @example
  const signInAction = actionAPIFactory({
@@ -114,5 +89,43 @@ const actionAPIFactory = ({ path, credentials }: Action) => async () => {
   return result as UserCtx;
 }
 
+export async function useSignUp(params: {
+  token: JWT;
+  user?: User | AdapterUser | undefined;
+  account?: Account | null | undefined;
+  profile?: Profile | undefined;
+  isNewUser?: boolean | undefined;
+}) {
+  if (!params.user || !params.account) return params.token;
+  
+  const signUpAction = actionAPIFactory({
+    path: '/api/v1/auth/signup',
+    credentials: {
+      email: params.user.email!,
+      password: params.token.sub!,
+      name: params.user.name!,
+      provider: params.account.provider as Credentials["provider"],
+    },
+  });
+  
+  const data = await signUpAction();
+  
+  if (data) return {...data, ...params.token}
+  return null
+}
 
+export async function updateSesstion(params: {
+  session: Session;
+  user: User | AdapterUser;
+  token: JWT;
+}) {
+  return {...params.session, accessToken: params.token.accessToken, refreshToken: params.token.refreshToken}
+}
 
+// We are using a generic password for all the users for the provider only.
+// This done to avoid the failure of the sign in action as the password is required in the database schema.           
+// TODO: Error handling for the user that already exists.
+// TODO: Validate the user was signup with the provider.
+// TODO: hash the .sub from the provider to avoid the generic password.
+// TODO: when the user is in register flow then use the signup else use the login if on the login flow.
+// TODO: ADD PROVIDER-ID
