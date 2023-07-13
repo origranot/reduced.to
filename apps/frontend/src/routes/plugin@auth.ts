@@ -6,6 +6,7 @@ import { UserCtx } from './layout';
 import { JWT } from '@auth/core/jwt';
 import { Account, Profile, Session, User } from '@auth/core/types';
 import { AdapterUser } from '@auth/core/adapters';
+import bcrypt from 'bcrypt';
 
 export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serverAuth$(
   ({ env }) => {
@@ -49,7 +50,7 @@ interface Credentials {
   email: string;
   password: string;
   name?: string;
-  provider: "google" | "github" | "email";
+  // provider: "google" | "github" | "email";
 }
 
 interface Action {
@@ -97,14 +98,16 @@ export async function useSignUp(params: {
   isNewUser?: boolean | undefined;
 }) {
   if (!params.user || !params.account) return params.token;
+
+  console.log(hashPassword(`${params.account.provider}-${params.token.sub}`), hashPassword(`${params.account.provider}-${params.token.sub}`).length)
   
   const signUpAction = actionAPIFactory({
     path: '/api/v1/auth/signup',
     credentials: {
       email: params.user.email!,
-      password: params.token.sub!,
+      password: hashPassword(`${params.account.provider}-${params.token.sub}`),
       name: params.user.name!,
-      provider: params.account.provider as Credentials["provider"],
+      // provider: params.account.provider as Credentials["provider"],
     },
   });
   
@@ -129,3 +132,9 @@ export async function updateSesstion(params: {
 // TODO: hash the .sub from the provider to avoid the generic password.
 // TODO: when the user is in register flow then use the signup else use the login if on the login flow.
 // TODO: ADD PROVIDER-ID
+
+
+export function hashPassword(password: string) {
+  const saltRounds = 10;
+  return bcrypt.hashSync(password, saltRounds);
+}
