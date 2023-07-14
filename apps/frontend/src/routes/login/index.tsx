@@ -73,7 +73,7 @@ export default component$(() => {
             <div class="prose prose-slate">
               <h1 class="m-0">Welcome back!</h1>
               <p class="mt-2 mb-8">We're so excited to see you again!</p>
-              <Form action={action} class="form-control w-full max-w-xs inline-flex">
+              <Form action={action} class="form-control w-full max-w-xs inline-flex" >
                 <label class="label">
                   <span class="label-text text-xs font-semibold">EMAIL</span>
                 </label>
@@ -125,6 +125,7 @@ export const ProviderLogin = component$(() => {
     <Form action={authSignIn} class="form-control inline-flex">
       <input type="hidden" name="providerId" value="google" />
       <input type="hidden" name="options.callbackUrl" value={'/'} />
+      <input type="hidden" name="authorizationParams" value={JSON.stringify({trigger: 'signUp'})} />
       <LogInProviderButton providerName='Google' >
         <div q:slot='login-icon-button-slot'>{JSX_GOOGLE_ICON}</div>
       </LogInProviderButton>

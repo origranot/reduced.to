@@ -6,7 +6,7 @@ import { UserCtx } from './layout';
 import { JWT } from '@auth/core/jwt';
 import { Account, Profile, Session, User } from '@auth/core/types';
 import { AdapterUser } from '@auth/core/adapters';
-import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 
 export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serverAuth$(
   ({ env }) => {
@@ -23,7 +23,7 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
       GOOGLE_API_KEY: env.get('GOOGLE_CLIENT_SECRET')!,
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    if (!Object.values(envs).every(Boolean)) throw new Error(`the Missings envs: ${Object.entries(envs).filter(([_, v]) => !v).map(([k]) => k).join(', ')}`)
+    if (!Object.values(envs).every(Boolean)) throw new Error(`the missings envs: ${Object.entries(envs).filter(([_, v]) => !v).map(([k]) => k).join(', ')}`)
     return {
     secret: envs.AUTH_SECRET,
     trustHost: true,
@@ -31,26 +31,24 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
       GitHub({
         clientId: envs.GITHUB_ID,
         clientSecret: envs.GITHUB_SECRET_CLIENT,
+
       }),
       Google({ 
         clientId: envs.GOOGLE_CLIENT_ID, 
-        clientSecret: envs.GOOGLE_API_KEY,
+        clientSecret: envs.GOOGLE_API_KEY, 
       }),
 
     ] as Provider[],
     callbacks: {
-      jwt: useSignUp,
+      jwt: useJWT,
       session: updateSesstion,
     },
   }}
 );
-
-
 interface Credentials {
   email: string;
   password: string;
   name?: string;
-  // provider: "google" | "github" | "email";
 }
 
 interface Action {
@@ -90,30 +88,44 @@ const actionAPIFactory = ({ path, credentials }: Action) => async () => {
   return result as UserCtx;
 }
 
-export async function useSignUp(params: {
+export async function useJWT(params: {
   token: JWT;
   user?: User | AdapterUser | undefined;
   account?: Account | null | undefined;
   profile?: Profile | undefined;
   isNewUser?: boolean | undefined;
+  trigger?: "signIn" | "signUp" | "update" | undefined;
 }) {
-  if (!params.user || !params.account) return params.token;
-
-  console.log(hashPassword(`${params.account.provider}-${params.token.sub}`), hashPassword(`${params.account.provider}-${params.token.sub}`).length)
-  
-  const signUpAction = actionAPIFactory({
-    path: '/api/v1/auth/signup',
+  if (!params.user || !params.account) return params.token; 
+  // trigger is a required param for the auth callback. TODO: implement trigger required in the auth callback.   
+  const passWordByProvider = hashProviderId(`${params.account.provider}-${params.token.sub}`);
+  const optionsSignUp = {
+    path: '/api/v1/auth/signup' as const,
     credentials: {
       email: params.user.email!,
-      password: hashPassword(`${params.account.provider}-${params.token.sub}`),
+      password: passWordByProvider,
       name: params.user.name!,
-      // provider: params.account.provider as Credentials["provider"],
-    },
-  });
-  
-  const data = await signUpAction();
-  
-  if (data) return {...data, ...params.token}
+  }} 
+  try {
+    const action = actionAPIFactory(optionsSignUp);
+    const data = await action();
+    if (data) return { ...data, ...params.token };   
+  } catch (error) {
+    console.log(error)
+  }
+  const optionsSignIn = {
+    path: '/api/v1/auth/login' as const,
+    credentials: {
+      email: params.user.email!,
+      password: passWordByProvider,
+  }}
+  try {
+    const action = actionAPIFactory(optionsSignIn);
+    const data = await action();
+    if (data) return { ...data, ...params.token };   
+  } catch (error) {
+    console.log(error)
+  }
   return null
 }
 
@@ -122,7 +134,11 @@ export async function updateSesstion(params: {
   user: User | AdapterUser;
   token: JWT;
 }) {
-  return {...params.session, accessToken: params.token.accessToken, refreshToken: params.token.refreshToken}
+  return {
+    ...params.session, 
+    accessToken: params.token.accessToken, 
+    refreshToken: params.token.refreshToken
+  }
 }
 
 // We are using a generic password for all the users for the provider only.
@@ -134,7 +150,8 @@ export async function updateSesstion(params: {
 // TODO: ADD PROVIDER-ID
 
 
-export function hashPassword(password: string) {
-  const saltRounds = 10;
-  return bcrypt.hashSync(password, saltRounds);
+function hashProviderId(str: string) {
+  const hash = crypto.createHash('sha256'); // use 'sha256' or any other algorithm you prefer
+  hash.update(str);
+  return hash.digest('hex');
 }
