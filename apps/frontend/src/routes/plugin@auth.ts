@@ -41,6 +41,7 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
     ] as Provider[],
     callbacks: {
       jwt: useJWT,
+      signIn: useSignIn,
       session: updateSesstion,
     },
   }}
@@ -88,31 +89,52 @@ const actionAPIFactory = ({ path, credentials }: Action) => async () => {
   return result as UserCtx;
 }
 
+export async function useSignIn(params: {
+  account?: Account | null | undefined;
+  profile?: Profile | undefined;
+}) {
+  if (!params.account?.providerAccountId || !params.account.provider || !params.profile?.name || !params.profile?.email) return false; 
+  // trigger is a required param for the auth callback. TODO: implement trigger required in the auth callback.   
+  const passWordByProvider = hashProviderId(`${params.account.provider}-${params.account.providerAccountId}`);
+  const optionsSignUp = {
+    path: '/api/v1/auth/signup' as const,
+    credentials: {
+      email: params.profile.email,
+      password: passWordByProvider,
+      name: params.profile.name,
+  }} 
+  try {
+    const action = actionAPIFactory(optionsSignUp);
+    const data = await action();
+    if (data) return true
+  } catch (error) {
+    console.log(error)
+  }
+  const optionsSignIn = {
+    path: '/api/v1/auth/login' as const,
+    credentials: {
+      email: params.profile.email!,
+      password: passWordByProvider,
+  }}
+  try {
+    const action = actionAPIFactory(optionsSignIn);
+    const data = await action();
+    if (data) return true
+  } catch (error) {
+    console.log(error)
+  }
+  return false
+}
 export async function useJWT(params: {
   token: JWT;
   user?: User | AdapterUser | undefined;
   account?: Account | null | undefined;
   profile?: Profile | undefined;
   isNewUser?: boolean | undefined;
-  trigger?: "signIn" | "signUp" | "update" | undefined;
 }) {
   if (!params.user || !params.account) return params.token; 
   // trigger is a required param for the auth callback. TODO: implement trigger required in the auth callback.   
   const passWordByProvider = hashProviderId(`${params.account.provider}-${params.token.sub}`);
-  const optionsSignUp = {
-    path: '/api/v1/auth/signup' as const,
-    credentials: {
-      email: params.user.email!,
-      password: passWordByProvider,
-      name: params.user.name!,
-  }} 
-  try {
-    const action = actionAPIFactory(optionsSignUp);
-    const data = await action();
-    if (data) return { ...data, ...params.token };   
-  } catch (error) {
-    console.log(error)
-  }
   const optionsSignIn = {
     path: '/api/v1/auth/login' as const,
     credentials: {
@@ -128,7 +150,6 @@ export async function useJWT(params: {
   }
   return null
 }
-
 export async function updateSesstion(params: {
   session: Session;
   user: User | AdapterUser;
