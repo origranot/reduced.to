@@ -25,13 +25,15 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     if (!Object.values(envs).every(Boolean)) throw new Error(`the missings envs: ${Object.entries(envs).filter(([_, v]) => !v).map(([k]) => k).join(', ')}`)
     return {
+    pages: {
+      error: "/login"
+    },
     secret: envs.AUTH_SECRET,
     trustHost: true,
     providers: [
       GitHub({
         clientId: envs.GITHUB_ID,
         clientSecret: envs.GITHUB_SECRET_CLIENT,
-
       }),
       Google({ 
         clientId: envs.GOOGLE_CLIENT_ID, 
@@ -89,6 +91,7 @@ const actionAPIFactory = ({ path, credentials }: Action) => async () => {
   return result as UserCtx;
 }
 
+
 export async function useSignIn(params: {
   account?: Account | null | undefined;
   profile?: Profile | undefined;
@@ -125,6 +128,8 @@ export async function useSignIn(params: {
   }
   return false
 }
+
+
 export async function useJWT(params: {
   token: JWT;
   user?: User | AdapterUser | undefined;
@@ -150,6 +155,8 @@ export async function useJWT(params: {
   }
   return null
 }
+
+
 export async function updateSesstion(params: {
   session: Session;
   user: User | AdapterUser;
@@ -161,6 +168,7 @@ export async function updateSesstion(params: {
     refreshToken: params.token.refreshToken
   }
 }
+
 
 // We are using a generic password for all the users for the provider only.
 // This done to avoid the failure of the sign in action as the password is required in the database schema.           
