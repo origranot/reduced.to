@@ -1,10 +1,9 @@
 import { test as base } from '@playwright/test';
-import { LoginPage } from '../pages/authentication/login.page';
-import prisma from '../helpers/prisma';
-import { faker } from '@faker-js/faker';
-import { RegisterPage } from '../pages/authentication/register-page';
-import { LocalStorage } from '../helpers/local-storage';
 import { generateValidEmail, generateValidName, generateValidPassword } from '../helpers/faker-utils';
+import { LocalStorage } from '../helpers/local-storage';
+import prisma from '../helpers/prisma';
+import { LoginPage } from '../pages/authentication/login.page';
+import { RegisterPage } from '../pages/authentication/register.page';
 
 interface UserDetails {
   displayName: string;
@@ -63,8 +62,6 @@ export const test = base.extend<AuthFixtures>({
     await page.waitForURL(/.*register\/verify.*/);
 
     // Verify the user
-    console.log(await prisma.user.findMany());
-
     await prisma.user.update({
       where: {
         email: userCredentials.email,
