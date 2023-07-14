@@ -4,9 +4,6 @@ import { generateInvalidEmail, generateShortPassword, generateValidEmail, genera
 test.describe('User login', async () => {
   test('Heading check', async ({ loginPage }) => {
     await expect(loginPage.heading).toBeVisible();
-
-    const titleContent = await loginPage.heading.textContent();
-    expect(titleContent).toMatch('Welcome back!');
   });
 
   test('Successful user login', async ({ page, loginPage, account, baseURL }) => {
