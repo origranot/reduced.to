@@ -126,10 +126,7 @@ test.describe('Register page', async () => {
   });
 
   test('Fill empty fields', async ({ page, registerPage }) => {
-    await registerPage.fillName('');
-    await registerPage.fillEmail('');
-    await registerPage.fillPassword('');
-
+    // Submit an empty form
     await registerPage.submit();
 
     // Should show error messages
