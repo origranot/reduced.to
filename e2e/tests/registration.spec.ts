@@ -15,7 +15,7 @@ test.describe('Register page', async () => {
   const password = generateValidPassword();
   const passwordConstrains = 'Password must contain at least six characters, including at least 1 letter and 1 number.';
 
-  test('Heading and password constrains', async ({ page, registerPage }) => {
+  test('Should show a heading and password constrains', async ({ page, registerPage }) => {
     await expect(registerPage.heading).toBeVisible();
 
     // Should show password constrains
@@ -23,7 +23,7 @@ test.describe('Register page', async () => {
     await expect(passwordError).toBeVisible();
   });
 
-  test('New user registration', async ({ page, registerPage, context }) => {
+  test('Should register a new user', async ({ page, registerPage, context }) => {
     // Populate in the form
     await registerPage.fillName(displayName);
     await registerPage.fillEmail(email);
@@ -73,7 +73,7 @@ test.describe('Register page', async () => {
     await expect(errorMsg).toBeVisible();
   });
 
-  test('Short display name', async ({ page, registerPage }) => {
+  test('Should show an error - short display name', async ({ page, registerPage }) => {
     // Fill short name
     await registerPage.fillName(generateShortName());
     await registerPage.fillEmail(generateValidEmail());
@@ -86,7 +86,7 @@ test.describe('Register page', async () => {
     await expect(errorMsg).toBeVisible();
   });
 
-  test('Long display name', async ({ page, registerPage }) => {
+  test('Should show an error - long display name', async ({ page, registerPage }) => {
     // Fill long name
     await registerPage.fillName(generateLongName());
     await registerPage.fillEmail(generateValidEmail());
@@ -99,7 +99,7 @@ test.describe('Register page', async () => {
     await expect(errorMsg).toBeVisible();
   });
 
-  test('Invalid email', async ({ page, registerPage }) => {
+  test('Should show an error - invalid email', async ({ page, registerPage }) => {
     await registerPage.fillName(generateValidName());
     // Fill invalid email
     await registerPage.fillEmail(generateInvalidEmail());
@@ -112,7 +112,7 @@ test.describe('Register page', async () => {
     await expect(errorMsg).toBeVisible();
   });
 
-  test('Short password', async ({ page, registerPage }) => {
+  test('Should show an error - short password', async ({ page, registerPage }) => {
     await registerPage.fillName(generateValidName());
     await registerPage.fillEmail(generateValidEmail());
     // Fill in short password
@@ -125,7 +125,7 @@ test.describe('Register page', async () => {
     await expect(errorMsg).toBeVisible();
   });
 
-  test('Fill empty fields', async ({ page, registerPage }) => {
+  test('Should show an error - fill empty fields', async ({ page, registerPage }) => {
     // Submit an empty form
     await registerPage.submit();
 
