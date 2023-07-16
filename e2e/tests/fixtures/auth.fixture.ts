@@ -16,6 +16,7 @@ interface AuthFixtures {
   loginPage: LoginPage;
   userCredentials: UserDetails;
   account: UserDetails;
+  authenticatedPage: LoginPage;
   storage: LocalStorage;
 }
 
@@ -76,6 +77,13 @@ export const test = base.extend<AuthFixtures>({
 
     // Provide the credentials to the test
     await use(userCredentials);
+  },
+  authenticatedPage: async ({ page, loginPage, account, baseURL }, use) => {
+    await loginPage.fillEmail(account.email);
+    await loginPage.fillPassword(account.password);
+    await loginPage.submit();
+    await page.waitForURL(baseURL!);
+    await use(loginPage);
   },
   storage: async ({ page }, use) => {
     await use(new LocalStorage(page.context()));
