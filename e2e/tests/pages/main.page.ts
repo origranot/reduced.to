@@ -18,13 +18,13 @@ export class MainPage {
   constructor(page: Page) {
     this.page = page;
     this.navbar = new Navbar(page);
-    this.urlInput = this.page.locator('#urlInput');
+    this.urlInput = this.page.getByPlaceholder('Very long url...');
     this.linkExpDropDown = this.page.getByRole('button', { name: '1 Week' });
     this.submitButton = this.page.getByRole('button', { name: 'Shorten URL' });
     this.shortenedLink = this.page.locator('#result > span[id="text"]');
     this.copyUrlButton = this.page.getByRole('button', { name: 'Copy' });
     this.openInNewTabButton = this.page.getByRole('button', { name: 'Open in new tab' });
-    this.qrCodeButton = this.page.locator('button[title="QR Code"]');
+    this.qrCodeButton = this.page.getByRole('button', { name: 'QR Code' });
     this.qrCode = this.page.locator('#qrcode');
     this.shareOnTwitterButton = this.page.getByRole('button', { name: 'Share on twitter' });
     this.errorMsg = this.page.locator('#error');
