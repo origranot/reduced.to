@@ -8,7 +8,7 @@ export class LoginPage extends BaseAuthPage {
 
   constructor(page: Page) {
     super(page, 'login');
-    this.registerLink = this.page.locator('a[href="/register"]');
+    this.registerLink = this.page.getByRole('link', { name: 'Register' });
     this.submitButton = this.page.locator('button', { hasText: 'Log in' });
     this.heading = this.page.locator('h1', { hasText: 'Welcome back!' });
   }
