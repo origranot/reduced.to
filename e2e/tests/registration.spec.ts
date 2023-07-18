@@ -31,7 +31,7 @@ test.describe('Register page', async () => {
     await page.waitForURL(/.*register\/verify.*/);
 
     // Should ask for email verification
-    expect(page.url()).toMatch(/.*register\/verify.*/);
+    expect(page).toHaveURL(`${baseURL}register/verify/`);
 
     // Should show verification alert
     await expect(registerPage.verificationAlert).toBeVisible();
