@@ -28,7 +28,9 @@ test.describe('Register page', async () => {
     await registerPage.fillEmail(myFaker.validEmail());
     await registerPage.fillPassword(myFaker.validPassword());
     await registerPage.submit();
-    await page.waitForURL(/.*register\/verify.*/);
+
+    const response = await page.waitForResponse(routes.REGISTER);
+    expect(response.status()).toBe(200);
 
     // Should ask for email verification
     expect(page).toHaveURL(`${baseURL}register/verify/`);
