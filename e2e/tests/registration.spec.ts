@@ -48,8 +48,6 @@ test.describe('Register page', async () => {
     await registerPage.fillName(account.displayName);
     await registerPage.fillEmail(account.email);
     await registerPage.fillPassword(account.password);
-
-    // Submit the form
     await registerPage.submit();
 
     // Should stay at /register page
