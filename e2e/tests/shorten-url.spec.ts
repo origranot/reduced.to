@@ -13,8 +13,8 @@ test.describe('URL Shortener App', () => {
     const response = await page.waitForResponse(routes.SHORTEN_URL);
     const jsonResponse = await response.json();
 
-    expect(response.status()).toBe(201); // Assert status code
-    expect(jsonResponse.newUrl).toBeTruthy(); // Assert `newUrl` value
+    expect(response.status()).toBe(201);
+    expect(jsonResponse.newUrl).toBeTruthy();
   });
 
   test('Copy the shortened URL', async ({ page, mainPage }) => {
