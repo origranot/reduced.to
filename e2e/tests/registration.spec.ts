@@ -30,7 +30,7 @@ test.describe('Register page', async () => {
     expect(response.status()).toBe(200);
 
     // Should ask for email verification
-    expect(page).toHaveURL(`${baseURL}register/verify/`);
+    await expect(page).toHaveURL(`${baseURL}register/verify/`);
 
     // Should show verification alert
     await expect(registerPage.verificationAlert).toBeVisible();
@@ -51,7 +51,7 @@ test.describe('Register page', async () => {
     await registerPage.submit();
 
     // Should stay at /register page
-    expect(page).toHaveURL(`${baseURL}register/`);
+    await expect(page).toHaveURL(`${baseURL}register/`);
     await expect(page.getByText('email is already exists!')).toBeVisible();
   });
 
