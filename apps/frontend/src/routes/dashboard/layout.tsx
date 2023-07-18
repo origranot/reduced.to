@@ -5,8 +5,8 @@ import { Role, useGetCurrentUser } from '../layout';
 
 export const onGet: RequestHandler = async ({ cookie, redirect, sharedMap }) => {
   const validAccessToken = await validateAccessToken(cookie);
-  if (validAccessToken || sharedMap.get('session').accessToken) return;
-  throw redirect(302, '/');
+  if (validAccessToken || sharedMap.get('session')?.accessToken) return;
+  throw redirect(302, '/'); 
 };
 
 export default component$(() => {
