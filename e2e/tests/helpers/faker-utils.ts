@@ -1,23 +1,23 @@
 import { faker } from '@faker-js/faker';
 
 // Names generators
-export const generateValidName = () => faker.string.sample(8);
+export const validName = () => faker.string.sample(8);
 
-export const generateShortName = () => faker.string.sample(2);
+export const shortName = () => faker.string.sample(2);
 
-export const generateLongName = () => faker.string.sample(26);
+export const longName = () => faker.string.sample(26);
 
 // Email generators
-export const generateValidEmail = () => faker.internet.email();
+export const validEmail = () => faker.internet.email();
 
-export const generateInvalidEmail = () => faker.string.sample(10);
+export const invalidEmail = () => faker.string.sample(10);
 
 // Password generators
-export const generateValidPassword = () => `a${faker.internet.password({ length: 8 })}1`;
+export const validPassword = () => `a${faker.internet.password({ length: 8 })}1`;
 
-export const generateShortPassword = () => faker.internet.password({ length: 5 });
+export const shortPassword = () => faker.internet.password({ length: 5 });
 
 // URL generator
-export const generateValidURL = () => faker.internet.url();
+export const validURL = () => faker.internet.url();
 
-export const generateInvalidURL = () => faker.internet.domainWord();
+export const invalidURL = () => faker.internet.domainWord();
