@@ -1,4 +1,4 @@
-import { expect, test } from './fixtures/main.fixture';
+import { expect, test } from './fixtures';
 
 test.describe('Test theme toggle', async () => {
   test.use({
