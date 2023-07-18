@@ -1,0 +1,48 @@
+:root {
+  --ifm-color-primary: #478fff;
+  --ifm-color-primary-dark: #478fff;
+  --ifm-color-primary-darker: #478fff;
+  --ifm-color-primary-darkest: #478fff;
+  --ifm-color-primary-light: #478fff;
+  --ifm-color-primary-lighter: #478fff;
+  --ifm-color-primary-lightest: #478fff;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+    'Helvetica Neue', sans-serif;
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  background-color: #000000;
+  --ifm-color-primary: #478fff;
+  --ifm-color-primary-dark: #478fff;
+  --ifm-color-primary-darker: #000000;
+  --ifm-color-primary-darkest: #000000;
+  --ifm-color-primary-light: #000000;
+  --ifm-color-primary-lighter: #478fff;
+  --ifm-color-primary-lightest: #478fff;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.798);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+    'Helvetica Neue', sans-serif;
+}
+.navbar {
+  background-color: transparent;
+}
+.footer {
+  background-color: transparent;
+}
+
+.navbar-github-link {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-github-logo {
+  height: 24px;
+
+  margin-left: 6px;
+}
+[data-theme='dark'] .navbar-github-logo {
+  filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(180deg);
+}

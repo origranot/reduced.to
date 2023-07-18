@@ -1,0 +1,66 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres_db
+    restart: always
+    env_file: database.env
+    ports:
+      - 5432:5432
+    volumes:
+      - /custom/mount:/var/lib/postgresql/data
+    networks:
+      - db
+
+  redis:
+    image: redis
+    container_name: redis
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
+    env_file: backend.env
+    ports:
+      - 6379:6379
+    networks:
+      - db
+
+  backend:
+    image: ghcr.io/origranot/reduced.to/backend:master
+    container_name: backend
+    restart: always
+    env_file: backend.env
+    ports:
+      - 3000:3000
+    networks:
+      - db
+    depends_on:
+      - postgres
+      - redis
+
+  frontend:
+    image: ghcr.io/origranot/reduced.to/frontend:master
+    container_name: frontend
+    restart: always
+    env_file: frontend.env
+    ports:
+      - 5000:5000
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --cleanup --interval 30 backend frontend
+
+volumes:
+  postgres:
+    name: postgres-db
+  redis:
+    name: redis-store
+
+networks:
+  db:
+    driver: bridge
