@@ -10,27 +10,23 @@ test.describe('Register page', async () => {
 
   test('Should show a heading and password constrains', async ({ page, registerPage }) => {
     await expect(registerPage.heading).toBeVisible();
-
-    // Should show password constrains
-    const passwordError = page.getByText(passwordConstrains);
-    await expect(passwordError).toBeVisible();
+    await expect(page.getByText(passwordConstrains)).toBeVisible();
   });
 
-  test('Should register a new user', async ({ page, registerPage, context }) => {
-    // Populate in the form
-    await registerPage.fillName(displayName);
-    await registerPage.fillEmail(email);
-    await registerPage.fillPassword(password);
-
-    // Check password visibility toggler
+  test('Should toggle password visibility', async ({ registerPage }) => {
+    // Toggle once
     await registerPage.togglePasswordVisibility();
     await expect(registerPage.passwordInput).toHaveAttribute('type', 'text');
 
     // Toggle again
     await registerPage.togglePasswordVisibility();
     await expect(registerPage.passwordInput).toHaveAttribute('type', 'password');
+  });
 
-    // Submit the form
+  test('Should register a new user', async ({ page, registerPage, context, baseURL }) => {
+    await registerPage.fillName(myFaker.validName());
+    await registerPage.fillEmail(myFaker.validEmail());
+    await registerPage.fillPassword(myFaker.validPassword());
     await registerPage.submit();
     await page.waitForURL(/.*register\/verify.*/);
 
@@ -49,8 +45,7 @@ test.describe('Register page', async () => {
     expect(tokensNames).toContain('refreshToken');
   });
 
-  test('Should not register user with existing email', async ({ page, registerPage, account }) => {
-    // Populate in the form
+  test('Should not register user with existing email', async ({ page, registerPage, account, baseURL }) => {
     await registerPage.fillName(account.displayName);
     await registerPage.fillEmail(account.email);
     await registerPage.fillPassword(account.password);
@@ -58,78 +53,51 @@ test.describe('Register page', async () => {
     // Submit the form
     await registerPage.submit();
 
-    // Should stay at `register` page
-    expect(page.url()).toMatch(/.*register\//);
-
-    // Should show an error message
-    const errorMsg = page.getByText('email is already exists!');
-    await expect(errorMsg).toBeVisible();
+    // Should stay at /register page
+    expect(page).toHaveURL(`${baseURL}register/`);
+    await expect(page.getByText('email is already exists!')).toBeVisible();
   });
 
-  test('Should show an error - short display name', async ({ page, registerPage }) => {
-    // Fill short name
-    await registerPage.fillName(generateShortName());
-    await registerPage.fillEmail(generateValidEmail());
-    await registerPage.fillPassword(generateValidPassword());
+  test.describe('Invalid credentials', async () => {
+    test('Short display name', async ({ page, registerPage }) => {
+      await registerPage.fillName(myFaker.shortName());
+      await registerPage.fillEmail(myFaker.validEmail());
+      await registerPage.fillPassword(myFaker.validPassword());
+      await registerPage.submit();
+      await expect(page.getByText('Display name must be at least 3 characters')).toBeVisible();
+    });
 
-    await registerPage.submit();
+    test('Long display name', async ({ page, registerPage }) => {
+      await registerPage.fillName(myFaker.longName());
+      await registerPage.fillEmail(myFaker.validEmail());
+      await registerPage.fillPassword(myFaker.validPassword());
+      await registerPage.submit();
+      await expect(page.getByText('Display name must be less than 25 characters')).toBeVisible();
+    });
 
-    // Should show an error message
-    const errorMsg = page.getByText('Display name must be at least 3 characters');
-    await expect(errorMsg).toBeVisible();
-  });
+    test('Invalid email', async ({ page, registerPage }) => {
+      await registerPage.fillName(myFaker.validName());
+      await registerPage.fillEmail(myFaker.invalidEmail());
+      await registerPage.fillPassword(myFaker.validPassword());
+      await registerPage.submit();
+      await expect(page.getByText('Please enter a valid email')).toBeVisible();
+    });
 
-  test('Should show an error - long display name', async ({ page, registerPage }) => {
-    // Fill long name
-    await registerPage.fillName(generateLongName());
-    await registerPage.fillEmail(generateValidEmail());
-    await registerPage.fillPassword(generateValidPassword());
+    test('Short password', async ({ page, registerPage }) => {
+      await registerPage.fillName(myFaker.validName());
+      await registerPage.fillEmail(myFaker.validEmail());
+      await registerPage.fillPassword(myFaker.shortPassword());
+      await registerPage.submit();
+      await expect(
+        page.getByText('Password must contain at least six characters, including at least 1 letter and 1 number.')
+      ).toBeVisible();
+    });
 
-    await registerPage.submit();
-
-    // Should show an error message
-    const errorMsg = page.getByText('Display name must be less than 25 characters');
-    await expect(errorMsg).toBeVisible();
-  });
-
-  test('Should show an error - invalid email', async ({ page, registerPage }) => {
-    await registerPage.fillName(generateValidName());
-    // Fill invalid email
-    await registerPage.fillEmail(generateInvalidEmail());
-    await registerPage.fillPassword(generateValidPassword());
-
-    await registerPage.submit();
-
-    // Should show an error message
-    const errorMsg = page.getByText('Please enter a valid email');
-    await expect(errorMsg).toBeVisible();
-  });
-
-  test('Should show an error - short password', async ({ page, registerPage }) => {
-    await registerPage.fillName(generateValidName());
-    await registerPage.fillEmail(generateValidEmail());
-    // Fill in short password
-    await registerPage.fillPassword(generateShortPassword());
-
-    await registerPage.submit();
-
-    // Should show an error message
-    const errorMsg = page.getByText('Password must contain at least six characters, including at least 1 letter and 1 number.');
-    await expect(errorMsg).toBeVisible();
-  });
-
-  test('Should show an error - fill empty fields', async ({ page, registerPage }) => {
-    // Submit an empty form
-    await registerPage.submit();
-
-    // Should show error messages
-    const displayNameError = page.getByText('Display name must be at least 3 characters');
-    await expect(displayNameError).toBeVisible();
-
-    const emailError = page.getByText('Please enter a valid email');
-    await expect(emailError).toBeVisible();
-
-    const passwordError = page.getByText(passwordConstrains);
-    await expect(passwordError).toBeVisible();
+    test('Submit empty form', async ({ page, registerPage }) => {
+      await registerPage.submit();
+      await expect(page.getByText('Display name must be at least 3 characters')).toBeVisible();
+      await expect(page.getByText('Please enter a valid email')).toBeVisible();
+      await expect(page.getByText(passwordConstrains)).toBeVisible();
+    });
   });
 });
