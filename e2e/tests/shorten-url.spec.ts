@@ -3,11 +3,9 @@ import { routes } from './helpers/constants';
 import { generateInvalidURL, generateValidURL } from './helpers/faker-utils';
 
 test.describe('URL Shortener App', () => {
-  let url = generateValidURL();
-
   test.beforeEach(async ({ page, mainPage }) => {
     // Enter the URL in the input field
-    await mainPage.fillUrl(url);
+    await mainPage.fillUrl(generateValidURL());
 
     // Click the `SHORTEN URL` button
     await mainPage.shorten();
