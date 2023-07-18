@@ -1,24 +1,18 @@
-import { expect, test } from './fixtures/auth.fixture';
+import { expect, test } from './fixtures';
 import { generateInvalidEmail, generateShortPassword, generateValidEmail, generateValidPassword } from './helpers/faker-utils';
 
 test.describe('Login', async () => {
-  let baseUrl: string;
-
-  test.beforeAll(async ({ baseURL }) => {
-    baseUrl = baseURL ?? 'http://localhost:5173/';
-  });
-
   test('Login page should display a heading', async ({ loginPage }) => {
     await expect(loginPage.heading).toBeVisible();
   });
 
   test.describe('Logged in user', () => {
-    test('Should redirect to home page after logging in', async ({ page, loginPage, account }) => {
+    test('Should redirect to home page after logging in', async ({ page, loginPage, account, baseURL }) => {
       await loginPage.fillEmail(account.email);
       await loginPage.fillPassword(account.password);
       await loginPage.submit();
-      await page.waitForURL(baseUrl);
-      expect(page).toHaveURL(baseUrl);
+      await page.waitForURL(baseURL!);
+      expect(page).toHaveURL(baseURL!);
     });
 
     test('Should get cookies after logging in', async ({ authenticatedPage, context }) => {
@@ -37,20 +31,20 @@ test.describe('Login', async () => {
       await expect(authenticatedPage.navbar.dashboardButton).toBeVisible();
     });
 
-    test("Should be able to navigate to user's dashboard", async ({ page, authenticatedPage }) => {
+    test("Should be able to navigate to user's dashboard", async ({ page, authenticatedPage, baseURL }) => {
       await authenticatedPage.navbar.avatar.click();
       await authenticatedPage.navbar.gotoDashboard();
-      await page.waitForURL(`${baseUrl}dashboard/`);
-      expect(page).toHaveURL(`${baseUrl}dashboard/`);
+      await page.waitForURL(`${baseURL!}dashboard/`);
+      expect(page).toHaveURL(`${baseURL!}dashboard/`);
     });
 
-    test('Log out', async ({ page, authenticatedPage, context }) => {
+    test('Log out', async ({ page, authenticatedPage, context, baseURL }) => {
       await authenticatedPage.navbar.avatar.click();
       await authenticatedPage.navbar.logout();
-      await page.waitForURL(baseUrl);
+      await page.waitForURL(baseURL!);
 
       // Should redirect to the home page
-      expect(page).toHaveURL(baseUrl);
+      expect(page).toHaveURL(baseURL!);
 
       // Should display login button and hide avatar
       await expect(authenticatedPage.navbar.loginButton).toBeVisible();
