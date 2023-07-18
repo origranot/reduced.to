@@ -77,5 +77,11 @@ test.describe('Login', async () => {
       await loginPage.submit();
       await expect(page.getByText('Password must be at least 6 characters')).toBeVisible();
     });
+
+    test('Submit empty form', async ({ page, loginPage }) => {
+      await loginPage.submit();
+      await expect(page.getByText('Please enter a valid email')).toBeVisible();
+      await expect(page.getByText('Password must be at least 6 characters')).toBeVisible();
+    });
   });
 });
