@@ -1,4 +1,5 @@
 import { expect, test } from './fixtures';
+import { routes } from './helpers/constants';
 import * as myFaker from './helpers/faker-utils';
 
 test.describe('Login', async () => {
@@ -17,7 +18,7 @@ test.describe('Login', async () => {
       expect(response.status()).toBe(200);
 
       await page.waitForURL(baseURL!);
-      expect(page).toHaveURL(baseURL!);
+      await expect(page).toHaveURL(baseURL!);
     });
 
     test('Should get cookies after logging in', async ({ authenticatedPage, context }) => {
@@ -40,7 +41,7 @@ test.describe('Login', async () => {
       await authenticatedPage.navbar.avatar.click();
       await authenticatedPage.navbar.gotoDashboard();
       await page.waitForURL(`${baseURL!}dashboard/`);
-      expect(page).toHaveURL(`${baseURL!}dashboard/`);
+      await expect(page).toHaveURL(`${baseURL!}dashboard/`);
     });
 
     test('Log out', async ({ page, authenticatedPage, context, baseURL }) => {
@@ -49,7 +50,7 @@ test.describe('Login', async () => {
       await page.waitForURL(baseURL!);
 
       // Should redirect to the home page
-      expect(page).toHaveURL(baseURL!);
+      await expect(page).toHaveURL(baseURL!);
 
       // Should display login button and hide avatar
       await expect(authenticatedPage.navbar.loginButton).toBeVisible();
