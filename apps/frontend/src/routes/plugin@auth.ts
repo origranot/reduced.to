@@ -107,37 +107,48 @@ export async function useSignIn(params: {
   account?: Account | null | undefined;
   profile?: Profile | undefined;
 }) {
-  if (!params.account?.providerAccountId || !params.account.provider || !params.profile?.name || !params.profile?.email) return false; 
-  const passWordByProvider = hashProviderId(`${params.account.provider}-${params.account.providerAccountId}`);
-  const optionsSignUp = {
-    path: '/api/v1/auth/signup' as const,
-    credentials: {
-      email: params.profile.email,
-      password: passWordByProvider,
-      name: params.profile.name,
-  }} 
-  try {
-    const action = actionAPIFactory(optionsSignUp);
-    const data = await action();
-    if (data) return true
-  } catch (error) {
-    console.log(error)
+  const { account, profile } = params;
+  if (!account?.providerAccountId || !account.provider || !profile?.name || !profile?.email) {
+    return false;
   }
-  const optionsSignIn = {
-    path: '/api/v1/auth/login' as const,
-    credentials: {
-      email: params.profile.email!,
-      password: passWordByProvider,
-  }}
-  try {
-    const action = actionAPIFactory(optionsSignIn);
-    const data = await action();
-    if (data) return true
-  } catch (error) {
-    console.log(error)
+
+  if (await signUp(profile, account)) {
+    return true;
   }
-  // TODO: add error handling
-  return false
+
+  return signIn(profile, account);
+}
+
+async function signUp(profile: Profile, account: Account) {
+  const password = hashProviderId(`${account.provider}-${account.providerAccountId}`);
+  const action = actionAPIFactory({
+    path: '/api/v1/auth/signup',
+    credentials: { email: profile.email!, password, name: profile.name! },
+  });
+
+  try {
+    const data = await action();
+    return Boolean(data);
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
+async function signIn(profile: Profile, account: Account) {
+  const password = hashProviderId(`${account.provider}-${account.providerAccountId}`);
+  const action = actionAPIFactory({
+    path: '/api/v1/auth/login',
+    credentials: { email: profile.email!, password },
+  });
+
+  try {
+    const data = await action();
+    return Boolean(data);
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 }
 
 
