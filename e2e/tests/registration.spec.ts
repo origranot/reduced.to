@@ -3,9 +3,6 @@ import { routes } from './helpers/constants';
 import * as myFaker from './helpers/faker-utils';
 
 test.describe('Register page', async () => {
-  const displayName = generateValidName();
-  const email = generateValidEmail();
-  const password = generateValidPassword();
   const passwordConstrains = 'Password must contain at least six characters, including at least 1 letter and 1 number.';
 
   test('Should show a heading and password constrains', async ({ page, registerPage }) => {
