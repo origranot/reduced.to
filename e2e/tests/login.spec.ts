@@ -11,6 +11,11 @@ test.describe('Login', async () => {
       await loginPage.fillEmail(account.email);
       await loginPage.fillPassword(account.password);
       await loginPage.submit();
+
+      // Check status code
+      const response = await page.waitForResponse(routes.LOGIN);
+      expect(response.status()).toBe(200);
+
       await page.waitForURL(baseURL!);
       expect(page).toHaveURL(baseURL!);
     });
