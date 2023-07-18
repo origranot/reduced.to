@@ -4,6 +4,7 @@ import { LocalStorage } from '../helpers/local-storage';
 import prisma from '../helpers/prisma';
 import { LoginPage } from '../pages/authentication/login.page';
 import { RegisterPage } from '../pages/authentication/register.page';
+import { MainPage } from '../pages/main.page';
 
 interface UserDetails {
   displayName: string;
@@ -20,7 +21,16 @@ interface AuthFixtures {
   storage: LocalStorage;
 }
 
-export const test = base.extend<AuthFixtures>({
+interface MainFixture {
+  mainPage: MainPage;
+}
+
+export const test = base.extend<MainFixture & AuthFixtures>({
+  mainPage: async ({ page }, use) => {
+    const mainPage = new MainPage(page);
+    await mainPage.goto();
+    await use(mainPage);
+  },
   registerPage: async ({ page }, use) => {
     const registerPage = new RegisterPage(page);
     await registerPage.goto();
