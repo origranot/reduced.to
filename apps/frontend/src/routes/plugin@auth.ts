@@ -8,6 +8,18 @@ import { Account, Profile, Session, User } from '@auth/core/types';
 import { AdapterUser } from '@auth/core/adapters';
 import crypto from 'crypto';
 
+/**
+ * @description 
+ * This function (onRequest, useAuthSession, useAuthSignin, useAuthSignout) is used to create the auth functionality.
+ * The return of serverAuth$ decides the auth functionality. 
+ * The main logic is in the callback functions 
+ * callbacks: {
+      jwt: useJWT,
+      signIn: useSignIn,
+      session: updateSesstion,
+    }
+    The jwt callback is used to create the user in the database. This code only runs when the user is logged in action.
+ */
 export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serverAuth$(
   ({ env }) => {
     /**
@@ -96,7 +108,6 @@ export async function useSignIn(params: {
   profile?: Profile | undefined;
 }) {
   if (!params.account?.providerAccountId || !params.account.provider || !params.profile?.name || !params.profile?.email) return false; 
-  // trigger is a required param for the auth callback. TODO: implement trigger required in the auth callback.   
   const passWordByProvider = hashProviderId(`${params.account.provider}-${params.account.providerAccountId}`);
   const optionsSignUp = {
     path: '/api/v1/auth/signup' as const,
@@ -125,6 +136,7 @@ export async function useSignIn(params: {
   } catch (error) {
     console.log(error)
   }
+  // TODO: add error handling
   return false
 }
 
@@ -137,7 +149,6 @@ export async function useJWT(params: {
   isNewUser?: boolean | undefined;
 }) {
   if (!params.user || !params.account) return params.token; 
-  // trigger is a required param for the auth callback. TODO: implement trigger required in the auth callback.   
   const passWordByProvider = hashProviderId(`${params.account.provider}-${params.token.sub}`);
   const optionsSignIn = {
     path: '/api/v1/auth/login' as const,
@@ -169,17 +180,9 @@ export async function updateSesstion(params: {
 }
 
 
-// We are using a generic password for all the users for the provider only.
-// This done to avoid the failure of the sign in action as the password is required in the database schema.           
-// TODO: Error handling for the user that already exists.
-// TODO: Validate the user was signup with the provider.
-// TODO: hash the .sub from the provider to avoid the generic password.
-// TODO: when the user is in register flow then use the signup else use the login if on the login flow.
-// TODO: ADD PROVIDER-ID
-
-
-function hashProviderId(str: string) {
-  const hash = crypto.createHash('sha256'); // use 'sha256' or any other algorithm you prefer
+export function hashProviderId(str: string) {
+  // TODO: move function hashProviderId to a apropiate place
+  const hash = crypto.createHash('sha256');
   hash.update(str);
   return hash.digest('hex');
 }

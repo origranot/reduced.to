@@ -115,29 +115,28 @@ export default component$(() => {
   );
 });
 
+
 export const ProviderLogin = component$(() => {
   const authSignIn = useAuthSignin();
-  
-  // TODO: this should be in a separate logic component when the user is connected
   return <>
-  <p class={'leading-none m-5'}>or</p>
-  <div class={'form-control w-full max-w-xs inline-flex space-y-4'}>
-    <Form action={authSignIn} class="form-control inline-flex">
-      <input type="hidden" name="providerId" value="google" />
-      <input type="hidden" name="options.callbackUrl" value={'/'} />
-      <input type="hidden" name="authorizationParams" value={JSON.stringify({trigger: 'signUp'})} />
-      <LogInProviderButton providerName='Google' >
-        <div q:slot='login-icon-button-slot'>{JSX_GOOGLE_ICON}</div>
-      </LogInProviderButton>
-    </Form>
-    <Form action={authSignIn} class="form-control inline-flex">
-      <input type="hidden" name="providerId" value="github" />
-      <input type="hidden" name="options.callbackUrl" value={'/'} />
-      <LogInProviderButton providerName='GitHub'>
-        <div q:slot='login-icon-button-slot'>{JSX_GITHUB_ICON}</div>
-      </LogInProviderButton>
-    </Form>
-  </div>
+    <p class={'leading-none m-5'}>or</p>
+    <div class={'form-control w-full max-w-xs inline-flex space-y-4'}>
+      <Form action={authSignIn} class="form-control inline-flex">
+        <input type="hidden" name="providerId" value="google" />
+        <input type="hidden" name="options.callbackUrl" value={'/'} />
+        <input type="hidden" name="authorizationParams" value={JSON.stringify({trigger: 'signUp'})} />
+        <LogInProviderButton providerName='Google' >
+          <div q:slot='login-icon-button-slot'>{JSX_GOOGLE_ICON}</div>
+        </LogInProviderButton>
+      </Form>
+      <Form action={authSignIn} class="form-control inline-flex">
+        <input type="hidden" name="providerId" value="github" />
+        <input type="hidden" name="options.callbackUrl" value={'/'} />
+        <LogInProviderButton providerName='GitHub'>
+          <div q:slot='login-icon-button-slot'>{JSX_GITHUB_ICON}</div>
+        </LogInProviderButton>
+      </Form>
+    </div>
   </>
 });
 
@@ -149,7 +148,8 @@ export const LogInProviderButton = component$((props: {providerName: 'GitHub' | 
       <Slot key={'login-icon-button-slot'} name='login-icon-button-slot'  />
     </span>
     <p class={'font-semibold tracking-tight m-0'}>{props.providerName}</p>
-  </button>)
+  </button>
+  )
 });
 
 
