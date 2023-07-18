@@ -1,13 +1,6 @@
-import { expect, test } from './fixtures/auth.fixture';
-import {
-  generateInvalidEmail,
-  generateLongName,
-  generateShortName,
-  generateShortPassword,
-  generateValidEmail,
-  generateValidName,
-  generateValidPassword,
-} from './helpers/faker-utils';
+import { expect, test } from './fixtures';
+import { routes } from './helpers/constants';
+import * as myFaker from './helpers/faker-utils';
 
 test.describe('Register page', async () => {
   const displayName = generateValidName();
