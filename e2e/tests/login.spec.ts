@@ -58,22 +58,22 @@ test.describe('Login', async () => {
 
   test.describe('Invalid credentials', async () => {
     test('Invalid email or password', async ({ page, loginPage }) => {
-      await loginPage.fillEmail(generateValidEmail());
-      await loginPage.fillPassword(generateValidPassword());
+      await loginPage.fillEmail(myFaker.validEmail());
+      await loginPage.fillPassword(myFaker.validPassword());
       await loginPage.submit();
       await expect(page.getByText('Invalid email or password')).toBeVisible();
     });
 
     test('Invalid email', async ({ page, loginPage }) => {
-      await loginPage.fillEmail(generateInvalidEmail());
-      await loginPage.fillPassword(generateValidPassword());
+      await loginPage.fillEmail(myFaker.invalidEmail());
+      await loginPage.fillPassword(myFaker.validPassword());
       await loginPage.submit();
       await expect(page.getByText('Please enter a valid email')).toBeVisible();
     });
 
     test('Short password', async ({ page, loginPage }) => {
-      await loginPage.fillEmail(generateValidEmail());
-      await loginPage.fillPassword(generateShortPassword());
+      await loginPage.fillEmail(myFaker.validEmail());
+      await loginPage.fillPassword(myFaker.shortPassword());
       await loginPage.submit();
       await expect(page.getByText('Password must be at least 6 characters')).toBeVisible();
     });
