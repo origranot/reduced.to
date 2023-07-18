@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import { generateValidEmail, generateValidName, generateValidPassword } from '../helpers/faker-utils';
+import { validEmail, validName, validPassword } from '../helpers/faker-utils';
 import { LocalStorage } from '../helpers/local-storage';
 import prisma from '../helpers/prisma';
 import { LoginPage } from '../pages/authentication/login.page';
@@ -44,9 +44,9 @@ export const test = base.extend<MainFixture & AuthFixtures>({
     await use(loginPage);
   },
   userCredentials: async ({}, use) => {
-    const displayName = generateValidName();
-    const email = generateValidEmail();
-    const password = generateValidPassword();
+    const displayName = validName();
+    const email = validEmail();
+    const password = validPassword();
 
     await use({
       displayName,
