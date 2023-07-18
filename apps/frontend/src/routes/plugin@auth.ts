@@ -39,7 +39,6 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
         clientId: envs.GOOGLE_CLIENT_ID, 
         clientSecret: envs.GOOGLE_API_KEY, 
       }),
-
     ] as Provider[],
     callbacks: {
       jwt: useJWT,
