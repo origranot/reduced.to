@@ -1,5 +1,5 @@
 import { expect, test } from './fixtures';
-import { generateInvalidEmail, generateShortPassword, generateValidEmail, generateValidPassword } from './helpers/faker-utils';
+import * as myFaker from './helpers/faker-utils';
 
 test.describe('Login', async () => {
   test('Login page should display a heading', async ({ loginPage }) => {
