@@ -59,7 +59,7 @@ export const Navbar = component$((props: UserSession) => {
             )}
             
           </li>
-          {props.session?.user?.name && (
+          {props.session?.user?.name || props.session?.name && (
             <>
               <li class="pr-2 border-black"></li>
               <li>
@@ -97,7 +97,7 @@ export const Navbar = component$((props: UserSession) => {
       </div>
       <div class="sm:flex hidden">
         {props.session ? (
-          <Profile name={`${props.session.user?.name}`} />
+          <Profile name={`${props.session.user?.name || props.session.name}`} />
         ) : (
           <Link href="/login" class="btn btn-primary btn-sm">
             Login
