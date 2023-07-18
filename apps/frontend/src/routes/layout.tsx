@@ -59,10 +59,12 @@ export const useAcceptCookies = routeLoader$(({ cookie }) => cookie.get(ACCEPT_C
 export default component$(() => {
   const userCtx = useGetCurrentUser().value;
   const acceptedCookies = useAcceptCookies().value === 'true';
-  const user = useAuthSession()
+  const user = useAuthSession();
+  
   return (
     <>
-      <Navbar session={user.value} />
+      <Navbar session={user.value || userCtx} />
+
       {userCtx?.verified === false ? <VerifyAlert /> : ''}
       {/* TODO: NOW I FOCUS ON GETTING THE VERIFIED */}
       <main>

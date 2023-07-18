@@ -7,11 +7,21 @@ import { BurgerButton } from './burger-button/burger-button';
 import { GithubButton } from './github-button/github-button';
 import styles from './navbar.css?inline';
 import { Logout, Profile } from './profile/profile';
+import { UserCtx } from '~/routes/layout';
 
-export const Navbar = component$((props: { session: Session | null }) => {
+
+
+type UserSession = ({
+  session: Session 
+} & {
+  session: UserCtx
+}) | {
+  session: null
+};
+
+export const Navbar = component$((props: UserSession) => {
   useStylesScoped$(styles);
   const globalStore = useContext(GlobalStore);
-  // const user = useGetCurrentUser();
   const location = useLocation();
   return (
     <div class="navbar bg-base-100 drop-shadow-md relative" style={{ zIndex: 100 }}>
@@ -41,12 +51,13 @@ export const Navbar = component$((props: { session: Session | null }) => {
         <ul tabIndex={0} class="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4 p-2">
           <li class={props.session ? 'px-4 py-2' : ''}>
             {props.session ? (
-              `Welcome ${props.session?.user?.name}!`
+              `Welcome ${props.session?.user?.name || props.session.name}!`
             ) : (
               <Link href="/login" class="btn-ghost">
                 Login
               </Link>
             )}
+            
           </li>
           {props.session?.user?.name && (
             <>
