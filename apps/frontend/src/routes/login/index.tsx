@@ -17,7 +17,6 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 
 export const useLogin = globalAction$(
   async ({ email, password }, { fail, cookie, headers }) => {
-
     const data = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/login`, {
       method: 'POST',
       headers: {

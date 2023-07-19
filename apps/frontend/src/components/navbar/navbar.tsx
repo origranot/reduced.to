@@ -11,13 +11,11 @@ import { UserCtx } from '~/routes/layout';
 
 
 
-type UserSession = ({
-  session: Session 
+export type UserSession = ({
+  session: Session | null 
 } & {
-  session: UserCtx
-}) | {
-  session: null
-};
+  session: UserCtx | null
+})
 
 export const Navbar = component$((props: UserSession) => {
   useStylesScoped$(styles);
