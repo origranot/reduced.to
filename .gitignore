@@ -2,6 +2,8 @@
 coverage
 
 # API keys and secrets
+/.env
+*.env
 .env
 
 # Dependency directory
@@ -19,3 +21,7 @@ Thumbs.db
 
 # Ignore built ts files
 dist/
+
+/myFile.txt
+
+apps/frontend/.env

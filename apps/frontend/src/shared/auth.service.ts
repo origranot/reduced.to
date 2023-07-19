@@ -11,7 +11,6 @@ export const REFRESH_COOKIE_EXPIRES = 7 * 24 * 60 * 60 * 1000; //7 days
 export const validateAccessToken = async (cookies: Cookie): Promise<boolean> => {
   const accessToken = cookies.get(ACCESS_COOKIE_NAME)?.value;
   const refreshToken = cookies.get(REFRESH_COOKIE_NAME)?.value;
-
   if (!accessToken) {
     return false;
   }

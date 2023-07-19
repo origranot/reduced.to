@@ -3,11 +3,10 @@ import { Link, RequestHandler, useLocation } from '@builder.io/qwik-city';
 import { validateAccessToken } from '../../shared/auth.service';
 import { Role, useGetCurrentUser } from '../layout';
 
-export const onGet: RequestHandler = async ({ cookie, redirect }) => {
+export const onGet: RequestHandler = async ({ cookie, redirect, sharedMap }) => {
   const validAccessToken = await validateAccessToken(cookie);
-  if (!validAccessToken) {
-    throw redirect(302, '/');
-  }
+  if (validAccessToken || sharedMap.get('session')?.accessToken) return;
+  throw redirect(302, '/'); 
 };
 
 export default component$(() => {

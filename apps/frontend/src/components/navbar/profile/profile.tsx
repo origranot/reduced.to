@@ -1,6 +1,7 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik';
-import { Link } from '@builder.io/qwik-city';
+import { Form, Link } from '@builder.io/qwik-city';
 import styles from './profile.css?inline';
+import { useAuthSignout } from '~/routes/plugin@auth';
 
 interface ProfileProps {
   name: string;
@@ -24,9 +25,22 @@ export const Profile = component$(({ name }: ProfileProps) => {
           </Link>
         </li>
         <li>
-          <Link href="/logout">Logout</Link>
+          <Logout />
         </li>
       </ul>
     </div>
+  );
+});
+
+
+export const Logout = component$(() => {
+  useStylesScoped$(styles);
+  const signOut = useAuthSignout();
+
+  return (
+    <Form action={signOut} class={''}>
+      <input type="hidden" name="options.callbackUrl" value="/" />
+      <button class={''}>Logout</button>
+    </Form>
   );
 });
