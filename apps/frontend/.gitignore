@@ -43,3 +43,4 @@ lerna-debug.log*
 
 # env
 .env
+ignore.env
