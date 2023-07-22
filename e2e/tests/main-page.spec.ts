@@ -1,23 +1,23 @@
 import { expect, test } from './fixtures';
 
 test.describe('Main page', async () => {
-  test('Title check', async ({ page, mainPage }) => {
+  test('Main page should display a heading', async ({ page, mainPage }) => {
     await expect(page).toHaveTitle('The FREE Open-Source URL Shortener | Reduced.to');
   });
 
   test('Open GitHub repository', async ({ page, mainPage }) => {
     const [githubTab] = await Promise.all([page.waitForEvent('popup'), mainPage.navbar.gotoGithub()]);
-    expect(githubTab.url()).toMatch(/github\.com\/origranot\/reduced\.to/);
+    await expect(githubTab).toHaveURL('https://github.com/origranot/reduced.to');
   });
 
   test('Open documentation page', async ({ page, mainPage }) => {
     await mainPage.navbar.gotoDocs();
-    expect(page.url()).toContain('docs');
+    await expect(page).toHaveURL('https://docs.reduced.to/overview');
   });
 
-  test('Press the `login` button', async ({ page, mainPage }) => {
+  test('Press the `login` button', async ({ page, mainPage, baseURL }) => {
     await mainPage.navbar.gotoLogin();
-    expect(page.url()).toContain('login');
+    await expect(page).toHaveURL(`${baseURL!}login/`);
   });
 
   test('Input box', async ({ mainPage }) => {
