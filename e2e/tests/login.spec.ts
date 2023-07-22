@@ -17,7 +17,6 @@ test.describe('Login', async () => {
       const response = await page.waitForResponse(routes.LOGIN);
       expect(response.status()).toBe(200);
 
-      await page.waitForURL(baseURL!);
       await expect(page).toHaveURL(baseURL!);
     });
 
@@ -40,14 +39,16 @@ test.describe('Login', async () => {
     test("Should be able to navigate to user's dashboard", async ({ page, authenticatedPage, baseURL }) => {
       await authenticatedPage.navbar.avatar.click();
       await authenticatedPage.navbar.gotoDashboard();
-      await page.waitForURL(`${baseURL!}dashboard/`);
       await expect(page).toHaveURL(`${baseURL!}dashboard/`);
+    });
+
+    test('URL expiration dropdown pallet should be enabled when logged in', async ({ authenticatedPage, mainPage }) => {
+      await expect(mainPage.linkExpDropDown).toBeEnabled();
     });
 
     test('Log out', async ({ page, authenticatedPage, context, baseURL }) => {
       await authenticatedPage.navbar.avatar.click();
       await authenticatedPage.navbar.logout();
-      await page.waitForURL(baseURL!);
 
       // Should redirect to the home page
       await expect(page).toHaveURL(baseURL!);
