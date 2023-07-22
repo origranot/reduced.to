@@ -1,6 +1,5 @@
 import { test as base } from '@playwright/test';
 import { validEmail, validName, validPassword } from '../helpers/faker-utils';
-import { LocalStorage } from '../helpers/local-storage';
 import prisma from '../helpers/prisma';
 import { LoginPage } from '../pages/authentication/login.page';
 import { RegisterPage } from '../pages/authentication/register.page';
@@ -18,7 +17,6 @@ interface AuthFixtures {
   userCredentials: UserDetails;
   account: UserDetails;
   authenticatedPage: LoginPage;
-  storage: LocalStorage;
 }
 
 interface MainFixture {
@@ -94,9 +92,6 @@ export const test = base.extend<MainFixture & AuthFixtures>({
     await loginPage.submit();
     await page.waitForURL(baseURL!);
     await use(loginPage);
-  },
-  storage: async ({ page }, use) => {
-    await use(new LocalStorage(page.context()));
   },
 });
 
