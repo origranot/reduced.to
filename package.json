@@ -12,7 +12,7 @@
     "install:all": "npm run install:frontend && npm run install:backend && npm run install:e2e",
     "install:frontend": "cd ./apps/frontend && npm i",
     "install:backend": "cd ./apps/backend && npm i",
-    "install:e2e": "cd ./e2e && npm ci && npx playwright install --with-deps",
+"install:e2e": "cd ./e2e && npm i && npx playwright install --with-deps",
     "start:frontend": "npm --prefix ./apps/frontend run start",
     "start:backend": "npm --prefix ./apps/backend run start",
     "start:dev": "concurrently --kill-others \"npm:dev --prefix ./apps/frontend\" \"npm:start:dev --prefix ./apps/backend\"",
