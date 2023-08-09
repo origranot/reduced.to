@@ -1,6 +1,7 @@
 import { component$, Slot } from '@builder.io/qwik';
 import { Form, globalAction$, Link, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
 import { setTokensAsCookies, validateAccessToken } from '../../shared/auth.service';
+import { useAuthSignin } from '../plugin@auth';
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   const validAccessToken = await validateAccessToken(cookie);
@@ -109,12 +110,12 @@ export default component$(() => {
 });
 
 export const ProviderLogin = component$(() => {
-  // const authSignIn = useAuthSignin();
+  const authSignIn = useAuthSignin();
   return <>
     <p class={'leading-none m-5'}>or</p>
     <div class={'form-control w-full max-w-xs inline-flex space-y-4'}>
-      {/* action={authSignIn} */}
-      <Form  class="form-control inline-flex">
+      
+      <Form action={authSignIn} class="form-control inline-flex">
         <input type="hidden" name="providerId" value="google" />
         <input type="hidden" name="options.callbackUrl" value={'/'} />
         <input type="hidden" name="authorizationParams" value={JSON.stringify({trigger: 'signUp'})} />
@@ -122,8 +123,8 @@ export const ProviderLogin = component$(() => {
           <div q:slot='login-icon-button-slot'>{JSX_GOOGLE_ICON}</div>
         </LogInProviderButton>
       </Form>
-      {/* action={authSignIn} */}
-      <Form  class="form-control inline-flex">
+      
+      <Form action={authSignIn} class="form-control inline-flex">
         <input type="hidden" name="providerId" value="github" />
         <input type="hidden" name="options.callbackUrl" value={'/'} />
         <LogInProviderButton providerName='GitHub'>
