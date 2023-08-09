@@ -1,7 +1,8 @@
 import { component$, Slot } from '@builder.io/qwik';
 import { Link, RequestHandler, useLocation } from '@builder.io/qwik-city';
 import { validateAccessToken } from '../../shared/auth.service';
-import { Role, useGetCurrentUser } from '../layout';
+import { useGetCurrentUser } from '../layout';
+import { Role } from '../plugin@auth';
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   const validAccessToken = await validateAccessToken(cookie);

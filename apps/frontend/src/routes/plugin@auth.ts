@@ -5,7 +5,7 @@ import type { Provider } from '@auth/core/providers';
 import { JWT } from '@auth/core/jwt';
 import {  Account, Profile, Session, User } from '@auth/core/types';
 import { AdapterUser } from '@auth/core/adapters';
-import crypto from 'crypto';
+import { createHash } from 'crypto';
 
 /**
  * Auth Configuration
@@ -37,7 +37,13 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
         clientSecret: envs.GOOGLE_API_KEY, 
       }),
     ] as Provider[],
-    callbacks: { jwt: useJWT, signIn: useSignIn, session: updateSession },
+    callbacks: { jwt: useJWT, signIn: useSignIn, session: (params: { session: Session; user: User | AdapterUser; token: JWT; }) => { 
+      return {
+        ...params.session, 
+        accessToken: params.token.accessToken, 
+        refreshToken: params.token.refreshToken
+      }
+     } },
   };
 });
 
@@ -97,16 +103,10 @@ export async function useJWT(params: { token: JWT; user?: User | AdapterUser | u
   }
   return null
 }
-export async function updateSession(params: { session: Session; user: User | AdapterUser; token: JWT; }) { 
-  return {
-    ...params.session, 
-    accessToken: params.token.accessToken, 
-    refreshToken: params.token.refreshToken
-  }
- }
+// export async function updateSession
 export function hashProviderId(str: string) { 
     // TODO: move function hashProviderId to a apropiate place
-    const hash = crypto.createHash('sha256');
+    const hash = createHash('sha256');
     hash.update(str);
     return hash.digest('hex');
  }
@@ -147,6 +147,12 @@ async function signIn(profile: Profile, account: Account) {
   ADMIN = 'ADMIN',
   USER = 'USER',
 }
+
+export interface ExtendSesstion extends Session {
+  accessToken: string;
+  refreshToken: string;
+} 
+
 export interface UserCtx {
   id: string;
   name: string;
