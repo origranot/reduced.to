@@ -1,17 +1,19 @@
 import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
-import { Link, useLocation } from '@builder.io/qwik-city';
+import { Form, Link, useLocation } from '@builder.io/qwik-city';
 import { GlobalStore } from '../../context';
 import { DARK_THEME, LIGHT_THEME, setPreference, ThemeSwitcher } from '../theme-switcher/theme-switcher';
 import { BurgerButton } from './burger-button/burger-button';
 import { GithubButton } from './github-button/github-button';
 import styles from './navbar.css?inline';
 import { Profile } from './profile/profile';
+import { ExtendSesstion, useAuthSignout } from '~/routes/plugin@auth';
 
-export const Navbar = component$((props: {session: { name: string | null | undefined } | undefined}) => {
+export const Navbar = component$((props: {session: { name: string | null | undefined } | undefined, user: ExtendSesstion}) => {
   useStylesScoped$(styles);
 
   const globalStore = useContext(GlobalStore);
   const location = useLocation();
+  const signout = useAuthSignout();
 
   return (
     <div class="navbar bg-base-100 drop-shadow-md relative" style={{ zIndex: 100 }}>
@@ -59,6 +61,9 @@ export const Navbar = component$((props: {session: { name: string | null | undef
                 <Link href="/logout" class="btn-ghost py-2 text-sm">
                   Logout
                 </Link>
+                <Form key={'dslfkj'} action={signout}>
+                  <button class={'text-6xl'} type="submit">Logout</button>
+                </Form>
               </li>
               <li class="pr-2 border-black"></li>
             </>
@@ -90,9 +95,11 @@ export const Navbar = component$((props: {session: { name: string | null | undef
         {props.session ? (
           <Profile name={props.session?.name as string} />
         ) : (
+          
           <Link href="/login" class="btn btn-primary btn-sm">
             Login
           </Link>
+          
         )}
         <div class="divider divider-horizontal"></div>
         <a href="https://docs.reduced.to" class="btn btn-ghost">

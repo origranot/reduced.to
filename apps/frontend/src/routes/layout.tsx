@@ -54,7 +54,7 @@ export default component$(() => {
 
   return (
     <>
-      <Navbar session={sessionComputed.value} />
+      <Navbar session={sessionComputed.value} user={user.value as ExtendSesstion} />
       {userCtx.value?.verified === false ? <VerifyAlert /> : ''}
       <main>
         <section>
