@@ -1,0 +1,33 @@
+#V2
+select * from user;
+select email from user;
+select value email from user;
+select * from 'barel@example.com' = select value email from user;
+select * from "barel@example.com" = select value email from user;
+select * from "barel@example.com" fetch select value email from user;
+select * from "barel@example.com", select value email from user;
+select * from "barel@example.com" == select value email from user;
+select * from "barel@example.com" == select email from user;
+select * from "barel@example.com" == (select email from user);
+select * from "barel@example.com" == (return select email from user);
+select * from "barel@example.com" == (select value email from user);
+select value email from user;
+select value email from user == "barel@example.com";
+select * from (select value email from user == "barel@example.com");
+select * from select value email from user == "barel@example.com";
+select email from user == "barel@example.com";
+select email from user CONTAINS "barel@example.com";
+select * from user CONTAINS "barel@example.com";
+select * from select value email from user CONTAINS "barel@example.com";
+select * from (select value email from user CONTAINS "barel@example.com");
+select value email from user;
+let $email = 'barel@example.com'
+$email
+select * from $email
+select * from (SELECT value email from user) CONTAINS $email;
+count((SELECT * FROM user WHERE email = $email)) = 0
+count((SELECT * FROM user WHERE email = $email)) == 0
+select * from count((SELECT * FROM user WHERE email = $email)) == 0
+select * from count((SELECT * FROM user WHERE email = $email)) == 1
+create something set f = 1
+create something2 set f = 1

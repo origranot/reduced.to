@@ -15,7 +15,7 @@ export const Profile = component$(({ name }: ProfileProps) => {
     <div class="dropdown dropdown-end">
       <label tabIndex={0} class="btn btn-ghost btn-circle avatar">
         <div class="w-8 rounded-full">
-          <img src={`https://ui-avatars.com/api/?name=${name}`} />
+          <img src={`https://ui-avatars.com/api/?name=${name}`} width={30} height={30} />
         </div>
       </label>
       <ul tabIndex={0} class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-48">
@@ -27,7 +27,7 @@ export const Profile = component$(({ name }: ProfileProps) => {
         </li>
         <li>
           <Link href="/logout">Logout</Link>
-        <Form key={'dslfkj'} action={signout}>
+        <Form key={'logout-form'} action={signout}>
           <button class={'text-6xl'} type="submit">Logout</button>
         </Form>
         </li>
