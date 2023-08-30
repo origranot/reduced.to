@@ -1,9 +1,12 @@
 import { Cookie } from '@builder.io/qwik-city';
 import jwt_decode from 'jwt-decode';
-import { UserCtx } from '../routes/layout';
+import { UserCtx } from '~/routes/plugin@auth';
 
 export const ACCESS_COOKIE_NAME = 'accessToken';
 export const REFRESH_COOKIE_NAME = 'refreshToken';
+export const NEXT_AUTH_CALLBACK_URL_COOKIE = 'next-auth.callback-url';
+export const NEXT_AUTH_CSRF_TOKEN_COOKIE = 'next-auth.csrf-token';
+
 
 export const ACCESS_COOKIE_EXPIRES = 5 * 60 * 1000; //5 min
 export const REFRESH_COOKIE_EXPIRES = 7 * 24 * 60 * 60 * 1000; //7 days

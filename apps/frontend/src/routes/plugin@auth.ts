@@ -85,6 +85,7 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
       GitHub({
         clientId: envs.GITHUB_ID,
         clientSecret: envs.GITHUB_SECRET_CLIENT,
+
       }),
       Google({ 
         clientId: envs.GOOGLE_CLIENT_ID, 
@@ -127,7 +128,9 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
         return {
           ...params.session, 
           accessToken: params.token.accessToken, 
-          refreshToken: params.token.refreshToken
+          refreshToken: params.token.refreshToken,
+          isProviderLogin: true,
+          role: Role.USER,
         };
       } 
     },
@@ -142,6 +145,8 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
 export interface ExtendSesstion extends Session {
   accessToken: string;
   refreshToken: string;
+  isProviderLogin: boolean;
+  role: Role;
 } 
 
 export interface UserCtx {

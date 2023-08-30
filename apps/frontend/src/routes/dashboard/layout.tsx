@@ -1,8 +1,8 @@
 import { component$, Slot } from '@builder.io/qwik';
 import { Link, RequestHandler, useLocation } from '@builder.io/qwik-city';
 import { validateAccessToken } from '../../shared/auth.service';
-import { useGetCurrentUser } from '../layout';
 import { Role } from '../plugin@auth';
+import { useUserAuthStatus } from '../layout';
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   const validAccessToken = await validateAccessToken(cookie);
@@ -14,7 +14,7 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 export default component$(() => {
   const location = useLocation();
   const currentPath = location.url.pathname.slice(0, -1);
-  const user = useGetCurrentUser();
+  const session = useUserAuthStatus();
 
   return (
     <div class="drawer drawer-mobile h-[calc(100vh-64px)]">
@@ -61,7 +61,7 @@ export default component$(() => {
               <span class="badge">Soon</span>
             </Link>
           </li>
-          {user.value?.role === Role.ADMIN && (
+          {session.user.role === Role.ADMIN && (
             <>
               <div class="divider"></div>
               <li class="py-2 mt-2">

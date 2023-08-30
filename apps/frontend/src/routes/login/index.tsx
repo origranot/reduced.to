@@ -1,4 +1,4 @@
-import { component$, Slot } from '@builder.io/qwik';
+import { component$, createContextId, Slot } from '@builder.io/qwik';
 import { Form, globalAction$, Link, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
 import { setTokensAsCookies, validateAccessToken } from '../../shared/auth.service';
 import { useAuthSignin } from '../plugin@auth';
@@ -57,9 +57,21 @@ export const useLogin = globalAction$(
   })
 );
 
-export default component$(() => {
-  const action = useLogin();
+export const useAuth = () => {
+  const byEmail = useLogin();
+  const byProvider = useAuthSignin();
+  return {
+    byProvider,
+    byEmail,
+  }
+}
 
+export type Auth = ReturnType<typeof useAuth>;
+
+export const authContext = createContextId<Auth>("authContext")
+
+export default component$(() => {
+  const auth = useAuth();
   return (
     <div class="flex flex-col h-[calc(100vh-64px)]">
       <div class="flex flex-1 content-center justify-center items-center">
@@ -68,13 +80,13 @@ export default component$(() => {
             <div class="prose prose-slate">
               <h1 class="m-0">Welcome back!</h1>
               <p class="mt-2 mb-8">We're so excited to see you again!</p>
-              <Form action={action} class="form-control w-full max-w-xs inline-flex">
+              <Form action={auth.byEmail} class="form-control w-full max-w-xs inline-flex">
                 <label class="label">
                   <span class="label-text text-xs font-semibold">EMAIL</span>
                 </label>
                 <input name="email" type="text" class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300" />
-                {action.value?.fieldErrors?.email && (
-                  <span class="text-error text-left">{action.value?.fieldErrors?.email}</span>
+                {auth.byEmail.value?.fieldErrors?.email && (
+                  <span class="text-error text-left">{auth.byEmail.value?.fieldErrors?.email}</span>
                 )}{' '}
                 <br />
                 <label class="label">
@@ -85,8 +97,8 @@ export default component$(() => {
                   type="password"
                   class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
                 />{' '}
-                {action.value?.fieldErrors?.password && (
-                  <span class="text-error text-left">{action.value?.fieldErrors?.password}</span>
+                {auth.byEmail.value?.fieldErrors?.password && (
+                  <span class="text-error text-left">{auth.byEmail.value?.fieldErrors?.password}</span>
                 )}
                 <label class="label">
                   <span class="label-text text-xs font-semibold">
@@ -97,8 +109,8 @@ export default component$(() => {
                   </span>
                 </label>
                 <br />
-                <button class={`btn btn-primary ${action.isRunning ? 'loading' : ''}`}>Log In</button>
-                {action.value?.message && <span class="text-error text-left">Invalid email or password</span>}
+                <button class={`btn btn-primary ${auth.byEmail.isRunning ? 'loading' : ''}`}>Log In</button>
+                {auth.byEmail.value?.message && <span class="text-error text-left">Invalid email or password</span>}
               </Form>
               <ProviderLogin />
             </div>
@@ -110,12 +122,12 @@ export default component$(() => {
 });
 
 export const ProviderLogin = component$(() => {
-  const authSignIn = useAuthSignin();
+  const auth = useAuth();  
   return <>
     <p class={'leading-none m-5'}>or</p>
     <div class={'form-control w-full max-w-xs inline-flex space-y-4'}>
       
-      <Form action={authSignIn} class="form-control inline-flex">
+      <Form action={auth.byProvider} class="form-control inline-flex">
         <input type="hidden" name="providerId" value="google" />
         <input type="hidden" name="options.callbackUrl" value={'/'} />
         <input type="hidden" name="authorizationParams" value={JSON.stringify({trigger: 'signUp'})} />
@@ -124,7 +136,7 @@ export const ProviderLogin = component$(() => {
         </LogInProviderButton>
       </Form>
       
-      <Form action={authSignIn} class="form-control inline-flex">
+      <Form action={auth.byProvider} class="form-control inline-flex">
         <input type="hidden" name="providerId" value="github" />
         <input type="hidden" name="options.callbackUrl" value={'/'} />
         <LogInProviderButton providerName='GitHub'>

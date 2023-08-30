@@ -1,18 +1,20 @@
 import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
-import { Form, Link, useLocation } from '@builder.io/qwik-city';
+import { Link, useLocation } from '@builder.io/qwik-city';
 import { GlobalStore } from '../../context';
 import { DARK_THEME, LIGHT_THEME, setPreference, ThemeSwitcher } from '../theme-switcher/theme-switcher';
 import { BurgerButton } from './burger-button/burger-button';
 import { GithubButton } from './github-button/github-button';
 import styles from './navbar.css?inline';
 import { Profile } from './profile/profile';
-import { ExtendSesstion, useAuthSignout } from '~/routes/plugin@auth';
+import { useAuthSignout } from '~/routes/plugin@auth';
+import { UserAuthStatusContext } from '~/routes/layout';
 
-export const Navbar = component$((props: {session: { name: string | null | undefined } | undefined, user: ExtendSesstion}) => {
+export const Navbar = component$(() => {
   useStylesScoped$(styles);
 
   const globalStore = useContext(GlobalStore);
   const location = useLocation();
+  const props = useContext(UserAuthStatusContext);
   const signout = useAuthSignout();
 
   return (
@@ -41,16 +43,16 @@ export const Navbar = component$((props: {session: { name: string | null | undef
       <div class="block sm:hidden dropdown dropdown-end">
         <BurgerButton buttonTitle="Open" />
         <ul tabIndex={0} class="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4 p-2">
-          <li class={props.session ? 'px-4 py-2' : ''}>
-            {props.session ? (
-              `Welcome ${props.session?.name}!`
+          <li class={props.isLogIn ? 'px-4 py-2' : ''}>
+            {props.user ? (
+              `Welcome ${props.user?.name}!`
             ) : (
               <Link href="/login" class="btn-ghost">
                 Login
               </Link>
             )}
           </li>
-          {props.session && (
+          {props.isLogIn && (
             <>
               <li class="pr-2 border-black"></li>
               <li>
@@ -58,12 +60,15 @@ export const Navbar = component$((props: {session: { name: string | null | undef
                   Dashboard
                   <span class="badge">New</span>
                 </Link>
-                <Link href="/logout" class="btn-ghost py-2 text-sm">
+                {
+                !props.isProvider ? 
+                <a href="/logout" class="btn-ghost py-2 text-sm">
                   Logout
-                </Link>
-                <Form key={'dslfkj'} action={signout}>
-                  <button class={'text-6xl'} type="submit">Logout</button>
-                </Form>
+                </a> :
+                <button onClick$={() => signout.submit({ callbackUrl: '/logout' })} class={'btn-ghost py-2 text-sm'} type="submit">
+                    Logout
+                </button>
+                }
               </li>
               <li class="pr-2 border-black"></li>
             </>
@@ -92,10 +97,9 @@ export const Navbar = component$((props: {session: { name: string | null | undef
         </ul>
       </div>
       <div class="sm:flex hidden">
-        {props.session ? (
-          <Profile name={props.session?.name as string} />
+        {props.isLogIn ? (
+          <Profile />
         ) : (
-          
           <Link href="/login" class="btn btn-primary btn-sm">
             Login
           </Link>
