@@ -132,7 +132,7 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } = serv
           isProviderLogin: true,
           role: Role.USER,
         };
-      } 
+      },
     },
   };
 });

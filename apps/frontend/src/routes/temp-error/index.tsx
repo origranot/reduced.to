@@ -1,5 +1,5 @@
 import { component$, createContextId, Slot } from '@builder.io/qwik';
-import { Form, globalAction$, Link, RequestHandler, useLocation, z, zod$ } from '@builder.io/qwik-city';
+import { Form, globalAction$, Link, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
 import { setTokensAsCookies, validateAccessToken } from '../../shared/auth.service';
 import { useAuthSignin } from '../plugin@auth';
 
@@ -123,11 +123,9 @@ export default component$(() => {
 
 export const ProviderLogin = component$(() => {
   const auth = useAuth();  
-  const loc = useLocation();
-  const isErrorLogIn = loc.url.searchParams.get('error') === "AccessDenied"
   return <>
     <p class={'leading-none m-5'}>or</p>
-    <p class={[isErrorLogIn ?"leading-6 m-5 text-error tracking-wider" :  'hidden' ]}>Oops! Please Consider Using a Different Login Method"</p>
+    <p class={'leading-none m-5'}>custom error :)</p>
     <div class={'form-control w-full max-w-xs inline-flex space-y-4'}>
       
       <Form action={auth.byProvider} class="form-control inline-flex">
