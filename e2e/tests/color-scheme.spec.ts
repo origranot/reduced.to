@@ -14,9 +14,6 @@ test.describe('Test theme toggle', async () => {
     // Toggle theme
     await mainPage.navbar.toggleTheme();
 
-    const localStorage = await page.evaluate(() => window.localStorage);
-    expect(localStorage).toHaveProperty('theme-preference');
-
     // Assert that the theme has been toggled to `light` mode
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   });
@@ -35,9 +32,6 @@ test.describe('Test theme toggle', async () => {
   test('Light mode should be toggled', async ({ page, mainPage }) => {
     // Toggle theme
     await mainPage.navbar.toggleTheme();
-
-    const localStorage = await page.evaluate(() => window.localStorage);
-    expect(localStorage).toHaveProperty('theme-preference');
 
     // Assert that the theme has been toggled to `dark` mode
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dracula');

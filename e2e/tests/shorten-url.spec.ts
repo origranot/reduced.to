@@ -38,7 +38,7 @@ test.describe('URL Shortener App', () => {
   });
 
   test('Share shortened URL on Twitter', async ({ page, mainPage }) => {
-    const shareOnTwitterLinkPattern = new RegExp(/https:\/\/twitter\.com\/.*\/share\?text=[^&]+&url=[^&]+&hashtags=[^&]+/);
+    const shareOnTwitterLinkPattern = new RegExp(/https:\/\/twitter\.com\/share\?text=[^&]+&url=[^&]+&hashtags=[^&]+/);
     const [twitterTab] = await Promise.all([page.waitForEvent('popup'), mainPage.shareOnTwitter()]);
     const decodedUrl = decodeURIComponent(twitterTab.url());
     expect(decodedUrl).toMatch(shareOnTwitterLinkPattern);
