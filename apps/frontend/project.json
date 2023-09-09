@@ -75,8 +75,8 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "docker image tag frontend ghcr.io/{args.repository}/frontend:{args.github-sha}",
-          "docker push ghcr.io/{args.repository}/frontend:{args.github-sha}"
+          "docker image tag frontend ghcr.io/{args.repository}/frontend:master",
+          "docker push ghcr.io/{args.repository}/frontend:master"
         ],
         "parallel": false
       }
