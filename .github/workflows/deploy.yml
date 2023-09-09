@@ -5,10 +5,6 @@ on:
     branches:
       - master
   workflow_dispatch:
-  workflow_run:
-    workflows: [CI]
-    types:
-      - completed
 
 env:
   REGISTRY: ghcr.io
