@@ -40,4 +40,4 @@ COPY ./nx.json ./nx.json
 EXPOSE 3000
 
 # Start the application
-CMD sh -c "npx nx migrate-dev prisma --name=init && node backend/main.js"
+CMD sh -c "npx nx migrate-deploy prisma --name=init && node backend/main.js"

@@ -19,6 +19,15 @@
         "parallel": true
       }
     },
+    "migrate-deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma migrate deploy --schema=src/schema.prisma",
+        "cwd": "libs/prisma",
+        "envFile": "apps/backend/.env",
+        "parallel": true
+      }
+    },
     "studio": {
       "command": "prisma studio --schema=src/schema.prisma",
       "options": {
