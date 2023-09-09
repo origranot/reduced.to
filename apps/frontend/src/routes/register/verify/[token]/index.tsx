@@ -34,9 +34,7 @@ export default component$(() => {
           <div class="max-w-md">
             <p class="py-6">
               {!store.loading &&
-                (store.verified
-                  ? 'Your account has been verified successfully'
-                  : "We couldn't verify your account. Try again later")}
+                (store.verified ? 'Your account has been verified successfully' : "We couldn't verify your account. Try again later")}
             </p>
             <Link href="/" class="btn btn-primary">
               Go back

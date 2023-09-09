@@ -42,12 +42,10 @@ export default component$(() => {
               {!store.loading && !store.isVerified && (
                 <>
                   <p class="mt-4">
-                    To keep your account secure, we need to verify your email address. Check your inbox for a message from us to
-                    complete the process.
+                    To keep your account secure, we need to verify your email address. Check your inbox for a message from us to complete
+                    the process.
                   </p>
-                  <p class="mt-2 mb-5">
-                    If you don't see the email, please check your spam folder or contact our support team for help.
-                  </p>
+                  <p class="mt-2 mb-5">If you don't see the email, please check your spam folder or contact our support team for help.</p>
                   <div class="form-control w-full max-w-xs inline-flex">
                     <br />
                     {store.resent && <p class="mt-2 mb-8">Verification email has been sent!</p>}
