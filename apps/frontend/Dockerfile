@@ -1,7 +1,3 @@
-ARG API_DOMAIN
-ARG CLIENTSIDE_API_DOMAIN
-ARG DOMAIN
-
 # --------------------------------------------
 # Dependencies Stage
 # --------------------------------------------
@@ -21,6 +17,12 @@ RUN npm ci
 # --------------------------------------------
 # Intermediate docker image to build the bundle in and install dependencies
 FROM node:19.2-alpine3.15 as build
+
+# Arguments passed from docker-compose.yml / workflow
+ARG API_DOMAIN
+ARG CLIENTSIDE_API_DOMAIN
+ARG DOMAIN
+
 WORKDIR /app
 
 COPY . .
