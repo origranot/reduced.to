@@ -28,8 +28,8 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
         ttl: +process.env.REDIS_TTL || 1000 * 60 * 60 * 24 * 7, // 7 days in ms
       },
       jwt: {
-        accessSecret: process.env.JWT_ACCESS_SECRET || "secret",
-        refreshSecret: process.env.JWT_REFRESH_SECRET || "secret",
+        accessSecret: process.env.JWT_ACCESS_SECRET || 'secret',
+        refreshSecret: process.env.JWT_REFRESH_SECRET || 'secret',
       },
       novu: {
         apiKey: process.env.NOVU_API_KEY,
