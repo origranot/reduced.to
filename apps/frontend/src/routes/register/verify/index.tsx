@@ -1,7 +1,7 @@
 import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik';
 import { Link, RequestHandler } from '@builder.io/qwik-city';
-import { Loader } from '~/components/loader/loader';
-import { authorizedFetch, validateAccessToken } from '~/shared/auth.service';
+import { Loader } from '../../../components/loader/loader';
+import { authorizedFetch, validateAccessToken } from '../../../shared/auth.service';
 
 export interface Store {
   isVerified: boolean;
@@ -24,7 +24,7 @@ export default component$(() => {
   });
 
   useVisibleTask$(() => {
-    authorizedFetch(`${process.env.API_DOMAIN}/api/v1/auth/verified`).then(async (response) => {
+    authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/auth/verified`).then(async (response) => {
       const { verified } = await response.json();
       store.isVerified = verified;
       store.loading = false;
@@ -54,7 +54,7 @@ export default component$(() => {
                     <button
                       class="btn btn-primary"
                       onClick$={async () => {
-                        authorizedFetch(`${process.env.API_DOMAIN}/api/v1/auth/resend`).then(() => {
+                        authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/auth/resend`).then(() => {
                           store.resent = true;
                         });
                       }}

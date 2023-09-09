@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Reflector } from '@nestjs/core';
-import { Role } from '@prisma/client';
+import { Role } from '@reduced.to/prisma';
 import { Roles, ROLES_KEY } from './roles.decorator';
 
 describe('Roles Decorator', () => {
@@ -20,7 +20,9 @@ describe('Roles Decorator', () => {
     // Sample controller to simulate the context
     class TestController {
       @Roles(...roles)
-      testMethod() {}
+      testMethod() {
+        // Empty method
+      }
     }
 
     const testController = new TestController();
@@ -35,7 +37,9 @@ describe('Roles Decorator', () => {
     // Sample controller to simulate the context
     class TestController {
       @Roles(...roles)
-      testMethod() {}
+      testMethod() {
+        // Empty method
+      }
     }
 
     const testController = new TestController();
@@ -47,7 +51,9 @@ describe('Roles Decorator', () => {
   it('should not set any metadata of roles', () => {
     // Sample controller to simulate the context
     class TestController {
-      testMethod() {}
+      testMethod() {
+        // Empty method
+      }
     }
 
     const testController = new TestController();

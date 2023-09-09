@@ -1,21 +1,42 @@
-# Coverage reports
-coverage
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# API keys and secrets
+# Secrets
 .env
 
-# Dependency directory
+# compiled output
+dist
+tmp
+/out-tsc
+
+# dependencies
 node_modules
-bower_components
 
-# Editors
-.idea
-*.iml
-.vscode
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 
-# OS metadata
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
 .DS_Store
 Thumbs.db
-
-# Ignore built ts files
-dist/

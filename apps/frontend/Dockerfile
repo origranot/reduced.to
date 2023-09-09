@@ -1,36 +1,51 @@
+ARG API_DOMAIN
+ARG CLIENTSIDE_API_DOMAIN
+ARG DOMAIN
 
+# --------------------------------------------
+# Dependencies Stage
+# --------------------------------------------
+FROM node:19.2-alpine3.15 as dependencies
+
+WORKDIR /app
+COPY package.json package-lock.json ./
+
+RUN apk add --update python3 make g++\
+   && rm -rf /var/cache/apk/*
+
+RUN npm ci
+
+
+# --------------------------------------------
+# Build Stage
+# --------------------------------------------
 # Intermediate docker image to build the bundle in and install dependencies
 FROM node:19.2-alpine3.15 as build
+WORKDIR /app
 
-# Set the working directory to /usr/src/app
-WORKDIR /usr/src/app
+COPY . .
+COPY --from=dependencies /app/node_modules ./node_modules
 
-# Copy the package.json and package-lock.json over in the intermedate "build" image
-COPY ./package.json ./
-COPY ./package-lock.json ./
+# Run prisma generate & build the bundle in production mode
+RUN npx nx build frontend --prod --skip-nx-cache
 
-# Clean install because we want to install the exact versions (Include dev dependencies)
-RUN npm ci --include=dev
 
-# Copy the source code into the build image
-COPY ./ ./
-
-# Build the project
-RUN npm run build
-
-# Pull the same Node image and use it as the final (production image)
+# --------------------------------------------
+# Production Stage
+# --------------------------------------------
 FROM node:19.2-alpine3.15 as production
+WORKDIR /app
 
-# Set the working directory to /usr/src/app
-WORKDIR /usr/src/app
-
-# Only copy the results from the build over to the final image
-# We do this to keep the final image as small as possible
-COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/server ./server
-COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /app/dist/apps/frontend ./frontend
+COPY --from=build /app/node_modules ./node_modules
 
 EXPOSE 5000
 
 # Start the application
-CMD [ "node", "server/entry.express"]
+CMD [ "node", "frontend/server/entry.express.js"]
+
+
+
+
+
+

@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { UsersController } from './users.controller';
 import { IFindAllOptions, UsersService } from './users.service';
-import { User } from '@prisma/client';
+import { User } from '@reduced.to/prisma';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { AppConfigModule } from '../config/config.module';
 import { RolesGuard } from '../auth/guards/roles.guard';

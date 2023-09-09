@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppCacheModule } from '../cache/cache.module';
 import { AppCacheService } from '../cache/cache.service';
 import { AppConfigModule } from '../config/config.module';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '@reduced.to/prisma';
 import { ShortenerDto } from './dto';
 import { BadRequestException } from '@nestjs/common';
 import { UserContext } from '../auth/interfaces/user-context';

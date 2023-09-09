@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client';
+import { Role } from '@reduced.to/prisma';
 
 export interface UserContext {
   id: string;

@@ -4,7 +4,7 @@ import { agent as supertest, SuperAgentTest } from 'supertest';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { NovuService } from '../novu/novu.service';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '@reduced.to/prisma';
 import { AppConfigService } from '../config/config.service';
 import { SignupDto } from './dto/signup.dto';
 import { UserContext } from './interfaces/user-context';
@@ -14,7 +14,6 @@ import { JwtAuthGuard } from './guards/jwt.guard';
 import { VerifyAuthGuard } from './guards/verify.guard';
 import { UniqueConstraint } from '../shared/decorators/unique/unique.decorator';
 import { useContainer } from 'class-validator';
-import { AppModule } from '../app.module';
 
 describe('AuthController', () => {
   let app: INestApplication;

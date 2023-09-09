@@ -4,7 +4,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AppConfigService } from '../config/config.service';
 import { NovuModule } from '../novu/novu.module';
 import { NovuService } from '../novu/novu.service';
-import { PrismaModule } from '../prisma/prisma.module';
+import { PrismaModule } from '@reduced.to/prisma';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';

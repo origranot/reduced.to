@@ -17,7 +17,9 @@ describe('IsVerified Decorator', () => {
     // Sample controller to simulate the context
     class TestController {
       @IsVerified()
-      testMethod() {}
+      testMethod() {
+        // Empty method
+      }
     }
 
     const testController = new TestController();
