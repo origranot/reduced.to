@@ -71,10 +71,10 @@
       "command": "docker build -f apps/frontend/Dockerfile . -t frontend"
     },
     "push-image-to-registry": {
-      "dependsOn": ["docker-build"],
       "executor": "nx:run-commands",
       "options": {
         "commands": [
+          "docker build -f apps/frontend/Dockerfile . -t frontend --build-arg DOMAIN={args.domain} --build-arg API_DOMAIN={args.apiDomain} --build-arg CLIENTSIDE_API_DOMAIN={args.clientsideApiDomain}"
           "docker image tag frontend ghcr.io/{args.repository}/frontend:master",
           "docker push ghcr.io/{args.repository}/frontend:master"
         ],
