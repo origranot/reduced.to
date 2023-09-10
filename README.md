@@ -120,7 +120,7 @@ List of things you need to run the project locally and how to install them.
    ```
 8. Run the frontend from root folder:
    ```sh
-   npx nx serve backend
+   npx nx serve frontend
    ```
 
 ### 👩‍💻 Development
