@@ -13,7 +13,7 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx docusaurus start --port 5100 --no-open --config apps/docs/docusaurus.config.js"
+        "command": "npx docusaurus start --port {args.port} --no-open --config apps/docs/docusaurus.config.js"
       }
     }
   },
