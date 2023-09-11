@@ -7,13 +7,19 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx docusaurus build --out-dir ../../dist/apps/docs --config apps/docs/docusaurus.config.js"
+        "command": "npx docusaurus build --out-dir dist/apps/docs --config apps/docs/docusaurus.config.js"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx docusaurus start --port 5100 --no-open --config apps/docs/docusaurus.config.js"
       }
     },
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx docusaurus start --port 5100 --no-open --config apps/docs/docusaurus.config.js"
+        "command": "npx docusaurus serve --port {args.port} --dir dist/apps/docs/ --no-open --config apps/docs/docusaurus.config.js"
       }
     }
   },
