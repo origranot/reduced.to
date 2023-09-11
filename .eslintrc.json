@@ -6,6 +6,12 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
+        "max-len": [
+          "error",
+          {
+            "code": 140
+          }
+        ],
         "@nx/enforce-module-boundaries": [
           "error",
           {

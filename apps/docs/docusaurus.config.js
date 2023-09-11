@@ -1,6 +1,3 @@
-// @ts-check
-// Note: type annotations allow type checking and IDEs autocompletion
-
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
@@ -8,8 +5,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Reduced.to',
   staticDirectories: ['apps/docs/public', 'apps/docs/static'],
-  tagline:
-    "Reduced.to is a modern web application that reduces the length of link URL, so it's easier to remember, share and track.",
+  tagline: "Reduced.to is a modern web application that reduces the length of link URL, so it's easier to remember, share and track.",
   favicon: 'images/favicon.png',
   url: 'https://reduced.to/',
   baseUrl: '/',
