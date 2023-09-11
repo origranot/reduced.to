@@ -140,9 +140,9 @@ The project is structured in the following way:
 
 You can build the docker images by running the following nx command:
 
-  ```sh
-  npx nx run-many -t docker-build
-  ```
+```sh
+npx nx run-many -t docker-build
+```
 
 - This command will automatically build the dependencies and the backend and frontend images.
 
