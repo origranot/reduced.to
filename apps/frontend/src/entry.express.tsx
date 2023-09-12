@@ -27,7 +27,7 @@ const distDir = join(fileURLToPath(import.meta.url), '..', '..', 'client');
 const buildDir = join(distDir, 'build');
 
 // Allow for dynamic port
-const PORT = process.env.PORT ?? 5000;
+const PORT = process.env.FRONTEND_APP_PORT ?? 5000;
 
 // Create the Qwik City Node middleware
 const { router, notFound } = createQwikCity({

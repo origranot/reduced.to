@@ -9,6 +9,7 @@ export class AppConfigService {
   getConfig(): Configuration {
     const config = this.configService.get<Configuration>('config');
     if (!config) {
+      console.log('conifg');
       throw new ConfigNotFoundError();
     }
     return config;

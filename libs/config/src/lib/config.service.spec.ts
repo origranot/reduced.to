@@ -18,6 +18,7 @@ describe('AppConfigService', () => {
     expect(service).toBeDefined();
   });
 
+
   it('should return the correct configuration object', () => {
     const expectedConfig = {
       key1: 'value1',

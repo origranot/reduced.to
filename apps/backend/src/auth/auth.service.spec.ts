@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Role, User } from '@reduced.to/prisma';
 import * as bcrypt from 'bcryptjs';
-import { AppConfigModule } from '../config/config.module';
+import { AppConfigModule } from '@reduced.to/config';
 import { PrismaService } from '@reduced.to/prisma';
 import { AuthService } from './auth.service';
 

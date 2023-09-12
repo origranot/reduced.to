@@ -33,6 +33,7 @@ WORKDIR /app
 
 COPY --from=build /app/dist/apps/backend ./backend
 COPY --from=build /app/dist/libs/prisma ./prisma
+COPY --from=build /app/dist/libs/config ./config
 COPY --from=build /app/node_modules ./node_modules
 COPY ./libs/ ./libs/
 COPY ./nx.json ./nx.json

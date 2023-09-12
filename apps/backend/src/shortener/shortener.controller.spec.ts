@@ -1,4 +1,4 @@
-import { AppConfigModule } from '../config/config.module';
+import { AppConfigModule } from '@reduced.to/config';
 import { AppCacheModule } from '../cache/cache.module';
 import { ShortenerService } from './shortener.service';
 import { ShortenerController } from './shortener.controller';

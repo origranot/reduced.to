@@ -5,7 +5,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { NovuService } from '../novu/novu.service';
 import { PrismaService } from '@reduced.to/prisma';
-import { AppConfigService } from '../config/config.service';
+import { AppConfigService, Configuration } from '@reduced.to/config';
 import { SignupDto } from './dto/signup.dto';
 import { UserContext } from './interfaces/user-context';
 import { LocalAuthGuard } from './guards/local.guard';
@@ -36,9 +36,9 @@ describe('AuthController', () => {
   };
 
   const MOCK_TOKENS = { accessToken: 'access_token', refreshToken: 'refresh_token' };
-  const MOCK_CONFIG = {
-    front: { domain: 'example.com' },
-    app: { env: 'production' },
+  const MOCK_CONFIG: Partial<Configuration> = {
+    front: { domain: 'example.com', apiDomain: 'http://localhost:3000', clientSideApiDomain: 'http://localhost:3000' },
+    general: { env: 'production', backendPort: 3000, frontendPort: 5000 },
     jwt: {
       accessSecret: 'secret',
       refreshSecret: 'secret',

@@ -5,7 +5,7 @@ import { UsersController } from './users.controller';
 import { IFindAllOptions, UsersService } from './users.service';
 import { User } from '@reduced.to/prisma';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
-import { AppConfigModule } from '../config/config.module';
+import { AppConfigModule } from '@reduced.to/config';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { IPaginationResult } from '../shared/utils';
 import { SortOrder } from '../shared/enums/sort-order.enum';
