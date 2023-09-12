@@ -25,7 +25,6 @@
   --tw-bg-opacity: 1;
   --tw-text-opacity: 1;
   border-color: hsl(var(--outline-border-color));
-  background-color: hsl(var(--b2) / var(--tw-text-opacity));
 }
 
 .select-btn-block {
