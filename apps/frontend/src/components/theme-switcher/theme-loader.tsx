@@ -1,12 +1,6 @@
 import { component$, useContext, useVisibleTask$ } from '@builder.io/qwik';
 import { GlobalStore } from '../../context';
-import {
-  colorSchemeChangeListener,
-  DARK_THEME,
-  getColorPreference,
-  LIGHT_THEME,
-  setPreference,
-} from '../theme-switcher/theme-switcher';
+import { colorSchemeChangeListener, DARK_THEME, getColorPreference, LIGHT_THEME, setPreference } from '../theme-switcher/theme-switcher';
 
 export const ThemeLoader = component$(() => {
   const globalStore = useContext(GlobalStore);

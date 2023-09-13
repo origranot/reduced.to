@@ -1,5 +1,5 @@
 import { $, component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
-import { GlobalStore } from '~/context';
+import { GlobalStore } from '../../context';
 import { themeStorageKey } from '../router-head/theme-script';
 import styles from './theme-switcher.css?inline';
 

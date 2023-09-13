@@ -72,6 +72,7 @@
 
 List of frameworks/libraries used to bootstrap the project.
 
+- [![NX][nx]][nx-url]
 - [![Nest][nestjs]][nest-url]
 - [![Qwik][qwik.js]][qwik-url]
 - [![Tailwindcss][tailwindcss]][tailwindcss-url]
@@ -109,71 +110,41 @@ List of things you need to run the project locally and how to install them.
    ```sh
    docker run --name reduced_to_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
    ```
-6. Run Prisma migration inside the backend folder:
+6. Run Prisma migration from root folder:
    ```sh
-   npx prisma migrate dev --name init
+   npx nx migrate-dev prisma --name=init
    ```
-7. Run the backend:
+7. Run the backend from root folder:
    ```sh
-   npm run start:backend
+   npx nx serve backend
    ```
-8. Run the frontend:
+8. Run the frontend from root folder:
    ```sh
-   npm run start:frontend
+   npx nx serve frontend
    ```
 
 ### 👩‍💻 Development
 
 The project is structured in the following way:
 
-- 🚀 `root`
-- 🎨 `/apps/frontend`
-- 📦 `/apps/backend`
-
-### _Running the frontend in dev mode_
-
-1. Move to the frontend folder
-   ```sh
-   cd ./apps/frontend
-   ```
-2. Run the project (it will open a new window)
-   ```sh
-   npm run dev
-   ```
-3. Vite will be now listening for changes in the code and reloading the solution
-
-### _Running the backend in dev mode_
-
-1. Move to the backend folder
-   ```sh
-   cd ./apps/backend
-   ```
-2. Run the project (be sure that you built the frontend before)
-   ```sh
-   npm run start:dev
-   ```
-3. Nest will be now listening for changes in the code and reloading the solution
+```
+.
+├── apps/
+│   ├── backend
+│   └── frontend
+└── libs/
+    └── prisma
+```
 
 ### 🐳 Docker
 
-- You can easily build your application using docker. Just run the following commands:
-- Build and run frontend instance
-  ```sh
-  docker build apps/frontend/ -t reduced.to-front
-  docker run -p 5000:5000 reduced.to-front
-  ```
-- Build and run backend instance
-  ```sh
-  docker build apps/backend/ -t reduced.to-back
-  docker run -p 3000:3000 reduced.to-back
-  ```
-- Make sure to have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
+You can build the docker images by running the following nx command:
 
-  ```sh
-  docker run --name reduced_to_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
-  ```
+```sh
+npx nx run-many -t docker-build
+```
 
-- Simply go to your favourite browser and visit `http://localhost:5000/` to see your application.
+- This command will automatically build the dependencies and the backend and frontend images.
 
 ### 🐙 Docker compose
 
@@ -184,11 +155,9 @@ The project is structured in the following way:
   docker compose -f docker/local/docker-compose.yml -p reduced-to up
   ```
 
-  > **NOTE:** There is a known issue with the local docker-compose deployment. Because of the way the containers are communicating with each other, the frontend container will not be able to send requests to the backend container. This is because the backend container is accessible only from within the docker network. To overcome this issue, you can run only the backend locally and the other services using docker-compose.
-
 ### 👷 Configuration
 
-For the minimal configuration the following settings have to be changed in their `.env` file:
+For the minimal configuration you can just rename the `.example.env` files to `.env`.
 
 #### Backend configuration
 
@@ -234,7 +203,9 @@ For the minimal configuration the following settings have to be changed in their
 
 - **DOMAIN**: Domain of your frontend app (used for cookies)
 
-- **API_DOMAIN**: Domain of your backend instance
+- **API_DOMAIN**: Domain of your backend instance (used for server side requests)
+
+- **CLIENTSIDE_API_DOMAIN**: Domain of your backend instance (used for client side requests)
 
 Happy Hacking !
 
@@ -267,6 +238,7 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
   - [x] Dark/Light mode
 - [ ] Improve front-end components
 - [x] Backend tests
+- [x] Migration to Nx
 - [ ] Front-end Tests
 - [ ] Logs
 - [ ] Add a statistics page
@@ -327,7 +299,9 @@ Project Link: [https://github.com/origranot/reduced.to](https://github.com/origr
 [issues-shield]: https://img.shields.io/github/issues/origranot/reduced.to.svg?style=for-the-badge
 [issues-url]: https://github.com/origranot/reduced.to/issues
 [product-screenshot]: docs/gif.gif
-[nestjs]: https://img.shields.io/badge/nestJS-000000?style=for-the-badge&logo=nestjs&logoColor=E0234E
+[nx]: https://img.shields.io/static/v1?style=for-the-badge&message=Nx&color=143055&logo=Nx&logoColor=FFFFFF&label=
+[nx-url]: https://nx.dev/
+[nestjs]: https://img.shields.io/static/v1?style=for-the-badge&message=NestJS&color=E0234E&logo=NestJS&logoColor=FFFFFF&label=
 [nest-url]: https://nestjs.com/
 [qwik.js]: https://tinyurl.com/y67dv8ub
 [qwik-url]: https://qwik.builder.io/

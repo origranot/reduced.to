@@ -12,7 +12,7 @@ describe('Sortable Decorator', () => {
   it('should pass validation if sort field is empty', async () => {
     const dto = new TestDto();
 
-    let errors = await validate(dto);
+    const errors = await validate(dto);
     expect(errors.length).toBe(0);
   });
 
@@ -25,7 +25,7 @@ describe('Sortable Decorator', () => {
       role: SortOrder.ASCENDING,
     };
 
-    let errors = await validate(dto);
+    const errors = await validate(dto);
     expect(errors.length).toBe(0);
   });
 

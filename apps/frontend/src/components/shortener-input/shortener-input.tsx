@@ -1,10 +1,10 @@
 import { component$, useContext, $, useOnDocument, useSignal, QwikKeyboardEvent } from '@builder.io/qwik';
-import { InputContext } from '~/routes';
+import { InputContext } from '../../routes';
 import { ShortenerInputBtn } from './shortener-input-btn';
 import { TIME_FRAME_DIR } from './constants';
-import { useGetCurrentUser } from '~/routes/layout';
-import { Select } from '~/components/select/select';
-import { ArrowDoodle } from '~/components/arrow-doodle/arrow-doodle';
+import { useGetCurrentUser } from '../../routes/layout';
+import { Select } from '../../components/select/select';
+import { ArrowDoodle } from '../../components/arrow-doodle/arrow-doodle';
 
 export interface ShortenerInputProps {
   onKeyUp$: (event: QwikKeyboardEvent<HTMLInputElement>) => void;

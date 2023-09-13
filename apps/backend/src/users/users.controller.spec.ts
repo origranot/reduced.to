@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { UsersController } from './users.controller';
 import { IFindAllOptions, UsersService } from './users.service';
-import { User } from '@prisma/client';
+import { User } from '@reduced.to/prisma';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { AppConfigModule } from '../config/config.module';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -105,9 +105,7 @@ describe('UsersController', () => {
         sort: { name: SortOrder.ASCENDING, role: SortOrder.DESCENDING },
       };
 
-      await request(app.getHttpServer())
-        .get('/users?limit=10&page=2&filter=test@test.com&sort[name]=asc&sort[role]=desc')
-        .expect(200);
+      await request(app.getHttpServer()).get('/users?limit=10&page=2&filter=test@test.com&sort[name]=asc&sort[role]=desc').expect(200);
 
       expect(usersService.findAll).toHaveBeenCalledWith(findAllOptions);
     });

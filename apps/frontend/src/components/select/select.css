@@ -8,7 +8,6 @@
   align-items: center;
   justify-content: space-between;
   text-align: center;
-  border-radius: var(--rounded-btn, 0.5rem);
   height: 3rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -26,7 +25,6 @@
   --tw-bg-opacity: 1;
   --tw-text-opacity: 1;
   border-color: hsl(var(--outline-border-color));
-  background-color: hsl(var(--b2) / var(--tw-text-opacity));
 }
 
 .select-btn-block {

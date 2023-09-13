@@ -14,14 +14,7 @@ export const TwitterButton = component$((props: TwitterButtonProps) => {
       class={props?.className ? props.className : 'btn'}
       onClick$={props.handleClick$}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 50 50"
-        stroke-width={1.5}
-        stroke="currentColor"
-        class="w-6 h-6"
-      >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 50 50" stroke-width={1.5} stroke="currentColor" class="w-6 h-6">
         <path
           stroke-linecap="round"
           stroke-linejoin="round"

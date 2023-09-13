@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards
 import { Request, Response } from 'express';
 import { AppConfigService } from '../config/config.service';
 import { NovuService } from '../novu/novu.service';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '@reduced.to/prisma';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dto/signup.dto';
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh.guard';

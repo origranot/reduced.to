@@ -36,9 +36,9 @@ export const Navbar = component$(() => {
             </label>
           </>
         )}
-        <a href="/" class="btn btn-ghost normal-case text-xl">
+        <Link href="/" class="btn btn-ghost normal-case text-xl">
           Reduced.to
-        </a>
+        </Link>
       </div>
       <div class="block sm:hidden dropdown dropdown-end">
         <BurgerButton buttonTitle="Open" />

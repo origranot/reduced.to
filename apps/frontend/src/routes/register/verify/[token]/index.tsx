@@ -13,7 +13,7 @@ export default component$(() => {
   useVisibleTask$(() => {
     store.token = params.token;
 
-    fetch(`${process.env.API_DOMAIN}/api/v1/auth/verify?token=${store.token}`, {
+    fetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/auth/verify?token=${store.token}`, {
       method: 'GET',
       headers: {
         token: store.token,
@@ -34,9 +34,7 @@ export default component$(() => {
           <div class="max-w-md">
             <p class="py-6">
               {!store.loading &&
-                (store.verified
-                  ? 'Your account has been verified successfully'
-                  : "We couldn't verify your account. Try again later")}
+                (store.verified ? 'Your account has been verified successfully' : "We couldn't verify your account. Try again later")}
             </p>
             <Link href="/" class="btn btn-primary">
               Go back

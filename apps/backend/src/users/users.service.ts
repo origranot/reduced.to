@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { User } from '@prisma/client';
+import { PrismaService } from '@reduced.to/prisma';
+import { User } from '@reduced.to/prisma';
 import { IPaginationResult, orderByBuilder } from '../shared/utils';
 import { SortOrder } from '../shared/enums/sort-order.enum';
 

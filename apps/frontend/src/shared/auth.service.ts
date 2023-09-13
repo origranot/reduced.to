@@ -78,7 +78,7 @@ export const authorizedFetch = async (url: string, options = {}) => {
 };
 
 export const refreshTokens = async (refreshToken: string): Promise<{ accessToken: string; refreshToken: string }> => {
-  const res = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/refresh`, {
+  const res = await fetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/auth/refresh`, {
     method: 'POST',
     credentials: 'include',
     headers: {

@@ -1,0 +1,86 @@
+{
+  "name": "frontend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/frontend/src",
+  "targets": {
+    "build": {
+      "executor": "qwik-nx:build",
+      "options": {
+        "runSequence": ["frontend:build.client", "frontend:build.ssr"],
+        "outputPath": "dist/apps/frontend"
+      },
+      "configurations": {
+        "preview": {}
+      }
+    },
+    "build.client": {
+      "executor": "@nx/vite:build",
+      "options": {
+        "outputPath": "dist/apps/frontend",
+        "configFile": "apps/frontend/vite.config.ts"
+      }
+    },
+    "build.ssr": {
+      "executor": "@nx/vite:build",
+      "defaultConfiguration": "express",
+      "options": {
+        "outputPath": "dist/apps/frontend",
+        "configFile": "apps/frontend/adapters/express/vite.config.ts"
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "options": {
+        "buildTarget": "frontend:build",
+        "port": 4300
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["../../coverage/apps/frontend"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/apps/frontend"
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "options": {
+        "buildTarget": "frontend:build.client",
+        "mode": "ssr",
+        "port": 4200
+      }
+    },
+    "serve.debug": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node --inspect-brk ../../node_modules/vite/bin/vite.js --mode ssr --force",
+        "cwd": "apps/frontend"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/frontend/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build -f apps/frontend/Dockerfile . -t frontend"
+    },
+    "push-image-to-registry": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker build -f apps/frontend/Dockerfile . -t frontend --build-arg DOMAIN={args.domain} --build-arg API_DOMAIN={args.apiDomain} --build-arg CLIENTSIDE_API_DOMAIN={args.clientSideApiDomain}",
+          "docker image tag frontend ghcr.io/{args.repository}/frontend:master",
+          "docker push ghcr.io/{args.repository}/frontend:master"
+        ],
+        "parallel": false
+      }
+    }
+  },
+  "tags": []
+}

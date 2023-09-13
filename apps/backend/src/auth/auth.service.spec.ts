@@ -1,10 +1,10 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Role, User } from '@prisma/client';
-import * as bcrypt from 'bcrypt';
+import { Role, User } from '@reduced.to/prisma';
+import * as bcrypt from 'bcryptjs';
 import { AppConfigModule } from '../config/config.module';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '@reduced.to/prisma';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {

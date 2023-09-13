@@ -82,14 +82,7 @@ export const useRegister = globalAction$(
 
 export const PasswordVisible = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width={1.5}
-      stroke="currentColor"
-      class="w-6 h-6"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="w-6 h-6">
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -101,14 +94,7 @@ export const PasswordVisible = () => {
 
 export const PasswordMasked = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width={1.5}
-      stroke="currentColor"
-      class="w-6 h-6"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="w-6 h-6">
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -137,11 +123,7 @@ export default component$(() => {
                 <label class="label">
                   <span class="label-text text-xs font-semibold">DISPLAY NAME</span>
                 </label>
-                <input
-                  name="displayName"
-                  type="text"
-                  class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
-                />
+                <input name="displayName" type="text" class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300" />
                 {action.value?.fieldErrors?.displayName && (
                   <span class="text-error text-left">{action.value?.fieldErrors?.displayName}</span>
                 )}{' '}
@@ -150,10 +132,7 @@ export default component$(() => {
                   <span class="label-text text-xs font-semibold">EMAIL</span>
                 </label>
                 <input name="email" type="text" class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300" />
-                {action.value?.fieldErrors?.email && (
-                  <span class="text-error text-left">{action.value?.fieldErrors?.email}</span>
-                )}{' '}
-                <br />
+                {action.value?.fieldErrors?.email && <span class="text-error text-left">{action.value?.fieldErrors?.email}</span>} <br />
                 <label class="label">
                   <span class="label-text text-xs font-semibold">PASSWORD</span>
                 </label>
@@ -177,9 +156,7 @@ export default component$(() => {
                   </span>
                 </div>
                 <label class="label">
-                  <span
-                    class={`label-text text-xs text-left ${action.value?.fieldErrors?.password ? 'text-error text-left' : ''}`}
-                  >
+                  <span class={`label-text text-xs text-left ${action.value?.fieldErrors?.password ? 'text-error text-left' : ''}`}>
                     Password must contain at least six characters, including at least 1 letter and 1 number.
                   </span>
                 </label>

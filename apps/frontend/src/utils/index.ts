@@ -2,12 +2,12 @@ export const copyToClipboard = async (data: string): Promise<void> => {
   return navigator.clipboard.writeText(data);
 };
 
-export const openUrl = (url: string | URL, target: string = '_blank'): void => {
+export const openUrl = (url: string | URL, target = '_blank'): void => {
   window.open(url, target);
 };
 
 /**
- * Normalize input url
+ * Normalize url input
  *  - add protocol 'http' if missing.
  *  - correct protocol http/https if mistyped one character.
  * @param {string} url

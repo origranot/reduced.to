@@ -10,6 +10,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=reduced_to_db
+    volumes:
+      - ../../tmp/data/postgresql:/var/lib/postgresql/data
     ports:
       - '5432:5432'
 
@@ -27,25 +29,26 @@ services:
   frontend:
     container_name: frontend
     build:
-      context: ../../apps/frontend
-      dockerfile: Dockerfile
+      context: ../..
+      dockerfile: apps/frontend/Dockerfile
+      args:
+        - DOMAIN=${DOMAIN}
+        - API_DOMAIN=${API_DOMAIN}
+        - CLIENTSIDE_API_DOMAIN=${CLIENTSIDE_API_DOMAIN}
     restart: always
     ports:
       - '5000:5000'
     env_file: ../../apps/frontend/.env
-    volumes:
-      - /app
 
   backend:
     container_name: backend
     platform: linux/amd64
     build:
-      context: ../../apps/backend
-      dockerfile: Dockerfile
+      context: ../..
+      dockerfile: apps/backend/Dockerfile
     restart: always
     volumes:
-      - ../../apps/backend:/svr/app/
-      - /svr/app/node_modules
+      - ../../apps/backend:/app/apps/backend/
     ports:
       - '3000:3000'
     env_file: ../../apps/backend/.env

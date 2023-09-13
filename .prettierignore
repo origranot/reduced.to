@@ -1,10 +1,2 @@
-# Files Prettier should not format
-**/*.log
-**/.DS_Store
-*.
-**/dist
-**/node_modules
-
-# Ignore all build directories on frontend
-apps/frontend/server
-
+.prettierignore
+.docusaurus/

@@ -1,13 +1,13 @@
-import { confettiAnimate } from '~/lib/confetti';
-import { Store } from '~/routes';
-import { copyToClipboard, normalizeUrl } from '~/utils';
+import { confettiAnimate } from '../../lib/confetti';
+import { Store } from '../../routes';
+import { copyToClipboard, normalizeUrl } from '../../utils';
 
 /**
  * Returns the shorter link from the server.
  * @param {string} originalUrl - The original url we want to shorten.
  */
 const getShortenUrl = async (originalUrl: string, ttl: number) => {
-  const result = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener`, {
+  const result = await fetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/shortener`, {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
