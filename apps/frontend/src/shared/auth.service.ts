@@ -1,6 +1,6 @@
 import { Cookie } from '@builder.io/qwik-city';
 import jwt_decode from 'jwt-decode';
-import { UserCtx } from '~/routes/plugin@auth';
+import { UserCtx } from '../routes/plugin@auth';
 
 export const ACCESS_COOKIE_NAME = 'accessToken';
 export const REFRESH_COOKIE_NAME = 'refreshToken';

@@ -29,7 +29,7 @@
       }
     },
     "studio": {
-      "command": "prisma studio --schema=src/schema.prisma",
+      "command": "npx prisma studio --schema=src/schema.prisma",
       "options": {
         "cwd": "libs/prisma"
       }

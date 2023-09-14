@@ -6,8 +6,9 @@ import { BurgerButton } from './burger-button/burger-button';
 import { GithubButton } from './github-button/github-button';
 import styles from './navbar.css?inline';
 import { Profile } from './profile/profile';
-import { useAuthSignout } from '~/routes/plugin@auth';
-import { UserAuthStatusContext } from '~/routes/layout';
+import { UserAuthStatusContext } from '../../routes/layout';
+import { useAuthSignout } from '../../routes/plugin@auth';
+
 
 export const Navbar = component$(() => {
   useStylesScoped$(styles);

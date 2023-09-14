@@ -1,8 +1,9 @@
 import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
 import { Form, Link } from '@builder.io/qwik-city';
 import styles from './profile.css?inline';
-import { useAuthSignout } from '~/routes/plugin@auth';
-import { UserAuthStatusContext } from '~/routes/layout';
+import { useAuthSignout } from 'apps/frontend/src/routes/plugin@auth';
+import { UserAuthStatusContext } from 'apps/frontend/src/routes/layout';
+
 
 export const Profile = component$(() => {
   useStylesScoped$(styles);

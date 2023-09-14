@@ -63,6 +63,8 @@
     "vitest": "~0.32.0"
   },
   "dependencies": {
+    "@auth/core": "^0.7.1",
+    "@builder.io/qwik-auth": "~0.1.0",
     "@docusaurus/core": "^2.4.1",
     "@docusaurus/preset-classic": "^2.4.1",
     "@mdx-js/react": "^1.6.22",
