@@ -31,7 +31,8 @@
     "studio": {
       "command": "npx prisma studio --schema=src/schema.prisma",
       "options": {
-        "cwd": "libs/prisma"
+        "cwd": "libs/prisma",
+        "envFile": "../../apps/backend/.env"        
       }
     },
     "build": {
