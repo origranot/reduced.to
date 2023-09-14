@@ -13,18 +13,14 @@
     "migrate-dev": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx prisma migrate dev --schema=src/schema.prisma --name={args.name}",
-        "cwd": "libs/prisma",
-        "envFile": "../../.env",
+        "command": "npx prisma migrate dev --schema=libs/prisma/src/schema.prisma --name={args.name}",
         "parallel": true
       }
     },
     "migrate-deploy": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx prisma migrate deploy --schema=src/schema.prisma",
-        "cwd": "libs/prisma",
-        "envFile": "../../.env",
+        "command": "npx prisma migrate deploy --schema=libs/prisma/src/schema.prisma",
         "parallel": true
       }
     },

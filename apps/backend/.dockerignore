@@ -1,5 +1,8 @@
-Dockerfile
-.dockerignore
 node_modules
-npm-debug.log
 dist
+npm-debug.log
+CONTRIBUTE.MD
+README.md
+.gitignore
+LICENSE
+.DS_Store

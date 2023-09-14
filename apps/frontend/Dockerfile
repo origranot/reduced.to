@@ -2,15 +2,14 @@
 # Dependencies Stage
 # --------------------------------------------
 FROM node:19.2-alpine3.15 as dependencies
-
 WORKDIR /app
-COPY package.json package-lock.json ./
+
+COPY package*.json ./
 
 RUN apk add --update python3 make g++\
    && rm -rf /var/cache/apk/*
 
 RUN npm ci
-
 
 # --------------------------------------------
 # Build Stage
@@ -30,7 +29,6 @@ COPY --from=dependencies /app/node_modules ./node_modules
 
 # Run prisma generate & build the bundle in production mode
 RUN npx nx build frontend --prod --skip-nx-cache
-
 
 # --------------------------------------------
 # Production Stage

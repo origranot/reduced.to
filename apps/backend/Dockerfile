@@ -2,9 +2,9 @@
 # Dependencies Stage
 # --------------------------------------------
 FROM node:19.2-alpine3.15 as dependencies
-
 WORKDIR /app
-COPY package.json package-lock.json ./
+
+COPY package*.json ./
 
 RUN apk add --update python3 make g++\
    && rm -rf /var/cache/apk/*
@@ -32,12 +32,17 @@ FROM node:19.2-alpine3.15 as production
 WORKDIR /app
 
 COPY --from=build /app/dist/apps/backend ./backend
-COPY --from=build /app/dist/libs/prisma ./prisma
 COPY --from=build /app/node_modules ./node_modules
-COPY ./libs/ ./libs/
-COPY ./nx.json ./nx.json
+COPY --from=build /app/libs/ ./libs
 
 EXPOSE 3000
 
 # Start the application
 CMD sh -c "npx nx migrate-deploy prisma && node backend/main.js"
+
+
+
+
+
+
+

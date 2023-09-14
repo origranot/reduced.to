@@ -8,7 +8,6 @@ import { AppConfigService } from './config.service';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['../../.env'],
       load: [configFactory],
       cache: true,
     }),
