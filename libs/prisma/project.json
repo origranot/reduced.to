@@ -15,6 +15,7 @@
       "options": {
         "command": "npx prisma migrate dev --schema=src/schema.prisma --name={args.name}",
         "cwd": "libs/prisma",
+        "envFile": "../../.env",
         "parallel": true
       }
     },
@@ -23,6 +24,7 @@
       "options": {
         "command": "npx prisma migrate deploy --schema=src/schema.prisma",
         "cwd": "libs/prisma",
+        "envFile": "../../.env",
         "parallel": true
       }
     },
