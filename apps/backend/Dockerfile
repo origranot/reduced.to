@@ -24,7 +24,6 @@ COPY --from=dependencies /app/node_modules ./node_modules
 # Run prisma generate & build the bundle in production mode
 RUN npx nx build backend --prod --skip-nx-cache
 
-
 # --------------------------------------------
 # Production Stage
 # --------------------------------------------
