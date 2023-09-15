@@ -13,7 +13,10 @@ export class NovuService {
   }
 
   async sendVerificationEmail(user: UserContext) {
-    const domain = process.env.NODE_ENV === 'production' ? `https://${this.config.front.domain}` : `http://${this.config.front.domain}:${this.config.general.frontendPort}`;
+    const domain =
+      process.env.NODE_ENV === 'production'
+        ? `https://${this.config.front.domain}`
+        : `http://${this.config.front.domain}:${this.config.general.frontendPort}`;
     const verificationUrl = `${this.appConfigService.getConfig().front.domain}/register/verify/${user.verificationToken}`;
 
     await this.novu.trigger('new-user', {

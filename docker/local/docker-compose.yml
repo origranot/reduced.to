@@ -31,10 +31,6 @@ services:
     build:
       context: ../..
       dockerfile: apps/frontend/Dockerfile
-      args:
-        - DOMAIN=${DOMAIN}
-        - API_DOMAIN=${API_DOMAIN}
-        - CLIENTSIDE_API_DOMAIN=${CLIENTSIDE_API_DOMAIN}
     restart: always
     ports:
       - '5000:5000'
