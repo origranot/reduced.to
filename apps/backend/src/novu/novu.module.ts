@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AppConfigService } from '../config/config.service';
+import { AppConfigService } from '@reduced.to/config';
 import { Novu } from '@novu/node';
 
 export const NOVU_INJECTION_TOKEN = 'NOVU';

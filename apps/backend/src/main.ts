@@ -4,7 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { useContainer } from 'class-validator';
 import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
-import { AppConfigService } from './config/config.service';
+import { AppConfigService } from '@reduced.to/config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -22,7 +22,7 @@ async function bootstrap() {
   // Enable DI in class-validator
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  const port = app.get(AppConfigService).getConfig().app.port;
+  const port = app.get(AppConfigService).getConfig().general.backendPort;
 
   await app.listen(port);
 }

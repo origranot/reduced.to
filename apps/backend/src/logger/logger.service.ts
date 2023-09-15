@@ -1,6 +1,6 @@
 import { Injectable, LoggerService, LogLevel } from '@nestjs/common';
 import { ConsoleTransport, Logger } from '@origranot/ts-logger';
-import { AppConfigService } from '../config/config.service';
+import { AppConfigService } from '@reduced.to/config';
 
 @Injectable()
 export class AppLoggerSerivce implements LoggerService {

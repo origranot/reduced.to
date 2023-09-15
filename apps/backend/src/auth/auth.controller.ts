@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { AppConfigService } from '../config/config.service';
+import { AppConfigService } from '@reduced.to/config';
 import { NovuService } from '../novu/novu.service';
 import { PrismaService } from '@reduced.to/prisma';
 import { AuthService } from './auth.service';
@@ -44,7 +44,7 @@ export class AuthController {
     const user = await this.authService.signup(signupDto);
 
     // Send verification email to user if in production
-    if (this.appConfigService.getConfig().app.env === 'production') {
+    if (this.appConfigService.getConfig().general.env === 'production') {
       await this.novuService.sendVerificationEmail(user);
     }
 

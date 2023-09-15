@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '@reduced.to/prisma';
 import * as bcrypt from 'bcryptjs';
-import { AppConfigService } from '../config/config.service';
+import { AppConfigService } from '@reduced.to/config';
 import { PrismaService } from '@reduced.to/prisma';
 import { SignupDto } from './dto/signup.dto';
 import { UserContext } from './interfaces/user-context';
