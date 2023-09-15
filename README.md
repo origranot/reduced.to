@@ -184,7 +184,6 @@ For the minimal configuration you can just rename the `.example.env` files to `.
 - **API_DOMAIN**: Domain of your backend instance (used for server side requests)
 - **CLIENTSIDE_API_DOMAIN**: Domain of your backend instance (used for client side requests)
 
-
 ###### Redis
 
 - **REDIS_ENABLE**: Whether to use external redis store or not
@@ -201,7 +200,6 @@ For the minimal configuration you can just rename the `.example.env` files to `.
 ###### Novu
 
 - **NOVU_API_KEY**: Get it from https://novu.co/, you don't need this when running locally (just verify your email from the database)
-
 
 Happy Hacking !
 
