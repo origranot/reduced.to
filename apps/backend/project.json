@@ -41,7 +41,13 @@
         "production": {
           "buildTarget": "backend:build:production"
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "generate-types",
+          "projects": "prisma"
+        }
+      ]
     },
     "lint": {
       "executor": "@nx/linter:eslint",
