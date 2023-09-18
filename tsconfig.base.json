@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@reduced.to/config": ["libs/config/src/index.ts"],
+      "@reduced.to/logger": ["libs/logger/src/index.ts"],
       "@reduced.to/prisma": ["libs/prisma/src/index.ts"],
       "@reduced.to/queue-manager": ["libs/queue-manager/src/index.ts"]
     }
