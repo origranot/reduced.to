@@ -1,21 +1,31 @@
 {
   "name": "logger",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "logger/src",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/logger/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/logger",
+        "tsConfig": "libs/logger/tsconfig.lib.json",
+        "packageJson": "libs/logger/package.json",
+        "main": "libs/logger/src/index.ts"
+      }
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["logger/**/*.ts"]
+        "lintFilePatterns": ["libs/logger/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/config/jest.config.ts",
+        "jestConfig": "libs/logger/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {

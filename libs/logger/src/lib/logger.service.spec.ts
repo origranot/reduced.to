@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppConfigModule } from '@reduced.to/config';
-import { AppLoggerSerivce } from '@reduced.to/logger';
+import { AppLoggerSerivce } from './logger.service';
 
 describe('LoggerService', () => {
   let service: AppLoggerSerivce;
