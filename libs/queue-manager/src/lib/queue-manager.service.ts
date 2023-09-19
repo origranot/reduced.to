@@ -3,10 +3,10 @@ import { QUEUE_MANAGER_INJECTION_TOKEN } from '@reduced.to/queue-manager';
 import { Memphis } from 'memphis-dev/*';
 
 @Injectable()
-export abstract class QueueManagerService {
+export class QueueManagerService {
   constructor(@Inject(QUEUE_MANAGER_INJECTION_TOKEN) private readonly queueManager: Memphis) {}
 
-  protected getQueueManager() {
+  getQueueManager() {
     return this.queueManager;
   }
 }

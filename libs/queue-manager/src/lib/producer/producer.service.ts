@@ -3,8 +3,12 @@ import { QUEUE_MANAGER_INJECTION_TOKEN, QueueManagerService } from '@reduced.to/
 import { Memphis } from 'memphis-dev/*';
 
 export abstract class ProducerService extends QueueManagerService {
-  constructor(@Inject(QUEUE_MANAGER_INJECTION_TOKEN) queueManager: Memphis, protected readonly name: string) {
+  constructor(@Inject(QUEUE_MANAGER_INJECTION_TOKEN) queueManager: Memphis, private readonly name: string) {
     super(queueManager);
+  }
+
+  getName() {
+    return this.name;
   }
 
   async publish(queueName: string, data: any) {
