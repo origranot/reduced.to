@@ -5,7 +5,6 @@ import { AuthModule } from './auth/auth.module';
 import { AppCacheModule } from './cache/cache.module';
 import { AppConfigModule, AppConfigService } from '@reduced.to/config';
 import { AppLoggerModule } from '@reduced.to/logger';
-import { NovuModule } from './novu/novu.module';
 import { PrismaService } from '@reduced.to/prisma';
 import { UniqueConstraint } from './shared/decorators/unique/unique.decorator';
 import { CustomThrottlerGuard } from './shared/guards/custom-throttler/custom-throttler';
@@ -26,7 +25,6 @@ import { UsersModule } from './users/users.module';
     }),
     ShortenerModule,
     AuthModule,
-    NovuModule,
     UsersModule,
   ],
   providers: [

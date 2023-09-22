@@ -37,6 +37,13 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
       novu: {
         apiKey: process.env.NOVU_API_KEY,
       },
+      memphis: {
+        enable: process.env.MEMPHIS_ENABLE === 'true' || false,
+        host: process.env.MEMPHIS_HOST,
+        username: process.env.MEMPHIS_USERNAME,
+        password: process.env.MEMPHIS_PASSWORD,
+        accountId: +process.env.MEMPHIS_ACCOUNT_ID,
+      },
     },
   };
 };
@@ -81,6 +88,14 @@ export interface NovuConfig {
   apiKey: string;
 }
 
+export interface MemphisConfig {
+  enable: boolean;
+  host: string;
+  username: string;
+  password: string;
+  accountId: number;
+}
+
 export interface Configuration {
   general: GeneralConfig;
   logger: LoggerConfig;
@@ -89,4 +104,5 @@ export interface Configuration {
   redis: RedisConfig;
   jwt: JWTConfig;
   novu: NovuConfig;
+  memphis: MemphisConfig;
 }
