@@ -5,7 +5,7 @@ import { ShortenerController } from './shortener.controller';
 import { Test } from '@nestjs/testing';
 import { ShortenerDto } from './dto';
 import { Request } from 'express';
-import { AppLoggerModule } from '../logger/logger.module';
+import { AppLoggerModule } from '@reduced.to/logger';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;

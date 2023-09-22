@@ -4,19 +4,17 @@ import { AppConfigService } from '@reduced.to/config';
 
 @Injectable()
 export class AppLoggerSerivce implements LoggerService {
-  constructor(private readonly config: AppConfigService) {
-    if (!this.logger) {
-      this.logger = new Logger({
-        transports: [
-          new ConsoleTransport({
-            threshold: this.config.getConfig().logger.console.threshold,
-          }),
-        ],
-      });
-    }
-  }
-
   private readonly logger: Logger;
+
+  constructor(private readonly config: AppConfigService) {
+    this.logger = new Logger({
+      transports: [
+        new ConsoleTransport({
+          threshold: this.config.getConfig().logger.console.threshold,
+        }),
+      ],
+    });
+  }
 
   log = (message: any, ...optionalParams: any[]) => this.logger.info(message, ...optionalParams);
   error = (message: any, ...optionalParams: any[]) => this.logger.error(message, ...optionalParams);
