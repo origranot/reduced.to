@@ -1,8 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProducerService, QueueManagerModule, QueueManagerService } from '@reduced.to/queue-manager';
+import { ProducerService } from './producer.service';
 import { AppConfigModule } from '@reduced.to/config';
 import { Injectable } from '@nestjs/common';
 import { AppLoggerModule } from '@reduced.to/logger';
+import { QueueManagerService } from '../queue-manager.service';
+import { QueueManagerModule } from '../queue-manager.module';
 
 jest.mock('../queue-manager.service');
 

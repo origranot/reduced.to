@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { QUEUE_MANAGER_INJECTION_TOKEN } from '@reduced.to/queue-manager';
+import { QUEUE_MANAGER_INJECTION_TOKEN } from './queue-manager.module';
 import { Memphis } from 'memphis-dev';
 
 @Injectable()

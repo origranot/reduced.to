@@ -1,5 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { QueueManagerService } from '@reduced.to/queue-manager';
+import { Inject } from '@nestjs/common';
+import { QueueManagerService } from '../queue-manager.service';
 import { AppConfigService } from '@reduced.to/config';
 import { AppLoggerSerivce } from '@reduced.to/logger';
 
