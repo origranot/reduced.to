@@ -1,21 +1,34 @@
-import { Inject } from '@nestjs/common';
-import { QUEUE_MANAGER_INJECTION_TOKEN, QueueManagerService } from '@reduced.to/queue-manager';
-import { Memphis } from 'memphis-dev/*';
+import { Inject, Injectable } from '@nestjs/common';
+import { QueueManagerService } from '@reduced.to/queue-manager';
+import { AppConfigService } from '@reduced.to/config';
+import { AppLoggerSerivce } from '@reduced.to/logger';
 
-export abstract class ProducerService extends QueueManagerService {
-  constructor(@Inject(QUEUE_MANAGER_INJECTION_TOKEN) queueManager: Memphis, private readonly name: string) {
-    super(queueManager);
+export abstract class ProducerService {
+  @Inject(AppLoggerSerivce) private readonly logger: AppLoggerSerivce;
+  @Inject(AppConfigService) private readonly config: AppConfigService;
+  @Inject(QueueManagerService) private readonly queueManager: QueueManagerService;
+
+  constructor(private readonly producerName: string, private readonly queue: string) {}
+
+  get name() {
+    return this.producerName;
   }
 
-  getName() {
-    return this.name;
+  get queueName() {
+    return this.queue;
   }
 
-  async publish(queueName: string, data: any) {
-    return this.getQueueManager().produce({
-      stationName: queueName,
+  async publish(message: any) {
+    // Do not publish if Memphis is disabled
+    if (!this.config.getConfig().memphis.enable) {
+      return;
+    }
+
+    this.logger.log(`Publishing message to ${this.queueName} with producer ${this.producerName}`);
+    return this.queueManager.client.produce({
+      stationName: this.queue,
       producerName: this.name,
-      message: data,
+      message,
     });
   }
 }

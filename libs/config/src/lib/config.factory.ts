@@ -38,6 +38,7 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
         apiKey: process.env.NOVU_API_KEY,
       },
       memphis: {
+        enable: process.env.MEMPHIS_ENABLE === 'true' || false,
         host: process.env.MEMPHIS_HOST,
         username: process.env.MEMPHIS_USERNAME,
         password: process.env.MEMPHIS_PASSWORD,
@@ -88,6 +89,7 @@ export interface NovuConfig {
 }
 
 export interface MemphisConfig {
+  enable: boolean;
   host: string;
   username: string;
   password: string;

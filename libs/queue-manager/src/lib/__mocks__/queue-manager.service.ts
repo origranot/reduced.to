@@ -1,6 +1,5 @@
-// Mock implementation for the queue manager service (memphis-dev)
 export class MemphisMock {
-  produce(payload: any) {
+  produce(payload: { stationName: string; producerName: string; message: any }) {
     console.log(`Producing message to ${payload.stationName}`);
   }
 }
@@ -13,7 +12,7 @@ export class QueueManagerService {
     this.queueManager = new MemphisMock();
   }
 
-  getQueueManager() {
+  get client() {
     // Mock implementation for getting the queue manager
     return this.queueManager;
   }
