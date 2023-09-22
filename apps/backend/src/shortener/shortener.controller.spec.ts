@@ -7,7 +7,7 @@ import { ShortenerDto } from './dto';
 import { Request } from 'express';
 import { AppLoggerModule } from '@reduced.to/logger';
 import { ShortenerProducer } from './producer/shortener.producer';
-import { QueueManagerModule, QueueManagerService } from '../../../../libs/queue-manager/src';
+import { QueueManagerModule, QueueManagerService } from '@reduced.to/queue-manager';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
