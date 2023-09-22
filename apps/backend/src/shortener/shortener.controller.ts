@@ -4,7 +4,7 @@ import { ShortenerDto } from './dto';
 import { ShortenerService } from './shortener.service';
 import { UserContext } from '../auth/interfaces/user-context';
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
-import { AppLoggerSerivce } from '../logger/logger.service';
+import { AppLoggerSerivce } from '@reduced.to/logger';
 
 @Controller({
   path: 'shortener',
