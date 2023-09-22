@@ -19,8 +19,8 @@ export abstract class ProducerService {
   }
 
   async publish(message: any) {
-    // Do not publish if Memphis is disabled
-    if (!this.config.getConfig().memphis.enable) {
+    // Do not publish if Memphis is disabled or if we are in test environment
+    if (this.config.getConfig().general.env === 'test' || !this.config.getConfig().memphis.enable) {
       return;
     }
 

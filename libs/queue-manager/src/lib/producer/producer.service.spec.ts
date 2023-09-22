@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProducerService } from './producer.service';
-import { AppConfigModule } from '@reduced.to/config';
+import { AppConfigModule, AppConfigService } from '@reduced.to/config';
 import { Injectable } from '@nestjs/common';
 import { AppLoggerModule } from '@reduced.to/logger';
 import { QueueManagerService } from '../queue-manager.service';
@@ -21,15 +21,17 @@ describe('ProducerService', () => {
 
   let service: TestProducerService;
   let queueManager: QueueManagerService;
+  let configService: AppConfigService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppConfigModule, AppLoggerModule, QueueManagerModule],
-      providers: [TestProducerService],
+      providers: [TestProducerService, QueueManagerService],
     }).compile();
 
     service = module.get<TestProducerService>(TestProducerService);
     queueManager = module.get<QueueManagerService>(QueueManagerService);
+    configService = module.get<AppConfigService>(AppConfigService);
   });
 
   it('should be defined', () => {
@@ -44,8 +46,21 @@ describe('ProducerService', () => {
     expect(service.queueName).toBe(TEST_QUEUE_NAME);
   });
 
-  it('should publish a message to the queue', async () => {
-    console.log(queueManager);
+  it('should not publish a message to the queue if we are in test environment', async () => {
+    const queueManagerSpy = jest.spyOn(queueManager.client, 'produce');
+
+    const PAYLOAD = { message: 'test', 1: 2 };
+
+    await service.publish(PAYLOAD);
+    expect(queueManagerSpy).toBeCalledTimes(0);
+  });
+
+  // It is not actually going to publish a message to the queue, but it is going to call the produce method of the queue-manager mock
+  it('should publish a message to the queue if we are not in test environment', async () => {
+    // Mock the config service to return the development environment
+    const configMock = jest.spyOn(configService, 'getConfig');
+    configMock.mockReturnValue({ general: { env: 'development' }, memphis: { enable: true } } as any);
+
     const queueManagerSpy = jest.spyOn(queueManager.client, 'produce');
 
     const PAYLOAD = { message: 'test', 1: 2 };
