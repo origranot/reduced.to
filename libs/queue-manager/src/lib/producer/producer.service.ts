@@ -24,7 +24,7 @@ export abstract class ProducerService {
       return;
     }
 
-    this.logger.log(`Publishing message to ${this.queueName} with producer ${this.producerName}`);
+    this.logger.debug(`Publishing message to ${this.queueName} with producer ${this.producerName}`);
     return this.queueManager.client.produce({
       stationName: this.queue,
       producerName: this.name,
