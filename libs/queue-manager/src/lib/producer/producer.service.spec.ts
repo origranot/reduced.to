@@ -55,6 +55,18 @@ describe('ProducerService', () => {
     expect(queueManagerSpy).toBeCalledTimes(0);
   });
 
+  it('should not publish a message to the queue if queue-manager is disabled', async () => {
+    const configMock = jest.spyOn(configService, 'getConfig');
+    configMock.mockReturnValue({ general: { env: 'development' }, memphis: { enable: false } } as any);
+
+    const queueManagerSpy = jest.spyOn(queueManager.client, 'produce');
+
+    const PAYLOAD = { message: 'test', 1: 2 };
+
+    await service.publish(PAYLOAD);
+    expect(queueManagerSpy).toBeCalledTimes(0);
+  });
+
   // It is not actually going to publish a message to the queue, but it is going to call the produce method of the queue-manager mock
   it('should publish a message to the queue if we are not in test environment', async () => {
     // Mock the config service to return the development environment
