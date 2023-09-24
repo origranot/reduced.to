@@ -2,13 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
 import { UsersController } from './users.controller';
-import { IFindAllOptions, UsersService } from './users.service';
+import { UsersService } from './users.service';
 import { User } from '@reduced.to/prisma';
-import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { IPaginationResult } from '../../shared/utils';
 import { AppConfigModule } from '@reduced.to/config';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { IPaginationResult } from '../shared/utils';
-import { SortOrder } from '../shared/enums/sort-order.enum';
+import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
+import { RolesGuard } from '../../auth/guards/roles.guard';
+import { IFindAllOptions } from '../entity.service';
+import { SortOrder } from '../../shared/enums/sort-order.enum';
 
 describe('UsersController', () => {
   let app: INestApplication;
@@ -124,10 +125,6 @@ describe('UsersController', () => {
       await request(app.getHttpServer()).get('/users?sort[name]=invalid').expect(400);
       await request(app.getHttpServer()).get('/users?sort[invalid]=asc').expect(400);
       await request(app.getHttpServer()).get('/users?sort[invalid]=invalid').expect(400);
-      await request(app.getHttpServer()).get('/users?sort=name').expect(400);
-    });
-
-    it('test', async () => {
       await request(app.getHttpServer()).get('/users?sort=name').expect(400);
     });
   });
