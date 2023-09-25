@@ -4,7 +4,7 @@ import { RolesGuard } from '../../auth/guards/roles.guard';
 import { UrlsService } from './urls.service';
 import { IPaginationResult, calculateSkip } from '../../shared/utils';
 import { FindAllQueryDto } from './dto';
-import { Role, Url } from '@prisma/client';
+import { Role, Url } from '@reduced.to/prisma';
 import { Roles } from '../../shared/decorators';
 
 @UseGuards(JwtAuthGuard, RolesGuard)

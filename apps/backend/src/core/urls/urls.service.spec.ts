@@ -69,7 +69,7 @@ describe('UrlsService', () => {
     });
 
     it('should not call findMany with take and sort', async () => {
-      const findAllOptions: IFindAllOptions = { limit: 10, sort: { name: SortOrder.ASCENDING, email: SortOrder.DESCENDING } };
+      const findAllOptions: IFindAllOptions = { limit: 10, sort: { createdAt: SortOrder.ASCENDING, expirationTime: SortOrder.DESCENDING } };
 
       await service.findAll(findAllOptions);
       expect(prismaService.url.findMany).toHaveBeenCalledWith(
@@ -77,10 +77,10 @@ describe('UrlsService', () => {
           take: findAllOptions.limit,
           orderBy: [
             {
-              name: SortOrder.ASCENDING,
+              createdAt: SortOrder.ASCENDING,
             },
             {
-              email: SortOrder.DESCENDING,
+              expirationTime: SortOrder.DESCENDING,
             },
           ],
         })

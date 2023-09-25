@@ -1,6 +1,6 @@
+import request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import request from 'supertest';
 import { Url } from '@reduced.to/prisma';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 import { AppConfigModule } from '@reduced.to/config';
