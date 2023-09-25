@@ -4,6 +4,14 @@ import { Url, Prisma, PrismaService } from '@reduced.to/prisma';
 
 const MODEL_NAME = 'url';
 const FILTER_FIELDS: (keyof Prisma.UrlWhereInput)[] = ['originalUrl', 'shortenedUrl'];
+const SELECT_FIELDS: Record<string, boolean> = {
+  id: true,
+  originalUrl: true,
+  shortenedUrl: true,
+  description: true,
+  expirationTime: true,
+  createdAt: true,
+};
 
 @Injectable()
 export class UrlsService extends EntityService<Url> {
@@ -13,6 +21,10 @@ export class UrlsService extends EntityService<Url> {
 
   get model(): string {
     return MODEL_NAME;
+  }
+
+  get selectFields(): Record<keyof Prisma.UserWhereInput, boolean> {
+    return SELECT_FIELDS;
   }
 
   get filterFields(): (keyof Prisma.UrlWhereInput)[] {

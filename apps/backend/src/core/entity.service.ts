@@ -8,6 +8,7 @@ export abstract class EntityService<Entity> {
 
   abstract get model(): string;
   abstract get filterFields(): string[];
+  abstract get selectFields(): Record<string, boolean>;
 
   findAll = async (options: IFindAllOptions): Promise<IPaginationResult<Entity>> => {
     const { skip, limit, filter, sort } = options;
@@ -22,14 +23,7 @@ export abstract class EntityService<Entity> {
         }),
       }),
       this.prismaService[this.model].findMany({
-        select: {
-          id: true,
-          originalUrl: true,
-          shortenedUrl: true,
-          description: true,
-          expirationTime: true,
-          createdAt: true,
-        },
+        select: this.selectFields,
         ...(skip && { skip }),
         take: limit,
         ...(filter && {

@@ -4,6 +4,13 @@ import { Prisma, PrismaService, User } from '@reduced.to/prisma';
 
 const MODEL_NAME = 'user';
 const FILTER_FIELDS: (keyof Prisma.UserWhereInput)[] = ['email', 'name'];
+const SELECT_FIELDS: Record<string, boolean> = {
+  id: true,
+  name: true,
+  email: true,
+  verified: true,
+  role: true,
+};
 
 @Injectable()
 export class UsersService extends EntityService<User> {
@@ -13,6 +20,10 @@ export class UsersService extends EntityService<User> {
 
   get model(): string {
     return MODEL_NAME;
+  }
+
+  get selectFields(): Record<keyof Prisma.UserWhereInput, boolean> {
+    return SELECT_FIELDS;
   }
 
   get filterFields(): (keyof Prisma.UserWhereInput)[] {
