@@ -1,7 +1,7 @@
-import { Type } from 'class-transformer';
 import { IsDefined, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
-import { Sortable } from '../../shared/decorators';
-import { SortOrder } from '../../shared/enums/sort-order.enum';
+import { Sortable } from '../../../shared/decorators';
+import { SortOrder } from '../../../shared/enums/sort-order.enum';
+import { Type } from 'class-transformer';
 
 export class FindAllQueryDto {
   @Min(1)
@@ -22,6 +22,6 @@ export class FindAllQueryDto {
   @MaxLength(30)
   filter?: string;
 
-  @Sortable(['name', 'email', 'role'])
+  @Sortable(['expirationTime', 'createdAt'])
   sort?: Record<string, SortOrder>;
 }

@@ -11,3 +11,8 @@ export interface IPaginationResult<T> {
   data: Partial<T>[];
   total: number;
 }
+
+export interface IPaginationOptions {
+  limit: number;
+  skip?: number;
+}
