@@ -23,6 +23,7 @@ export const useGetCurrentUser = routeLoader$<UserCtx | null>(async ({ cookie, s
     }
   }
 
+
   const originalAuth = {
     accessCookie: cookie.get(ACCESS_COOKIE_NAME)?.value,
     refreshCookie: cookie.get(REFRESH_COOKIE_NAME)?.value,
@@ -42,20 +43,20 @@ export const useGetCurrentUser = routeLoader$<UserCtx | null>(async ({ cookie, s
 export const useAcceptCookies = routeLoader$(({ cookie }) => cookie.get(ACCEPT_COOKIES_COOKIE_NAME)?.value);
 
 export const useUserAuthStatus = () => {
-  const userCtx = useGetCurrentUser().value;
-  const acceptedCookies = useAcceptCookies().value;
-  const userSession = useAuthSession().value as ExtendSesstion;
-  const verifiedAndLoginByEmail = userCtx?.email !== undefined && userCtx.verified === true;
-  const verifiedAndLoginByProvider = userSession?.expires !== undefined && new Date(userSession?.expires).getTime() > Date.now();
+  const user = useGetCurrentUser().value;
+  const cookiesAccepted  = useAcceptCookies().value;
+  const authSession  = useAuthSession().value as ExtendSesstion;
+  const verifiedByEmail = user?.email && user.verified;
+  const verifiedByProvider = authSession?.expires !== undefined && new Date(authSession?.expires).getTime() > Date.now();
   return {
-    isLogIn: userCtx?.id !== undefined,
-    verifiedAndLogin: verifiedAndLoginByEmail || verifiedAndLoginByProvider,
-    isProvider: verifiedAndLoginByProvider,
-    isNotAcceptedCookies: acceptedCookies !== 'true',
+    isLogIn: user?.id !== undefined,
+    verified: verifiedByEmail || verifiedByProvider,
+    isProvider: verifiedByProvider,
+    isNotAcceptedCookies: cookiesAccepted !== 'true',
     user: {
-      name: userCtx?.name,
-      email: userCtx?.email,
-      role: userCtx?.role,
+      name: user?.name,
+      email: user?.email,
+      role: user?.role,
     }
   }
 }
@@ -69,7 +70,13 @@ export default component$(() => {
   return (
     <>
       <Navbar />
-      {session.verifiedAndLogin ? <></> : <VerifyAlert />}
+      {
+        session.isLogIn && !session.verified ? (
+          <VerifyAlert />  
+        ) : (
+          <></>
+        )
+      }
       <main>
         <section>
           <Slot />

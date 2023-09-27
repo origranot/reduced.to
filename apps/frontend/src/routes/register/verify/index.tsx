@@ -1,5 +1,5 @@
 import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik';
-import { Link, RequestHandler } from '@builder.io/qwik-city';
+import { Link, RequestHandler, useNavigate } from '@builder.io/qwik-city';
 import { Loader } from '../../../components/loader/loader';
 import { authorizedFetch, validateAccessToken } from '../../../shared/auth.service';
 
@@ -22,13 +22,18 @@ export default component$(() => {
     loading: true,
     resent: false,
   });
+  const nav = useNavigate();
 
   useVisibleTask$(() => {
-    authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/auth/verified`).then(async (response) => {
+    authorizedFetch(`${process.env.API_DOMAIN}/api/v1/auth/verified`).then(async (response) => {
       const { verified } = await response.json();
       store.isVerified = verified;
       store.loading = false;
     });
+    if (store.loading || !store.isVerified) return;
+    setTimeout(() => {
+      nav('/')
+    }, 3000);
   });
 
   return (
@@ -52,7 +57,7 @@ export default component$(() => {
                     <button
                       class="btn btn-primary"
                       onClick$={async () => {
-                        authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/auth/resend`).then(() => {
+                        authorizedFetch(`${process.env.API_DOMAIN}/api/v1/auth/resend`).then(() => {
                           store.resent = true;
                         });
                       }}

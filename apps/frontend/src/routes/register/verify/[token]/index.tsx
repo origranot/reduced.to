@@ -13,7 +13,7 @@ export default component$(() => {
   useVisibleTask$(() => {
     store.token = params.token;
 
-    fetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/auth/verify?token=${store.token}`, {
+    fetch(`${process.env.API_DOMAIN}/api/v1/auth/verify?token=${store.token}`, {
       method: 'GET',
       headers: {
         token: store.token,
