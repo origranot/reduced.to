@@ -1,5 +1,5 @@
 import { component$, useStore } from '@builder.io/qwik';
-import { Form, globalAction$, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
+import { DocumentHead, Form, globalAction$, RequestHandler,z, zod$ } from '@builder.io/qwik-city';
 import { setTokensAsCookies, validateAccessToken } from '../../shared/auth.service';
 
 interface RegisterStore {
@@ -173,3 +173,45 @@ export default component$(() => {
     </div>
   );
 });
+
+export const head: DocumentHead = {
+  title: 'Reduced.to | Register',
+  meta: [
+    {
+      name: 'title',
+      content: 'Reduced.to | Register',
+    },
+    {
+      name: 'description',
+      content: 'Reduced.to | Create your Reduced.to account to manage your shorten links.',
+    },
+    {
+      property: 'og:type',
+      content: 'website',
+    },
+    {
+      property: 'og:url',
+      content: 'https://reduced.to/register',
+    },
+    {
+      property: 'og:title',
+      content: 'Reduced.to | Register',
+    },
+    {
+      property: 'og:description',
+      content: 'Reduced.to | Create your Reduced.to account to manage your shorten links.',
+    },
+    {
+      property: 'twitter:card',
+      content: 'summary',
+    },
+    {
+      property: 'twitter:title',
+      content: 'Reduced.to | Register',
+    },
+    {
+      property: 'twitter:description',
+      content: 'Reduced.to | Create your Reduced.to account to manage your shorten links.',
+    },
+  ],
+};
