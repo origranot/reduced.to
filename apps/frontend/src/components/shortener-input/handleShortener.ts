@@ -23,21 +23,28 @@ export const handleShortener = async (store: Store) => {
 
   store.loading = true;
 
-  const response = await getShortenUrl(urlInput, ttl);
+  try {
+    const response = await getShortenUrl(urlInput, ttl);
 
-  store.loading = false;
-  store.showResult = true;
+    store.showResult = true;
 
-  if (!response.newUrl) {
-    store.urlError = 'Invalid url...';
-    return;
+    if (!response.newUrl) {
+      store.urlError = 'Invalid url...';
+      return;
+    }
+
+    const newUrl = response.newUrl;
+
+    store.inputValue = '';
+    store.reducedUrl = window.location.href.split('#')[0] + newUrl;
+
+    copyToClipboard(store.reducedUrl);
+    confettiAnimate();
+  } catch (error) {
+    store.urlError = 'An error occurred while shortening the URL. Please try again.';
+    console.error('Error:', error);
+  } finally {
+    store.inputValue = '';
+    store.loading = false;
   }
-
-  const newUrl = response.newUrl;
-
-  store.inputValue = '';
-  store.reducedUrl = window.location.href.split('#')[0] + newUrl;
-
-  copyToClipboard(store.reducedUrl);
-  confettiAnimate();
 };

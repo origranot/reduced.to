@@ -4,8 +4,9 @@ import { LOG_LEVEL } from '@origranot/ts-logger';
 export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
   return {
     config: {
-      app: {
-        port: +process.env.APP_PORT || 3000,
+      general: {
+        backendPort: +process.env.BACKEND_APP_PORT || 3000,
+        frontendPort: +process.env.FRONTEND_APP_PORT || 5173,
         env: process.env.NODE_ENV || 'development',
       },
       logger: {
@@ -14,7 +15,9 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
         },
       },
       front: {
-        domain: process.env.FRONT_DOMAIN || 'http://localhost:5173',
+        domain: process.env.DOMAIN || 'localhost',
+        clientSideApiDomain: process.env.CLIENTSIDE_API_DOMAIN || 'http://localhost:3000',
+        apiDomain: process.env.API_DOMAIN || 'http://localhost:3000',
       },
       rateLimit: {
         ttl: +process.env.RATE_LIMIT_TTL || 60,
@@ -34,12 +37,20 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
       novu: {
         apiKey: process.env.NOVU_API_KEY,
       },
+      memphis: {
+        enable: process.env.MEMPHIS_ENABLE === 'true' || false,
+        host: process.env.MEMPHIS_HOST,
+        username: process.env.MEMPHIS_USERNAME,
+        password: process.env.MEMPHIS_PASSWORD,
+        accountId: +process.env.MEMPHIS_ACCOUNT_ID,
+      },
     },
   };
 };
 
-export interface AppConfig {
-  port: number;
+export interface GeneralConfig {
+  backendPort: number;
+  frontendPort: number;
   env: string;
 }
 
@@ -51,6 +62,8 @@ export interface LoggerConfig {
 
 export interface FrontConfig {
   domain: string;
+  clientSideApiDomain: string;
+  apiDomain: string;
 }
 
 export interface RateLimitConfig {
@@ -75,12 +88,21 @@ export interface NovuConfig {
   apiKey: string;
 }
 
+export interface MemphisConfig {
+  enable: boolean;
+  host: string;
+  username: string;
+  password: string;
+  accountId: number;
+}
+
 export interface Configuration {
-  app: AppConfig;
+  general: GeneralConfig;
   logger: LoggerConfig;
   front: FrontConfig;
   rateLimit: RateLimitConfig;
   redis: RedisConfig;
   jwt: JWTConfig;
   novu: NovuConfig;
+  memphis: MemphisConfig;
 }

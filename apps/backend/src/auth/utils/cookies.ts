@@ -15,13 +15,7 @@ export const setAuthCookies = (
     refreshToken: string;
   }
 ) => {
-  // get the host from the domain (remove port if present)
-  // for example: localhost:5155 -> localhost
-  // for example: reduced.to -> reduced.to
-  const strippedDomain = rawDomain
-    .replace(/http(s)?(:)?(\/\/)?|(\/\/)?(www\.)?/g, '') // strip prefix
-    .replace(/:\d+$/g, ''); // strip port
-  const domain = process.env.NODE_ENV === 'production' ? `.${strippedDomain}` : strippedDomain;
+  const domain = process.env.NODE_ENV === 'production' ? `.${rawDomain}` : rawDomain;
 
   res
     .cookie(AUTH_COOKIE_NAME, tokens.accessToken, {

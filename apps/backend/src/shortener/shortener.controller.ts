@@ -4,21 +4,35 @@ import { ShortenerDto } from './dto';
 import { ShortenerService } from './shortener.service';
 import { UserContext } from '../auth/interfaces/user-context';
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
-import { AppLoggerSerivce } from '../logger/logger.service';
+import { AppLoggerSerivce } from '@reduced.to/logger';
+import { ShortenerProducer } from './producer/shortener.producer';
+import { Ip } from '../shared/decorators/ip/ip.decorator';
 
 @Controller({
   path: 'shortener',
   version: '1',
 })
 export class ShortenerController {
-  constructor(private readonly logger: AppLoggerSerivce, private readonly shortenerService: ShortenerService) {}
+  constructor(
+    private readonly logger: AppLoggerSerivce,
+    private readonly shortenerService: ShortenerService,
+    private readonly shortenerProducer: ShortenerProducer
+  ) {}
 
   @Get(':shortenedUrl')
-  async findOne(@Param('shortenedUrl') shortenedUrl: string): Promise<string> {
+  async findOne(@Ip() ip: string, @Param('shortenedUrl') shortenedUrl: string): Promise<string> {
     const originalUrl = await this.shortenerService.getOriginalUrl(shortenedUrl);
     if (!originalUrl) {
       throw new BadRequestException('Shortened url is wrong or expired');
     }
+
+    // Send an event to the queue to update the shortened url's stats
+    await this.shortenerProducer.publish({
+      ip,
+      shortenedUrl,
+      originalUrl: originalUrl,
+    });
+
     return originalUrl;
   }
 

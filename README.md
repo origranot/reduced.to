@@ -104,21 +104,20 @@ List of things you need to run the project locally and how to install them.
    ```sh
    npm install && npm run install:all
    ```
-3. Navigate to backend folder, copy `.example.env` to `.env` and fill it properly ([see below](#backend-configuration)).
-4. Navigate to frontend folder, copy `.example.env` to `.env` and fill it properly ([see below](#frontend-configuration)).
-5. Make sure you have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
+3. Copy `.example.env` to `.env` and fill it properly (see [Configuration](#-configuration))
+4. Make sure you have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
    ```sh
    docker run --name reduced_to_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
    ```
-6. Run Prisma migration from root folder:
+5. Run Prisma migration from root folder:
    ```sh
    npx nx migrate-dev prisma --name=init
    ```
-7. Run the backend from root folder:
+6. Run the backend from root folder:
    ```sh
    npx nx serve backend
    ```
-8. Run the frontend from root folder:
+7. Run the frontend from root folder:
    ```sh
    npx nx serve frontend
    ```
@@ -133,6 +132,7 @@ The project is structured in the following way:
 │   ├── backend
 │   └── frontend
 └── libs/
+    ├── config
     └── prisma
 ```
 
@@ -159,11 +159,10 @@ npx nx run-many -t docker-build
 
 For the minimal configuration you can just rename the `.example.env` files to `.env`.
 
-#### Backend configuration
+###### General
 
-###### App
-
-- **APP_PORT**: Backend port
+- **BACKEND_APP_PORT**: Backend port
+- **FRONTEND_APP_PORT**: Frontend port
 - **NODE_ENV**: Node environment (development / production)
 
 ###### Database
@@ -181,7 +180,9 @@ For the minimal configuration you can just rename the `.example.env` files to `.
 
 ###### Frontend
 
-- **FRONT_DOMAIN**: Frontend instance domain
+- **DOMAIN**: Domain of your frontend app
+- **API_DOMAIN**: Domain of your backend instance (used for server side requests)
+- **CLIENTSIDE_API_DOMAIN**: Domain of your backend instance (used for client side requests)
 
 ###### Redis
 
@@ -193,19 +194,12 @@ For the minimal configuration you can just rename the `.example.env` files to `.
 
 ###### Auth
 
-- **JWT_SECRET**: Jwt secret string
+- **JWT_ACCESS_SECRET**: Jwt secret (used for access tokens)
+- **JWT_REFRESH_SECRET**: Jwt secret (used for refresh tokens)
 
 ###### Novu
 
-- **NOVU_API_KEY**: Get it from https://novu.co/ (Not required for local development)
-
-#### Frontend configuration
-
-- **DOMAIN**: Domain of your frontend app (used for cookies)
-
-- **API_DOMAIN**: Domain of your backend instance (used for server side requests)
-
-- **CLIENTSIDE_API_DOMAIN**: Domain of your backend instance (used for client side requests)
+- **NOVU_API_KEY**: Get it from https://novu.co/, you don't need this when running locally (just verify your email from the database)
 
 Happy Hacking !
 
@@ -239,6 +233,8 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
 - [ ] Improve front-end components
 - [x] Backend tests
 - [x] Migration to Nx
+- [ ] Split backend into libs
+- [ ] Support k8s deployment (helm)
 - [ ] Front-end Tests
 - [ ] Logs
 - [ ] Add a statistics page

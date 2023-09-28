@@ -1,9 +1,9 @@
-import { AppConfigService } from '../config/config.service';
+import { AppConfigService } from '@reduced.to/config';
 import { ShortenerService } from './shortener.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppCacheModule } from '../cache/cache.module';
 import { AppCacheService } from '../cache/cache.service';
-import { AppConfigModule } from '../config/config.module';
+import { AppConfigModule } from '@reduced.to/config';
 import { PrismaService } from '@reduced.to/prisma';
 import { ShortenerDto } from './dto';
 import { BadRequestException } from '@nestjs/common';

@@ -1,11 +1,13 @@
-import { AppConfigModule } from '../config/config.module';
+import { AppConfigModule } from '@reduced.to/config';
 import { AppCacheModule } from '../cache/cache.module';
 import { ShortenerService } from './shortener.service';
 import { ShortenerController } from './shortener.controller';
 import { Test } from '@nestjs/testing';
 import { ShortenerDto } from './dto';
 import { Request } from 'express';
-import { AppLoggerModule } from '../logger/logger.module';
+import { AppLoggerModule } from '@reduced.to/logger';
+import { ShortenerProducer } from './producer/shortener.producer';
+import { QueueManagerModule, QueueManagerService } from '@reduced.to/queue-manager';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
@@ -13,7 +15,7 @@ describe('ShortenerController', () => {
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppConfigModule, AppLoggerModule, AppCacheModule],
+      imports: [AppConfigModule, AppLoggerModule, AppCacheModule, QueueManagerModule],
       controllers: [ShortenerController],
       providers: [
         {
@@ -24,6 +26,8 @@ describe('ShortenerController', () => {
             createShortenedUrl: jest.fn(),
           },
         },
+        QueueManagerService,
+        ShortenerProducer,
       ],
     }).compile();
 
@@ -81,15 +85,17 @@ describe('ShortenerController', () => {
     it('should return the original URL when given a valid short URL', async () => {
       jest.spyOn(shortenerService, 'getOriginalUrl').mockResolvedValue('https://github.com/origranot/reduced.to');
       const shortUrl = 'best';
-      const originalUrl = await shortenerController.findOne(shortUrl);
+      const ip = '1.2.3.4';
+      const originalUrl = await shortenerController.findOne(ip, shortUrl);
       expect(originalUrl).toBe('https://github.com/origranot/reduced.to');
     });
 
     it('should return an error if the short URL is not found in the database', async () => {
       jest.spyOn(shortenerService, 'getOriginalUrl').mockResolvedValue(null);
       const shortUrl = 'not-found';
+      const ip = '1.2.3.4';
       try {
-        await shortenerController.findOne(shortUrl);
+        await shortenerController.findOne(ip, shortUrl);
         throw new Error('Expected an error to be thrown!');
       } catch (err) {
         expect(err.message).toBe('Shortened url is wrong or expired');

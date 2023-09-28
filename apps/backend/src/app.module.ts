@@ -3,15 +3,15 @@ import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule } from './auth/auth.module';
 import { AppCacheModule } from './cache/cache.module';
-import { AppConfigModule } from './config/config.module';
-import { AppConfigService } from './config/config.service';
-import { AppLoggerModule } from './logger/logger.module';
-import { NovuModule } from './novu/novu.module';
+import { AppConfigModule, AppConfigService } from '@reduced.to/config';
+import { AppLoggerModule } from '@reduced.to/logger';
 import { PrismaService } from '@reduced.to/prisma';
 import { UniqueConstraint } from './shared/decorators/unique/unique.decorator';
 import { CustomThrottlerGuard } from './shared/guards/custom-throttler/custom-throttler';
 import { ShortenerModule } from './shortener/shortener.module';
-import { UsersModule } from './users/users.module';
+import { UrlsController } from './core/urls/urls.controller';
+import { UrlsService } from './core/urls/urls.service';
+import { UsersModule } from './core/users/users.module';
 
 @Module({
   imports: [
@@ -27,7 +27,7 @@ import { UsersModule } from './users/users.module';
     }),
     ShortenerModule,
     AuthModule,
-    NovuModule,
+    UsersModule,
     UsersModule,
   ],
   providers: [
@@ -37,6 +37,9 @@ import { UsersModule } from './users/users.module';
       provide: APP_GUARD,
       useClass: CustomThrottlerGuard,
     },
+    UrlsService,
+    UrlsService,
   ],
+  controllers: [UrlsController],
 })
 export class AppModule {}

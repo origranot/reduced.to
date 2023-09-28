@@ -22,7 +22,7 @@ services:
       - /bin/sh
       - -c
       - redis-server --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
-    env_file: ../../apps/backend/.env
+    env_file: ../../.env
     ports:
       - '6379:6379'
 
@@ -31,27 +31,20 @@ services:
     build:
       context: ../..
       dockerfile: apps/frontend/Dockerfile
-      args:
-        - DOMAIN=${DOMAIN}
-        - API_DOMAIN=${API_DOMAIN}
-        - CLIENTSIDE_API_DOMAIN=${CLIENTSIDE_API_DOMAIN}
     restart: always
     ports:
       - '5000:5000'
-    env_file: ../../apps/frontend/.env
+    env_file: ../../.env
 
   backend:
     container_name: backend
-    platform: linux/amd64
     build:
       context: ../..
       dockerfile: apps/backend/Dockerfile
     restart: always
-    volumes:
-      - ../../apps/backend:/app/apps/backend/
     ports:
       - '3000:3000'
-    env_file: ../../apps/backend/.env
+    env_file: ../../.env
     depends_on:
       - postgres
       - redis

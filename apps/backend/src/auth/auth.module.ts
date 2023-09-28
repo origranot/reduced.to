@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { AppConfigService } from '../config/config.service';
+import { AppConfigService } from '@reduced.to/config';
 import { NovuModule } from '../novu/novu.module';
 import { NovuService } from '../novu/novu.service';
 import { PrismaModule } from '@reduced.to/prisma';

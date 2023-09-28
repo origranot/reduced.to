@@ -1,6 +1,6 @@
 import { AppCacheService } from '../cache/cache.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { AppConfigService } from '../config/config.service';
+import { AppConfigService } from '@reduced.to/config';
 import { PrismaService } from '@reduced.to/prisma';
 import { ShortenerDto } from './dto';
 import { UserContext } from '../auth/interfaces/user-context';
