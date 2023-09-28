@@ -28,6 +28,7 @@ export const useGetCurrentUser = routeLoader$<UserCtx | null>(async ({ cookie, s
     accessCookie: cookie.get(ACCESS_COOKIE_NAME)?.value,
     refreshCookie: cookie.get(REFRESH_COOKIE_NAME)?.value,
   };
+  console.log({cookie})
 
   if (originalAuth.accessCookie) {
     return jwt_decode(originalAuth.accessCookie);

@@ -14,7 +14,7 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 };
 
 export const useRegister = globalAction$(
-  async ({ displayName, email, password }, { fail, headers, cookie }) => {
+  async ({ displayName, email, password }, { fail, headers, cookie, }) => {
     const data: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/signup`, {
       method: 'POST',
       headers: {
@@ -36,7 +36,8 @@ export const useRegister = globalAction$(
         message: errorMessage,
       });
     }
-
+    cookie.set('message', 'Account created successfully', );
+    console.log('message cookie', cookie.get('message'))
     setTokensAsCookies(accessToken, refreshToken, cookie);
 
     // Redirect using location header instead of redirect becuase we need to reload the routeLoader to get the new user data

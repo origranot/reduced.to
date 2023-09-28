@@ -59,6 +59,7 @@ export const setTokensAsCookies = (accessToken: string, refreshToken: string, co
     httpOnly: true,
     expires: new Date(new Date().getTime() + REFRESH_COOKIE_EXPIRES),
   });
+  console.log('GoogleMishal', cookie)
 };
 
 export const authorizedFetch = async (url: string, options = {}) => {

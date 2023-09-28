@@ -12,6 +12,7 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
 
 export const useLogin = globalAction$(
   async ({ email, password }, { fail, cookie, headers }) => {
+    // console.log('login 1: ', email, password)
     const data = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/login`, {
       method: 'POST',
       headers: {
@@ -22,16 +23,18 @@ export const useLogin = globalAction$(
         password,
       }),
     });
-
+    // console.log('login 2: ', data)
     const { accessToken, refreshToken } = await data.json();
-
+    // console.log('login 4:', accessToken, refreshToken) 
     if (!data.ok || !accessToken || !refreshToken) {
       return fail(401, {
         message: 'Invalid email or password',
       });
     }
-
+    // console.log('login 3: ', accessToken, refreshToken, cookie)
     setTokensAsCookies(accessToken, refreshToken, cookie);
+    cookie.set('message', 'Account created successfully')
+    console.log("message" , cookie.get('message'), )
 
     // Redirect using location header instead of redirect becuase we need to reload the routeLoader to get the new user data
     headers.set('location', '/');
