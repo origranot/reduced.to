@@ -16,7 +16,7 @@
   
 [![logo](https://raw.githubusercontent.com/origranot/reduced.to/ec59ee1dfe4c858b89d2d22935e2734d52794ea3/frontend/public/logo.svg)](https://reduced.to)
 
-[![Preview](./assets/images/preview.gif)](https://reduced.to)
+[![Preview](/assets/images/preview.gif)](https://reduced.to)
 
   <p align="center">
     Reduced.to is a modern web application that reduces the length of link URL. So it's easier to remember, share and track.
