@@ -9,7 +9,7 @@ import { ExtendSesstion, useAuthSession, UserCtx } from './plugin@auth';
 
 export const useGetCurrentUser = routeLoader$<UserCtx | null>(async ({ cookie, sharedMap }) => {
   const sessionAuth: ExtendSesstion = sharedMap.get("session");
-  
+
   if (sessionAuth && sessionAuth.accessToken) {
     const expires = sessionAuth.expires;
     const expiryDate = new Date(expires);
@@ -66,6 +66,7 @@ export const UserAuthStatusContext = createContextId<TypeUserAuthStatus>('UserAu
 
 export default component$(() => {
   const session = useUserAuthStatus();
+  console.log({session})
   useContextProvider(UserAuthStatusContext, session);
   return (
     <>
