@@ -1,4 +1,4 @@
-import { UniqueConstraint, Unique } from './unique.decorator';
+import { UniqueConstraint } from './unique.decorator';
 import { PrismaService } from '@reduced.to/prisma';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ValidationArguments } from 'class-validator';
