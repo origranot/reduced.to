@@ -5,8 +5,6 @@ export const ClientDetails = createParamDecorator((data: unknown, ctx: Execution
   const ip = (request.headers['x-forwarded-for'] || request.socket.remoteAddress) as string;
   const userAgent = request.headers['user-agent'];
 
-  console.log(request.headers);
-
   return {
     ip,
     userAgent,
