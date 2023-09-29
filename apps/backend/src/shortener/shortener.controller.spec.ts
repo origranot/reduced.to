@@ -8,6 +8,7 @@ import { Request } from 'express';
 import { AppLoggerModule } from '@reduced.to/logger';
 import { ShortenerProducer } from './producer/shortener.producer';
 import { QueueManagerModule, QueueManagerService } from '@reduced.to/queue-manager';
+import { IClientDetails } from '../shared/decorators/client-details/client-details.decorator';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
@@ -85,17 +86,25 @@ describe('ShortenerController', () => {
     it('should return the original URL when given a valid short URL', async () => {
       jest.spyOn(shortenerService, 'getOriginalUrl').mockResolvedValue('https://github.com/origranot/reduced.to');
       const shortUrl = 'best';
-      const ip = '1.2.3.4';
-      const originalUrl = await shortenerController.findOne(ip, shortUrl);
+      const clientDetails: IClientDetails = {
+        ip: '1.2.3.4',
+        userAgent: 'test',
+      };
+
+      const originalUrl = await shortenerController.findOne(clientDetails, shortUrl);
       expect(originalUrl).toBe('https://github.com/origranot/reduced.to');
     });
 
     it('should return an error if the short URL is not found in the database', async () => {
       jest.spyOn(shortenerService, 'getOriginalUrl').mockResolvedValue(null);
       const shortUrl = 'not-found';
-      const ip = '1.2.3.4';
+      const clientDetails: IClientDetails = {
+        ip: '1.2.3.4',
+        userAgent: 'test',
+      };
+
       try {
-        await shortenerController.findOne(ip, shortUrl);
+        await shortenerController.findOne(clientDetails, shortUrl);
         throw new Error('Expected an error to be thrown!');
       } catch (err) {
         expect(err.message).toBe('Shortened url is wrong or expired');
