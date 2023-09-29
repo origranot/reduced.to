@@ -45,7 +45,7 @@ describe('ShortenerController', () => {
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ newUrl: 'url' });
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      const req = { user: { verified: true } } as any as Request;
+      const req = { user: { verified: true } } as unknown as Request;
       const short = await shortenerController.shortener(body, req);
       expect(short).toBeNull();
     });
@@ -55,7 +55,7 @@ describe('ShortenerController', () => {
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue(null);
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      const req = { user: { verified: true } } as any as Request;
+      const req = { user: { verified: true } } as unknown as Request;
       const short = await shortenerController.shortener(body, req);
       expect(short).toStrictEqual({ newUrl: 'url.com' });
     });
@@ -65,7 +65,7 @@ describe('ShortenerController', () => {
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue(null);
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      const req = {} as any as Request;
+      const req = {} as Request;
       const short = await shortenerController.shortener(body, req);
       expect(short).toBeNull();
     });
@@ -75,7 +75,7 @@ describe('ShortenerController', () => {
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ newUrl: 'url.com' });
 
       const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
-      const req = {} as any as Request;
+      const req = {} as Request;
       const short = await shortenerController.shortener(body, req);
       expect(short).toStrictEqual({ newUrl: 'url.com' });
     });

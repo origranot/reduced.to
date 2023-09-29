@@ -92,7 +92,7 @@ export class ShortenerService {
       if (this.isUrlAlreadyShortened(originalUrl)) {
         throw new Error('The URL is already shortened...');
       }
-    } catch (err: any) {
+    } catch (err) {
       throw new BadRequestException(err.message || 'URL is invalid');
     }
 

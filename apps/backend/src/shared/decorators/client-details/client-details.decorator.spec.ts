@@ -5,7 +5,9 @@ import { ROUTE_ARGS_METADATA } from '@nestjs/common/constants';
 describe('ClientDetails Decorator', () => {
   const getParamDecoratorFactory = () => {
     class TestDecorator {
-      public test(@ClientDetails() value: IClientDetails) {}
+      public test(@ClientDetails() _value: IClientDetails) {
+        // Empty function for testing purposes
+      }
     }
 
     const args = Reflect.getMetadata(ROUTE_ARGS_METADATA, TestDecorator, 'test');
@@ -14,7 +16,7 @@ describe('ClientDetails Decorator', () => {
 
   const handleDecorator = getParamDecoratorFactory();
 
-  const getMockContext = (mockRequest: any) => {
+  const getMockContext = (mockRequest: object) => {
     return {
       switchToHttp: () => ({
         getRequest: () => mockRequest,
