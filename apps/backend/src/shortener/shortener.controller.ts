@@ -6,7 +6,7 @@ import { UserContext } from '../auth/interfaces/user-context';
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import { AppLoggerSerivce } from '@reduced.to/logger';
 import { ShortenerProducer } from './producer/shortener.producer';
-import { Ip } from '../shared/decorators/ip/ip.decorator';
+import { ClientDetails, IClientDetails } from '../shared/decorators/client-details/client-details.decorator';
 
 @Controller({
   path: 'shortener',
@@ -20,7 +20,7 @@ export class ShortenerController {
   ) {}
 
   @Get(':shortenedUrl')
-  async findOne(@Ip() ip: string, @Param('shortenedUrl') shortenedUrl: string): Promise<string> {
+  async findOne(@ClientDetails() clientDetails: IClientDetails, @Param('shortenedUrl') shortenedUrl: string): Promise<string> {
     const originalUrl = await this.shortenerService.getOriginalUrl(shortenedUrl);
     if (!originalUrl) {
       throw new BadRequestException('Shortened url is wrong or expired');
@@ -28,9 +28,9 @@ export class ShortenerController {
 
     // Send an event to the queue to update the shortened url's stats
     await this.shortenerProducer.publish({
-      ip,
+      ...clientDetails,
       shortenedUrl,
-      originalUrl: originalUrl,
+      originalUrl,
     });
 
     return originalUrl;
