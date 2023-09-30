@@ -107,8 +107,7 @@ export const head: DocumentHead = {
     },
     {
       name: 'description',
-      content:
-        'Login to your Reduced.to account to manage your links and QR-Codes.',
+      content: 'Login to your Reduced.to account to manage your shortened links.',
     },
     {
       property: 'og:type',
@@ -124,8 +123,7 @@ export const head: DocumentHead = {
     },
     {
       property: 'og:description',
-      content:
-        'Login to your Reduced.to account to manage your links and QR-Codes.',
+      content: 'Login to your Reduced.to account to manage your shortened links.',
     },
     {
       property: 'twitter:card',
@@ -137,8 +135,7 @@ export const head: DocumentHead = {
     },
     {
       property: 'twitter:description',
-      content:
-        'Login to your Reduced.to account to manage your links and QR-Codes.',
+      content: 'Login to your Reduced.to account to manage your shortened links.',
     },
   ],
 };
