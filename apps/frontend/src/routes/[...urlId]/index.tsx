@@ -2,14 +2,14 @@ import { RequestHandler } from '@builder.io/qwik-city';
 
 const UNKNOWN_URL = '/unknown';
 
-const isUrlIdInvalid = (urlId: string) => {
-  return !urlId || urlId.split('/')[0] === UNKNOWN_URL.substring(1) || urlId === 'null';
+const isValidUrl = (urlId: string) => {
+  return urlId && urlId.split('/')[0] !== UNKNOWN_URL.substring(1) && urlId !== 'null';
 };
 
 export const onGet: RequestHandler = async ({ params: { urlId }, redirect, clientConn, request, next }) => {
   let originalUrl = UNKNOWN_URL;
 
-  if (isUrlIdInvalid(urlId)) {
+  if (!isValidUrl(urlId)) {
     throw next();
   }
 

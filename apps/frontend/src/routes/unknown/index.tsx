@@ -1,5 +1,5 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik';
-import { DocumentHead } from '@builder.io/qwik-city';
+import { DocumentHead, Link } from '@builder.io/qwik-city';
 import animations from '../../assets/css/animations.css?inline';
 import { Waves } from '../../components/waves/waves';
 
@@ -15,9 +15,9 @@ export default component$(() => {
           </h2>
           <p class="text-2xl font-semibold md:text-3xl">Sorry, we couldn't find this page.</p>
           <p class="mt-4 mb-8 dark:text-gray-400">The link is wrong or expired.</p>
-          <a rel="noopener noreferrer" href="/" class="px-8 py-3 font-semibold rounded btn btn-primary">
+          <Link rel="noopener noreferrer" href="/" class="px-8 py-3 font-semibold rounded btn btn-primary">
             Back to homepage
-          </a>
+          </Link>
         </div>
       </div>
       <Waves />
