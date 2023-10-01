@@ -1,5 +1,5 @@
 import { component$, useStore } from '@builder.io/qwik';
-import { DocumentHead, Form, globalAction$, RequestHandler,z, zod$ } from '@builder.io/qwik-city';
+import { DocumentHead, Form, globalAction$, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
 import { setTokensAsCookies, validateAccessToken } from '../../shared/auth.service';
 
 interface RegisterStore {
