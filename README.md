@@ -16,6 +16,8 @@
   
 [![logo](https://raw.githubusercontent.com/origranot/reduced.to/ec59ee1dfe4c858b89d2d22935e2734d52794ea3/frontend/public/logo.svg)](https://reduced.to)
 
+[![Preview](/assets/images/preview.gif)](https://reduced.to)
+
   <p align="center">
     Reduced.to is a modern web application that reduces the length of link URL. So it's easier to remember, share and track.
     <br />
@@ -102,7 +104,7 @@ List of things you need to run the project locally and how to install them.
 1. [Fork](https://github.com/origranot/reduced.to/fork) / Clone this repository
 2. Install NPM packages
    ```sh
-   npm install && npm run install:all
+   npm install
    ```
 3. Copy `.example.env` to `.env` and fill it properly (see [Configuration](#-configuration))
 4. Make sure you have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:

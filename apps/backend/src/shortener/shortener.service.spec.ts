@@ -30,7 +30,7 @@ describe('ShortenerService', () => {
     userId: USER_ID,
     description: null,
     expirationTime: null,
-    createdAt: '2023-05-28T15:16:06.837Z' as any,
+    createdAt: '2023-05-28T15:16:06.837Z',
   };
 
   beforeAll(async () => {

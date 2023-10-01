@@ -9,7 +9,9 @@ import { PrismaService } from '@reduced.to/prisma';
 import { UniqueConstraint } from './shared/decorators/unique/unique.decorator';
 import { CustomThrottlerGuard } from './shared/guards/custom-throttler/custom-throttler';
 import { ShortenerModule } from './shortener/shortener.module';
-import { UsersModule } from './users/users.module';
+import { UrlsController } from './core/urls/urls.controller';
+import { UrlsService } from './core/urls/urls.service';
+import { UsersModule } from './core/users/users.module';
 
 @Module({
   imports: [
@@ -26,6 +28,7 @@ import { UsersModule } from './users/users.module';
     ShortenerModule,
     AuthModule,
     UsersModule,
+    UsersModule,
   ],
   providers: [
     PrismaService,
@@ -34,6 +37,9 @@ import { UsersModule } from './users/users.module';
       provide: APP_GUARD,
       useClass: CustomThrottlerGuard,
     },
+    UrlsService,
+    UrlsService,
   ],
+  controllers: [UrlsController],
 })
 export class AppModule {}

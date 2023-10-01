@@ -4,7 +4,7 @@ description: Overview of the project
 hide_table_of_contents: true
 ---
 
-### What is Redcued.to?
+### What is Reduced.to?
 
 Reduced.to is a modern web application designed to shorten link URLs, making them easier to remember, share, and track. The project is developed using cutting-edge technologies and services, including NestJS, Redis, Novu, PostgreSQL, and Qwik.
 
