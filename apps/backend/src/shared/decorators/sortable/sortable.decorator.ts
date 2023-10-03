@@ -32,7 +32,7 @@ export class SortableConstraint implements ValidatorConstraintInterface {
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `${args.property} is already exists!`;
+    return `${args.property} already exists!`;
   }
 }
 
