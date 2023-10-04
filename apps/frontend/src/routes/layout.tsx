@@ -5,6 +5,7 @@ import { ACCESS_COOKIE_NAME, refreshTokens, REFRESH_COOKIE_NAME, setTokensAsCook
 import { Navbar } from '../components/navbar/navbar';
 import { VerifyAlert } from '../components/verify-alert/verify-alert';
 import { ACCEPT_COOKIES_COOKIE_NAME, UseCookiesAlert } from '../components/use-cookies-alert/use-cookies-alert';
+import { Footer } from '../components/footer/footer';
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -49,6 +50,7 @@ export default component$(() => {
           <Slot />
         </section>
       </main>
+      <Footer />
       <UseCookiesAlert visible={acceptedCookies.value !== 'true'} />
     </>
   );
