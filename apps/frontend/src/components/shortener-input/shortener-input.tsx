@@ -50,7 +50,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
           type="text"
           id="urlInput"
           class="input input-bordered border-[hsl(var(--outline-border-color)] focus:outline-0 bg-base-200 flex-auto w-full md:w-auto mb-2 self-end"
-          placeholder="Very long url..."
+          placeholder="Enter the Long URL here"
           aria-label="url"
           aria-describedby="shortenerBtn"
         />
