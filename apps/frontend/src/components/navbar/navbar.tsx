@@ -105,7 +105,7 @@ export const Navbar = component$(() => {
           <GithubButton />
         </div>
         <div class="divider divider-horizontal"></div>
-        <div class="grid flex-grow place-items-center">
+        <div class="grid flex-grow place-items-center mr-4">
           <ThemeSwitcher />
         </div>
       </div>
