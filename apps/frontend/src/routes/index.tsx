@@ -1,4 +1,4 @@
-import { component$, createContextId, useContextProvider, useSignal, useStore, useStylesScoped$ } from '@builder.io/qwik';
+import { component$, createContextId, useContext, useContextProvider, useSignal, useStore, useStylesScoped$ } from '@builder.io/qwik';
 import { DocumentHead } from '@builder.io/qwik-city';
 import animations from '../assets/css/animations.css?inline';
 import { handleShareOnTwitter } from '../components/home-buttons/actions';
@@ -9,6 +9,7 @@ import { QRCode } from '../components/qr-code/qr-code';
 import { handleShortener } from '../components/shortener-input/handleShortener';
 import { ShortenerInput } from '../components/shortener-input/shortener-input';
 import { Tooltip } from '../components/tooltip/tooltip';
+import { GlobalStore } from '../context';
 import { Waves } from '../components/waves/waves';
 import { copyToClipboard, openUrl } from '../utils';
 import styles from './index.css?inline';
@@ -36,7 +37,7 @@ export const clearValues = (state: Store) => {
 export default component$(() => {
   useStylesScoped$(animations);
   useStylesScoped$(styles);
-
+  const globalStore = useContext(GlobalStore);
   const tooltipCopyRef = useSignal(false);
 
   const state = useStore<Store>({
@@ -59,7 +60,12 @@ export default component$(() => {
             <div class="flex flex-col">
               <article class="prose mx-auto max-w-4xl pb-16">
                 <div class="mx-auto">
-                  <img class="mx-auto" src="logo.svg" width="410" height="73" alt="Logo" />
+
+                {globalStore.theme === 'light' ? <img class="mx-auto" src="logoLight.svg" width="410" height="73" alt="Logo" /> :
+                
+                  <img class="mx-auto" src="logoDark.svg" width="410" height="73" alt="Logo" />
+                  
+                }
                 </div>
                 <p>
                   Add your very long <b>URL</b> in the input below and click on the button to make it shorter

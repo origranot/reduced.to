@@ -40,7 +40,7 @@ export const Navbar = component$(() => {
       </div>
       <div class="block sm:hidden dropdown dropdown-end">
         <BurgerButton buttonTitle="Open" />
-        <ul tabIndex={0} class="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4 p-2">
+        <ul tabIndex={0} class="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4 p-2 ">
           <li class={user.value ? 'px-4 py-2' : ''}>
             {user.value ? (
               `Welcome ${user.value?.name}!`
@@ -88,7 +88,7 @@ export const Navbar = component$(() => {
           </li>
         </ul>
       </div>
-      <div class="sm:flex hidden">
+      <div class="sm:flex hidden mr-4">
         {user.value ? (
           <Profile name={user.value?.name} />
         ) : (
