@@ -107,7 +107,7 @@ List of things you need to run the project locally and how to install them.
    npm install
    ```
 3. Copy `.example.env` to `.env` and fill it properly (see [Configuration](#-configuration))
-4. Make sure you have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
+4. Make sure you have a local instance of PostgreSQL running on port 5432 ( By default, it's 5432 ). If not, you can run it using docker:
    ```sh
    docker run --name reduced_to_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
    ```
