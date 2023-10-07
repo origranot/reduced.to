@@ -46,7 +46,7 @@ const config = {
           alt: 'Reduced.to Logo',
           src: `images/logo.svg`,
           //srcDark: `img/logo.svg`,
-          href: '/',
+          href: 'https://reduced.to',
           target: '_self',
         },
         items: [
