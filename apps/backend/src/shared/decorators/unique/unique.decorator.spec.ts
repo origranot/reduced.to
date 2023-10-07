@@ -59,7 +59,7 @@ describe('UniqueDecorator', () => {
       constraints: ['User'],
       property: 'email',
     } as TestValidationArguments);
-    expect(defaultMessage).toBe('email is already exists!');
+    expect(defaultMessage).toBe('email already exists!');
   });
 
   it('should throw an error if the constraint is not valid', async () => {
@@ -70,7 +70,7 @@ describe('UniqueDecorator', () => {
       } as TestValidationArguments);
       throw new Error('Expected an error to be thrown!');
     } catch (err) {
-      expect(err.message).toBe('Model invalidModel is not exist');
+      expect(err.message).toBe('Model invalidModel does not exist');
     }
   });
 });
