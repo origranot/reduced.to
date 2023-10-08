@@ -140,10 +140,9 @@ export default component$(() => {
                   <input
                     name="password"
                     type={store.passwordVisible ? 'text' : 'password'}
-                    class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300"
+                    class="input input-bordered w-full max-w-xs pr-10 focus:outline-0 dark:bg-base-300"
                     autoComplete="on"
                   />
-
                   <span
                     class="absolute right-2.5 cursor-pointer flex items-center"
                     onClick$={() => {
