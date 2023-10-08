@@ -1,4 +1,5 @@
 :root {
+  --ifm-nav-color: #ffffff;
   --ifm-color-primary: #478fff;
   --ifm-color-primary-dark: #478fff;
   --ifm-color-primary-darker: #478fff;
@@ -15,6 +16,7 @@
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
   background-color: #000000;
+  --ifm-nav-color: #000000;
   --ifm-color-primary: #478fff;
   --ifm-color-primary-dark: #478fff;
   --ifm-color-primary-darker: #000000;
@@ -27,7 +29,7 @@
     sans-serif;
 }
 .navbar {
-  background-color: transparent;
+  background-color: var(--ifm-nav-color);
 }
 .footer {
   background-color: transparent;

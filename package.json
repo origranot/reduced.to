@@ -48,7 +48,7 @@
     "node-fetch": "~3.3.0",
     "nx": "16.8.1",
     "nx-cloud": "16.4.0",
-    "postcss": "^8.4.29",
+    "postcss": "^8.4.31",
     "prettier": "^2.6.2",
     "prisma": "5.2.0",
     "qwik-nx": "^1.0.8",
