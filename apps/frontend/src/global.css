@@ -16,6 +16,11 @@ body {
   overflow: auto;
 }
 
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
 /* Custom variables for themes */
 [data-theme='dracula'] {
   --outline-border-color: 233, 5%, 33%;
