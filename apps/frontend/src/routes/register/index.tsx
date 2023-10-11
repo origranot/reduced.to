@@ -145,7 +145,7 @@ export default component$(() => {
                   />
 
                   <span
-                    class="absolute right-2.5 cursor-pointer flex items-center"
+                    class="absolute right-5 cursor-pointer flex items-center"
                     onClick$={() => {
                       store.passwordVisible = !store.passwordVisible;
                     }}
