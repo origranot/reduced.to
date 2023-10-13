@@ -1,4 +1,4 @@
-import { component$, Slot } from '@builder.io/qwik';
+import { component$, Slot, useSignal, $ } from '@builder.io/qwik';
 import { Link, RequestHandler, useLocation } from '@builder.io/qwik-city';
 import { validateAccessToken } from '../../shared/auth.service';
 import { Role, useGetCurrentUser } from '../layout';
@@ -15,9 +15,12 @@ export default component$(() => {
   const currentPath = location.url.pathname.slice(0, -1);
   const user = useGetCurrentUser();
 
+  const isDrawerOpen = useSignal(false);
+  const toggleDrawer = $(() => (isDrawerOpen.value = !isDrawerOpen.value));
+
   return (
     <div class="drawer drawer-mobile h-[calc(100vh-64px)]">
-      <input id="drawer" type="checkbox" class="drawer-toggle" />
+      <input id="drawer" type="checkbox" class="drawer-toggle" checked={isDrawerOpen.value} onChange$={toggleDrawer} />
       <div class="drawer-content w-100vh m-5" style={{ zIndex: -5 }}>
         <Slot />
       </div>
@@ -25,7 +28,7 @@ export default component$(() => {
         <label for="drawer" class="drawer-overlay"></label>
         <ul class="menu p-4 w-64 text-base-content border-r bg-base-100 dark:border-gray-700 block">
           <li class="py-2 mt-2">
-            <Link href="/dashboard" class={`${currentPath === '/dashboard' ? 'active' : ''}`}>
+            <Link href="/dashboard" class={`${currentPath === '/dashboard' ? 'active' : ''}`} onClick$={toggleDrawer}>
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17"
@@ -64,7 +67,7 @@ export default component$(() => {
             <>
               <div class="divider"></div>
               <li class="py-2 mt-2">
-                <Link href="/dashboard/admin" class={`${currentPath === '/dashboard/admin' ? 'active' : ''}`}>
+                <Link href="/dashboard/admin" class={`${currentPath === '/dashboard/admin' ? 'active' : ''}`} onClick$={toggleDrawer}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
