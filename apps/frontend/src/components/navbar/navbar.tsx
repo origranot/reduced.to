@@ -7,7 +7,6 @@ import { BurgerButton } from './burger-button/burger-button';
 import { GithubButton } from './github-button/github-button';
 import styles from './navbar.css?inline';
 import { Profile } from './profile/profile';
-import { $ } from '@builder.io/qwik';
 
 export const Navbar = component$(() => {
   useStylesScoped$(styles);
@@ -16,7 +15,7 @@ export const Navbar = component$(() => {
   const user = useGetCurrentUser();
   const location = useLocation();
 
-  const dropDown = useSignal(false);
+  const showDropdown = useSignal(false);
 
   return (
     <div class="navbar bg-base-100 drop-shadow-md relative" style={{ zIndex: 100 }}>
@@ -44,11 +43,9 @@ export const Navbar = component$(() => {
       <div class="block sm:hidden dropdown dropdown-end">
         <BurgerButton
           buttonTitle="Open"
-          onClick={$(() => {
-            dropDown.value = !dropDown.value;
-          })}
+          showDropdown={showDropdown}
         />
-        {dropDown.value == true && (
+        {showDropdown.value == true && (
           <ul tabIndex={0} class="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4 p-2">
             <li class={user.value ? 'px-4 py-2' : ''}>
               {user.value ? (
