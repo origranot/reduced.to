@@ -16,7 +16,7 @@ export default component$(() => {
   const user = useGetCurrentUser();
 
   const isDrawerOpen = useSignal(false);
-  const toggleDrawer = $(() => isDrawerOpen.value = !isDrawerOpen.value);
+  const toggleDrawer = $(() => (isDrawerOpen.value = !isDrawerOpen.value));
 
   return (
     <div class="drawer drawer-mobile h-[calc(100vh-64px)]">
