@@ -40,12 +40,19 @@ export const Navbar = component$(() => {
           Reduced.to
         </Link>
       </div>
-      <div class="block sm:hidden dropdown dropdown-end">
-        <BurgerButton
-          buttonTitle="Open"
-          showDropdown={showDropdown}
-        />
-        {showDropdown.value == true && (
+      <div
+        class="block sm:hidden dropdown dropdown-end"
+        onFocusout$={({ relatedTarget }, currentTarget) => {
+          if (relatedTarget instanceof HTMLElement && currentTarget.contains(relatedTarget as Node)) {
+            return;
+          }
+
+          showDropdown.value = false;
+        }}
+        onClick$={() => (showDropdown.value = !showDropdown.value)}
+      >
+        <BurgerButton buttonTitle="Open" />
+        {showDropdown.value && (
           <ul tabIndex={0} class="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4 p-2">
             <li class={user.value ? 'px-4 py-2' : ''}>
               {user.value ? (
