@@ -173,7 +173,7 @@ For the minimal configuration you can just rename the `.example.env` files to `.
 
 ###### Rate Limit
 
-- **RATE_LIMIT_TTL**: Rate limt TTL (time to live)
+- **RATE_LIMIT_TTL**: Rate limit TTL (time to live)
 - **RATE_LIMIT_COUNT**: Number of requests within the ttl
 
 ###### Logger
