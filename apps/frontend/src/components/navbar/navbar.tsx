@@ -71,9 +71,10 @@ export const Navbar = component$(() => {
                     Dashboard
                     <span class="badge">New</span>
                   </Link>
-                  <Link href="/logout" class="btn-ghost py-2 text-sm">
+                  {/* It uses normal redirect inorder to make the signal work as expected */}
+                  <a href="/logout" class="btn-ghost py-2 text-sm">
                     Logout
-                  </Link>
+                  </a>
                 </li>
                 <li class="pr-2 border-black"></li>
               </>
