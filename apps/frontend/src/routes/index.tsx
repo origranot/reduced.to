@@ -176,7 +176,7 @@ export default component$(() => {
             </div>
           </div>
         </div>
-          <Waves />
+        <Waves />
       </div>
     </div>
   );
