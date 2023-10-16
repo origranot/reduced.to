@@ -1,4 +1,4 @@
-import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
+import { component$, useContext, useSignal, useStylesScoped$ } from '@builder.io/qwik';
 import { Link, useLocation } from '@builder.io/qwik-city';
 import { GlobalStore } from '../../context';
 import { useGetCurrentUser } from '../../routes/layout';
@@ -14,6 +14,8 @@ export const Navbar = component$(() => {
   const globalStore = useContext(GlobalStore);
   const user = useGetCurrentUser();
   const location = useLocation();
+
+  const showDropdown = useSignal(false);
 
   return (
     <div class="navbar bg-base-100 drop-shadow-md relative" style={{ zIndex: 100 }}>
@@ -38,55 +40,68 @@ export const Navbar = component$(() => {
           Reduced.to
         </Link>
       </div>
-      <div class="block sm:hidden dropdown dropdown-end">
+      <div
+        class="block sm:hidden dropdown dropdown-end"
+        onFocusout$={({ relatedTarget }, currentTarget) => {
+          if (relatedTarget instanceof HTMLElement && currentTarget.contains(relatedTarget as Node)) {
+            return;
+          }
+
+          showDropdown.value = false;
+        }}
+        onClick$={() => (showDropdown.value = !showDropdown.value)}
+      >
         <BurgerButton buttonTitle="Open" />
-        <ul tabIndex={0} class="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4 p-2">
-          <li class={user.value ? 'px-4 py-2' : ''}>
-            {user.value ? (
-              `Welcome ${user.value?.name}!`
-            ) : (
-              <Link href="/login" class="btn-ghost">
-                Login
-              </Link>
+        {showDropdown.value && (
+          <ul tabIndex={0} class="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4 p-2">
+            <li class={user.value ? 'px-4 py-2' : ''}>
+              {user.value ? (
+                `Welcome ${user.value?.name}!`
+              ) : (
+                <Link href="/login" class="btn-ghost">
+                  Login
+                </Link>
+              )}
+            </li>
+            {user.value && (
+              <>
+                <li class="pr-2 border-black"></li>
+                <li>
+                  <Link href="/dashboard" class="btn-ghost py-2 text-sm justify-between">
+                    Dashboard
+                    <span class="badge">New</span>
+                  </Link>
+                  {/* It uses normal redirect inorder to make the signal work as expected */}
+                  <a href="/logout" class="btn-ghost py-2 text-sm">
+                    Logout
+                  </a>
+                </li>
+                <li class="pr-2 border-black"></li>
+              </>
             )}
-          </li>
-          {user.value && (
-            <>
-              <li class="pr-2 border-black"></li>
-              <li>
-                <Link href="/dashboard" class="btn-ghost py-2 text-sm justify-between">
-                  Dashboard
-                  <span class="badge">New</span>
-                </Link>
-                <Link href="/logout" class="btn-ghost py-2 text-sm">
-                  Logout
-                </Link>
-              </li>
-              <li class="pr-2 border-black"></li>
-            </>
-          )}
-          <li>
-            <a href="https://github.com/origranot/reduced.to" target="_blank" title="GitHub" class="btn-ghost">
-              Github
-            </a>
-          </li>
-          <li>
-            <a href="https://docs.reduced.to" target="_blank" title="Documentation" class="btn-ghost">
-              Docs
-            </a>
-          </li>
-          <li>
-            <a
-              class="btn-ghost"
-              onClick$={() => {
-                globalStore.theme = globalStore.theme === 'light' ? DARK_THEME : LIGHT_THEME;
-                setPreference(globalStore.theme);
-              }}
-            >
-              {globalStore.theme === 'light' ? 'Dark' : 'Light'} theme
-            </a>
-          </li>
-        </ul>
+            <li>
+              <a href="https://github.com/origranot/reduced.to" target="_blank" title="GitHub" class="btn-ghost">
+                Github
+              </a>
+            </li>
+            <li>
+              <a href="https://docs.reduced.to" target="_blank" title="Documentation" class="btn-ghost">
+                Docs
+              </a>
+            </li>
+            <li>
+              <a
+                class="btn-ghost"
+                onClick$={() => {
+                  globalStore.theme = globalStore.theme === 'light' ? DARK_THEME : LIGHT_THEME;
+                  setPreference(globalStore.theme);
+                }}
+              >
+                {globalStore.theme === 'light' ? 'Dark' : 'Light'} theme
+              </a>
+            </li>
+          </ul>
+        )}
       </div>
       <div class="sm:flex hidden">
         {user.value ? (
