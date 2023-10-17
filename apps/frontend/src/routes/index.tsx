@@ -62,7 +62,7 @@ export default component$(() => {
             <div class="flex flex-col">
               <article class="prose mx-auto max-w-4xl pb-16">
                 <div class="mx-auto">
-                  <img class="mx-auto my-8" style={logoStyle} width="410" height="73" src="logo.svg" alt="Logo" />{' '}
+                  <img class="mx-auto my-8" style={logoStyle} width="410" height="73" src="logo.svg" alt="Logo" />
                 </div>
                 <p>
                   Add your very long <b>URL</b> in the input below and click on the button to make it shorter
