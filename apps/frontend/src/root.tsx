@@ -19,7 +19,7 @@ export default component$(() => {
         <meta charSet="utf-8" />
         <RouterHead />
       </head>
-      <body class="smooth-scroll">
+      <body>
         <ThemeLoader />
         <RouterOutlet />
         <ServiceWorkerRegister />

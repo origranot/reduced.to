@@ -36,7 +36,7 @@ export const ShortenerInput = component$((props: ShortenerInputProps) => {
   return (
     <div class="form-control">
       <div class="self-end  mr-[55px] hidden md:block">
-        <p class="ml-[100px] text-2xl absolute " style={'font-family:Shadows Into Light Two'}>
+        <p class="ml-[100px] text-2xl relative " style={'font-family:Shadows Into Light Two'}>
           Expiration Time
         </p>
         <ArrowDoodle />
