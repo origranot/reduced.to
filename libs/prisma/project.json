@@ -1,0 +1,72 @@
+{
+  "name": "prisma",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/prisma/src",
+  "projectType": "library",
+  "targets": {
+    "generate-types": {
+      "command": "prisma generate --schema=src/schema.prisma",
+      "options": {
+        "cwd": "libs/prisma"
+      }
+    },
+    "migrate-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma migrate dev --schema=libs/prisma/src/schema.prisma --name={args.name}",
+        "parallel": true
+      }
+    },
+    "migrate-deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma migrate deploy --schema=libs/prisma/src/schema.prisma",
+        "parallel": true
+      }
+    },
+    "studio": {
+      "command": "prisma studio --schema=src/schema.prisma",
+      "options": {
+        "cwd": "libs/prisma"
+      }
+    },
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/prisma",
+        "tsConfig": "libs/prisma/tsconfig.lib.json",
+        "packageJson": "libs/prisma/package.json",
+        "main": "libs/prisma/src/index.ts"
+      },
+      "dependsOn": [
+        {
+          "target": "generate-types",
+          "projects": "prisma"
+        }
+      ]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/prisma/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/prisma/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

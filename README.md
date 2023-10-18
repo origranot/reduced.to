@@ -16,6 +16,8 @@
   
 [![logo](https://raw.githubusercontent.com/origranot/reduced.to/ec59ee1dfe4c858b89d2d22935e2734d52794ea3/frontend/public/logo.svg)](https://reduced.to)
 
+[![Preview](/assets/images/preview.gif)](https://reduced.to)
+
   <p align="center">
     Reduced.to is a modern web application that reduces the length of link URL. So it's easier to remember, share and track.
     <br />
@@ -72,6 +74,7 @@
 
 List of frameworks/libraries used to bootstrap the project.
 
+- [![NX][nx]][nx-url]
 - [![Nest][nestjs]][nest-url]
 - [![Qwik][qwik.js]][qwik-url]
 - [![Tailwindcss][tailwindcss]][tailwindcss-url]
@@ -99,99 +102,69 @@ List of things you need to run the project locally and how to install them.
 ### 💻 Installation
 
 1. [Fork](https://github.com/origranot/reduced.to/fork) / Clone this repository
-2. Open the repository using the `reduced.to.code-workspace` file (VSCode)
-3. Install NPM packages
+2. Install NPM packages
    ```sh
-   npm install && npm run install:all
+   npm install
    ```
-4. Copy `backend/example.env` to `.env` and fill it properly ([see below](#backend-configuration)).
-5. Copy `frontend/example.env` to `.env` and fill it properly ([see below](#frontend-configuration)).
-6. Make sure you have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
+3. Copy `.example.env` to `.env` and fill it properly (see [Configuration](#-configuration))
+4. Make sure you have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
    ```sh
    docker run --name reduced_to_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
    ```
-7. Run Prisma migration inside the backend folder:
+5. Run Prisma migration from root folder:
    ```sh
-   npx prisma migrate dev --name init
+   npx nx migrate-dev prisma --name=init
    ```
-8. Run the backend:
+6. Run the backend from root folder:
    ```sh
-   npm run start:backend
+   npx nx serve backend
    ```
-9. Run the frontend:
+7. Run the frontend from root folder:
    ```sh
-   npm run start:frontend
+   npx nx serve frontend
    ```
 
 ### 👩‍💻 Development
 
-You will find 3 folders
+The project is structured in the following way:
 
-- 🚀 `root`
-- 🎨 `reduced.to/frontend`
-- 📦 `reduced.to/backend`
-
-### _Running the frontend in dev mode_
-
-1. Move to the frontend folder
-   ```sh
-   cd ./frontend
-   ```
-2. Run the project (it will open a new window)
-   ```sh
-   npm run dev
-   ```
-3. Vite will be now listening for changes in the code and reloading the solution
-
-### _Running the backend in dev mode_
-
-1. Move to the backend folder
-   ```sh
-   cd ./backend
-   ```
-2. Run the project (be sure that you built the frontend before)
-   ```sh
-   npm run start:dev
-   ```
-3. Nest will be now listening for changes in the code and reloading the solution
+```
+.
+├── apps/
+│   ├── backend
+│   └── frontend
+└── libs/
+    ├── config
+    └── prisma
+```
 
 ### 🐳 Docker
 
-- You can easily build your application in a docker container and run it.
-- Build and run frontend instance
-  ```sh
-  docker build frontend/ -t reduced.to-front
-  docker run -p 5000:5000 reduced.to-front
-  ```
-- Build and run backend instance
-  ```sh
-  docker build backend/ -t reduced.to-back
-  docker run -p 3000:3000 reduced.to-back
-  ```
-- Make sure to have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
+You can build the docker images by running the following nx command:
 
-  ```sh
-  docker run --name reduced_to_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
-  ```
+```sh
+npx nx run-many -t docker-build
+```
 
-- Simply go to your favourite browser and visit `http://localhost:5000/` to see your application.
+- This command will automatically build the dependencies and the backend and frontend images.
 
 ### 🐙 Docker compose
 
 - In case you have docker installed, you can _single-click_ deploy and test your changes by running the following and going to `http://localhost:5000/` on your browser.
+- When you run the command below, don't forget to change the .env file with the correct values.
+
   ```sh
-  docker compose -f docker-compose.dev.yml up
+  docker compose -f docker/local/docker-compose.yml -p reduced-to up
   ```
 
 ### 👷 Configuration
 
-For the minimal configuration the following settings have to be changed in their `.env` file:
+For the minimal configuration you can just rename the `.example.env` files to `.env`.
 
-#### Backend configuration
+###### General
 
-###### App
-
-- **APP_PORT**: Backend port
+- **BACKEND_APP_PORT**: Backend port
+- **FRONTEND_APP_PORT**: Frontend port
 - **NODE_ENV**: Node environment (development / production)
 
 ###### Database
@@ -200,7 +173,7 @@ For the minimal configuration the following settings have to be changed in their
 
 ###### Rate Limit
 
-- **RATE_LIMIT_TTL**: Rate limt TTL (time to live)
+- **RATE_LIMIT_TTL**: Rate limit TTL (time to live)
 - **RATE_LIMIT_COUNT**: Number of requests within the ttl
 
 ###### Logger
@@ -209,7 +182,9 @@ For the minimal configuration the following settings have to be changed in their
 
 ###### Frontend
 
-- **FRONT_DOMAIN**: Frontend instance domain
+- **DOMAIN**: Domain of your frontend app
+- **API_DOMAIN**: Domain of your backend instance (used for server side requests)
+- **CLIENTSIDE_API_DOMAIN**: Domain of your backend instance (used for client side requests)
 
 ###### Redis
 
@@ -221,17 +196,12 @@ For the minimal configuration the following settings have to be changed in their
 
 ###### Auth
 
-- **JWT_SECRET**: Jwt secret string
+- **JWT_ACCESS_SECRET**: Jwt secret (used for access tokens)
+- **JWT_REFRESH_SECRET**: Jwt secret (used for refresh tokens)
 
 ###### Novu
 
-- **NOVU_API_KEY**: Get it from https://novu.co/
-
-#### Frontend configuration
-
-- **DOMAIN**: Domain of your frontend app (used for cookies)
-
-- **API_DOMAIN**: Domain of your backend instance
+- **NOVU_API_KEY**: Get it from https://novu.co/, you don't need this when running locally (just verify your email from the database)
 
 Happy Hacking !
 
@@ -262,9 +232,11 @@ Simply copy and paste a URL into the provided area. Then click shorten URL! Your
   - [x] Animations
   - [x] Logo
   - [x] Dark/Light mode
-  - [ ] Fonts?
 - [ ] Improve front-end components
-- [ ] Backend tests
+- [x] Backend tests
+- [x] Migration to Nx
+- [ ] Split backend into libs
+- [ ] Support k8s deployment (helm)
 - [ ] Front-end Tests
 - [ ] Logs
 - [ ] Add a statistics page
@@ -325,7 +297,9 @@ Project Link: [https://github.com/origranot/reduced.to](https://github.com/origr
 [issues-shield]: https://img.shields.io/github/issues/origranot/reduced.to.svg?style=for-the-badge
 [issues-url]: https://github.com/origranot/reduced.to/issues
 [product-screenshot]: docs/gif.gif
-[nestjs]: https://img.shields.io/badge/nestJS-000000?style=for-the-badge&logo=nestjs&logoColor=E0234E
+[nx]: https://img.shields.io/static/v1?style=for-the-badge&message=Nx&color=143055&logo=Nx&logoColor=FFFFFF&label=
+[nx-url]: https://nx.dev/
+[nestjs]: https://img.shields.io/static/v1?style=for-the-badge&message=NestJS&color=E0234E&logo=NestJS&logoColor=FFFFFF&label=
 [nest-url]: https://nestjs.com/
 [qwik.js]: https://tinyurl.com/y67dv8ub
 [qwik-url]: https://qwik.builder.io/
