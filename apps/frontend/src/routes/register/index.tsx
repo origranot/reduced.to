@@ -6,6 +6,15 @@ interface RegisterStore {
   passwordVisible: boolean;
 }
 
+const PasswordToggleIcon = ({ passwordVisible }: { passwordVisible: boolean }) => (
+  <div
+    class="tooltip tooltip-right"
+    data-tip={passwordVisible ? 'Hide password' : 'Show password'}
+  >
+    {passwordVisible ? <PasswordVisible /> : <PasswordMasked />}
+  </div>
+);
+
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   const validAccessToken = await validateAccessToken(cookie);
   if (validAccessToken) {
@@ -149,9 +158,7 @@ export default component$(() => {
                       store.passwordVisible = !store.passwordVisible;
                     }}
                   >
-                    <div class="tooltip tooltip-right" data-tip={store.passwordVisible ? 'Hide password' : 'Show password'}>
-                      {store.passwordVisible ? <PasswordVisible /> : <PasswordMasked />}
-                    </div>
+                    <PasswordToggleIcon passwordVisible={store.passwordVisible} />
                   </span>
                 </div>
                 <label class="label">
