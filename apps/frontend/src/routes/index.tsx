@@ -51,9 +51,6 @@ export default component$(() => {
 
   useContextProvider(InputContext, state);
 
-  const logoStyle = {
-    filter: globalStore.theme === 'light' ? 'invert(0)' : 'invert(1)',
-  };
   return (
     <div class="overflow-x-hidden overflow-y-auto md:overflow-hidden">
       <div class="flex flex-col justify-start h-[calc(100vh-64px)]">
@@ -62,7 +59,14 @@ export default component$(() => {
             <div class="flex flex-col">
               <article class="prose mx-auto max-w-4xl pb-16">
                 <div class="mx-auto">
-                  <img class="mx-auto my-8" style={logoStyle} width="410" height="73" src="logo.svg" alt="Logo" />
+                  <img
+                    class="mx-auto my-8"
+                    style={globalStore.theme === 'light' ? { filter: 'invert(0)' } : { filter: 'invert(1)' }}
+                    width="410"
+                    height="73"
+                    src="logo.svg"
+                    alt="Logo"
+                  />
                 </div>
                 <p>
                   Add your very long <b>URL</b> in the input below and click on the button to make it shorter
