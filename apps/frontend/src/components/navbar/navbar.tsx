@@ -7,6 +7,7 @@ import { BurgerButton } from './burger-button/burger-button';
 import { GithubButton } from './github-button/github-button';
 import styles from './navbar.css?inline';
 import { Profile } from './profile/profile';
+import { Resources } from './resources/resources';
 
 export const Navbar = component$(() => {
   useStylesScoped$(styles);
@@ -112,9 +113,7 @@ export const Navbar = component$(() => {
           </Link>
         )}
         <div class="divider divider-horizontal"></div>
-        <a href="https://docs.reduced.to" class="btn btn-ghost">
-          Docs
-        </a>
+        <Resources />
         <div class="divider divider-horizontal"></div>
         <div class="grid flex-grow place-items-center">
           <GithubButton />

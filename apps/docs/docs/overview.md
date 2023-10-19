@@ -16,7 +16,7 @@ Simply paste a long URL into the input field and click the "Shorten" button. The
 
 To ensure optimal performance, the project uses Redis as a cache storage mechanism. Redis is an efficient, in-memory data structure store that enables fast retrieval of key-value pairs. By leveraging Redis, we can store and retrieve mappings between short links and their corresponding long URLs in a highly efficient manner.
 
-We uses NestJS as the backend framework for the project. NestJS is a progressive Node.js framework that offers a modular architecture and a powerful CLI. By leveraging NestJS, we can develop a robust backend that is easy to maintain and scale.
+We use NestJS as the backend framework for the project. NestJS is a progressive Node.js framework that offers a modular architecture and a powerful CLI. By leveraging NestJS, we can develop a robust backend that is easy to maintain and scale.
 
 For data storage, we utilize PostgreSQL, a reliable and robust open-source relational database. PostgreSQL offers excellent data integrity and powerful querying capabilities, ensuring secure storage of user-related information while enabling efficient retrieval and manipulation as needed.
 
