@@ -10,13 +10,13 @@ export const Profile = component$(({ name }: ProfileProps) => {
   useStylesScoped$(styles);
 
   return (
-    <div class="dropdown dropdown-end">
+    <div class="dropdown dropdown-hover">
       <label tabIndex={0} class="btn btn-ghost btn-circle avatar">
         <div class="w-8 rounded-full">
           <img src={`https://ui-avatars.com/api/?name=${name}`} />
         </div>
       </label>
-      <ul tabIndex={0} class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-48">
+      <ul tabIndex={0} class="p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-48">
         <li>
           <Link href="/dashboard" class="justify-between">
             Dashboard

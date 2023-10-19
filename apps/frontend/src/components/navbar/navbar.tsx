@@ -7,6 +7,7 @@ import { BurgerButton } from './burger-button/burger-button';
 import { GithubButton } from './github-button/github-button';
 import styles from './navbar.css?inline';
 import { Profile } from './profile/profile';
+import { Resources } from './resources/resources';
 
 export const Navbar = component$(() => {
   useStylesScoped$(styles);
@@ -71,9 +72,10 @@ export const Navbar = component$(() => {
                     Dashboard
                     <span class="badge">New</span>
                   </Link>
-                  <Link href="/logout" class="btn-ghost py-2 text-sm">
+                  {/* It uses normal redirect inorder to make the signal work as expected */}
+                  <a href="/logout" class="btn-ghost py-2 text-sm">
                     Logout
-                  </Link>
+                  </a>
                 </li>
                 <li class="pr-2 border-black"></li>
               </>
@@ -111,9 +113,7 @@ export const Navbar = component$(() => {
           </Link>
         )}
         <div class="divider divider-horizontal"></div>
-        <a href="https://docs.reduced.to" class="btn btn-ghost">
-          Docs
-        </a>
+        <Resources />
         <div class="divider divider-horizontal"></div>
         <div class="grid flex-grow place-items-center">
           <GithubButton />

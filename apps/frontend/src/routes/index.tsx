@@ -52,7 +52,7 @@ export default component$(() => {
   useContextProvider(InputContext, state);
 
   return (
-    <div class="overflow-x-hidden overflow-y-auto md:overflow-hidden">
+    <div class="overflow-x-hidden overflow-y-auto md:overflow-auto">
       <div class="flex flex-col justify-start h-[calc(100vh-64px)]">
         <div class="mx-auto container grid grid-cols-12 flex-1">
           <div class="col-start-2 col-end-12 md:col-start-3 md:col-end-11">
