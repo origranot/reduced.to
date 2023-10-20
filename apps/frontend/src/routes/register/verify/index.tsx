@@ -37,7 +37,7 @@ export default component$(() => {
           <div class="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
             <div class="prose prose-slate">
               <h1 class="m-0">Thanks for register!</h1>
-              {store.loading && <span class="loading loading-ring loading-lg"></span>}
+              {store.loading && <span class="m-auto loading loading-ring loading-lg"></span>}
               {!store.loading && !store.isVerified && (
                 <>
                   <p class="mt-4">

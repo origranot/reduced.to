@@ -88,7 +88,7 @@ export default component$(() => {
                   handleShortener(state);
                 }}
               />
-              {state.loading && <span class="loading loading-ring loading-lg"></span>}
+              {state.loading && <span class="m-auto loading loading-ring loading-lg"></span>}
               <div id="result" class={state.showResult ? '' : 'hidden'}>
                 <p id="error" class="fade-in">
                   {state.urlError}
