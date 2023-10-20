@@ -10,17 +10,24 @@ export const Profile = component$(({ name }: ProfileProps) => {
   useStylesScoped$(styles);
 
   return (
-    <div class="dropdown dropdown-hover">
+    <div
+      class="dropdown dropdown-hover"
+      onClick$={() => {
+        if (document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur();
+        }
+      }}
+    >
       <label tabIndex={0} class="btn btn-ghost btn-circle avatar">
         <div class="w-8 rounded-full">
-          <img src={`https://ui-avatars.com/api/?name=${name}`} />
+          <img width="64" height="64" src={`https://ui-avatars.com/api/?name=${name}`} />
         </div>
       </label>
       <ul tabIndex={0} class="p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-48">
         <li>
           <Link href="/dashboard" class="justify-between">
             Dashboard
-            <span class="badge">New</span>
+            <span class="badge badge-neutral">New</span>
           </Link>
         </li>
         <li>
