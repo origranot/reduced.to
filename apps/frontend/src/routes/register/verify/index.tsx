@@ -1,6 +1,5 @@
 import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik';
 import { Link, RequestHandler } from '@builder.io/qwik-city';
-import { Loader } from '../../../components/loader/loader';
 import { authorizedFetch, validateAccessToken } from '../../../shared/auth.service';
 
 export interface Store {
