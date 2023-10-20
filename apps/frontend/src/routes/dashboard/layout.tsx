@@ -23,9 +23,9 @@ export default component$(() => {
       <div class="drawer-content w-100vh m-5">
         <Slot />
       </div>
-      <div class="drawer-side h-full">
+      <div class="drawer-side absolute h-full">
         <label for="drawer" class="drawer-overlay"></label>
-        <ul class="menu p-4 w-64 text-base-content border-r bg-base-100 dark:border-gray-700 block h-full pt-[64px] lg:pt-[0.5px]">
+        <ul class="menu p-4 w-64 text-base-content border-r bg-base-100 dark:border-gray-700 block h-full">
           <li class="py-2 mt-2">
             <Link
               href="/dashboard"
