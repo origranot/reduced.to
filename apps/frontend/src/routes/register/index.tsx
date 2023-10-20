@@ -123,7 +123,7 @@ export default component$(() => {
                 <label class="label">
                   <span class="label-text text-xs font-semibold">DISPLAY NAME</span>
                 </label>
-                <input name="displayName" type="text" class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300" />
+                <input name="displayName" type="text" class="input input-bordered w-full max-w-xs focus:outline-0" />
                 {action.value?.fieldErrors?.displayName && (
                   <span class="text-error text-left">{action.value?.fieldErrors?.displayName}</span>
                 )}{' '}
@@ -131,7 +131,7 @@ export default component$(() => {
                 <label class="label">
                   <span class="label-text text-xs font-semibold">EMAIL</span>
                 </label>
-                <input name="email" type="text" class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300" />
+                <input name="email" type="text" class="input input-bordered w-full max-w-xs focus:outline-0" />
                 {action.value?.fieldErrors?.email && <span class="text-error text-left">{action.value?.fieldErrors?.email}</span>} <br />
                 <label class="label">
                   <span class="label-text text-xs font-semibold">PASSWORD</span>
@@ -140,7 +140,7 @@ export default component$(() => {
                   <input
                     name="password"
                     type={store.passwordVisible ? 'text' : 'password'}
-                    class="input input-bordered w-full max-w-xs pr-10 focus:outline-0 dark:bg-base-300"
+                    class="input input-bordered w-full max-w-xs pr-10 focus:outline-0"
                     autoComplete="on"
                   />
                   <span
@@ -160,9 +160,7 @@ export default component$(() => {
                   </span>
                 </label>
                 <br />
-                <button class={`btn btn-primary ${action.isRunning ? ' loading' : ''}`} type="submit">
-                  Continue
-                </button>
+                <button class="btn btn-primary">{action.isRunning && <span class="loading loading-spinner-small"></span>}Register</button>
                 {action.value?.message && <span class="text-error text-left">{action.value.message}</span>}
               </Form>
             </div>

@@ -3,7 +3,6 @@ import { DocumentHead } from '@builder.io/qwik-city';
 import animations from '../assets/css/animations.css?inline';
 import { handleShareOnTwitter } from '../components/home-buttons/actions';
 import { TwitterButton } from '../components/home-buttons/twitter-button/twitter-button';
-import { Loader } from '../components/loader/loader';
 import { generateQRCode } from '../components/qr-code/handleQRCode';
 import { QRCode } from '../components/qr-code/qr-code';
 import { handleShortener } from '../components/shortener-input/handleShortener';
@@ -61,7 +60,9 @@ export default component$(() => {
                 <div class="mx-auto">
                   <img
                     class="mx-auto my-8"
-                    style={globalStore.theme === 'light' ? { filter: 'invert(0)' } : { filter: 'invert(1)' }}
+                    style={{
+                      filter: globalStore.theme === 'light' ? 'invert(0)' : 'invert(1)',
+                    }}
                     width="410"
                     height="73"
                     src="logo.svg"
@@ -87,7 +88,7 @@ export default component$(() => {
                   handleShortener(state);
                 }}
               />
-              <Loader visible={state.loading} />
+              {state.loading && <span class="loading loading-ring loading-lg"></span>}
               <div id="result" class={state.showResult ? '' : 'hidden'}>
                 <p id="error" class="fade-in">
                   {state.urlError}

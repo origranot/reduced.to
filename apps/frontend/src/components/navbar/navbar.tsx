@@ -70,7 +70,7 @@ export const Navbar = component$(() => {
                 <li>
                   <Link href="/dashboard" class="btn-ghost py-2 text-sm justify-between">
                     Dashboard
-                    <span class="badge">New</span>
+                    <span class="badge badge-neutral">New</span>
                   </Link>
                   {/* It uses normal redirect inorder to make the signal work as expected */}
                   <a href="/logout" class="btn-ghost py-2 text-sm">
