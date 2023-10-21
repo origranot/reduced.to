@@ -19,7 +19,7 @@
 [![Preview](/assets/images/preview.gif)](https://reduced.to)
 
   <p align="center">
-    Reduced.to is a modern web application that reduces the length of link URL. So it's easier to remember, share and track.
+    Reduced.to is a modern web application that reduces the length of the link URL. So it's easier to remember, share and track.
     <br />
     <br />
     <a href="https://reduced.to">App</a>
