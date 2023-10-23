@@ -1,4 +1,4 @@
-import { component$, Slot, useSignal, $ } from '@builder.io/qwik';
+import { $, Slot, component$, useSignal } from '@builder.io/qwik';
 import { Link, RequestHandler, useLocation } from '@builder.io/qwik-city';
 import { validateAccessToken } from '../../shared/auth.service';
 import { Role, useGetCurrentUser } from '../layout';
@@ -114,7 +114,8 @@ export default component$(() => {
                     </li>
                     <li>
                       <Link
-                        class={`${location.url.pathname.slice(0, -1) === '/dashboard/admin/users' ? 'active' : ''} !cursor-not-allowed`}
+                        href="/dashboard/users"
+                        class={`${location.url.pathname.slice(0, -1) === '/dashboard/admin/users' ? 'active' : ''} `}
                         onClick$={toggleDrawer}
                       >
                         <svg
@@ -132,7 +133,6 @@ export default component$(() => {
                           />
                         </svg>
                         <span class="font-medium">Users</span>
-                        <span class="badge badge-neutral">Soon</span>
                       </Link>
                     </li>
                   </ul>
