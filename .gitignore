@@ -46,4 +46,4 @@ Thumbs.db
 .cache-loader/
 
 # Nx
-.nx/cache
+/.nx/cache
