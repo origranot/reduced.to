@@ -1,7 +1,6 @@
 import { PrismaService } from '@reduced.to/prisma';
-import { IPaginationOptions, IPaginationResult, orderByBuilder } from '../shared/utils';
 import { SortOrder } from '../shared/enums/sort-order.enum';
-import { filterBuilder } from '../shared/utils';
+import { IPaginationOptions, IPaginationResult, filterBuilder, orderByBuilder } from '../shared/utils';
 
 export abstract class EntityService<Entity> {
   constructor(private readonly prismaService: PrismaService) {}
@@ -16,27 +15,28 @@ export abstract class EntityService<Entity> {
     const FILTER_CLAUSE = { OR: filterBuilder(this.filterFields, filter) };
     const ORDER_BY_CLAUSE = orderByBuilder<Partial<Entity>>(sort as any);
 
-    const [total, data] = await this.prismaService.$transaction([
-      this.prismaService[this.model].count({
-        ...(filter && {
-          where: FILTER_CLAUSE,
-        }),
+    const totalCount = await this.prismaService[this.model].count({
+      ...(filter && {
+        where: FILTER_CLAUSE,
       }),
-      this.prismaService[this.model].findMany({
-        select: this.selectFields,
-        ...(skip && { skip }),
-        take: limit,
-        ...(filter && {
-          where: FILTER_CLAUSE,
-        }),
-        ...(sort && {
-          orderBy: ORDER_BY_CLAUSE,
-        }),
+    });
+    const data = await this.prismaService[this.model].findMany({
+      select: this.selectFields,
+      ...(skip && { skip }),
+      take: limit,
+      ...(filter && {
+        where: FILTER_CLAUSE,
       }),
-    ]);
+      ...(sort && {
+        orderBy: ORDER_BY_CLAUSE,
+      }),
+    });
+
+    const numOfPages = Math.ceil(totalCount / limit);
 
     return {
-      total,
+      numOfPages,
+      total: totalCount,
       data,
     };
   };

@@ -8,6 +8,7 @@ export const calculateSkip = (page: number, limit: number): number => {
 };
 
 export interface IPaginationResult<T> {
+  numOfPages?: number;
   data: Partial<T>[];
   total: number;
 }
