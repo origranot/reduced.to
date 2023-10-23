@@ -38,7 +38,7 @@
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": ["../../coverage/apps/frontend"],
+      "outputs": ["coverage/apps/frontend"],
       "options": {
         "passWithNoTests": true,
         "reportsDirectory": "../../coverage/apps/frontend"
