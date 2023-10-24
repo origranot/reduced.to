@@ -1,5 +1,5 @@
 import { component$, useStore } from '@builder.io/qwik';
-import { DocumentHead, Form, globalAction$, RequestHandler, z, zod$ } from '@builder.io/qwik-city';
+import { DocumentHead, Form, RequestHandler, globalAction$, z, zod$ } from '@builder.io/qwik-city';
 import { setTokensAsCookies, validateAccessToken } from '../../shared/auth.service';
 
 interface RegisterStore {
@@ -76,6 +76,13 @@ export const useRegister = globalAction$(
       })
       .regex(/^(?=.*[0-9])(?=.*[a-zA-Z])(?!.* ).{6,}$/, {
         message: 'Password must contain at least six characters, including at least 1 letter and 1 number',
+      }),
+    policies: z
+      .string({
+        required_error: 'You must agree to the privacy policy.',
+      })
+      .min(1, {
+        message: 'You must agree to the privacy policy.',
       }),
   })
 );
@@ -158,6 +165,21 @@ export default component$(() => {
                   <span class={`label-text text-xs text-left ${action.value?.fieldErrors?.password ? 'text-error text-left' : ''}`}>
                     Password must contain at least six characters, including at least 1 letter and 1 number.
                   </span>
+                </label>
+                <div class="flex items-center relative">
+                    <input
+                        name="policies"
+                        type="checkbox"
+                        class="checkbox checkbox-accent"
+                    />
+                     <span class="ml-2 text-xs text-left">
+                        I agree with the <a href="/privacy-policy" class="text-accent">Privacy Policy</a>.
+                    </span>
+                </div>
+                <label class="label">
+                    {action.value?.fieldErrors?.policies &&<span class="label-text text-error text-left">
+                    {action.value?.fieldErrors?.policies}
+                    </span>}
                 </label>
                 <br />
                 <button class="btn btn-primary">{action.isRunning && <span class="loading loading-spinner-small"></span>}Register</button>

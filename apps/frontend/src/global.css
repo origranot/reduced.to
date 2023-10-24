@@ -14,6 +14,7 @@
 body {
   text-align: center;
   overflow: auto;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 input::-ms-reveal,
