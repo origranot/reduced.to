@@ -167,19 +167,19 @@ export default component$(() => {
                   </span>
                 </label>
                 <div class="flex items-center relative">
-                    <input
-                        name="policies"
-                        type="checkbox"
-                        class="checkbox checkbox-accent"
-                    />
-                     <span class="ml-2 text-xs text-left">
-                        I agree with the <a href="/privacy-policy" class="text-accent">Privacy Policy</a>.
-                    </span>
+                  <input name="policies" type="checkbox" class="checkbox" />
+                  <span class="ml-2 text-xs text-left">
+                    I agree with the{' '}
+                    <a href="/privacy-policy" class="text-primary" target="_blank">
+                      Privacy Policy
+                    </a>
+                    .
+                  </span>
                 </div>
                 <label class="label">
-                    {action.value?.fieldErrors?.policies &&<span class="label-text text-error text-left">
-                    {action.value?.fieldErrors?.policies}
-                    </span>}
+                  {action.value?.fieldErrors?.policies && (
+                    <span class="label-text text-error text-left">{action.value.fieldErrors.policies}</span>
+                  )}
                 </label>
                 <br />
                 <button class="btn btn-primary">{action.isRunning && <span class="loading loading-spinner-small"></span>}Register</button>
