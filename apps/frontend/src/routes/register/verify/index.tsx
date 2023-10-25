@@ -1,6 +1,5 @@
 import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik';
 import { Link, RequestHandler } from '@builder.io/qwik-city';
-import { Loader } from '../../../components/loader/loader';
 import { authorizedFetch, validateAccessToken } from '../../../shared/auth.service';
 
 export interface Store {
@@ -38,7 +37,7 @@ export default component$(() => {
           <div class="w-full p-5 bg-base-200 rounded content-center border border-black/[.15] shadow-md">
             <div class="prose prose-slate">
               <h1 class="m-0">Thanks for register!</h1>
-              <Loader visible={store.loading} />
+              {store.loading && <span class="m-auto loading loading-ring loading-lg"></span>}
               {!store.loading && !store.isVerified && (
                 <>
                   <p class="mt-4">

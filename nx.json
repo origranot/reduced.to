@@ -3,28 +3,25 @@
   "affected": {
     "defaultBase": "master"
   },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx-cloud",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
-        "accessToken": "YTYxNTgwZWUtYTFlMi00OTFkLTkwNzUtYWI5ZGQwZTc4MDdifHJlYWQtd3JpdGU="
-      }
-    }
-  },
   "workspaceLayout": {
     "projectNameAndRootFormat": "as-provided"
   },
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "inputs": ["production", "^production"],
+      "cache": true
     },
     "test": {
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
+      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+      "cache": true
     },
     "lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore", "{workspaceRoot}/eslint.config.js"]
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore", "{workspaceRoot}/eslint.config.js"],
+      "cache": true
+    },
+    "e2e": {
+      "cache": true
     }
   },
   "namedInputs": {
@@ -40,5 +37,6 @@
       "!{projectRoot}/test-setup.[jt]s"
     ],
     "sharedGlobals": []
-  }
+  },
+  "nxCloudAccessToken": "YTYxNTgwZWUtYTFlMi00OTFkLTkwNzUtYWI5ZGQwZTc4MDdifHJlYWQtd3JpdGU="
 }

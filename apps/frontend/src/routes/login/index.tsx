@@ -71,12 +71,12 @@ export default component$(() => {
                 <label class="label">
                   <span class="label-text text-xs font-semibold">EMAIL</span>
                 </label>
-                <input name="email" type="text" class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300" />
+                <input name="email" type="text" class="input input-bordered w-full max-w-xs focus:outline-0" />
                 {action.value?.fieldErrors?.email && <span class="text-error text-left">{action.value?.fieldErrors?.email}</span>} <br />
                 <label class="label">
                   <span class="label-text text-xs font-semibold">PASSWORD</span>
                 </label>
-                <input name="password" type="password" class="input input-bordered w-full max-w-xs focus:outline-0 dark:bg-base-300" />{' '}
+                <input name="password" type="password" class="input input-bordered w-full max-w-xs focus:outline-0" />{' '}
                 {action.value?.fieldErrors?.password && <span class="text-error text-left">{action.value?.fieldErrors?.password}</span>}
                 <label class="label">
                   <span class="label-text text-xs font-semibold">
@@ -87,7 +87,7 @@ export default component$(() => {
                   </span>
                 </label>
                 <br />
-                <button class={`btn btn-primary ${action.isRunning ? 'loading' : ''}`}>Log In</button>
+                <button class="btn btn-primary">{action.isRunning && <span class="loading loading-spinner-small"></span>}Log In</button>
                 {action.value?.message && <span class="text-error text-left">Invalid email or password</span>}
               </Form>
             </div>

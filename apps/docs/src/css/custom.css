@@ -42,9 +42,9 @@
 
 .navbar-github-logo {
   height: 24px;
-
   margin-left: 6px;
 }
+
 [data-theme='dark'] .navbar-github-logo {
   filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(180deg);
 }

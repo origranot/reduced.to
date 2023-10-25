@@ -3,7 +3,14 @@ import { Link } from '@builder.io/qwik-city';
 
 export const Resources = component$(() => {
   return (
-    <div class="dropdown dropdown-hover">
+    <div
+      class="dropdown dropdown-hover"
+      onClick$={() => {
+        if (document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur();
+        }
+      }}
+    >
       <label tabIndex={0} class="btn btn-ghost btn-sm">
         Resources
       </label>
@@ -12,9 +19,9 @@ export const Resources = component$(() => {
           <a href="https://docs.reduced.to">Docs</a>
         </li>
         <li>
-          <Link class="btn-ghost py-2 text-sm justify-between cursor-not-allowed">
+          <Link class="btn-ghost py-2 text-sm justify-between !cursor-not-allowed">
             Report
-            <span class="badge">Soon</span>
+            <span class="badge badge-neutral">Soon</span>
           </Link>
         </li>
       </ul>
