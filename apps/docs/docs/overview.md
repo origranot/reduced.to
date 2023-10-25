@@ -10,7 +10,12 @@ Reduced.to is a modern web application designed to shorten link URLs, making the
 
 ### How does it work?
 
-Simply paste a long URL into the input field and click the "Shorten" button. The application will generate a shortened URL that you can copy and share with others. When a user clicks on the shortened URL, they will be redirected to the original long URL. There is also a dashboard for registered users to view their shortened URLs and track their performance.
+* User paste a long URL into the input field
+* After pasting the URL, User click the "Shorten" button. 
+* The application will generate a shortened URL
+* User can copy and share this shortened link with others.  
+* When the user clicks on the shortened URL, they will be redirected to the original long URL. 
+* There is also a dashboard for registered users to view their shortened URLs and track their performance.
 
 ### Technologies and Services
 
