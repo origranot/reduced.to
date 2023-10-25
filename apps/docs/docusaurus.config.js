@@ -24,7 +24,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           routeBasePath: '/',
-          editUrl: '/',
+          editUrl: 'https://github.com/origranot/reduced.to/tree/master/',
           path: 'apps/docs/docs',
         },
         pages: {
