@@ -1,6 +1,7 @@
 import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik';
 import { Link, RequestHandler } from '@builder.io/qwik-city';
 import { authorizedFetch, validateAccessToken } from '../../../shared/auth.service';
+import { useGetCurrentUser } from '../../layout';
 
 export interface Store {
   isVerified: boolean;
@@ -24,12 +25,16 @@ export default component$(() => {
     email: '',
   });
 
+  const user = useGetCurrentUser();
+
   useVisibleTask$(() => {
+    if (user.value) {
+      store.email = user.value.email;
+    }
     authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/auth/verified`).then(async (response) => {
-      const { verified, email } = await response.json();
+      const { verified } = await response.json();
       store.isVerified = verified;
       store.loading = false;
-      store.email = email;
     });
   });
 
@@ -43,12 +48,9 @@ export default component$(() => {
               {store.loading && <span class="m-auto loading loading-ring loading-lg"></span>}
               {!store.loading && !store.isVerified && (
                 <>
-                  <p class="mt-4">
-                    To keep your account secure, we need to verify your email address.
-                  </p>
+                  <p class="mt-4">To keep your account secure, we need to verify your email address.</p>
                   <p class="mt-2">
-                    We sent an email to <code class="font-bold">{store.email}</code> to complete
-                    the process.
+                    We sent an email to <code class="font-bold">{store.email}</code> to complete the process.
                   </p>
                   <p class="mt-2 mb-5">If you don't see the email, please check your spam folder or contact our support team for help.</p>
                   <div class="form-control w-full max-w-xs inline-flex">

@@ -98,7 +98,7 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    return { verified: fetchedUser.verified, email: fetchedUser.email };
+    return { verified: fetchedUser.verified };
   }
 
   async refreshTokens(user: UserContext) {
