@@ -1,21 +1,10 @@
-import {
-  component$,
-  useResource$,
-  Resource,
-  useVisibleTask$,
-  useStore,
-  $,
-  PropFunction,
-} from '@builder.io/qwik';
+import { component$, useResource$, Resource, useVisibleTask$, useStore, $, PropFunction } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
-import { UserCtx } from '~/routes/layout';
-import { authorizedFetch } from '~/shared/auth.service';
-import type {
-  PaginatedRows,
-  PaginationParams,
-} from '~/components/table/server-paginated-data-table';
-import { ServerPaginatedDataTable } from '~/components/table/server-paginated-data-table';
-import { hybridPaginationHook, PaginationFetcher } from '~/hooks/hybridPaginationHook';
+import { UserCtx } from '../../../routes/layout';
+import { authorizedFetch } from '../../../shared/auth.service';
+import type { PaginatedRows, PaginationParams } from '../../../components/table/server-paginated-data-table';
+import { ServerPaginatedDataTable } from '../../../components/table/server-paginated-data-table';
+import { hybridPaginationHook, PaginationFetcher } from '../../../hooks/hybridPaginationHook';
 
 export const serializeQueryUserPaginationParams = (paginationParams: PaginationParams) => {
   const paramsForQuery: { [key: string]: string } = {
@@ -35,22 +24,17 @@ export const serializeQueryUserPaginationParams = (paginationParams: PaginationP
 export default component$(() => {
   const firstLoading = useStore({ value: true });
 
-  const fetchUserData: PropFunction<PaginationFetcher> = $(
-    async (paginationParams: PaginationParams) => {
-      const headers = {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      };
+  const fetchUserData: PropFunction<PaginationFetcher> = $(async (paginationParams: PaginationParams) => {
+    const headers = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    };
+    paginationParams.page = paginationParams.page + 1;
+    const queryParams = serializeQueryUserPaginationParams(paginationParams);
 
-      const queryParams = serializeQueryUserPaginationParams(paginationParams);
-
-      const data = await authorizedFetch(
-        `${process.env.API_DOMAIN}/api/v1/users?${queryParams}`,
-        headers
-      );
-      return await data.json();
-    }
-  );
+    const data = await authorizedFetch(`${process.env.API_DOMAIN}/api/v1/users?${queryParams}`, headers);
+    return await data.json();
+  });
 
   const { fetchRowsHandler } = hybridPaginationHook(fetchUserData);
 
@@ -61,24 +45,19 @@ export default component$(() => {
     { strategy: 'document-ready' }
   );
 
-  const usersResource = useResource$<{ data: PaginatedRows<UserCtx>; total: number }>(
-    async ({ track, cleanup }) => {
-      track(() => firstLoading.value);
-      if (firstLoading.value) return;
-      const abortController = new AbortController();
-      cleanup(() => abortController.abort('cleanup'));
+  const usersResource = useResource$<{ data: PaginatedRows<UserCtx>; total: number }>(async ({ track, cleanup }) => {
+    track(() => firstLoading.value);
+    if (firstLoading.value) return;
+    const abortController = new AbortController();
+    cleanup(() => abortController.abort('cleanup'));
 
-      const data = await authorizedFetch(
-        `${process.env.API_DOMAIN}/api/v1/users?limit=10&sort[name]=asc`,
-        {
-          signal: abortController.signal,
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-      return await data.json();
-    }
-  );
+    const data = await authorizedFetch(`${process.env.API_DOMAIN}/api/v1/users?limit=10&sort[name]=asc`, {
+      signal: abortController.signal,
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return await data.json();
+  });
 
   return (
     <div class="p-10">

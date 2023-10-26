@@ -1,5 +1,5 @@
 import { PropFunction, useStore, $ } from '@builder.io/qwik';
-import { PaginationParams } from '~/components/table/server-paginated-data-table';
+import { PaginationParams } from '../components/table/server-paginated-data-table';
 export interface LocalPaginationCache {
   limit: number;
   startIdx: number;
