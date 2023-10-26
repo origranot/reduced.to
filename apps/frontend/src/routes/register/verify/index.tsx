@@ -1,6 +1,7 @@
 import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik';
 import { Link, RequestHandler } from '@builder.io/qwik-city';
 import { authorizedFetch, validateAccessToken } from '../../../shared/auth.service';
+import { useGetCurrentUser } from '../../layout';
 
 export interface Store {
   isVerified: boolean;
@@ -22,6 +23,8 @@ export default component$(() => {
     resent: false,
   });
 
+  const user = useGetCurrentUser();
+
   useVisibleTask$(() => {
     authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/auth/verified`).then(async (response) => {
       const { verified } = await response.json();
@@ -38,11 +41,11 @@ export default component$(() => {
             <div class="prose prose-slate">
               <h1 class="m-0">Thanks for register!</h1>
               {store.loading && <span class="m-auto loading loading-ring loading-lg"></span>}
-              {!store.loading && !store.isVerified && (
+              {!store.loading && !store.isVerified && user.value && (
                 <>
-                  <p class="mt-4">
-                    To keep your account secure, we need to verify your email address. Check your inbox for a message from us to complete
-                    the process.
+                  <p class="mt-4">To keep your account secure, we need to verify your email address.</p>
+                  <p class="mt-2">
+                    We sent an email to <code class="font-bold">{user.value.email}</code> to complete the process.
                   </p>
                   <p class="mt-2 mb-5">If you don't see the email, please check your spam folder or contact our support team for help.</p>
                   <div class="form-control w-full max-w-xs inline-flex">
