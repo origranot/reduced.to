@@ -189,7 +189,7 @@ For the minimal configuration you can just rename the `.example.env` files to `.
 ###### Redis
 
 - **REDIS_ENABLE**: Whether to use external redis store or not
-- **REDIS_HOST**: Redis instnace host
+- **REDIS_HOST**: Redis instance host
 - **REDIS_PORT**: Redis instance port
 - **REDIS_PASSWORD**: Redis instance password
 - **REDIS_TTL**: Redis ttl (in seconds)
