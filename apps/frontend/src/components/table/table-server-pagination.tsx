@@ -11,22 +11,21 @@ export interface PaginationParams {
   limit: number;
   page: number;
   filter: string;
-  sort: SortOrder;
-  sortColumn: string;
+  sort: Record<string, SortOrder>;
 }
 
-export type PaginationFetcher = ({ limit, page, filter, sort, sortColumn }: PaginationParams) => Promise<ResponseTableData>;
+export type PaginationFetcher = ({ limit, page, filter, sort }: PaginationParams) => Promise<ResponseTableData>;
 
-export interface OptionalHeader {
-  displayName: string;
+export type OptionalHeader = {
+  displayName?: string;
   hide?: boolean;
-}
+};
 
-export type OptionalHeaderRecordSet = Record<string, OptionalHeader>;
+export type Columns = Record<string, OptionalHeader>;
 
 export interface TableServerPaginationParams {
   endpoint: string;
-  customColumnNames?: OptionalHeaderRecordSet;
+  columns: Columns;
   pageSize?: number;
 }
 
@@ -35,6 +34,7 @@ export interface ResponseTableData {
   data: Record<string, unknown>[];
 }
 
+// TODO: Replace all of this with param builder
 export const serializeQueryUserPaginationParams = (paginationParams: PaginationParams) => {
   const paramsForQuery: { [key: string]: string } = {
     limit: '' + paginationParams.limit,
@@ -43,25 +43,26 @@ export const serializeQueryUserPaginationParams = (paginationParams: PaginationP
   if (paginationParams.filter) {
     paramsForQuery.filter = paginationParams.filter;
   }
-  if (paginationParams.sortColumn && paginationParams.sort) {
-    paramsForQuery[`sort[${paginationParams.sortColumn}]`] = paginationParams.sort;
+
+  if (paginationParams.sort) {
+    Object.keys(paginationParams.sort).forEach((key) => {
+      paramsForQuery[`sort[${key}]`] = paginationParams.sort[key];
+    });
   }
 
   return new URLSearchParams(paramsForQuery).toString().replace(/%5B/g, '[').replace(/%5D/g, ']');
 };
 
-export const TableServerPagination = component$(({ endpoint }: TableServerPaginationParams) => {
+export const TableServerPagination = component$((props: TableServerPaginationParams) => {
   const filter = useSignal('');
-  const currentPage = useSignal(0);
+  const currentPage = useSignal(1);
   const rowsPerPage = useSignal(10);
-  const sortDesc = useSignal<SortOrder>(SortOrder.DESC);
-  const sortColumn = useSignal('');
+  const sortSignal = useSignal<Record<string, SortOrder>>({});
 
-  const headers = useSignal<{ name: string; displayName: string; hide?: true }[]>([]);
   const tableData = useSignal<ResponseTableData>({ total: 0, data: [] });
   const maxPages = useSignal(Math.ceil(tableData.value.total / rowsPerPage.value));
 
-  const isOnFirstPage = currentPage.value === 0;
+  const isOnFirstPage = currentPage.value === 1;
   const isOnLastPage = useResource$(async ({ track }) => {
     track(() => currentPage.value);
     track(() => maxPages.value);
@@ -71,7 +72,7 @@ export const TableServerPagination = component$(({ endpoint }: TableServerPagina
   const setPageNumber = $(async (mode: 'prev' | 'next') => {
     switch (mode) {
       case 'prev':
-        if (currentPage.value === 0) return;
+        if (currentPage.value === 1) return;
         currentPage.value = currentPage.value - 1;
         break;
       case 'next':
@@ -81,25 +82,10 @@ export const TableServerPagination = component$(({ endpoint }: TableServerPagina
     }
   });
 
-  // const setHeaders = $((optionalHeaders: OptionalHeaderRecordSet): void => {
-  //   headers.value = Object.keys(optionalHeaders)
-  //     .map((colName) => ({
-  //       name: colName,
-  //       displayName: props.customColumnNames?.[colName as T]?.customName || colName,
-  //       hide: props.customColumnNames?.[colName as T]?.hide,
-  //     }))
-  //     .filter((header) => (header.hide ? false : true));
-  // });
-
   const fetchTableData: PropFunction<PaginationFetcher> = $(async (paginationParams: PaginationParams) => {
-    const headers = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    };
     paginationParams.page = paginationParams.page + 1;
     const queryParams = serializeQueryUserPaginationParams(paginationParams);
-
-    const data = await authorizedFetch(`${endpoint}?${queryParams}`, headers);
+    const data = await authorizedFetch(`${props.endpoint}?${queryParams}`);
     const response = (await data.json()) as ResponseTableData;
     if (!response || !response.data) {
       console.warn('Server response is not valid', response);
@@ -114,15 +100,13 @@ export const TableServerPagination = component$(({ endpoint }: TableServerPagina
     track(() => currentPage.value);
     track(() => rowsPerPage.value);
     track(() => filter.value);
-    track(() => sortDesc.value);
-    track(() => sortColumn.value);
+    track(() => sortSignal.value);
 
     const result = await fetchTableData({
       page: currentPage.value,
       limit: rowsPerPage.value,
       filter: filter.value,
-      sort: sortDesc.value ? SortOrder.DESC : SortOrder.ASC,
-      sortColumn: sortColumn.value as string,
+      sort: sortSignal.value,
     });
 
     return result;
@@ -134,9 +118,10 @@ export const TableServerPagination = component$(({ endpoint }: TableServerPagina
       <table id="table" class="table table-zebra w-full">
         <thead>
           <tr>
-            {headers.value.map((headerName) => (
-              <td>{headerName.displayName}</td>
-            ))}
+            {Object.keys(props.columns).map((columnName, idx) => {
+              if (props.columns[columnName].hide) return;
+              return <th key={idx}>{props.columns[columnName].displayName ?? columnName}</th>;
+            })}
           </tr>
         </thead>
 
@@ -146,14 +131,17 @@ export const TableServerPagination = component$(({ endpoint }: TableServerPagina
           onResolved={({ data, total }) => {
             // update signal for total count
             maxPages.value = Math.ceil(total / rowsPerPage.value);
+
             const filteredData = (data as unknown as Record<string, JSXChildren>[]).map((row) => {
               return Object.keys(row).reduce((acc: { [key: string]: unknown }, k) => {
                 const key = k as string;
-                // if (props.customColumnNames?.[key]?.hide) return acc;
+                console.log(props.columns[key]);
+                if (!props.columns[key] || props.columns[key].hide) return acc;
                 acc[k] = row[key];
                 return acc;
               }, {});
             });
+
             console.log('filteredData', filteredData);
             return (
               <tbody>
@@ -178,7 +166,7 @@ export const TableServerPagination = component$(({ endpoint }: TableServerPagina
                 <button
                   class="btn border rounded p-1 "
                   onClick$={async () => {
-                    currentPage.value = 0;
+                    currentPage.value = 1;
                   }}
                   disabled={isOnFirstPage}
                 >
@@ -208,7 +196,7 @@ export const TableServerPagination = component$(({ endpoint }: TableServerPagina
                 <button
                   class="btn border rounded p-1"
                   onClick$={async () => {
-                    currentPage.value = (await maxPages.value) - 1;
+                    currentPage.value = maxPages.value - 1;
                   }}
                   disabled={!!isOnLastPage}
                 >
@@ -218,25 +206,9 @@ export const TableServerPagination = component$(({ endpoint }: TableServerPagina
                 <span class="flex items-center gap-1">
                   <div>Page</div>
                   <strong>
-                    {currentPage.value + 1} of {maxPages.value}
+                    {currentPage.value} of {maxPages.value}
                   </strong>
                 </span>
-                {/* got to page input */}
-                {/* <span class="flex items-center gap-2 mx-3">
-                  <span>Go to page:</span>
-                  <input
-                    type="number"
-                    value={currentPage.value + 1}
-                    min="1"
-                    max={maxPages.value}
-                    onChange$={(e) => {
-                      const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                      currentPage.value = page;
-                    }}
-                    // class="border p-1 rounded w-16"
-                    class="input input-bordered w-full"
-                  />
-                </span> */}
                 {/* rowsperpage select */}
                 <select
                   value={rowsPerPage.value}
