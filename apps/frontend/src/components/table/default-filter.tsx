@@ -1,16 +1,15 @@
 import { component$, PropFunction, Signal } from '@builder.io/qwik';
 
 export interface FilterInputProps {
-  filterValue: Signal<string>;
-  setFilter$: PropFunction<(val: string) => void>;
+  filter: Signal<string>;
 }
 
-export const FilterInput = component$<FilterInputProps>(({ filterValue = '', setFilter$ }) => {
+export const FilterInput = component$<FilterInputProps>(({ filter }) => {
   return (
     <input
       type="text"
-      value={(filterValue as Signal<string>).value}
-      onInput$={(ev: InputEvent) => setFilter$((ev.target as HTMLInputElement)?.value || '')}
+      value={filter.value || ''}
+      onInput$={(ev: InputEvent) => (filter.value = (ev.target as HTMLInputElement).value)}
       placeholder={`Search...`}
       style={{ width: '100%' }}
       class="input input-bordered w-full max-w-xs my-5"
