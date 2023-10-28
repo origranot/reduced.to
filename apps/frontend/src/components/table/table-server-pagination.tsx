@@ -1,6 +1,7 @@
-import { component$, useSignal, $, PropFunction, useResource$, QwikChangeEvent, Resource, JSXChildren } from '@builder.io/qwik';
+import { component$, useSignal, $, PropFunction, useVisibleTask$ } from '@builder.io/qwik';
 import { FilterInput } from './default-filter';
 import { authorizedFetch } from '../../shared/auth.service';
+import { PaginationActions } from './pagination-actions';
 
 export enum SortOrder {
   DESC = 'desc',
@@ -14,7 +15,7 @@ export interface PaginationParams {
   sort: Record<string, SortOrder>;
 }
 
-export type PaginationFetcher = ({ limit, page, filter, sort }: PaginationParams) => Promise<ResponseTableData>;
+export type PaginationFetcher = ({ limit, page, filter, sort }: PaginationParams) => Promise<ResponseData>;
 
 export type OptionalHeader = {
   displayName?: string;
@@ -29,203 +30,128 @@ export interface TableServerPaginationParams {
   pageSize?: number;
 }
 
-export interface ResponseTableData {
+export interface ResponseData {
   total: number;
   data: Record<string, unknown>[];
 }
 
-// TODO: Replace all of this with param builder
 export const serializeQueryUserPaginationParams = (paginationParams: PaginationParams) => {
-  const paramsForQuery: { [key: string]: string } = {
-    limit: '' + paginationParams.limit,
-    page: '' + paginationParams.page,
-  };
+  const paramsForQuery = new URLSearchParams();
+
+  paramsForQuery.set('limit', paginationParams.limit.toString());
+  paramsForQuery.set('page', paginationParams.filter ? '1' : paginationParams.page.toString());
+
   if (paginationParams.filter) {
-    paramsForQuery.filter = paginationParams.filter;
+    paramsForQuery.set('filter', paginationParams.filter);
   }
 
   if (paginationParams.sort) {
-    Object.keys(paginationParams.sort).forEach((key) => {
-      paramsForQuery[`sort[${key}]`] = paginationParams.sort[key];
+    Object.entries(paginationParams.sort).forEach(([key, value]) => {
+      paramsForQuery.set(`sort[${key}]`, value);
     });
   }
 
-  return new URLSearchParams(paramsForQuery).toString().replace(/%5B/g, '[').replace(/%5D/g, ']');
+  return paramsForQuery.toString();
 };
 
 export const TableServerPagination = component$((props: TableServerPaginationParams) => {
   const filter = useSignal('');
   const currentPage = useSignal(1);
-  const rowsPerPage = useSignal(10);
+  const limit = useSignal(10);
   const sortSignal = useSignal<Record<string, SortOrder>>({});
+  const tableData = useSignal<ResponseData>({ total: 0, data: [] });
+  const maxPages = useSignal(0);
 
-  const tableData = useSignal<ResponseTableData>({ total: 0, data: [] });
-  const maxPages = useSignal(Math.ceil(tableData.value.total / rowsPerPage.value));
+  const isOnFirstPage = useSignal(true);
+  const isOnLastPage = useSignal(true);
 
-  const isOnFirstPage = currentPage.value === 1;
-  const isOnLastPage = useResource$(async ({ track }) => {
-    track(() => currentPage.value);
-    track(() => maxPages.value);
-    return currentPage.value === maxPages.value - 1;
-  });
-
-  const setPageNumber = $(async (mode: 'prev' | 'next') => {
-    switch (mode) {
-      case 'prev':
-        if (currentPage.value === 1) return;
-        currentPage.value = currentPage.value - 1;
-        break;
-      case 'next':
-        if (currentPage.value >= maxPages.value - 1) return;
-        currentPage.value = currentPage.value + 1;
-        break;
-    }
-  });
+  const isLoading = useSignal(true);
 
   const fetchTableData: PropFunction<PaginationFetcher> = $(async (paginationParams: PaginationParams) => {
     paginationParams.page = paginationParams.page + 1;
     const queryParams = serializeQueryUserPaginationParams(paginationParams);
     const data = await authorizedFetch(`${props.endpoint}?${queryParams}`);
-    const response = (await data.json()) as ResponseTableData;
+    const response = (await data.json()) as ResponseData;
     if (!response || !response.data) {
       console.warn('Server response is not valid', response);
 
       response.total = 0;
       response.data = [];
     }
+
     return response;
   });
 
-  const paginatedRows = useResource$(async ({ track }) => {
+  useVisibleTask$(async ({ track }) => {
     track(() => currentPage.value);
-    track(() => rowsPerPage.value);
+    track(() => limit.value);
     track(() => filter.value);
     track(() => sortSignal.value);
 
+    // Fetch data
     const result = await fetchTableData({
       page: currentPage.value,
-      limit: rowsPerPage.value,
+      limit: limit.value,
       filter: filter.value,
       sort: sortSignal.value,
     });
 
-    return result;
+    tableData.value = result;
+    maxPages.value = Math.ceil(result.total / limit.value || 1);
+
+    // Update isOnFirstPage and isOnLastPage
+    isOnFirstPage.value = currentPage.value === 1;
+    isOnLastPage.value = currentPage.value >= maxPages.value - 1;
+
+    isLoading.value = false;
   });
 
   return (
     <div class="flex flex-col justify-start">
       <FilterInput filter={filter} />
-      <table id="table" class="table table-zebra w-full">
-        <thead>
-          <tr>
-            {Object.keys(props.columns).map((columnName, idx) => {
-              if (props.columns[columnName].hide) return;
-              return <th key={idx}>{props.columns[columnName].displayName ?? columnName}</th>;
-            })}
-          </tr>
-        </thead>
-
-        <Resource
-          value={paginatedRows}
-          onPending={() => <p>Loading...</p>}
-          onResolved={({ data, total }) => {
-            // update signal for total count
-            maxPages.value = Math.ceil(total / rowsPerPage.value);
-
-            const filteredData = (data as unknown as Record<string, JSXChildren>[]).map((row) => {
-              return Object.keys(row).reduce((acc: { [key: string]: unknown }, k) => {
-                const key = k as string;
-                console.log(props.columns[key]);
-                if (!props.columns[key] || props.columns[key].hide) return acc;
-                acc[k] = row[key];
-                return acc;
-              }, {});
-            });
-
-            console.log('filteredData', filteredData);
-            return (
-              <tbody>
-                {/* ts inference bug atm with useresource */}
-                {filteredData.map((row) => (
-                  <tr>
-                    {(Object.values(row) as JSXChildren[]).map((cell) => (
-                      <td>{cell?.toString()}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            );
-          }}
-        />
-
-        <tfoot>
-          <tr>
-            <td colSpan={100}>
-              <div class="flex gap-2">
-                {/* first page */}
-                <button
-                  class="btn border rounded p-1 "
-                  onClick$={async () => {
-                    currentPage.value = 1;
-                  }}
-                  disabled={isOnFirstPage}
-                >
-                  {'<<'}
-                </button>
-                {/* prev page -1 */}
-                <button
-                  class="btn border rounded p-1"
-                  onClick$={() => {
-                    setPageNumber('prev');
-                  }}
-                  disabled={isOnFirstPage}
-                >
-                  {'<'}
-                </button>
-                {/* next page +1 */}
-                <button
-                  class="btn border rounded p-1"
-                  onClick$={async () => {
-                    setPageNumber('next');
-                  }}
-                  disabled={!!isOnLastPage}
-                >
-                  {'>'}
-                </button>
-                {/* last page */}
-                <button
-                  class="btn border rounded p-1"
-                  onClick$={async () => {
-                    currentPage.value = maxPages.value - 1;
-                  }}
-                  disabled={!!isOnLastPage}
-                >
-                  {'>>'}
-                </button>
-                {/* pages of totalpages */}
-                <span class="flex items-center gap-1">
-                  <div>Page</div>
-                  <strong>
-                    {currentPage.value} of {maxPages.value}
-                  </strong>
-                </span>
-                {/* rowsperpage select */}
-                <select
-                  value={rowsPerPage.value}
-                  onChange$={(ev: QwikChangeEvent<HTMLSelectElement>) => {
-                    rowsPerPage.value = +ev.target.value;
-                  }}
-                  class="select-text px-2 mx-3 rounded-md"
-                >
-                  {[10, 20, 30, 40, 50].map((pageSize) => (
-                    <option value={pageSize}>{'Show ' + pageSize}</option>
-                  ))}
-                </select>
+      {isLoading.value ? ( // Show loader covering the entire table
+        <div class="animate-pulse">
+          <div class="h-4 bg-gray-200 mb-6 mt-2 rounded"></div>
+          {Array.from({ length: 12 }).map(() => (
+            <div class="h-4 bg-gray-200 mb-6 rounded"></div>
+          ))}
+        </div>
+      ) : (
+        <table id="table" class="table table-zebra w-full">
+          <thead>
+            <tr>
+              {Object.keys(props.columns).map((columnName, idx) => {
+                if (props.columns[columnName].hide) return;
+                return <th key={idx}>{props.columns[columnName].displayName ?? columnName}</th>;
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {tableData.value.data.map((row) => (
+              <tr>
+                {Object.keys(row).map((name) => {
+                  if (!props.columns[name] || props.columns[name].hide) return;
+                  return <td>{row[name]?.toString()}</td>;
+                })}
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <div class="flex pt-5">
+                <PaginationActions
+                  tableData={tableData}
+                  limit={limit}
+                  page={currentPage}
+                  maxPages={maxPages}
+                  isOnFirstPage={isOnFirstPage}
+                  isOnLastPage={isOnLastPage}
+                />
               </div>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+            </tr>
+          </tfoot>
+        </table>
+      )}
     </div>
   );
 });
