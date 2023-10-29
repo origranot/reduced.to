@@ -19,6 +19,7 @@ export type PaginationFetcher = ({ limit, page, filter, sort }: PaginationParams
 
 export type OptionalHeader = {
   displayName?: string;
+  classNames?: string;
   hide?: boolean;
 };
 
@@ -122,16 +123,20 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
             <tr>
               {Object.keys(props.columns).map((columnName, idx) => {
                 if (props.columns[columnName].hide) return;
-                return <th key={idx}>{props.columns[columnName].displayName ?? columnName}</th>;
+                return (
+                  <th class={props.columns[columnName].classNames ?? ''} key={idx}>
+                    {props.columns[columnName].displayName ?? columnName}
+                  </th>
+                );
               })}
             </tr>
           </thead>
           <tbody>
-            {tableData.value.data.map((row) => (
-              <tr>
-                {Object.keys(row).map((name) => {
-                  if (!props.columns[name] || props.columns[name].hide) return;
-                  return <td>{row[name]?.toString()}</td>;
+            {tableData.value.data.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                {Object.keys(props.columns).map((columnName, idx) => {
+                  if (props.columns[columnName].hide) return;
+                  return <td key={idx}>{row[columnName]?.toString()}</td>;
                 })}
               </tr>
             ))}

@@ -4,9 +4,10 @@ import { DocumentHead } from '@builder.io/qwik-city';
 
 export default component$(() => {
   const columns: Columns = {
-    name: { displayName: 'Name' },
-    email: {},
-    role: {},
+    name: { displayName: 'Name', classNames: 'w-1/4' },
+    email: { displayName: 'Email', classNames: 'w-1/4' },
+    role: { displayName: 'Role', classNames: 'w-1/4' },
+    verified: { displayName: 'Verified', classNames: 'w-1/4' },
   };
 
   return (
