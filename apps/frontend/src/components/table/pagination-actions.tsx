@@ -16,17 +16,16 @@ export const PaginationActions = component$((props: PaginationActionsProps) => {
   return (
     <div class="flex gap-2">
       <div class="join">
-        <button class="join-item btn" onClick$={() => (page.value = 1)} disabled={isOnFirstPage.value}>
+        <button class="join-item btn btn-xs sm:btn-md" onClick$={() => (page.value = 1)} disabled={isOnFirstPage.value}>
           {'<<'}
         </button>
-        <button class="join-item btn" onClick$={() => (page.value = page.value - 1)} disabled={isOnFirstPage.value}>
+        <button class="join-item btn btn-xs sm:btn-md" onClick$={() => (page.value = page.value - 1)} disabled={isOnFirstPage.value}>
           {'<'}
         </button>
-        <button class="join-item btn">{page.value}</button>
-        <button class="join-item btn" onClick$={() => (page.value = page.value + 1)} disabled={isOnLastPage.value}>
+        <button class="join-item btn btn-xs sm:btn-md" onClick$={() => (page.value = page.value + 1)} disabled={isOnLastPage.value}>
           {'>'}
         </button>
-        <button class="join-item btn" onClick$={() => (page.value = maxPages.value - 1)} disabled={isOnLastPage.value}>
+        <button class="join-item btn btn-xs sm:btn-md" onClick$={() => (page.value = maxPages.value)} disabled={isOnLastPage.value}>
           {'>>'}
         </button>
       </div>

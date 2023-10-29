@@ -2,6 +2,7 @@ import { component$, useSignal, $, PropFunction, useVisibleTask$ } from '@builde
 import { FilterInput } from './default-filter';
 import { authorizedFetch } from '../../shared/auth.service';
 import { PaginationActions } from './pagination-actions';
+import { HiChevronDownOutline, HiChevronUpDownOutline, HiChevronUpOutline } from '@qwikest/icons/heroicons';
 
 export enum SortOrder {
   DESC = 'desc',
@@ -21,6 +22,7 @@ export type OptionalHeader = {
   displayName?: string;
   classNames?: string;
   hide?: boolean;
+  sortable?: boolean;
 };
 
 export type Columns = Record<string, OptionalHeader>;
@@ -38,9 +40,8 @@ export interface ResponseData {
 
 export const serializeQueryUserPaginationParams = (paginationParams: PaginationParams) => {
   const paramsForQuery = new URLSearchParams();
-
   paramsForQuery.set('limit', paginationParams.limit.toString());
-  paramsForQuery.set('page', paginationParams.filter ? '1' : paginationParams.page.toString());
+  paramsForQuery.set('page', paginationParams.page.toString());
 
   if (paginationParams.filter) {
     paramsForQuery.set('filter', paginationParams.filter);
@@ -69,7 +70,6 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
   const isLoading = useSignal(true);
 
   const fetchTableData: PropFunction<PaginationFetcher> = $(async (paginationParams: PaginationParams) => {
-    paginationParams.page = paginationParams.page + 1;
     const queryParams = serializeQueryUserPaginationParams(paginationParams);
     const data = await authorizedFetch(`${props.endpoint}?${queryParams}`);
     const response = (await data.json()) as ResponseData;
@@ -81,6 +81,11 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
     }
 
     return response;
+  });
+
+  const onFilterInputChange = $(async (ev: InputEvent) => {
+    filter.value = (ev.target as HTMLInputElement).value;
+    currentPage.value = 1;
   });
 
   useVisibleTask$(async ({ track }) => {
@@ -102,60 +107,83 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
 
     // Update isOnFirstPage and isOnLastPage
     isOnFirstPage.value = currentPage.value === 1;
-    isOnLastPage.value = currentPage.value >= maxPages.value - 1;
+    isOnLastPage.value = currentPage.value >= maxPages.value;
 
     isLoading.value = false;
   });
 
+  const sortColumn = (columnName: string) =>
+    $(() => {
+      if (!props.columns[columnName].sortable) return;
+
+      const currentSortOrder = sortSignal.value[columnName];
+      if (!currentSortOrder || currentSortOrder === SortOrder.DESC) {
+        sortSignal.value = { [columnName]: SortOrder.ASC };
+      } else {
+        sortSignal.value = { [columnName]: SortOrder.DESC };
+      }
+
+      // Reset the page to the first page when sorting
+      currentPage.value = 1;
+    });
+
   return (
     <div class="flex flex-col justify-start">
-      <FilterInput filter={filter} />
+      <FilterInput filter={filter} onInput={onFilterInputChange} />
       {isLoading.value ? ( // Show loader covering the entire table
         <div class="animate-pulse">
-          <div class="h-4 bg-gray-200 mb-6 mt-2 rounded"></div>
+          <div class="h-4 bg-base-200 mb-6 mt-2 rounded"></div>
           {Array.from({ length: 12 }).map(() => (
-            <div class="h-4 bg-gray-200 mb-6 rounded"></div>
+            <div class="h-4 bg-base-200 mb-6 rounded"></div>
           ))}
         </div>
       ) : (
-        <table id="table" class="table table-zebra w-full">
-          <thead>
-            <tr>
-              {Object.keys(props.columns).map((columnName, idx) => {
-                if (props.columns[columnName].hide) return;
-                return (
-                  <th class={props.columns[columnName].classNames ?? ''} key={idx}>
-                    {props.columns[columnName].displayName ?? columnName}
-                  </th>
-                );
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.value.data.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {Object.keys(props.columns).map((columnName, idx) => {
-                  if (props.columns[columnName].hide) return;
-                  return <td key={idx}>{row[columnName]?.toString()}</td>;
-                })}
-              </tr>
-            ))}
-          </tbody>
-          <tfoot>
-            <tr>
-              <div class="flex pt-5">
-                <PaginationActions
-                  tableData={tableData}
-                  limit={limit}
-                  page={currentPage}
-                  maxPages={maxPages}
-                  isOnFirstPage={isOnFirstPage}
-                  isOnLastPage={isOnLastPage}
-                />
-              </div>
-            </tr>
-          </tfoot>
-        </table>
+        <>
+          <div class="overflow-x-auto">
+            <table id="table" class="table table-zebra table-fixed whitespace-nowrap">
+              <thead>
+                <tr>
+                  {Object.keys(props.columns).map((columnName, idx) => {
+                    if (props.columns[columnName].hide) return;
+                    return (
+                      <th class={props.columns[columnName].classNames ?? ''} onClick$={sortColumn(columnName)} key={idx}>
+                        {props.columns[columnName].displayName ?? columnName}{' '}
+                        {props.columns[columnName].sortable &&
+                          (!sortSignal.value[columnName] ? (
+                            <HiChevronUpDownOutline class="inline align-text-bottom text-base" />
+                          ) : sortSignal.value[columnName] === SortOrder.ASC ? (
+                            <HiChevronUpOutline class="inline align-text-bottom" />
+                          ) : (
+                            <HiChevronDownOutline class="inline align-text-bottom" />
+                          ))}
+                      </th>
+                    );
+                  })}
+                </tr>
+              </thead>
+              <tbody>
+                {tableData.value.data.map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {Object.keys(props.columns).map((columnName, idx) => {
+                      if (props.columns[columnName].hide) return;
+                      return <td key={idx}>{row[columnName]?.toString()}</td>;
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div class="flex pt-5 text-sm	font-bold">
+            <PaginationActions
+              tableData={tableData}
+              limit={limit}
+              page={currentPage}
+              maxPages={maxPages}
+              isOnFirstPage={isOnFirstPage}
+              isOnLastPage={isOnLastPage}
+            />
+          </div>
+        </>
       )}
     </div>
   );
