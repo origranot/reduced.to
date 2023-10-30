@@ -274,7 +274,7 @@ Don't forget to give the project a star ⭐!
 
 ## 📝 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+This project is licensed under the terms of the [MIT License](LICENSE)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
