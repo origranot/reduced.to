@@ -3,6 +3,7 @@ import { FilterInput } from './default-filter';
 import { authorizedFetch } from '../../shared/auth.service';
 import { PaginationActions } from './pagination-actions';
 import { HiChevronDownOutline, HiChevronUpDownOutline, HiChevronUpOutline } from '@qwikest/icons/heroicons';
+import { EntriesSelector } from './entries-selector';
 
 export enum SortOrder {
   DESC = 'desc',
@@ -31,6 +32,7 @@ export interface TableServerPaginationParams {
   endpoint: string;
   columns: Columns;
   pageSize?: number;
+  pageSizeOptions?: number[];
 }
 
 export interface ResponseData {
@@ -59,7 +61,7 @@ export const serializeQueryUserPaginationParams = (paginationParams: PaginationP
 export const TableServerPagination = component$((props: TableServerPaginationParams) => {
   const filter = useSignal('');
   const currentPage = useSignal(1);
-  const limit = useSignal(10);
+  const limit = useSignal(props.pageSize ?? 10);
   const sortSignal = useSignal<Record<string, SortOrder>>({});
   const tableData = useSignal<ResponseData>({ total: 0, data: [] });
   const maxPages = useSignal(0);
@@ -128,18 +130,23 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
     });
 
   return (
-    <div class="flex flex-col justify-start">
-      <FilterInput filter={filter} onInput={onFilterInputChange} />
+    <div>
+      <div class="inline-flex sm:float-left mx-auto text-sm">
+        <EntriesSelector pageSize={limit} pageSizeOptions={props.pageSizeOptions} />
+      </div>
+      <div class="block sm:float-right sm:w-1/3 sm:pt-0 pt-2 w-1/2 mx-auto">
+        <FilterInput filter={filter} onInput={onFilterInputChange} />
+      </div>
       {isLoading.value ? ( // Show loader covering the entire table
         <div class="animate-pulse">
           <div class="h-4 bg-base-200 mb-6 mt-2 rounded"></div>
-          {Array.from({ length: 12 }).map(() => (
+          {Array.from({ length: limit.value + 2 }).map(() => (
             <div class="h-4 bg-base-200 mb-6 rounded"></div>
           ))}
         </div>
       ) : (
         <>
-          <div class="overflow-x-auto">
+          <div>
             <table id="table" class="table table-zebra table-fixed whitespace-nowrap">
               <thead>
                 <tr>
