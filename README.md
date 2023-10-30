@@ -19,7 +19,7 @@
 [![Preview](/assets/images/preview.gif)](https://reduced.to)
 
   <p align="center">
-    Reduced.to is a modern web application that reduces the length of link URL. So it's easier to remember, share and track.
+    Reduced.to is a modern web application that reduces the length of link URL. So it's easier to remember, share, track and manage.
     <br />
     <br />
     <a href="https://reduced.to">App</a>
@@ -88,7 +88,7 @@ List of frameworks/libraries used to bootstrap the project.
 
 ### 📃 Prerequisites
 
-List of things you need to run the project locally and how to install them.
+List of things you need to run the project locally and how to install them are -
 
 - npm
   ```sh
@@ -211,7 +211,7 @@ Happy Hacking !
 
 ## 🐱‍💻 Usage
 
-Simply copy and paste a URL into the provided area. Then click shorten URL! Your URL has now been shortened!
+Simply copy and paste a URL into the provided area. Then click shorten URL! Your URL have now been automatically shortened!
 
 <div align="center">
 <img src="docs/reduced-to.gif" width="600" height="254">
@@ -252,7 +252,7 @@ _See the [open issues](https://github.com/origranot/reduced.to/issues) for a ful
 
 ## 🥇 Contributing
 
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open-source community such an amazing place to learn, inspire and create. Any contributions you make are **greatly appreciated**.
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star ⭐!
