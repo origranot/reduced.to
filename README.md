@@ -154,7 +154,7 @@ npx nx run-many -t docker-build
 - When you run the command below, don't forget to change the .env file with the correct values.
 
   ```sh
-  docker compose -f docker/local/docker-compose.yml -p reduced-to up
+  docker-compose -f docker/local/docker-compose.yml -p reduced-to up
   ```
 
 ### 👷 Configuration
