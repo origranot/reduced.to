@@ -93,9 +93,10 @@ export const refreshTokens = async (refreshToken: string): Promise<{ accessToken
     }
   } catch (err) {
     console.error('Failed to refresh access token', err);
-    return {
-      accessToken: '',
-      refreshToken: '',
-    };
   }
+
+  return {
+    accessToken: '',
+    refreshToken: '',
+  };
 };
