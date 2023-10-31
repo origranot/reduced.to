@@ -63,7 +63,7 @@ export default component$(() => {
                 />
               </svg>
               <span class="justify-between font-medium">Settings</span>
-              <span class="badge badge-neutral">Soon</span>
+              <span class="badge badge-secondary">Soon</span>
             </Link>
           </li>
           {user.value?.role === Role.ADMIN && (
@@ -109,7 +109,7 @@ export default component$(() => {
                           />
                         </svg>
                         <span class="font-medium">Analytics</span>
-                        <span class="badge badge-neutral">Soon</span>
+                        <span class="badge badge-secondary">Soon</span>
                       </Link>
                     </li>
                     <li>

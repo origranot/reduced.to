@@ -33,9 +33,9 @@ input::-ms-clear {
   --t-sh: var(--handleoffset) 0 0 2px hsl(var(--ts-bg)) inset, 0 0 0 2px hsl(var(--ts-bg)) inset;
 }
 
-[data-theme='light'] {
+[data-theme='winter'] {
   --outline-border-color: 216, 5%, 79%;
-  --w-bg: 219 25% 32%;
+  --w-bg: 211 45% 35%;
   /* Wave background */
   --ts-bg: 0 0% 90% / 0.9;
   /* Theme switcher background */

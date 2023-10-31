@@ -21,7 +21,7 @@ export const Resources = component$(() => {
         <li>
           <Link class="btn-ghost py-2 text-sm justify-between !cursor-not-allowed">
             Report
-            <span class="badge badge-neutral">Soon</span>
+            <span class="badge badge-secondary">Soon</span>
           </Link>
         </li>
       </ul>
