@@ -138,7 +138,7 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
         <FilterInput filter={filter} onInput={onFilterInputChange} />
       </div>
       {isLoading.value ? ( // Show loader covering the entire table
-        <div class="animate-pulse">
+        <div class="pt-14 animate-pulse">
           <div class="h-4 bg-base-200 mb-6 mt-2 rounded"></div>
           {Array.from({ length: limit.value + 2 }).map(() => (
             <div class="h-4 bg-base-200 mb-6 rounded"></div>

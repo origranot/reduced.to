@@ -13,6 +13,7 @@ import { copyToClipboard, openUrl } from '../utils';
 import styles from './index.css?inline';
 import { TIME_FRAME_DIR } from '../components/shortener-input/constants';
 import { GlobalStore } from '../context';
+import { LIGHT_THEME } from '../components/theme-switcher/theme-switcher';
 export const InputContext = createContextId<Store>('input');
 
 export interface Store {
@@ -61,7 +62,7 @@ export default component$(() => {
                   <img
                     class="mx-auto my-8"
                     style={{
-                      filter: globalStore.theme === 'light' ? 'invert(0)' : 'invert(1)',
+                      filter: globalStore.theme === LIGHT_THEME ? 'invert(0)' : 'invert(1)',
                     }}
                     width="410"
                     height="73"

@@ -27,4 +27,16 @@ export class UsersController {
       sort,
     });
   }
+
+  @Get('count')
+  @Roles(Role.ADMIN)
+  async count() {
+    const totalUsers = await this.usersService.count();
+    const usersLastMonth = await this.usersService.countUsersLastMonth();
+
+    return {
+      totalUsers,
+      usersLastMonth,
+    };
+  }
 }

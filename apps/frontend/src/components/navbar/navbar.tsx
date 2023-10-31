@@ -70,7 +70,7 @@ export const Navbar = component$(() => {
                 <li>
                   <Link href="/dashboard" class="btn-ghost py-2 text-sm justify-between">
                     Dashboard
-                    <span class="badge badge-neutral">New</span>
+                    <span class="badge badge-secondary">New</span>
                   </Link>
                   {/* It uses normal redirect inorder to make the signal work as expected */}
                   <a href="/logout" class="btn-ghost py-2 text-sm">
@@ -94,11 +94,11 @@ export const Navbar = component$(() => {
               <a
                 class="btn-ghost"
                 onClick$={() => {
-                  globalStore.theme = globalStore.theme === 'light' ? DARK_THEME : LIGHT_THEME;
+                  globalStore.theme = globalStore.theme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
                   setPreference(globalStore.theme);
                 }}
               >
-                {globalStore.theme === 'light' ? 'Dark' : 'Light'} theme
+                {globalStore.theme === LIGHT_THEME ? 'Dark' : 'Light'} theme
               </a>
             </li>
           </ul>

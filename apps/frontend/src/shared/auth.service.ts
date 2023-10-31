@@ -60,7 +60,7 @@ export const setTokensAsCookies = (accessToken: string, refreshToken: string, co
 
 export const authorizedFetch = async (url: string, options = {}) => {
   const response = await fetch(url, { credentials: 'include', ...options });
-
+  console.log(response);
   if (response.status === 401) {
     try {
       return fetch(url, options);
@@ -75,20 +75,24 @@ export const authorizedFetch = async (url: string, options = {}) => {
 };
 
 export const refreshTokens = async (refreshToken: string): Promise<{ accessToken: string; refreshToken: string }> => {
-  const res = await fetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/auth/refresh`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      cookie: `${REFRESH_COOKIE_NAME}=${refreshToken}`,
-    },
-  });
+  try {
+    const res = await fetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/auth/refresh`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        cookie: `${REFRESH_COOKIE_NAME}=${refreshToken}`,
+      },
+    });
 
-  if (res.ok) {
-    const { accessToken, refreshToken } = await res.json();
-    return {
-      accessToken,
-      refreshToken,
-    };
+    if (res.ok) {
+      const { accessToken, refreshToken } = await res.json();
+      return {
+        accessToken,
+        refreshToken,
+      };
+    }
+  } catch (err) {
+    console.error('Failed to refresh access token', err);
   }
 
   return {

@@ -4,6 +4,10 @@ const { join } = require('path');
 module.exports = {
   content: [join(__dirname, 'src/**/*.{js,ts,jsx,tsx,mdx}')],
   darkMode: 'class',
+  mode: 'jit',
+  purge: {
+    content: [join(__dirname, 'src/**/*.{js,ts,jsx,tsx,mdx}')],
+  },
   theme: {
     extend: {
       keyframes: {
@@ -19,6 +23,6 @@ module.exports = {
   },
   plugins: [require('@tailwindcss/typography'), require('daisyui')],
   daisyui: {
-    themes: ['light', 'dracula'],
+    themes: ['winter', 'dracula'],
   },
 };

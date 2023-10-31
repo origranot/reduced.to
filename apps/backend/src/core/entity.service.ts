@@ -4,7 +4,7 @@ import { SortOrder } from '../shared/enums/sort-order.enum';
 import { filterBuilder } from '../shared/utils';
 
 export abstract class EntityService<Entity> {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(readonly prismaService: PrismaService) {}
 
   abstract get model(): string;
   abstract get filterFields(): string[];
