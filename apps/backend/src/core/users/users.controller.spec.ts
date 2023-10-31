@@ -103,10 +103,10 @@ describe('UsersController', () => {
         skip: 10,
         limit: 10,
         filter: 'test@test.com',
-        sort: { name: SortOrder.ASCENDING, role: SortOrder.DESCENDING },
+        sort: { name: SortOrder.ASCENDING, createdAt: SortOrder.DESCENDING },
       };
 
-      await request(app.getHttpServer()).get('/users?limit=10&page=2&filter=test@test.com&sort[name]=asc&sort[role]=desc').expect(200);
+      await request(app.getHttpServer()).get('/users?limit=10&page=2&filter=test@test.com&sort[name]=asc&sort[createdAt]=desc').expect(200);
 
       expect(usersService.findAll).toHaveBeenCalledWith(findAllOptions);
     });
