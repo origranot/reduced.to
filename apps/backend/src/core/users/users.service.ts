@@ -33,19 +33,4 @@ export class UsersService extends EntityService<User> {
   async count(where?: Prisma.UserWhereInput): Promise<number> {
     return this.prismaService.user.count({ where });
   }
-
-  async countUsersLastMonth(): Promise<number> {
-    const now = new Date();
-    const lastMonth = new Date();
-    lastMonth.setMonth(now.getMonth() - 1);
-
-    const where: Prisma.UserWhereInput = {
-      createdAt: {
-        gte: lastMonth,
-        lte: now,
-      },
-    };
-
-    return this.count(where);
-  }
 }
