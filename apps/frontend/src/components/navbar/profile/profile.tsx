@@ -27,7 +27,7 @@ export const Profile = component$(({ name }: ProfileProps) => {
         <li>
           <Link href="/dashboard" class="justify-between">
             Dashboard
-            <span class="badge badge-secondary">New</span>
+            <span class="badge badge-primary">New</span>
           </Link>
         </li>
         <li>
