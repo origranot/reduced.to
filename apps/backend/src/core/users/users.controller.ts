@@ -31,7 +31,6 @@ export class UsersController {
   @Get('count')
   @Roles(Role.ADMIN)
   async count(@Query('startDate') startDate: Date, @Query('endDate') endDate: Date, @Query('verified') verified: boolean) {
-
     // Create a filter object based on the query parameters
     const filter: Record<string, any> = {};
 
