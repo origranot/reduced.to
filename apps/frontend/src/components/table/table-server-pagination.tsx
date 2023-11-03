@@ -1,4 +1,4 @@
-import { component$, useSignal, $, PropFunction, useVisibleTask$ } from '@builder.io/qwik';
+import { component$, useSignal, $, PropFunction, useVisibleTask$, QRL } from '@builder.io/qwik';
 import { FilterInput } from './default-filter';
 import { authorizedFetch } from '../../shared/auth.service';
 import { PaginationActions } from './pagination-actions';
@@ -24,6 +24,7 @@ export type OptionalHeader = {
   classNames?: string;
   hide?: boolean;
   sortable?: boolean;
+  format?: QRL<(value: string) => string>
 };
 
 export type Columns = Record<string, OptionalHeader>;
@@ -172,8 +173,14 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
                 {tableData.value.data.map((row, rowIndex) => (
                   <tr key={rowIndex}>
                     {Object.keys(props.columns).map((columnName, idx) => {
-                      if (props.columns[columnName].hide) return;
-                      return <td key={idx}>{row[columnName]?.toString()}</td>;
+                      if (props.columns[columnName].hide) {
+                        return;
+                      }
+
+                      const value = row[columnName]!.toString();
+                      const format = props.columns[columnName].format;
+
+                      return <td key={idx}>{format ? format(value) : value}</td>;
                     })}
                   </tr>
                 ))}

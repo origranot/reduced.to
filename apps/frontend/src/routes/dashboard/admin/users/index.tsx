@@ -1,9 +1,9 @@
-import { component$, useSignal, useVisibleTask$ } from '@builder.io/qwik';
+import { component$, useSignal, useVisibleTask$, $ } from '@builder.io/qwik';
 import { Columns, TableServerPagination } from '../../../../components/table/table-server-pagination';
 import { DocumentHead } from '@builder.io/qwik-city';
 import { authorizedFetch } from '../../../../shared/auth.service';
 import { StatsCard, StatsCardValue } from '../../../../components/stats/stats-card';
-import { getMonthName } from '../../../../lib/date-utils';
+import { formatDate, getMonthName } from '../../../../lib/date-utils';
 
 export default component$(() => {
   const registeredUsersSignal = useSignal<StatsCardValue>({ loading: true });
@@ -14,11 +14,17 @@ export default component$(() => {
     name: { displayName: 'Name', classNames: 'w-1/4', sortable: true },
     email: { displayName: 'Email', classNames: 'w-1/4', sortable: true },
     verified: { displayName: 'Verified', classNames: 'w-1/4' },
-    createdAt: { displayName: 'Created At', classNames: 'w-1/4', sortable: true },
+    createdAt: {
+      displayName: 'Created At',
+      classNames: 'w-1/4',
+      sortable: true,
+      format: $((value: string) => {
+        return formatDate(new Date(value));
+      }),
+    },
   };
 
-  // Registered Users
-  useVisibleTask$(async () => {
+  const getRegisteredUsers = $(async () => {
     const lastMonthEndDate = new Date();
     lastMonthEndDate.setMonth(lastMonthEndDate.getMonth() - 1);
 
@@ -33,18 +39,11 @@ export default component$(() => {
     registeredUsersSignal.value = {
       loading: false,
       value: totalUsers.toString(),
-      description: (
-        <>
-          <div class="stat-desc">
-            <span>{`${Math.abs(change).toFixed(1)}% ${change > 0 ? 'more' : 'less'} than last month`}</span>
-          </div>
-        </>
-      ),
+      description: <span>{`${Math.abs(change).toFixed(1)}% ${change > 0 ? 'more' : 'less'} than last month`}</span>,
     };
   });
 
-  // New Users (last 30 days)
-  useVisibleTask$(async () => {
+  const getNewUsers = $(async () => {
     const today = new Date();
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Last day of the current month
@@ -56,19 +55,14 @@ export default component$(() => {
       loading: false,
       value: count.toString(),
       description: (
-        <>
-          <div class="stat-desc">
-            <span>{`${getMonthName(firstDayOfMonth.getMonth())} ${firstDayOfMonth.getDate()} - ${getMonthName(
-              lastDayOfMonth.getMonth()
-            )} ${lastDayOfMonth.getDate()}`}</span>
-          </div>
-        </>
+        <span>{`${getMonthName(firstDayOfMonth.getMonth())} ${firstDayOfMonth.getDate()} - ${getMonthName(
+          lastDayOfMonth.getMonth()
+        )} ${lastDayOfMonth.getDate()}`}</span>
       ),
     };
   });
 
-  // Verified Users
-  useVisibleTask$(async () => {
+  const getVerifiedUsers = $(async () => {
     const repsonse = await authorizedFetch(`${process.env.API_DOMAIN}/api/v1/users/count?verified=true`);
     const { count: verifiedUsersCount } = await repsonse.json();
 
@@ -80,15 +74,17 @@ export default component$(() => {
     verifiedUsersSignal.value = {
       loading: false,
       value: verifiedUsersCount.toString(),
-      description: (
-        <>
-          <div class="stat-desc">
-            <span>{`${Math.abs(change).toFixed(1)}% of the users are verified`}</span>
-          </div>
-        </>
-      ),
+      description: <span>{`${Math.abs(change).toFixed(1)}% of the users are verified`}</span>,
     };
   });
+
+  useVisibleTask$(async () => {
+    await Promise.all([getRegisteredUsers(), getNewUsers()]);
+    await getVerifiedUsers();
+  });
+
+  // Verified Users
+  useVisibleTask$(async () => {});
 
   return (
     <>

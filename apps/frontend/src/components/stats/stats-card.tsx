@@ -32,7 +32,7 @@ export const StatsCard = component$<StatsCardProps>(({ data: { value }, title })
           <div class="stat">
             <div class="stat-title">{title}</div>
             {value.loading ? <div class="loading loading-ring loading-lg"></div> : <div class="stat-value">{value.value}</div>}
-            {value.description && value.description}
+            {value.description && <div class="stat-desc">{value.description}</div>}
           </div>
         </div>
       )}

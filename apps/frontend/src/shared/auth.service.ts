@@ -60,7 +60,6 @@ export const setTokensAsCookies = (accessToken: string, refreshToken: string, co
 
 export const authorizedFetch = async (url: string, options = {}) => {
   const response = await fetch(url, { credentials: 'include', ...options });
-  console.log(response);
   if (response.status === 401) {
     try {
       return fetch(url, options);
