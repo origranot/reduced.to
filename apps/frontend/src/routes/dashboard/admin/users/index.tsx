@@ -80,11 +80,10 @@ export default component$(() => {
 
   useVisibleTask$(async () => {
     await Promise.all([getRegisteredUsers(), getNewUsers()]);
+
+    // We are using the registeredUsersSignal.value, so we need to wait for it to be set
     await getVerifiedUsers();
   });
-
-  // Verified Users
-  useVisibleTask$(async () => {});
 
   return (
     <>
