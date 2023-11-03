@@ -15,7 +15,7 @@ export interface ShortenerInputProps {
 export const ShortenerInput = component$((props: ShortenerInputProps) => {
   const state = useContext(InputContext);
   const urlInput = useSignal<HTMLInputElement>();
-  const selectExpirationTimeInputValue = useSignal<string>(TIME_FRAME_DIR.ONE_WEEK.name);
+  const selectExpirationTimeInputValue = useSignal<string>(TIME_FRAME_DIR.ONE_HOUR.name);
 
   const user = useGetCurrentUser();
 

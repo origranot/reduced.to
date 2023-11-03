@@ -19,34 +19,34 @@ export class ShortenerController {
     private readonly shortenerProducer: ShortenerProducer
   ) {}
 
-  @Get(':shortenedUrl')
-  async findOne(@ClientDetails() clientDetails: IClientDetails, @Param('shortenedUrl') shortenedUrl: string): Promise<string> {
-    const originalUrl = await this.shortenerService.getOriginalUrl(shortenedUrl);
-    if (!originalUrl) {
+  @Get(':key')
+  async findOne(@ClientDetails() clientDetails: IClientDetails, @Param('key') key: string): Promise<string> {
+    const url = await this.shortenerService.getUrl(key);
+    if (!url) {
       throw new BadRequestException('Shortened url is wrong or expired');
     }
 
     // Send an event to the queue to update the shortened url's stats
     await this.shortenerProducer.publish({
       ...clientDetails,
-      shortenedUrl,
-      originalUrl,
+      key,
+      url,
     });
 
-    return originalUrl;
+    return url;
   }
 
   @UseGuards(OptionalJwtAuthGuard)
   @Post()
-  async shortener(@Body() shortenerDto: ShortenerDto, @Req() req: Request): Promise<{ newUrl: string }> {
+  async shortener(@Body() shortenerDto: ShortenerDto, @Req() req: Request): Promise<{ key: string }> {
     const user = req.user as UserContext;
 
     // Only verified users can create shortened urls into the database (otherwise, they are stored in the cache)
     if (user?.verified) {
-      this.logger.log(`User ${user.id} is creating a shortened url for ${shortenerDto.originalUrl}`);
+      this.logger.log(`User ${user.id} is creating a shortened url for ${shortenerDto.url}`);
       return this.shortenerService.createUsersShortenedUrl(user, shortenerDto);
     }
 
-    return this.shortenerService.createShortenedUrl(shortenerDto.originalUrl);
+    return this.shortenerService.createShortenedUrl(shortenerDto.url);
   }
 }

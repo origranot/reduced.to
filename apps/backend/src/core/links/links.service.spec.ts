@@ -1,22 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '@reduced.to/prisma';
 import { SortOrder } from '../../shared/enums/sort-order.enum';
-import { UrlsService } from './urls.service';
+import { LinksService } from './links.service';
 import { IFindAllOptions } from '../entity.service';
 
-describe('UrlsService', () => {
-  let service: UrlsService;
+describe('LinksService', () => {
+  let service: LinksService;
   let prismaService: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        UrlsService,
+        LinksService,
         {
           provide: PrismaService,
           useValue: {
             $transaction: jest.fn(),
-            url: {
+            link: {
               findMany: jest.fn(),
               count: jest.fn(),
             },
@@ -25,7 +25,7 @@ describe('UrlsService', () => {
       ],
     }).compile();
 
-    service = module.get<UrlsService>(UrlsService);
+    service = module.get<LinksService>(LinksService);
     prismaService = module.get<PrismaService>(PrismaService);
 
     // Mocking the $transaction method, we don't really care about the result
@@ -46,11 +46,11 @@ describe('UrlsService', () => {
       };
 
       await service.findAll(findAllOptions);
-      expect(prismaService.url.findMany).toHaveBeenCalledWith(
+      expect(prismaService.link.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           take: findAllOptions.limit,
           where: {
-            OR: [{ originalUrl: { contains: findAllOptions.filter } }, { shortenedUrl: { contains: findAllOptions.filter } }],
+            OR: [{ url: { contains: findAllOptions.filter } }, { key: { contains: findAllOptions.filter } }],
           },
           skip: findAllOptions.skip,
         })
@@ -61,7 +61,7 @@ describe('UrlsService', () => {
       const findAllOptions: IFindAllOptions = { limit: 10 };
 
       await service.findAll(findAllOptions);
-      expect(prismaService.url.findMany).toHaveBeenCalledWith(
+      expect(prismaService.link.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           take: findAllOptions.limit,
         })
@@ -72,7 +72,7 @@ describe('UrlsService', () => {
       const findAllOptions: IFindAllOptions = { limit: 10, sort: { createdAt: SortOrder.ASCENDING, expirationTime: SortOrder.DESCENDING } };
 
       await service.findAll(findAllOptions);
-      expect(prismaService.url.findMany).toHaveBeenCalledWith(
+      expect(prismaService.link.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           take: findAllOptions.limit,
           orderBy: [

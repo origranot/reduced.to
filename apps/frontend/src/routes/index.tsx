@@ -46,7 +46,7 @@ export default component$(() => {
     showResult: false,
     showQRCode: false,
     urlError: '',
-    ttl: TIME_FRAME_DIR.ONE_WEEK.value,
+    ttl: TIME_FRAME_DIR.ONE_HOUR.value,
   });
 
   useContextProvider(InputContext, state);

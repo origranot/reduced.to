@@ -21,19 +21,23 @@ model User {
   verified          Boolean @default(false) // Is the mail verification
   verificationToken String? // Verification token of the mail
   refreshToken      String?
-  urls              Url[]
+  links             Link[]
   createdAt         DateTime @default(now())
 }
 
-model Url {
+model Link {
   id             String    @id @default(uuid())
-  shortenedUrl   String    @unique
-  originalUrl    String
+  key            String
+  url            String
+  password       String?
+
   user           User?     @relation(fields: [userId], references: [id])
   userId         String
   description    String?
   expirationTime DateTime?
   createdAt      DateTime  @default(now())
+
+  @@index(key)
 }
 
 enum Role {
