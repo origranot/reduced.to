@@ -22,7 +22,7 @@ describe('ShortenerController', () => {
         {
           provide: ShortenerService,
           useValue: {
-            getOriginalUrl: jest.fn(),
+            getUrl: jest.fn(),
             createUsersShortenedUrl: jest.fn(),
             createShortenedUrl: jest.fn(),
           },
@@ -43,29 +43,29 @@ describe('ShortenerController', () => {
   describe('shortener', () => {
     it('should return null when createUsersShortUrl return null in case of an authenticated and verified user', async () => {
       jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockReturnValue(null);
-      jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ newUrl: 'url' });
+      jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ key: 'url' });
 
-      const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const body: ShortenerDto = { url: 'https://github.com/origranot/reduced.to' };
       const req = { user: { verified: true } } as unknown as Request;
       const short = await shortenerController.shortener(body, req);
       expect(short).toBeNull();
     });
 
     it('should return a shortened url when createUsersShortUrl return it in case of an authenticated and verified user', async () => {
-      jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockResolvedValue({ newUrl: 'url.com' });
+      jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockResolvedValue({ key: 'url.com' });
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue(null);
 
-      const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const body: ShortenerDto = { url: 'https://github.com/origranot/reduced.to' };
       const req = { user: { verified: true } } as unknown as Request;
       const short = await shortenerController.shortener(body, req);
-      expect(short).toStrictEqual({ newUrl: 'url.com' });
+      expect(short).toStrictEqual({ key: 'url.com' });
     });
 
     it('should return null when createShortenedUrl return null in case of guest user', async () => {
-      jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockResolvedValue({ newUrl: 'url.com' });
+      jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockResolvedValue({ key: 'url.com' });
       jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue(null);
 
-      const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const body: ShortenerDto = { url: 'https://github.com/origranot/reduced.to' };
       const req = {} as Request;
       const short = await shortenerController.shortener(body, req);
       expect(short).toBeNull();
@@ -73,38 +73,38 @@ describe('ShortenerController', () => {
 
     it('should return a shortened url when createShortenedUrl return it in case of guest user', async () => {
       jest.spyOn(shortenerService, 'createUsersShortenedUrl').mockResolvedValue(null);
-      jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ newUrl: 'url.com' });
+      jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ key: 'url.com' });
 
-      const body: ShortenerDto = { originalUrl: 'https://github.com/origranot/reduced.to' };
+      const body: ShortenerDto = { url: 'https://github.com/origranot/reduced.to' };
       const req = {} as Request;
       const short = await shortenerController.shortener(body, req);
-      expect(short).toStrictEqual({ newUrl: 'url.com' });
+      expect(short).toStrictEqual({ key: 'url.com' });
     });
   });
 
   describe('findOne', () => {
-    it('should return the original URL when given a valid short URL', async () => {
-      jest.spyOn(shortenerService, 'getOriginalUrl').mockResolvedValue('https://github.com/origranot/reduced.to');
-      const shortUrl = 'best';
+    it('should return the original URL when given a valid key', async () => {
+      jest.spyOn(shortenerService, 'getUrl').mockResolvedValue('https://github.com/origranot/reduced.to');
+      const key = 'best';
       const clientDetails: IClientDetails = {
         ip: '1.2.3.4',
         userAgent: 'test',
       };
 
-      const originalUrl = await shortenerController.findOne(clientDetails, shortUrl);
-      expect(originalUrl).toBe('https://github.com/origranot/reduced.to');
+      const url = await shortenerController.findOne(clientDetails, key);
+      expect(url).toBe('https://github.com/origranot/reduced.to');
     });
 
     it('should return an error if the short URL is not found in the database', async () => {
-      jest.spyOn(shortenerService, 'getOriginalUrl').mockResolvedValue(null);
-      const shortUrl = 'not-found';
+      jest.spyOn(shortenerService, 'getUrl').mockResolvedValue(null);
+      const key = 'not-found';
       const clientDetails: IClientDetails = {
         ip: '1.2.3.4',
         userAgent: 'test',
       };
 
       try {
-        await shortenerController.findOne(clientDetails, shortUrl);
+        await shortenerController.findOne(clientDetails, key);
         throw new Error('Expected an error to be thrown!');
       } catch (err) {
         expect(err.message).toBe('Shortened url is wrong or expired');

@@ -1,6 +1,6 @@
 import { component$, useSignal, $, PropFunction, useVisibleTask$, QRL } from '@builder.io/qwik';
 import { FilterInput } from './default-filter';
-import { authorizedFetch } from '../../shared/auth.service';
+import { authorizedFetch } from '../../../shared/auth.service';
 import { PaginationActions } from './pagination-actions';
 import { HiChevronDownOutline, HiChevronUpDownOutline, HiChevronUpOutline } from '@qwikest/icons/heroicons';
 import { EntriesSelector } from './entries-selector';
@@ -141,8 +141,8 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
       {isLoading.value ? ( // Show loader covering the entire table
         <div class="pt-14 animate-pulse">
           <div class="h-4 bg-base-200 mb-6 mt-2 rounded"></div>
-          {Array.from({ length: limit.value + 2 }).map(() => (
-            <div class="h-4 bg-base-200 mb-6 rounded"></div>
+          {Array.from({ length: limit.value + 2 }).map((_value, idx) => (
+            <div key={idx} class="h-4 bg-base-200 mb-6 rounded"></div>
           ))}
         </div>
       ) : (

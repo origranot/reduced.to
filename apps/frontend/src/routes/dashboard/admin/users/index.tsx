@@ -1,8 +1,8 @@
 import { component$, useSignal, useVisibleTask$, $ } from '@builder.io/qwik';
-import { Columns, TableServerPagination } from '../../../../components/table/table-server-pagination';
+import { Columns, TableServerPagination } from '../../../../components/dashboard/table/table-server-pagination';
 import { DocumentHead } from '@builder.io/qwik-city';
 import { authorizedFetch } from '../../../../shared/auth.service';
-import { StatsCard, StatsCardValue } from '../../../../components/stats/stats-card';
+import { StatsCard, StatsCardValue } from '../../../../components/dashboard/stats/stats-card';
 import { formatDate, getMonthName } from '../../../../lib/date-utils';
 
 export default component$(() => {
@@ -69,7 +69,7 @@ export default component$(() => {
     const totalUsers = parseInt(registeredUsersSignal.value.value!, 10);
     const notVerifiedUsersCount = totalUsers - verifiedUsersCount;
 
-    const change = totalUsers === 0 ? 0 : ((verifiedUsersCount - notVerifiedUsersCount) / totalUsers) * 100;
+    const change = totalUsers === 0 ? 0 : ((totalUsers - notVerifiedUsersCount) / totalUsers) * 100;
 
     verifiedUsersSignal.value = {
       loading: false,
