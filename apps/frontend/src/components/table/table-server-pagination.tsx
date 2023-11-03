@@ -24,7 +24,7 @@ export type OptionalHeader = {
   classNames?: string;
   hide?: boolean;
   sortable?: boolean;
-  format?: QRL<(value: string) => string>
+  format?: QRL<(value: string) => string>;
 };
 
 export type Columns = Record<string, OptionalHeader>;
