@@ -1,5 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
+import { LuAlertTriangle } from '@qwikest/icons/lucide';
 
 export const Resources = component$(() => {
   return (
@@ -19,9 +20,11 @@ export const Resources = component$(() => {
           <a href="https://docs.reduced.to">Docs</a>
         </li>
         <li>
-          <Link class="btn-ghost py-2 text-sm justify-between !cursor-not-allowed">
-            Report
-            <span class="badge badge-primary">Soon</span>
+          <Link href="/report" class="btn-ghost py-2 text-sm justify-between">
+            Report a Link
+            <div class="badge badge-warning gap-2">
+              <LuAlertTriangle />
+            </div>
           </Link>
         </li>
       </ul>

@@ -132,10 +132,7 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
 
   return (
     <div>
-      <div class="inline-flex sm:float-left mx-auto text-sm">
-        <EntriesSelector pageSize={limit} pageSizeOptions={props.pageSizeOptions} />
-      </div>
-      <div class="block sm:float-right sm:w-1/3 sm:pt-0 pt-2 w-1/2 mx-auto">
+      <div class="block sm:float-left sm:w-1/3 sm:pt-0 pt-2 w-1/2 mx-auto">
         <FilterInput filter={filter} onInput={onFilterInputChange} />
       </div>
       {isLoading.value ? ( // Show loader covering the entire table
@@ -187,15 +184,20 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
               </tbody>
             </table>
           </div>
-          <div class="flex pt-5 text-sm	font-bold">
-            <PaginationActions
-              tableData={tableData}
-              limit={limit}
-              page={currentPage}
-              maxPages={maxPages}
-              isOnFirstPage={isOnFirstPage}
-              isOnLastPage={isOnLastPage}
-            />
+          <div class="flex flex-col sm:flex-row pt-5 justify-between">
+            <div class="flex text-sm sm:mx-0 mx-auto">
+              <EntriesSelector pageSize={limit} pageSizeOptions={props.pageSizeOptions} />
+            </div>
+            <div class="flex text-sm sm:mx-0 mx-auto sm:pt-0 pt-3">
+              <PaginationActions
+                tableData={tableData}
+                limit={limit}
+                page={currentPage}
+                maxPages={maxPages}
+                isOnFirstPage={isOnFirstPage}
+                isOnLastPage={isOnLastPage}
+              />
+            </div>
           </div>
         </>
       )}

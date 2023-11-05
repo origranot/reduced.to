@@ -8,6 +8,7 @@ import { GithubButton } from './github-button/github-button';
 import styles from './navbar.css?inline';
 import { Profile } from './profile/profile';
 import { Resources } from './resources/resources';
+import { LuAlertTriangle } from '@qwikest/icons/lucide';
 
 export const Navbar = component$(() => {
   useStylesScoped$(styles);
