@@ -92,6 +92,14 @@ export const Navbar = component$(() => {
               </a>
             </li>
             <li>
+              <Link href="/report" class="btn-ghost py-2 text-sm justify-between">
+                Report a Link
+                <span class="badge badge-warning gap-2">
+                  <LuAlertTriangle />
+                </span>
+              </Link>
+            </li>
+            <li>
               <a
                 class="btn-ghost"
                 onClick$={() => {
