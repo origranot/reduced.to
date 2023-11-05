@@ -14,7 +14,7 @@ export const EntriesSelector = component$<EntriesSelectorProps>(({ pageSize, pag
 
   return (
     <div class="flex items-center gap-2">
-      <span>Show</span>
+      <span>Rows per page:</span>
       <select class="select select-md select-bordered max-w-xs" value={pageSize.value} onChange$={handlePageSizeChange}>
         {PAGE_SIZE_OPTIONS.map((option) => (
           <option key={option} value={option}>
@@ -22,7 +22,6 @@ export const EntriesSelector = component$<EntriesSelectorProps>(({ pageSize, pag
           </option>
         ))}
       </select>
-      <span>Entries</span>
     </div>
   );
 });
