@@ -18,6 +18,7 @@ const getShortenUrl = async (url: string, ttl: number) => {
 };
 
 export const handleShortener = async (store: Store) => {
+  const originalOfReducedUrl = store.inputValue;
   const urlInput = normalizeUrl(store.inputValue);
   const ttl = store.ttl;
 
@@ -36,6 +37,7 @@ export const handleShortener = async (store: Store) => {
     }
 
     store.inputValue = '';
+    store.originalOfReducedUrl = originalOfReducedUrl;
     store.reducedUrl = window.location.href.split('#')[0] + key;
 
     copyToClipboard(store.reducedUrl);

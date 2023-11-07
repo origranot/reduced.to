@@ -19,6 +19,7 @@ export const InputContext = createContextId<Store>('input');
 export interface Store {
   inputValue: string;
   reducedUrl: string;
+  originalOfReducedUrl: string;
   loading: boolean;
   showResult: boolean;
   showQRCode: boolean;
@@ -42,6 +43,7 @@ export default component$(() => {
   const state = useStore<Store>({
     inputValue: '',
     reducedUrl: '',
+    originalOfReducedUrl: '',
     loading: false,
     showResult: false,
     showQRCode: false,
@@ -94,7 +96,12 @@ export default component$(() => {
                 <p id="error" class="fade-in">
                   {state.urlError}
                 </p>
-                <span id="text" class="fade-in cursor-pointer block" onClick$={() => copyToClipboard(state.reducedUrl)}>
+                <span
+                  id="text"
+                  title={state.originalOfReducedUrl}
+                  class="fade-in cursor-pointer block"
+                  onClick$={() => copyToClipboard(state.reducedUrl)}
+                >
                   {state.reducedUrl}
                 </span>
                 <div
