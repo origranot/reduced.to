@@ -48,7 +48,9 @@ export default component$(() => {
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Last day of the current month
 
-    const response = await authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/users/count?startDate=${firstDayOfMonth}&endDate=${today}`);
+    const response = await authorizedFetch(
+      `${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/users/count?startDate=${firstDayOfMonth}&endDate=${today}`
+    );
     const { count } = await response.json();
 
     newUsersSignal.value = {
