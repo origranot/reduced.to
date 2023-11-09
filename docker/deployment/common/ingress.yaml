@@ -1,3 +1,5 @@
+# Make sure to enable proxy protocol in the ingress controller:
+# For those who use DigitalOcean, https://docs.digitalocean.com/support/how-do-i-enable-proxy-protocol-when-my-load-balancer-sends-requests-to-the-nginx-ingress-controller/
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
