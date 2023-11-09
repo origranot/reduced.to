@@ -1,3 +1,5 @@
+# Keep in mind, when deploying this you would have to copy the secret to the ingress-nginx namespace.
+# kubectl get secret reduced.to-tls -n cert-manager -o yaml | sed 's/namespace: cert-manager/namespace: default/' | kubectl apply -f -
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:

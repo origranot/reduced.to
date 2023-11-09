@@ -11,7 +11,7 @@ export class CustomThrottlerGuard extends ThrottlerGuard {
   protected errorMessage = 'You have exceeded the rate limit for accessing this resource. Please try again later.';
 
   private getIp(req: Request): string {
-    const ip = (req.headers['x-forwarded-for'] as string) || req.socket.remoteAddress;
+    const ip = (req.headers['x-real-ip'] as string) || req.socket.remoteAddress;
     return ip;
   }
 }
