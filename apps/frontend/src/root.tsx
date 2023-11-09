@@ -17,6 +17,8 @@ export default component$(() => {
     <QwikCityProvider>
       <head>
         <meta charSet="utf-8" />
+        {/** Workaround to handle insecure communication between pods while serve on https */}
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
         <RouterHead />
       </head>
       <body>
