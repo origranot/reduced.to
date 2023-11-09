@@ -5,9 +5,7 @@ metadata:
 spec:
   selector:
     app: frontend
-  externalTrafficPolicy: "Local"
   ports:
     - protocol: TCP
       port: 5000
       targetPort: 5000
-  type: LoadBalancer
