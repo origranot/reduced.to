@@ -25,4 +25,4 @@ spec:
                 configMapKeyRef:
                   name: reduced-configmap
                   key: REDIS_PASSWORD
-          command: ['sh', '-c', "redis-server --requirepass $REDIS_PASSWORD"]
+          command: ['sh', '-c', 'redis-server --requirepass $REDIS_PASSWORD']
