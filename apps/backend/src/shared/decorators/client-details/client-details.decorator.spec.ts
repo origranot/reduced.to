@@ -30,7 +30,7 @@ describe('ClientDetails Decorator', () => {
 
     const mockContext = getMockContext({
       headers: {
-        'x-real-ip': IP,
+        'x-forwarded-for': IP,
         'user-agent': USER_AGENT,
       },
       socket: {

@@ -5,12 +5,6 @@ metadata:
   namespace: default
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: 'true' # Enforce HTTPS
-    nginx.ingress.kubernetes.io/configuration-snippet: | # Pass the client's IP address to the backend
-      proxy_set_header X-Forwarded-Host $host;
-      proxy_set_header X-Forwarded-Proto $scheme;
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header User-Agent $http_user_agent;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
   labels:
     app: reduced
 spec:
