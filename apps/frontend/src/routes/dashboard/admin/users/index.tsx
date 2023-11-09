@@ -29,8 +29,8 @@ export default component$(() => {
     lastMonthEndDate.setMonth(lastMonthEndDate.getMonth() - 1);
 
     const promises = await Promise.all([
-      authorizedFetch(`${process.env.API_DOMAIN}/api/v1/users/count`),
-      authorizedFetch(`${process.env.API_DOMAIN}/api/v1/users/count?startDate=${lastMonthEndDate}&endDate=${new Date()}`),
+      authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/users/count`),
+      authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/users/count?startDate=${lastMonthEndDate}&endDate=${new Date()}`),
     ]);
 
     const [{ count: totalUsers }, { count: usersLastMonth }] = await Promise.all(promises.map((response) => response.json()));
@@ -48,7 +48,7 @@ export default component$(() => {
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Last day of the current month
 
-    const response = await authorizedFetch(`${process.env.API_DOMAIN}/api/v1/users/count?startDate=${firstDayOfMonth}&endDate=${today}`);
+    const response = await authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/users/count?startDate=${firstDayOfMonth}&endDate=${today}`);
     const { count } = await response.json();
 
     newUsersSignal.value = {
@@ -63,7 +63,7 @@ export default component$(() => {
   });
 
   const getVerifiedUsers = $(async () => {
-    const repsonse = await authorizedFetch(`${process.env.API_DOMAIN}/api/v1/users/count?verified=true`);
+    const repsonse = await authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/users/count?verified=true`);
     const { count: verifiedUsersCount } = await repsonse.json();
 
     const totalUsers = parseInt(registeredUsersSignal.value.value!, 10);
@@ -93,7 +93,7 @@ export default component$(() => {
         <StatsCard title="Verified Users" data={verifiedUsersSignal} />
       </div>
       <div class="mt-5 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl w-full p-5">
-        <TableServerPagination endpoint={`${process.env.API_DOMAIN}/api/v1/users`} columns={columns} />
+        <TableServerPagination endpoint={`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/users`} columns={columns} />
       </div>
     </>
   );
