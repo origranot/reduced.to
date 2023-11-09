@@ -2,7 +2,17 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true' # Enforce HTTPS
+  labels:
+    app: reduced
 spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - reduced.to
+      secretName: reduced.to-tls # Name of the secret containing the certificate
   rules:
     - host: reduced.to
       http:
