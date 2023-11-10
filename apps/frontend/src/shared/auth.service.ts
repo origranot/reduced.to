@@ -65,8 +65,7 @@ export const authorizedFetch = async (url: string, options = {}) => {
       return fetch(url, options);
     } catch (error) {
       // Handle error refreshing access token
-      console.error('Failed to refresh access token', error);
-      throw new Error('Failed to refresh access token');
+      console.error('Failed to fetch with authorization token', error);
     }
   }
 
@@ -75,7 +74,7 @@ export const authorizedFetch = async (url: string, options = {}) => {
 
 export const refreshTokens = async (refreshToken: string): Promise<{ accessToken: string; refreshToken: string }> => {
   try {
-    const res = await fetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/auth/refresh`, {
+    const res = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/refresh`, {
       method: 'POST',
       credentials: 'include',
       headers: {
