@@ -4,11 +4,11 @@ import { SortOrder } from '../shared/enums/sort-order.enum';
 import { filterBuilder } from '../shared/utils';
 
 export abstract class EntityService<Entity> {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(readonly prismaService: PrismaService) {}
 
   abstract get model(): string;
   abstract get filterFields(): string[];
-  abstract get selectFields(): Record<string, boolean>;
+  abstract get selectFields(): Record<keyof any, boolean>;
 
   findAll = async (options: IFindAllOptions): Promise<IPaginationResult<Entity>> => {
     const { skip, limit, filter, sort } = options;

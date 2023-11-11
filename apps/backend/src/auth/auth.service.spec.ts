@@ -44,6 +44,7 @@ describe('AuthService', () => {
       verificationToken: 'verification_token',
       role: Role.USER,
       refreshToken: 'refresh',
+      createdAt: new Date(),
     };
   });
 

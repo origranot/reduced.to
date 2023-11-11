@@ -32,7 +32,7 @@ export const useLogin = globalAction$(
 
     setTokensAsCookies(accessToken, refreshToken, cookie);
 
-    // Redirect using location header instead of redirect becuase we need to reload the routeLoader to get the new user data
+    // Redirect using location header instead of native redirect becuase we need to reload the routeLoader to get the new user data
     headers.set('location', '/');
   },
   zod$({

@@ -1,6 +1,6 @@
-import { component$, useSignal, $, PropFunction, useVisibleTask$ } from '@builder.io/qwik';
+import { component$, useSignal, $, PropFunction, useVisibleTask$, QRL } from '@builder.io/qwik';
 import { FilterInput } from './default-filter';
-import { authorizedFetch } from '../../shared/auth.service';
+import { authorizedFetch } from '../../../shared/auth.service';
 import { PaginationActions } from './pagination-actions';
 import { HiChevronDownOutline, HiChevronUpDownOutline, HiChevronUpOutline } from '@qwikest/icons/heroicons';
 import { EntriesSelector } from './entries-selector';
@@ -24,6 +24,7 @@ export type OptionalHeader = {
   classNames?: string;
   hide?: boolean;
   sortable?: boolean;
+  format?: QRL<(value: string) => string>;
 };
 
 export type Columns = Record<string, OptionalHeader>;
@@ -131,17 +132,14 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
 
   return (
     <div>
-      <div class="inline-flex sm:float-left mx-auto text-sm">
-        <EntriesSelector pageSize={limit} pageSizeOptions={props.pageSizeOptions} />
-      </div>
-      <div class="block sm:float-right sm:w-1/3 sm:pt-0 pt-2 w-1/2 mx-auto">
+      <div class="block sm:float-left sm:w-1/3 sm:pt-0 pt-2 w-1/2 mx-auto">
         <FilterInput filter={filter} onInput={onFilterInputChange} />
       </div>
       {isLoading.value ? ( // Show loader covering the entire table
-        <div class="animate-pulse">
+        <div class="pt-14 animate-pulse">
           <div class="h-4 bg-base-200 mb-6 mt-2 rounded"></div>
-          {Array.from({ length: limit.value + 2 }).map(() => (
-            <div class="h-4 bg-base-200 mb-6 rounded"></div>
+          {Array.from({ length: limit.value + 2 }).map((_value, idx) => (
+            <div key={idx} class="h-4 bg-base-200 mb-6 rounded"></div>
           ))}
         </div>
       ) : (
@@ -172,23 +170,34 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
                 {tableData.value.data.map((row, rowIndex) => (
                   <tr key={rowIndex}>
                     {Object.keys(props.columns).map((columnName, idx) => {
-                      if (props.columns[columnName].hide) return;
-                      return <td key={idx}>{row[columnName]?.toString()}</td>;
+                      if (props.columns[columnName].hide) {
+                        return;
+                      }
+
+                      const value = row[columnName]!.toString();
+                      const format = props.columns[columnName].format;
+
+                      return <td key={idx}>{format ? format(value) : value}</td>;
                     })}
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <div class="flex pt-5 text-sm	font-bold">
-            <PaginationActions
-              tableData={tableData}
-              limit={limit}
-              page={currentPage}
-              maxPages={maxPages}
-              isOnFirstPage={isOnFirstPage}
-              isOnLastPage={isOnLastPage}
-            />
+          <div class="flex flex-col sm:flex-row pt-5 justify-between">
+            <div class="flex text-sm sm:mx-0 mx-auto">
+              <EntriesSelector pageSize={limit} pageSizeOptions={props.pageSizeOptions} />
+            </div>
+            <div class="flex text-sm sm:mx-0 mx-auto sm:pt-0 pt-3">
+              <PaginationActions
+                tableData={tableData}
+                limit={limit}
+                page={currentPage}
+                maxPages={maxPages}
+                isOnFirstPage={isOnFirstPage}
+                isOnLastPage={isOnLastPage}
+              />
+            </div>
           </div>
         </>
       )}

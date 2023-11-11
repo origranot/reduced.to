@@ -2,7 +2,7 @@ import { IsOptional, IsPositive, IsString, IsUrl } from 'class-validator';
 
 export class ShortenerDto {
   @IsUrl()
-  originalUrl: string;
+  url: string;
 
   @IsString()
   @IsOptional()

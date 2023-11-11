@@ -9,7 +9,7 @@ const SELECT_FIELDS: Record<string, boolean> = {
   name: true,
   email: true,
   verified: true,
-  role: true,
+  createdAt: true,
 };
 
 @Injectable()
@@ -28,5 +28,9 @@ export class UsersService extends EntityService<User> {
 
   get filterFields(): (keyof Prisma.UserWhereInput)[] {
     return FILTER_FIELDS;
+  }
+
+  async count(where?: Prisma.UserWhereInput): Promise<number> {
+    return this.prismaService.user.count({ where });
   }
 }

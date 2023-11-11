@@ -24,6 +24,9 @@ ARG DOMAIN
 
 WORKDIR /app
 
+# Set environment variables
+ENV NODE_ENV=production
+
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
 

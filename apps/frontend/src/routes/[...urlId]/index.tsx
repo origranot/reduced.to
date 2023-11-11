@@ -7,7 +7,7 @@ const isValidUrl = (urlId: string) => {
 };
 
 export const onGet: RequestHandler = async ({ params: { urlId }, redirect, clientConn, request, next }) => {
-  let originalUrl = UNKNOWN_URL;
+  let url = UNKNOWN_URL;
 
   if (!isValidUrl(urlId)) {
     throw next();
@@ -20,14 +20,14 @@ export const onGet: RequestHandler = async ({ params: { urlId }, redirect, clien
         'user-agent': request.headers.get('user-agent') || '',
       },
     });
-    originalUrl = await res.text();
+    url = await res.text();
 
-    if (res.status !== 200 || !originalUrl) {
+    if (res.status !== 200 || !url) {
       throw new Error('failed to fetch original url...');
     }
   } catch (err) {
-    originalUrl = UNKNOWN_URL;
+    url = UNKNOWN_URL;
   }
 
-  throw redirect(302, originalUrl);
+  throw redirect(302, url);
 };

@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { Role, User } from '@reduced.to/prisma';
 import { FindAllQueryDto } from './dto';
 import { UsersService } from './users.service';
@@ -26,5 +26,28 @@ export class UsersController {
       filter,
       sort,
     });
+  }
+
+  @Get('count')
+  @Roles(Role.ADMIN)
+  async count(@Query('startDate') startDate: Date, @Query('endDate') endDate: Date, @Query('verified') verified: boolean) {
+    // Create a filter object based on the query parameters
+    const filter: Record<string, any> = {};
+
+    if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+      filter.createdAt = {
+        gte: startDate,
+        lte: endDate,
+      };
+    }
+
+    if (typeof verified === 'boolean') {
+      filter.verified = verified;
+    }
+
+    // Perform the count operation with the dynamic filter
+    const count = await this.usersService.count(filter);
+
+    return { count };
   }
 }
