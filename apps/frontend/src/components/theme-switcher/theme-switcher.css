@@ -6,7 +6,6 @@
   -moz-appearance: none;
   appearance: none;
   border-width: 1px;
-  border-color: hsl(var(--bc) / var(--tw-border-opacity));
   --tw-border-opacity: 0.2;
   --tw-bg-opacity: 0.2;
   transition-duration: 0.3s;

@@ -1,7 +1,6 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik';
 import { DocumentHead, Link } from '@builder.io/qwik-city';
 import animations from '../../assets/css/animations.css?inline';
-import { Waves } from '../../components/waves/waves';
 
 export default component$(() => {
   useStylesScoped$(animations);
@@ -20,7 +19,6 @@ export default component$(() => {
           </Link>
         </div>
       </div>
-      <Waves />
     </section>
   );
 });

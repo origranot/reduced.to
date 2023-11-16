@@ -45,7 +45,7 @@ export const ThemeSwitcher = component$(() => {
   return (
     <button
       aria-label="Switch theme"
-      class="rounded-full items-center w-12 h-6 btn-toggle dark:btn-toggle-chkd place-items-center inline-grid grid-cols-2"
+      class="rounded-full dark:border-slate-300 items-center w-12 h-6 btn-toggle dark:btn-toggle-chkd place-items-center inline-grid grid-cols-2"
       onClick$={onClick$}
     >
       <svg
