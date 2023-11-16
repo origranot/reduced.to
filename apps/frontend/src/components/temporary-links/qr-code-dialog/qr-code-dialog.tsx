@@ -13,15 +13,13 @@ export const QrCodeDialog = component$((props: QrCodeDialogProps) => {
   const { link } = props;
 
   const generateQRCode = $((url: string) => {
-    QRCode.toCanvas(document.querySelector(`#${QR_CODE_DIALOG_ID} canvas`), url, { width: 256 }, (error: any) => {
+    QRCode.toCanvas(document.querySelector(`#${QR_CODE_DIALOG_ID} canvas`), url, { width: 256, margin: 2 }, (error: any) => {
       if (error) console.error(error);
     });
   });
 
   useVisibleTask$(({ track }) => {
     track(() => link);
-
-    console.log('props', props);
     const url = `${process.env.DOMAIN}/${link?.key}`;
     generateQRCode(url);
   });
@@ -46,7 +44,7 @@ export const QrCodeDialog = component$((props: QrCodeDialogProps) => {
       <div class="modal-box">
         <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200">QR Code</h1>
         <p class="text-gray-600 dark:text-gray-400">Scan the QR Code to open the link on your phone.</p>
-        <div class="">
+        <div class="p-5">
           <canvas class="mx-auto"></canvas>
         </div>
         {/* Link to download the QR code */}

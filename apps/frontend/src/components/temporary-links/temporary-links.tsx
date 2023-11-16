@@ -1,5 +1,5 @@
 import { component$, useSignal, $, QwikKeyboardEvent, useVisibleTask$ } from '@builder.io/qwik';
-import { HiRocketLaunchOutline, HiClipboardDocumentOutline, HiShareOutline, HiQrCodeOutline } from '@qwikest/icons/heroicons';
+import { HiRocketLaunchOutline, HiClipboardDocumentOutline, HiQrCodeOutline, HiCheckOutline } from '@qwikest/icons/heroicons';
 import { LinkSkeleton } from './skeleton/link-skeleton';
 import { Link, globalAction$, server$ } from '@builder.io/qwik-city';
 import { LuLoader } from '@qwikest/icons/lucide';
@@ -61,6 +61,8 @@ export const TemporaryLinks = component$(() => {
   const input = useSignal('');
   const isInputDisabled = useSignal(false);
   const interactedLink = useSignal<TempLink | null>(null);
+  const copiedLinkKey = useSignal<string>('');
+  const newLinkLoading = useSignal(false);
 
   useVisibleTask$(() => {
     links.value = getLinksFromLocalStorage();
@@ -73,6 +75,8 @@ export const TemporaryLinks = component$(() => {
     if (input.value.trim() === '' || links.value.length >= 3) {
       return;
     }
+
+    newLinkLoading.value = true;
 
     const normalizedUrl = normalizeUrl(input.value);
 
@@ -91,6 +95,7 @@ export const TemporaryLinks = component$(() => {
       isInputDisabled.value = true;
     }
 
+    newLinkLoading.value = false;
     saveLinksToLocalStorage(links.value);
   });
 
@@ -130,7 +135,7 @@ export const TemporaryLinks = component$(() => {
             disabled={isInputDisabled.value}
             title={isInputDisabled.value ? "You can't create more than 5 links. Open a free account to create more." : ''}
           >
-            {createTempLink.isRunning ? <LuLoader class="h-5 w-5 animate-spin" /> : <HiRocketLaunchOutline class="h-5 w-5" />}
+            {newLinkLoading.value ? <LuLoader class="h-5 w-5 animate-spin" /> : <HiRocketLaunchOutline class="h-5 w-5" />}
           </button>
         </div>
         <div class="mt-2 grid gap-2">
@@ -151,27 +156,30 @@ export const TemporaryLinks = component$(() => {
                   src={link?.favicon}
                 />
                 <div>
-                  <div class="flex items-center space-x-1 sm:space-x-2">
-                    <a class="font-semibold" href={link?.url} target="_blank" rel="noreferrer">
-                      {`${process.env.DOMAIN}/${link?.key}`}
-                    </a>
-                    <button
-                      class="group rounded-full p-1.5 duration-75 hover:scale-110 text-gray-400 active:scale-95"
-                      onClick$={() => {
-                        const url = `${process.env.DOMAIN}/${link?.key}`;
-                        copyToClipboard(normalizeUrl(url));
-                      }}
-                    >
-                      <span class="sr-only">Copy</span>
-                      <HiClipboardDocumentOutline class="h-5 w-5" />
-                    </button>
-                  </div>
+                  <a class="font-semibold" href={`${process.env.DOMAIN}/${link?.key}`} target="_blank" rel="noreferrer">
+                    {`${process.env.DOMAIN}/${link?.key}`}
+                  </a>
                   <p class="text-sm text-gray-400 line-clamp-1 text-left">
                     {link?.url.length > 30 ? `${link?.url.substring(0, 30)}...` : link?.url}
                   </p>
                 </div>
               </div>
               <div class="flex items-center">
+                <button
+                  class="rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-700 focus:outline-none focus:ring focus:border-blue-300 bg-gray-200 dark:bg-gray-600 mr-2 pb-0"
+                  onClick$={async () => {
+                    const url = `${process.env.DOMAIN}/${link?.key}`;
+                    copyToClipboard(normalizeUrl(url));
+                    copiedLinkKey.value = link.key;
+                    setTimeout(() => (copiedLinkKey.value = ''), 2000); // Reset icon after 2 seconds (adjust timing as needed)
+                  }}
+                >
+                  <span class="sr-only">Copy</span>
+                  <label class="swap swap-rotate">
+                    <HiClipboardDocumentOutline class={`${copiedLinkKey.value === link.key ? 'swap-on' : 'swap-off'} h-5 w-5`} />
+                    <HiCheckOutline class={`${copiedLinkKey.value === link.key ? 'swap-off' : 'swap-on'} h-5 w-5`} />
+                  </label>
+                </button>
                 <button
                   class="rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-700 focus:outline-none focus:ring focus:border-blue-300 bg-gray-200 dark:bg-gray-600 mr-2"
                   onClick$={() => {

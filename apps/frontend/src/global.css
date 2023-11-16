@@ -49,3 +49,15 @@ input::-ms-clear {
   --handleoffset: 1.5rem;
   --t-sh: calc(var(--handleoffset) * -1) 0 0 2px hsl(var(--ts-bg)) inset, 0 0 0 2px hsl(var(--ts-bg)) inset;
 }
+
+/* Override skeleton background in dark mode */
+.dark .skeleton {
+  background-image: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 40%,
+    #647182,
+    transparent 60%,
+    transparent 100%
+  ) !important;
+}

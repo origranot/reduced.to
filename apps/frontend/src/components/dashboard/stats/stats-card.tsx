@@ -28,7 +28,7 @@ export const StatsCard = component$<StatsCardProps>(({ data: { value }, title })
           </div>
         </>
       ) : (
-        <div class="stats shadow-[0_8px_30px_rgb(0,0,0,0.12)] bg-secondary">
+        <div class="stats shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
           <div class="stat">
             <div class="stat-title">{title}</div>
             {value.loading ? <div class="loading loading-ring loading-lg"></div> : <div class="stat-value">{value.value}</div>}
