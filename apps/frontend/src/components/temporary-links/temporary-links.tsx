@@ -83,6 +83,7 @@ export const TemporaryLinks = component$(() => {
     const { value } = await createTempLink.submit({ url: normalizedUrl });
 
     if (value.failed) {
+      newLinkLoading.value = false;
       return;
     }
 
@@ -108,7 +109,7 @@ export const TemporaryLinks = component$(() => {
 
   return (
     <>
-      <QrCodeDialog link={interactedLink.value} />
+      <QrCodeDialog link={{key: interactedLink.value?.key!}} />
       <div class="mx-auto w-full max-w-md px-2.5 sm:px-0 mb-8">
         <label class="label">
           <span class="label-text text-red-400">{createTempLink.value?.message}</span>

@@ -11,14 +11,22 @@ export abstract class EntityService<Entity> {
   abstract get selectFields(): Record<keyof any, boolean>;
 
   findAll = async (options: IFindAllOptions): Promise<IPaginationResult<Entity>> => {
-    const { skip, limit, filter, sort } = options;
+    const { skip, limit, filter, sort, extraWhereClause } = options;
 
-    const FILTER_CLAUSE = { OR: filterBuilder(this.filterFields, filter) };
+    const FILTER_CLAUSE = {};
     const ORDER_BY_CLAUSE = orderByBuilder<Partial<Entity>>(sort as any);
+
+    if (filter) {
+      Object.assign(FILTER_CLAUSE, { OR: filterBuilder(this.filterFields, filter) });
+    }
+
+    if (extraWhereClause) {
+      Object.assign(FILTER_CLAUSE, extraWhereClause);
+    }
 
     const [total, data] = await this.prismaService.$transaction([
       this.prismaService[this.model].count({
-        ...(filter && {
+        ...((filter || extraWhereClause) && {
           where: FILTER_CLAUSE,
         }),
       }),
@@ -26,7 +34,7 @@ export abstract class EntityService<Entity> {
         select: this.selectFields,
         ...(skip && { skip }),
         take: limit,
-        ...(filter && {
+        ...((filter || extraWhereClause) && {
           where: FILTER_CLAUSE,
         }),
         ...(sort && {
@@ -45,4 +53,5 @@ export abstract class EntityService<Entity> {
 export interface IFindAllOptions extends IPaginationOptions {
   filter?: string;
   sort?: Record<string, SortOrder>;
+  extraWhereClause?: Record<string, any>;
 }

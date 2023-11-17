@@ -1,11 +1,12 @@
 import { component$ } from '@builder.io/qwik';
 import { DocumentHead } from '@builder.io/qwik-city';
+import NoData from '../../assets/svg/no-data.svg?jsx';
 
 export default component$(() => {
   return (
     <>
-      <h1>Dashboard</h1>
-      <p class="text-red-700">//TODO: Implement some components</p>
+      <h1 class="text-2xl"> Dashboard </h1>
+      <p class="text-primary"> //TODO: Create some components</p>
     </>
   );
 });

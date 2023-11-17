@@ -4,7 +4,7 @@ export class ShortenerDto {
   @IsUrl(
     { allow_fragments: true, require_protocol: false },
     {
-      message: 'Url is invalid, please make sure it is a valid url',
+      message: 'Url is invalid',
     }
   )
   url: string;

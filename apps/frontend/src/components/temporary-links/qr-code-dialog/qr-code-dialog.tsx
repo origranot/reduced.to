@@ -1,12 +1,13 @@
 import { component$, $, useVisibleTask$ } from '@builder.io/qwik';
 import QRCode from 'qrcode';
-import { TempLink } from '../temporary-links';
 import { HiArrowDownTrayOutline } from '@qwikest/icons/heroicons';
 
 export const QR_CODE_DIALOG_ID = 'QR_MODAL';
 
 export interface QrCodeDialogProps {
-  link: TempLink | null;
+  link: {
+    key: string;
+  };
 }
 
 export const QrCodeDialog = component$((props: QrCodeDialogProps) => {

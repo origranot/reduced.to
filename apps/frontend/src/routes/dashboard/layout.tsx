@@ -2,7 +2,7 @@ import { component$, Slot, useSignal, $ } from '@builder.io/qwik';
 import { Link, RequestHandler, useLocation } from '@builder.io/qwik-city';
 import { validateAccessToken } from '../../shared/auth.service';
 import { Role, useGetCurrentUser } from '../layout';
-import { LuLayoutDashboard, LuLineChart, LuShield, LuSlidersHorizontal, LuUsers } from '@qwikest/icons/lucide';
+import { LuLayoutDashboard, LuLineChart, LuLink, LuShield, LuSlidersHorizontal, LuUsers } from '@qwikest/icons/lucide';
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   const validAccessToken = await validateAccessToken(cookie);
@@ -24,7 +24,7 @@ export default component$(() => {
       <div class="drawer-content w-100vh m-5">
         <Slot />
       </div>
-      <div class="drawer-side absolute h-full">
+      <div class="drawer-side absolute">
         <label for="drawer" class="drawer-overlay"></label>
         <ul class="menu p-4 w-64 text-base-content border-r bg-base-100 dark:border-gray-700 block h-full">
           <li class="py-1 mt-1">
@@ -35,6 +35,16 @@ export default component$(() => {
             >
               <LuLayoutDashboard class="w-5 h-5" />
               <span class="font-medium">Dashboard</span>
+            </Link>
+          </li>
+          <li class="py-1 mt-1">
+            <Link
+              href="/dashboard/links"
+              class={`${location.url.pathname.slice(0, -1) === '/dashboard/links' ? 'active' : ''}`}
+              onClick$={toggleDrawer}
+            >
+              <LuLink class="w-5 h-5" />
+              <span class="font-medium">My Links</span>
             </Link>
           </li>
           <li class="py-1 mt-1">

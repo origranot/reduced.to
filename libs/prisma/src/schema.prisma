@@ -13,12 +13,12 @@ datasource db {
 }
 
 model User {
-  id                String  @id @default(uuid())
+  id                String   @id @default(uuid())
   name              String
-  email             String  @unique
+  email             String   @unique
   password          String
-  role              Role    @default(USER)
-  verified          Boolean @default(false) // Is the mail verification
+  role              Role     @default(USER)
+  verified          Boolean  @default(false) // Is the mail verification
   verificationToken String? // Verification token of the mail
   refreshToken      String?
   links             Link[]
@@ -29,8 +29,8 @@ model Link {
   id             String    @id @default(uuid())
   key            String
   url            String
+  favicon        String
   password       String?
-
   user           User?     @relation(fields: [userId], references: [id])
   userId         String
   description    String?
