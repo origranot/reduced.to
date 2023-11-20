@@ -29,7 +29,7 @@ model Link {
   id             String    @id @default(uuid())
   key            String
   url            String
-  favicon        String
+  favicon        String?
   password       String?
   user           User?     @relation(fields: [userId], references: [id])
   userId         String

@@ -15,7 +15,7 @@ export const Select = component$(({ disabled, selectInputValue }: SelectProps) =
         type="button"
         disabled={disabled}
         tabIndex={0}
-        class="select-btn w-full md:border-l-0 md:rounded-none hover:text-inherit rounded-lg"
+        class="select-btn w-full md:border-l-0 hover:text-inherit rounded-lg"
         onClick$={() => {
           if (disabled) {
             return;

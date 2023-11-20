@@ -1,9 +1,10 @@
-import { component$, useSignal, $, PropFunction, useVisibleTask$, QRL } from '@builder.io/qwik';
+import { component$, useSignal, $, PropFunction, useVisibleTask$, QRL, Slot, JSXNode } from '@builder.io/qwik';
 import { FilterInput } from './default-filter';
 import { authorizedFetch } from '../../../shared/auth.service';
 import { PaginationActions } from './pagination-actions';
 import { HiChevronDownOutline, HiChevronUpDownOutline, HiChevronUpOutline } from '@qwikest/icons/heroicons';
 import { EntriesSelector } from './entries-selector';
+import { JSX } from '@builder.io/qwik/jsx-runtime';
 
 export enum SortOrder {
   DESC = 'desc',
@@ -24,7 +25,7 @@ export type OptionalHeader = {
   classNames?: string;
   hide?: boolean;
   sortable?: boolean;
-  format?: QRL<(value: string) => string>;
+  format?: QRL<(value: string) => JSXNode | string>;
 };
 
 export type Columns = Record<string, OptionalHeader>;
@@ -135,6 +136,9 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
       <div class="block sm:float-left sm:w-1/3 sm:pt-0 pt-2 w-1/2 mx-auto">
         <FilterInput filter={filter} onInput={onFilterInputChange} />
       </div>
+      <div class="block sm:float-right sm:pt-0 pt-2 mx-auto">
+        <Slot />
+      </div>
       {isLoading.value ? ( // Show loader covering the entire table
         <div class="pt-14 animate-pulse">
           <div class="h-4 bg-base-200 mb-6 mt-2 rounded"></div>
@@ -144,8 +148,8 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
         </div>
       ) : (
         <>
-          <div>
-            <table id="table" class="table table-zebra table-fixed whitespace-nowrap">
+          <div class="overflow-x-scroll sm:contents">
+            <table id="table" class="table table-zebra table-auto w-full whitespace-nowrap">
               <thead>
                 <tr>
                   {Object.keys(props.columns).map((columnName, idx) => {
@@ -174,7 +178,8 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
                         return;
                       }
 
-                      const value = row[columnName]!.toString();
+                      const rawValue = row[columnName];
+                      const value = !rawValue ? '' : rawValue.toString();
                       const format = props.columns[columnName].format;
 
                       return <td key={idx}>{format ? format(value) : value}</td>;

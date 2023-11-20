@@ -47,7 +47,7 @@ export class ShortenerController {
 
     // Only verified users can create shortened urls
     if (!user?.verified) {
-      throw new BadRequestException('You must be logged in to create a shortened url');
+      throw new BadRequestException('You must be veirifed in to create a shortened url');
     }
 
     this.logger.log(`User ${user.id} is creating a shortened url for ${shortenerDto.url}`);

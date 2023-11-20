@@ -156,7 +156,7 @@ export const TemporaryLinks = component$(() => {
                   class="pointer-events-none h-10 w-10 rounded-full blur-0"
                   src={link?.favicon}
                 />
-                <div>
+                <div class="text-left">
                   <a class="font-semibold" href={`${process.env.DOMAIN}/${link?.key}`} target="_blank" rel="noreferrer">
                     {`${process.env.DOMAIN}/${link?.key}`}
                   </a>

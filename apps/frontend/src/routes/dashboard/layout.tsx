@@ -19,7 +19,7 @@ export default component$(() => {
   const toggleDrawer = $(() => (isDrawerOpen.value = !isDrawerOpen.value));
 
   return (
-    <div class="drawer lg:drawer-open min-h-[calc(100vh-64px)]">
+    <div class="drawer lg:drawer-open min-h-[calc(100vh-64px)] inline-block sm:grid">
       <input id="drawer" type="checkbox" class="drawer-toggle" checked={isDrawerOpen.value} onChange$={toggleDrawer} />
       <div class="drawer-content w-100vh m-5">
         <Slot />
@@ -31,16 +31,6 @@ export default component$(() => {
             <Link
               href="/dashboard"
               class={`${location.url.pathname.slice(0, -1) === '/dashboard' ? 'active' : ''}`}
-              onClick$={toggleDrawer}
-            >
-              <LuLayoutDashboard class="w-5 h-5" />
-              <span class="font-medium">Dashboard</span>
-            </Link>
-          </li>
-          <li class="py-1 mt-1">
-            <Link
-              href="/dashboard/links"
-              class={`${location.url.pathname.slice(0, -1) === '/dashboard/links' ? 'active' : ''}`}
               onClick$={toggleDrawer}
             >
               <LuLink class="w-5 h-5" />
