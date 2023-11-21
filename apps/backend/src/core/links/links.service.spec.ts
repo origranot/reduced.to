@@ -86,5 +86,29 @@ describe('LinksService', () => {
         })
       );
     });
+
+    it('should add extraWhereClause', async () => {
+      const findAllOptions: IFindAllOptions = {
+        skip: 5,
+        limit: 10,
+        filter: 'test',
+        sort: {},
+        extraWhereClause: {
+          userId: 'test',
+        },
+      };
+
+      await service.findAll(findAllOptions);
+      expect(prismaService.link.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          take: findAllOptions.limit,
+          where: {
+            userId: 'test',
+            OR: [{ url: { contains: findAllOptions.filter } }, { key: { contains: findAllOptions.filter } }],
+          },
+          skip: findAllOptions.skip,
+        })
+      );
+    });
   });
 });

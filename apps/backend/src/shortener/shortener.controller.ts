@@ -41,12 +41,16 @@ export class ShortenerController {
   async shortener(@Body() shortenerDto: ShortenerDto, @Req() req: Request): Promise<{ key: string }> {
     const user = req.user as UserContext;
 
-    // Only verified users can create shortened urls into the database (otherwise, they are stored in the cache)
-    if (user?.verified) {
-      this.logger.log(`User ${user.id} is creating a shortened url for ${shortenerDto.url}`);
-      return this.shortenerService.createUsersShortenedUrl(user, shortenerDto);
+    if (shortenerDto.temporary) {
+      return this.shortenerService.createShortenedUrl(shortenerDto.url);
     }
 
-    return this.shortenerService.createShortenedUrl(shortenerDto.url);
+    // Only verified users can create shortened urls
+    if (!user?.verified) {
+      throw new BadRequestException('You must be veirifed in to create a shortened url');
+    }
+
+    this.logger.log(`User ${user.id} is creating a shortened url for ${shortenerDto.url}`);
+    return this.shortenerService.createUsersShortenedUrl(user, shortenerDto);
   }
 }

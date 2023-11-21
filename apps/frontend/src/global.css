@@ -11,6 +11,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  height: 100%;
+  overflow: auto;
+}
+
 body {
   text-align: center;
   overflow: auto;
@@ -25,10 +30,10 @@ input::-ms-clear {
 [data-theme='dracula'] {
   --outline-border-color: 233, 5%, 33%;
   --w-bg: 0 0% 100%;
-  /* Wave background */
-  --ts-bg: 231 15% 16% / 0.9;
-  /* Theme switcher background */
+  /* Skeleton bg */
+  --skeleton-bg: 70 74% 50%;
   /* Theme switcher shadow */
+  --ts-bg: 222 47% 11% / 0.9;
   --handleoffset: 1.5rem;
   --t-sh: var(--handleoffset) 0 0 2px hsl(var(--ts-bg)) inset, 0 0 0 2px hsl(var(--ts-bg)) inset;
 }
@@ -36,10 +41,16 @@ input::-ms-clear {
 [data-theme='winter'] {
   --outline-border-color: 216, 5%, 79%;
   --w-bg: 211 45% 35%;
-  /* Wave background */
-  --ts-bg: 0 0% 90% / 0.9;
+  /* Skeleton bg */
+  --skeleton-bg: 0 0% 90%;
   /* Theme switcher background */
   /* Theme switcher shadow */
+  --ts-bg: 0 0% 90% / 0.9;
   --handleoffset: 1.5rem;
   --t-sh: calc(var(--handleoffset) * -1) 0 0 2px hsl(var(--ts-bg)) inset, 0 0 0 2px hsl(var(--ts-bg)) inset;
+}
+
+/* Override skeleton background in dark mode */
+.dark .skeleton {
+  background-image: linear-gradient(105deg, transparent 0%, transparent 40%, #647182, transparent 60%, transparent 100%) !important;
 }

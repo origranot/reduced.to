@@ -52,12 +52,12 @@ export default component$(() => {
           </p>
           <div class="divider"></div>
           <Form class="form-control">
-            <label class="input-group">
+            <label class="join input-group">
               <input
                 name="link"
                 type="text"
                 placeholder="reduced.to/example"
-                class="input input-bordered focus:outline-0 sm:w-2/5 w-full"
+                class="input input-bordered join-item focus:outline-0 sm:w-2/5 w-full"
               />
               <button class="btn join-item btn-warning !cursor-not-allowed">
                 {action.isRunning ? <span class="loading loading-spinner-small"></span> : 'Report'}

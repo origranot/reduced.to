@@ -73,12 +73,19 @@ describe('LinksController', () => {
         limit: 100,
         filter: undefined,
         sort: undefined,
+        extraWhereClause: { userId: undefined },
       });
       expect(response.body).toEqual(MOCK_FIND_ALL_RESULT);
     });
 
     it('should call findAll with correct parameters and add caluclate skip when page is defined', async () => {
-      const findAllOptions: IFindAllOptions = { skip: 10, limit: 10 };
+      const findAllOptions: IFindAllOptions = {
+        skip: 10,
+        limit: 10,
+        extraWhereClause: { userId: undefined },
+        filter: undefined,
+        sort: undefined,
+      };
 
       await request(app.getHttpServer()).get('/links?limit=10&page=2').expect(200);
 
@@ -91,6 +98,7 @@ describe('LinksController', () => {
         limit: 10,
         filter: 'reduced.to',
         sort: undefined,
+        extraWhereClause: { userId: undefined },
       };
 
       await request(app.getHttpServer()).get('/links?limit=10&page=2&filter=reduced.to').expect(200);
@@ -104,6 +112,7 @@ describe('LinksController', () => {
         limit: 10,
         filter: 'google.com',
         sort: { expirationTime: SortOrder.ASCENDING, createdAt: SortOrder.DESCENDING },
+        extraWhereClause: { userId: undefined },
       };
 
       await request(app.getHttpServer())

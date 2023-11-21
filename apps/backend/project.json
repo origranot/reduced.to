@@ -69,12 +69,7 @@
           "codeCoverage": true
         }
       },
-      "dependsOn": [
-        {
-          "dependencies": true,
-          "target": "build"
-        }
-      ]
+      "dependsOn": ["^build"]
     },
     "docker-build": {
       "dependsOn": ["build"],
