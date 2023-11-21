@@ -1,11 +1,11 @@
 import { component$, useSignal, $, QwikKeyboardEvent, useVisibleTask$ } from '@builder.io/qwik';
-import { HiRocketLaunchOutline, HiClipboardDocumentOutline, HiQrCodeOutline, HiCheckOutline } from '@qwikest/icons/heroicons';
-import { LinkSkeleton } from './skeleton/link-skeleton';
+import { HiRocketLaunchOutline, HiClipboardDocumentOutline, HiQrCodeOutline, HiCheckOutline, HiTrashOutline } from '@qwikest/icons/heroicons';
 import { Link, globalAction$, server$ } from '@builder.io/qwik-city';
 import { LuLoader } from '@qwikest/icons/lucide';
 import { copyToClipboard, normalizeUrl } from '../../utils';
 import { getFavicon } from './get-favicon';
 import { QR_CODE_DIALOG_ID, QrCodeDialog } from './qr-code-dialog/qr-code-dialog';
+import { LinkPlaceholder } from './link-placeholder/link-placeholder';
 
 const MAX_NUMBER_OF_LINKS = 3;
 
@@ -70,6 +70,13 @@ export const TemporaryLinks = component$(() => {
   });
 
   const createTempLink = useTempLink();
+
+  const deleteLink = $(async (idx: number) => {
+    const newLinks = links.value.filter((_, index) => index !== idx);
+    links.value = [...newLinks];
+    localStorage.setItem('links', JSON.stringify(newLinks));
+    isInputDisabled.value = links.value.length >= MAX_NUMBER_OF_LINKS;
+  })
 
   const addLink = $(async () => {
     if (input.value.trim() === '' || links.value.length >= 3) {
@@ -142,7 +149,7 @@ export const TemporaryLinks = component$(() => {
         <div class="mt-2 grid gap-2">
           {links?.value.map((link, index) => (
             <li
-              class="flex max-w-md items-center justify-between rounded-md bg-base-100 dark:bg-slate-800 p-3 shadow-lg border border-base-200"
+              class="flex max-w-md animate-fade items-center justify-between rounded-md bg-base-100 dark:bg-slate-800 p-3 shadow-lg border border-base-200"
               key={index}
             >
               <div class="flex items-center space-x-3">
@@ -166,6 +173,17 @@ export const TemporaryLinks = component$(() => {
                 </div>
               </div>
               <div class="flex items-center">
+              <button
+                  class="rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-700 focus:outline-none focus:ring focus:border-blue-300 bg-gray-200 dark:bg-gray-600 mr-2 pb-0"
+                  onClick$={async () => {
+                    deleteLink(index)
+                  }}
+                >
+                  <span class="sr-only">Copy</span>
+                  <label class="swap swap-rotate">
+                    <HiTrashOutline class={`h-5 w-5`} />
+                  </label>
+                </button>
                 <button
                   class="rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-700 focus:outline-none focus:ring focus:border-blue-300 bg-gray-200 dark:bg-gray-600 mr-2 pb-0"
                   onClick$={async () => {
@@ -194,7 +212,7 @@ export const TemporaryLinks = component$(() => {
             </li>
           ))}
           {[...Array(MAX_NUMBER_OF_LINKS - links.value.length)].map((_, index) => (
-            <LinkSkeleton key={index} opacity={Math.max(1 - (index * 20) / 100, 0.2)} />
+            <LinkPlaceholder key={index} opacity={Math.max(1 - (index * 20) / 100, 0.2)} />
           ))}
           <div class={`block w-full dark:bg-slate-800 rounded-md shadow-lg border border-base-200 p-3 text-left`}>
             <div class="text-sm">
