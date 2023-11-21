@@ -6,7 +6,7 @@ export const QR_CODE_DIALOG_ID = 'QR_MODAL';
 
 export interface QrCodeDialogProps {
   link: {
-    key: string;
+    key?: string;
   };
 }
 
