@@ -60,7 +60,7 @@ export default component$(() => {
 
   return (
     <>
-      <LinkModal onSubmitHandler={refetch}/>
+      <LinkModal onSubmitHandler={refetch} />
       <div class="shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl w-full p-5">
         <TableServerPagination endpoint={`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/links`} columns={columns} refetch={refetchSignal}>
           <button class="btn btn-primary" onClick$={() => (document.getElementById(LINK_MODAL_ID) as any).showModal()}>

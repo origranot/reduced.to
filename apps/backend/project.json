@@ -68,7 +68,7 @@
           "ci": true,
           "codeCoverage": true
         }
-      },
+      }
       // "dependsOn": [
       //   {
       //     "dependencies": true,

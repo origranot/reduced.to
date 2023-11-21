@@ -31,7 +31,7 @@ input::-ms-clear {
   --outline-border-color: 233, 5%, 33%;
   --w-bg: 0 0% 100%;
   /* Skeleton bg */
-  --skeleton-bg: 70 74% 50%
+  --skeleton-bg: 70 74% 50%;
   /* Theme switcher shadow */
   --ts-bg: 222 47% 11% / 0.9;
   --handleoffset: 1.5rem;
@@ -52,12 +52,5 @@ input::-ms-clear {
 
 /* Override skeleton background in dark mode */
 .dark .skeleton {
-  background-image: linear-gradient(
-    105deg,
-    transparent 0%,
-    transparent 40%,
-    #647182,
-    transparent 60%,
-    transparent 100%
-  ) !important;
+  background-image: linear-gradient(105deg, transparent 0%, transparent 40%, #647182, transparent 60%, transparent 100%) !important;
 }
