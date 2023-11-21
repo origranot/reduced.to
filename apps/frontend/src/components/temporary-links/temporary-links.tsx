@@ -1,5 +1,11 @@
 import { component$, useSignal, $, QwikKeyboardEvent, useVisibleTask$ } from '@builder.io/qwik';
-import { HiRocketLaunchOutline, HiClipboardDocumentOutline, HiQrCodeOutline, HiCheckOutline, HiTrashOutline } from '@qwikest/icons/heroicons';
+import {
+  HiRocketLaunchOutline,
+  HiClipboardDocumentOutline,
+  HiQrCodeOutline,
+  HiCheckOutline,
+  HiTrashOutline,
+} from '@qwikest/icons/heroicons';
 import { Link, globalAction$, server$ } from '@builder.io/qwik-city';
 import { LuLoader } from '@qwikest/icons/lucide';
 import { copyToClipboard, normalizeUrl } from '../../utils';
@@ -76,7 +82,7 @@ export const TemporaryLinks = component$(() => {
     links.value = [...newLinks];
     localStorage.setItem('links', JSON.stringify(newLinks));
     isInputDisabled.value = links.value.length >= MAX_NUMBER_OF_LINKS;
-  })
+  });
 
   const addLink = $(async () => {
     if (input.value.trim() === '' || links.value.length >= 3) {
@@ -173,17 +179,6 @@ export const TemporaryLinks = component$(() => {
                 </div>
               </div>
               <div class="flex items-center">
-              <button
-                  class="rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-700 focus:outline-none focus:ring focus:border-blue-300 bg-gray-200 dark:bg-gray-600 mr-2 pb-0"
-                  onClick$={async () => {
-                    deleteLink(index)
-                  }}
-                >
-                  <span class="sr-only">Copy</span>
-                  <label class="swap swap-rotate">
-                    <HiTrashOutline class={`h-5 w-5`} />
-                  </label>
-                </button>
                 <button
                   class="rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-700 focus:outline-none focus:ring focus:border-blue-300 bg-gray-200 dark:bg-gray-600 mr-2 pb-0"
                   onClick$={async () => {
@@ -207,6 +202,15 @@ export const TemporaryLinks = component$(() => {
                   }}
                 >
                   <HiQrCodeOutline class="h-5 w-5" />
+                </button>
+                <button
+                  class="rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-700 focus:outline-none focus:ring focus:border-blue-300 bg-gray-200 dark:bg-gray-600"
+                  onClick$={async () => {
+                    deleteLink(index);
+                  }}
+                >
+                  <span class="sr-only">Delete</span>
+                  <HiTrashOutline class="h-5 w-5" />
                 </button>
               </div>
             </li>
