@@ -1,10 +1,9 @@
-import { component$, useSignal, $, PropFunction, useVisibleTask$, QRL, Slot, JSXNode } from '@builder.io/qwik';
+import { component$, useSignal, $, PropFunction, useVisibleTask$, QRL, Slot, JSXNode, UseSignal, Signal } from '@builder.io/qwik';
 import { FilterInput } from './default-filter';
 import { authorizedFetch } from '../../../shared/auth.service';
 import { PaginationActions } from './pagination-actions';
 import { HiChevronDownOutline, HiChevronUpDownOutline, HiChevronUpOutline } from '@qwikest/icons/heroicons';
 import { EntriesSelector } from './entries-selector';
-import { JSX } from '@builder.io/qwik/jsx-runtime';
 
 export enum SortOrder {
   DESC = 'desc',
@@ -35,6 +34,7 @@ export interface TableServerPaginationParams {
   columns: Columns;
   pageSize?: number;
   pageSizeOptions?: number[];
+  refetch?: Signal<number>;
 }
 
 export interface ResponseData {
@@ -97,6 +97,7 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
     track(() => limit.value);
     track(() => filter.value);
     track(() => sortSignal.value);
+    track(() => props.refetch?.value);
 
     // Fetch data
     const result = await fetchTableData({

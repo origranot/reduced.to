@@ -45,7 +45,11 @@ const useCreateLink = globalAction$(
   })
 );
 
-export const LinkModal = component$(() => {
+export interface LinkModalProps {
+  onSubmitHandler: () => void;
+}
+
+export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
   const inputValue = useSignal<string>('');
 
   const action = useCreateLink();
@@ -66,6 +70,7 @@ export const LinkModal = component$(() => {
 
             clearValues();
             (document.getElementById(LINK_MODAL_ID) as any).close();
+            onSubmitHandler();
           }}
           class="modal-box relative p-4 w-full max-w-md max-h-full"
         >
