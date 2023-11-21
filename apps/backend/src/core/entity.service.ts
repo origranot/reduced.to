@@ -20,9 +20,12 @@ export abstract class EntityService<Entity> {
       Object.assign(FILTER_CLAUSE, { OR: filterBuilder(this.filterFields, filter) });
     }
 
-    if (extraWhereClause) {
-      Object.assign(FILTER_CLAUSE, extraWhereClause);
-    }
+    console.log(extraWhereClause)
+    Object.entries(extraWhereClause || {}).forEach(([key, value]) => {
+      if (value) {
+        Object.assign(FILTER_CLAUSE, { [key]: value });
+      }
+    });
 
     const [total, data] = await this.prismaService.$transaction([
       this.prismaService[this.model].count({

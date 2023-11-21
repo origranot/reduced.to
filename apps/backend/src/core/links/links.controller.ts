@@ -30,7 +30,7 @@ export class LinksController {
       sort,
       // Allways add extraWhereClause to the query, so that the user can only see his own links
       extraWhereClause: {
-        userId: user.id,
+        userId: user?.id,
       },
     });
   }
