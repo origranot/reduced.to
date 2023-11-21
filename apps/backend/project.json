@@ -6,7 +6,9 @@
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "defaultConfiguration": "production",
       "options": {
         "target": "node",
@@ -51,14 +53,20 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/backend/**/*.ts"]
+        "lintFilePatterns": [
+          "apps/backend/**/*.ts"
+        ]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/backend/jest.config.ts",
         "passWithNoTests": true
@@ -68,20 +76,21 @@
           "ci": true,
           "codeCoverage": true
         }
-      }
-      // "dependsOn": [
-      //   {
-      //     "dependencies": true,
-      //     "target": "build"
-      //   }
-      // ]
+      },
+      "dependsOn": [
+        "^build"
+      ]
     },
     "docker-build": {
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "command": "docker build -f apps/backend/Dockerfile . -t backend"
     },
     "push-image-to-registry": {
-      "dependsOn": ["docker-build"],
+      "dependsOn": [
+        "docker-build"
+      ],
       "executor": "nx:run-commands",
       "options": {
         "commands": [
