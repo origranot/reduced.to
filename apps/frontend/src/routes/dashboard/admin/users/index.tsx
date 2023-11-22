@@ -90,9 +90,13 @@ export default component$(() => {
   return (
     <>
       <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 lg:grid-cols-3">
-        <StatsCard title="Registered Users" data={registeredUsersSignal} />
-        <StatsCard title="New Users" data={newUsersSignal} />
-        <StatsCard title="Verified Users" data={verifiedUsersSignal} />
+        <StatsCard
+          title="Registered Users"
+          data={registeredUsersSignal}
+          loading={registeredUsersSignal.value.loading && verifiedUsersSignal?.value.loading}
+        />
+        <StatsCard title="New Users" data={newUsersSignal} loading={newUsersSignal.value.loading && verifiedUsersSignal?.value.loading} />
+        <StatsCard title="Verified Users" data={verifiedUsersSignal} loading={verifiedUsersSignal.value.loading} />
       </div>
       <div class="mt-5 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl w-full p-5">
         <TableServerPagination endpoint={`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/users`} columns={columns} />

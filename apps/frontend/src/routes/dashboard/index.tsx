@@ -17,7 +17,7 @@ export default component$(() => {
       displayName: 'Shortened URL',
       classNames: 'w-1/4',
       format: $((value: string) => {
-        const url = `${process.env.DOMAIN}/${value}`;
+        const url = `https://${process.env.DOMAIN}/${value}`;
         return (
           <a href={url} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
             {url}
