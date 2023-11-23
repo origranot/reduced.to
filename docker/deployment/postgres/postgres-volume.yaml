@@ -8,9 +8,6 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  gcePersistentDisk:
-    pdName: postgres-disk
-    fsType: ext4
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -22,5 +19,4 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: ''
   volumeName: postgres-pv
