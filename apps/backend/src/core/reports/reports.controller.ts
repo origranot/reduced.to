@@ -7,8 +7,9 @@ import { Roles } from '../../shared/decorators';
 import { ReportsService } from './reports.service';
 import { FindAllQueryDto, CreateReportDto } from './dto';
 import { LinksService } from '../links/links.service';
+import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(OptionalJwtAuthGuard, RolesGuard)
 @Controller({
   path: 'reports',
   version: '1',
@@ -36,17 +37,17 @@ export class ReportsController {
     }
 
     const key = link.split('/').pop();
-    const { url } = await this.linksService.findBy({
+    const response = await this.linksService.findBy({
       key,
     });
 
-    if (!url) {
+    if (!response) {
       throw new NotFoundException('This link might be expired or does not exist.');
     }
 
     return this.reportsService.create({
       key,
-      url,
+      url: response.url,
       category,
     });
   }

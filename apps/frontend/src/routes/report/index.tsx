@@ -20,11 +20,9 @@ export const useReport = globalAction$(
 
     const { message } = await data.json();
 
-    const errorMessage = message ? message[0] : 'Something went wrong. Please try again later.';
-
     if (!data.ok) {
       return fail(400, {
-        message: errorMessage,
+        message,
       });
     }
 
@@ -74,9 +72,11 @@ export default component$(() => {
                   placeholder="reduced.to/example"
                   class="input input-bordered join-item focus:outline-0 w-full sm:!rounded-e-none !rounded-e-lg"
                 />
-                <label class="label">
-                  <span class="label-text-alt text-error">{action.value?.fieldErrors?.link && action.value.fieldErrors.link}</span>
-                </label>
+                {action.value?.fieldErrors?.link && (
+                  <label class="label">
+                    <span class="label-text-alt text-error">{action.value.fieldErrors.link}</span>
+                  </label>
+                )}
               </div>
               <div class="form-control w-1/2 mt-3 sm:mt-0">
                 <select
@@ -90,16 +90,21 @@ export default component$(() => {
                     <option key={index}>{category}</option>
                   ))}
                 </select>
-                <label class="label">
-                  <span class="label-text-alt text-error">{action.value?.fieldErrors?.category && action.value.fieldErrors.category}</span>
-                </label>
+                {action.value?.fieldErrors?.category && (
+                  <label class="label">
+                    <span class="label-text-alt text-error">{action.value.fieldErrors.category}</span>
+                  </label>
+                )}
               </div>
-              <button class="btn join-item btn-warning sm:inline-flex block sm:!rounded-e-lg sm:!rounded-l-none !rounded-lg mt-3 sm:mt-0 min-w-[80px]">
+              <button
+                type="submit"
+                class="btn join-item btn-warning sm:inline-flex block sm:!rounded-e-lg sm:!rounded-l-none !rounded-lg mt-3 sm:mt-0 min-w-[80px]"
+              >
                 {action.isRunning ? <span class="loading loading-spinner-small"></span> : 'Report'}
               </button>
             </label>
           </Form>
-          {action.value?.message && <span class="text-error text-left">{action.value.message}</span>}
+          {action.value?.message && action.value.failed && <span class="label-text-alt text-error text-left">{action.value.message}</span>}
         </div>
       </section>
     </div>
