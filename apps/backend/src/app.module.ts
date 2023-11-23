@@ -11,7 +11,8 @@ import { CustomThrottlerGuard } from './shared/guards/custom-throttler/custom-th
 import { ShortenerModule } from './shortener/shortener.module';
 import { UsersModule } from './core/users/users.module';
 import { LinksService } from './core/links/links.service';
-import { LinksController } from './core/links/links.controller';
+import { LinksModule } from './core/links/links.module';
+import { ReportsModule } from './core/reports/reports.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { LinksController } from './core/links/links.controller';
     ShortenerModule,
     AuthModule,
     UsersModule,
-    UsersModule,
+    LinksModule,
+    ReportsModule,
   ],
   providers: [
     PrismaService,
@@ -39,6 +41,5 @@ import { LinksController } from './core/links/links.controller';
     },
     LinksService,
   ],
-  controllers: [LinksController],
 })
 export class AppModule {}

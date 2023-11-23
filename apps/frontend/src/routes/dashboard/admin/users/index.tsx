@@ -114,7 +114,7 @@ export const head: DocumentHead = {
     },
     {
       name: 'description',
-      content: 'Reduced.to | Admin Dashboard - See all users',
+      content: 'Reduced.to | Admin Dashboard - Users and statistics',
     },
     {
       property: 'og:type',
@@ -130,7 +130,7 @@ export const head: DocumentHead = {
     },
     {
       property: 'og:description',
-      content: 'Reduced.to | Admin Dashboard - See all users',
+      content: 'Reduced.to | Admin Dashboard - Users and statistics',
     },
     {
       property: 'twitter:card',
@@ -142,7 +142,7 @@ export const head: DocumentHead = {
     },
     {
       property: 'twitter:description',
-      content: 'Reduced.to | Admin Dashboard - See all users',
+      content: 'Reduced.to | Admin Dashboard - Users and statistics',
     },
   ],
 };

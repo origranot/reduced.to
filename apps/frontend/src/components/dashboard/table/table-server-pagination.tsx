@@ -171,7 +171,16 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
                   })}
                 </tr>
               </thead>
-              <tbody>
+              <tbody class={`${tableData.value.total === 0 ? 'h-[50vh]' : ''}`}>
+                {tableData.value.total === 0 && (
+                  <tr>
+                    <td class="text-center" colSpan={Object.keys(props.columns).length}>
+                      <span class="text-3xl">🦄</span>
+                      <span class="block text-lg">There is no data to display, try changing the filter.</span>
+                      <span class="block text-sm">Here's a unicorn to cheer you up</span>
+                    </td>
+                  </tr>
+                )}
                 {tableData.value.data.map((row, rowIndex) => (
                   <tr key={rowIndex}>
                     {Object.keys(props.columns).map((columnName, idx) => {
