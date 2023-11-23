@@ -22,6 +22,6 @@ export class FindAllQueryDto {
   @MaxLength(30)
   filter?: string;
 
-  @Sortable(['createdAt'])
+  @Sortable(['createdAt', 'category'])
   sort?: Record<string, SortOrder>;
 }

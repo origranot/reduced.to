@@ -1,15 +1,21 @@
 import Notify from '../../assets/svg/notify.svg?jsx';
 import { component$ } from '@builder.io/qwik';
 import { DocumentHead, Form, globalAction$, z, zod$ } from '@builder.io/qwik-city';
+import { isValidURL, normalizeUrl } from '../../utils';
+
+const VALID_CATEGORIES = ['Phishing', 'Malware', 'Child abuse', 'Violence', 'Spam', 'Illegal content', 'Other'];
 
 export const useReport = globalAction$(
-  async ({ link }, { fail }) => {
+  async ({ link, category }, { fail }) => {
     const data: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/reports`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(link),
+      body: JSON.stringify({
+        link,
+        category,
+      }),
     });
 
     const { message } = await data.json();
@@ -31,8 +37,16 @@ export const useReport = globalAction$(
       .string({
         required_error: 'This field is required',
       })
-      .url({
+      .transform((url) => normalizeUrl(url))
+      .refine((url) => isValidURL(url), {
         message: 'Please enter a valid URL',
+      }),
+    category: z
+      .string({
+        required_error: 'Category is required',
+      })
+      .refine((name) => VALID_CATEGORIES.includes(name), {
+        message: 'Please select a valid category',
       }),
   })
 );
@@ -51,21 +65,41 @@ export default component$(() => {
             action. Thank you for helping us keep Reduced.to safe.
           </p>
           <div class="divider"></div>
-          <Form class="form-control">
-            <label class="join input-group">
-              <input
-                name="link"
-                type="text"
-                placeholder="reduced.to/example"
-                class="input input-bordered join-item focus:outline-0 sm:w-2/5 w-full"
-              />
-              <button class="btn join-item btn-warning !cursor-not-allowed">
+          <Form action={action} class="form-control">
+            <label class="join input-group sm:inline-flex block w-full">
+              <div class="form-control w-full">
+                <input
+                  name="link"
+                  type="text"
+                  placeholder="reduced.to/example"
+                  class="input input-bordered join-item focus:outline-0 w-full sm:!rounded-e-none !rounded-e-lg"
+                />
+                <label class="label">
+                  <span class="label-text-alt text-error">{action.value?.fieldErrors?.link && action.value.fieldErrors.link}</span>
+                </label>
+              </div>
+              <div class="form-control w-1/2 mt-3 sm:mt-0">
+                <select
+                  name="category"
+                  class="select join-item select-bordered focus:outline-0 sm:inline-flex block sm:!rounded-none !rounded-lg"
+                >
+                  <option disabled selected>
+                    Select a reason
+                  </option>
+                  {VALID_CATEGORIES.map((category, index) => (
+                    <option key={index}>{category}</option>
+                  ))}
+                </select>
+                <label class="label">
+                  <span class="label-text-alt text-error">{action.value?.fieldErrors?.category && action.value.fieldErrors.category}</span>
+                </label>
+              </div>
+              <button class="btn join-item btn-warning sm:inline-flex block sm:!rounded-e-lg sm:!rounded-l-none !rounded-lg mt-3 sm:mt-0 min-w-[80px]">
                 {action.isRunning ? <span class="loading loading-spinner-small"></span> : 'Report'}
               </button>
             </label>
           </Form>
           {action.value?.message && <span class="text-error text-left">{action.value.message}</span>}
-          {action.value?.fieldErrors?.link && <span class="label-text text-error text-left">{action.value.fieldErrors.link}</span>}{' '}
         </div>
       </section>
     </div>

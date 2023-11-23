@@ -7,8 +7,7 @@ export default component$(() => {
   const columns: Columns = {
     key: { displayName: 'Shortened URL', classNames: 'w-1/4' },
     url: { displayName: 'Destination URL', classNames: 'w-1/4' },
-    description: { displayName: 'Description', classNames: 'w-1/4' },
-    reportedBy: { displayName: 'Reported By', classNames: 'w-1/4' },
+    category: { displayName: 'Category', classNames: 'w-1/4' },
     createdAt: {
       displayName: 'Created At',
       classNames: 'w-1/4',
@@ -18,7 +17,7 @@ export default component$(() => {
       }),
     },
     actions: {
-      displayName: "",
+      displayName: '',
       classNames: 'w-1/4',
       format: $((value: string) => {
         return (

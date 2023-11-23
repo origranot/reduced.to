@@ -30,4 +30,10 @@ export class LinksService extends EntityService<Link> {
   get filterFields(): (keyof Prisma.LinkWhereInput)[] {
     return FILTER_FIELDS;
   }
+
+  findBy(opts: Prisma.LinkWhereInput): Promise<Link> {
+    return this.prismaService.link.findFirst({
+      where: opts,
+    });
+  }
 }

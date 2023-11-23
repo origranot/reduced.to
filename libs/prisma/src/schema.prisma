@@ -23,7 +23,6 @@ model User {
   refreshToken      String?
   links             Link[]
   createdAt         DateTime @default(now())
-  Report            Report[]
 }
 
 model Link {
@@ -42,15 +41,14 @@ model Link {
 }
 
 model Report {
-  id          String   @id @default(uuid())
-  key         String
-  url         String
-  description String?
-  reportedBy  User     @relation(fields: [userId], references: [id])
-  userId      String
-  createdAt   DateTime @default(now())
+  id        String   @id @default(uuid())
+  key       String
+  url       String
+  category  String?
+  createdAt DateTime @default(now())
 
   @@index(key)
+  @@index(category)
 }
 
 enum Role {
