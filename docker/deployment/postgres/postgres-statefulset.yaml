@@ -1,7 +1,7 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: postgres-deployment
+  name: postgres-statefulset
 spec:
   replicas: 1
   selector:
@@ -21,9 +21,15 @@ spec:
           ports:
             - containerPort: 5432
           volumeMounts:
-            - name: postgres-persistent-storage
-              mountPath: /data/postgres
-      volumes:
-        - name: postgres-persistent-storage
-          persistentVolumeClaim:
-            claimName: postgres-pvc # Reference the PVC you created
+            - name: postgres-pv-claim
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-pv-claim
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
