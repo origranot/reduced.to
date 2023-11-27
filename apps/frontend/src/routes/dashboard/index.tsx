@@ -16,7 +16,7 @@ export default component$(() => {
     key: {
       displayName: 'Shortened URL',
       classNames: 'w-1/4',
-      format: $((value: string) => {
+      format: $(({ value }) => {
         const url = `https://${process.env.DOMAIN}/${value}`;
         return (
           <a href={url} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
@@ -28,7 +28,7 @@ export default component$(() => {
     url: {
       displayName: 'Destination URL',
       classNames: 'w-1/4',
-      format: $((value: string) => {
+      format: $(({ value }) => {
         return (
           <a href={value} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
             {value}
@@ -40,7 +40,7 @@ export default component$(() => {
       displayName: 'Expiration Time',
       classNames: 'w-1/4',
       sortable: true,
-      format: $((value: string) => {
+      format: $(({ value }) => {
         if (!value || value === '') {
           return 'Never';
         }
@@ -52,7 +52,7 @@ export default component$(() => {
       displayName: 'Created At',
       classNames: 'w-1/4',
       sortable: true,
-      format: $((value: string) => {
+      format: $(({ value }) => {
         return formatDate(new Date(value));
       }),
     },

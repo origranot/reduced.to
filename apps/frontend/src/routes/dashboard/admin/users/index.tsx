@@ -18,7 +18,7 @@ export default component$(() => {
       displayName: 'Created At',
       classNames: 'w-1/4',
       sortable: true,
-      format: $((value: string) => {
+      format: $(({ value }) => {
         return formatDate(new Date(value));
       }),
     },

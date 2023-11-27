@@ -12,17 +12,23 @@ export default component$(() => {
       displayName: 'Created At',
       classNames: 'w-1/4',
       sortable: true,
-      format: $((value: string) => {
+      format: $(({ value }) => {
         return formatDate(new Date(value));
       }),
     },
     actions: {
       displayName: '',
       classNames: 'w-1/4',
-      format: $((value: string) => {
+      format: $(({ row, value }) => {
+        const deleteReport = $(async () => {
+          console.log(row.key);
+        });
+
         return (
           <>
-            <button class="btn btn-sm btn-error">Delete</button>
+            <button class="btn btn-sm btn-error" onClick$={deleteReport}>
+              Delete
+            </button>
           </>
         );
       }),

@@ -24,7 +24,7 @@ export type OptionalHeader = {
   classNames?: string;
   hide?: boolean;
   sortable?: boolean;
-  format?: QRL<(value: string) => JSXNode | string>;
+  format?: QRL<(opts: { row: any; value: string }) => JSXNode | string>;
 };
 
 export type Columns = Record<string, OptionalHeader>;
@@ -182,7 +182,7 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
                   </tr>
                 )}
                 {tableData.value.data.map((row, rowIndex) => (
-                  <tr key={rowIndex}>
+                  <tr key={row.id as string}>
                     {Object.keys(props.columns).map((columnName, idx) => {
                       if (props.columns[columnName].hide) {
                         return;
@@ -192,7 +192,7 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
                       const value = !rawValue ? '' : rawValue.toString();
                       const format = props.columns[columnName].format;
 
-                      return <td key={idx}>{format ? format(value) : value}</td>;
+                      return <td key={idx}>{format ? format({ value, row }) : value}</td>;
                     })}
                   </tr>
                 ))}

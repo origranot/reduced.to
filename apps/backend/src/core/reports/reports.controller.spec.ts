@@ -5,12 +5,12 @@ import { ReportsService } from './reports.service';
 import { PrismaService, Report } from '@reduced.to/prisma';
 import { IPaginationResult } from '../../shared/utils';
 import { AppConfigModule } from '@reduced.to/config';
-import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { IFindAllOptions } from '../entity.service';
 import { SortOrder } from '../../shared/enums/sort-order.enum';
 import { LinksService } from '../links/links.service';
+import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard';
 
 describe('ReportsController', () => {
   let app: INestApplication;
@@ -39,7 +39,7 @@ describe('ReportsController', () => {
         },
       ],
     })
-      .overrideGuard(JwtAuthGuard)
+      .overrideGuard(OptionalJwtAuthGuard)
       .useValue({
         canActivate: () => {
           return true;
@@ -174,7 +174,7 @@ describe('ReportsController', () => {
     });
 
     it('should return 404 if link is not found', async () => {
-      jest.spyOn(linksService, 'findBy').mockResolvedValue({ url: undefined } as any);
+      jest.spyOn(linksService, 'findBy').mockResolvedValue(null);
 
       await request(app.getHttpServer()).post('/reports').send({ link: 'https://reduced.to/abcde', category: 'test' }).expect(404);
     });
