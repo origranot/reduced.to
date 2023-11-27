@@ -112,36 +112,14 @@ cocmd run reduced-to.onboarding --from https://github.com/origranot/reduced.to
 #### step-by-step
 
 - install git
-- install github cli
 - install node
 - install docker 🐳
 - fork and clone the repo 🔥
-  <details><summary>script to run</summary>
 
-  ```shell
-  gh auth login
-
-  # Fork the repository
-  gh repo fork origranot/reduced.to
-
-  # clone the forked repo
-  username=$(gh api user --jq '.login')
-  set +e
-  gh repo clone $username/reduced.to
-
-  # add upstream
-  cd reduced.to
-  git remote add upstream git@github.com:origranot/reduced.to.git
-
-  ```
-
-  </details>
-
-- install the project 👩‍💻
+- setup the project 👩‍💻
 
   ```shell
   cd reduced.to
-  echo installing dependencies
   npm i
 
   # Copy .example.env to .env and fill it properly
