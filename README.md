@@ -93,7 +93,7 @@ Run the onboarding by running the following command:
 ```shell
 cocmd run reduced-to.onboarding --from https://github.com/origranot/reduced.to
 ```
-(see full list of steps here[Onboarding](ONBOARDING.md))
+(see full list of steps [here](ONBOARDING.md))
 
 
 - Run the backend from root folder:
