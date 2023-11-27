@@ -113,12 +113,6 @@ List of things you need to run the project locally and how to install them.
 
 ### 💻 Installation
 
-You complete all these steps by running:
-```shell
-cocmd run reduced-to.onboarding --from https://github.com/origranot/reduced.to
-```
-(see [Onboarding](ONBOARDING.md))
-
 1. [Fork](https://github.com/origranot/reduced.to/fork) / Clone this repository
 2. Install NPM packages
    ```sh
