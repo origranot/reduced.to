@@ -109,7 +109,7 @@ Then run -
 cocmd run reduced-to.onboarding --from https://github.com/origranot/reduced.to
 ```
 
-#### step-by-step
+#### or run it Step-by-Step 👇👇👇
 
 - install git
 - install node
