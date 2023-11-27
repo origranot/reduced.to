@@ -86,21 +86,59 @@ List of frameworks/libraries used to bootstrap the project.
 
 ## 🚀 Getting Started
 
-### 💻 Installation
+:::info Fast onboarding
 
-Run the onboarding by running the following command:
+First, install cocmd [here](https://cocmd.org/docs/intro/)
+then run - 
 
 ```shell
 cocmd run reduced-to.onboarding --from https://github.com/origranot/reduced.to
 ```
+
 (see full list of steps [here](ONBOARDING.md))
 
+:::
 
-- Run the backend from root folder:
+### 📃 Prerequisites
+
+List of things you need to run the project locally and how to install them.
+
+- npm
+  ```sh
+  npm install npm@latest -g
+  ```
+- docker
+  ```sh
+  https://docs.docker.com/get-docker/
+  ```
+
+### 💻 Installation
+
+You complete all these steps by running:
+```shell
+cocmd run reduced-to.onboarding --from https://github.com/origranot/reduced.to
+```
+(see [Onboarding](ONBOARDING.md))
+
+1. [Fork](https://github.com/origranot/reduced.to/fork) / Clone this repository
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+3. Copy `.example.env` to `.env` and fill it properly (see [Configuration](#-configuration))
+4. Make sure you have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
+   ```sh
+   docker run --name reduced_to_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
+   ```
+5. Run Prisma migration from root folder:
+   ```sh
+   npx nx migrate-dev prisma --name=init
+   ```
+6. Run the backend from root folder:
    ```sh
    npx nx serve backend
    ```
-- Run the frontend from root folder:
+7. Run the frontend from root folder:
    ```sh
    npx nx serve frontend
    ```

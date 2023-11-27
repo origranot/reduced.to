@@ -1,13 +1,4 @@
-# reduced-to.onboarding
-
-
-- [Linux, MacOS](#Linux, MacOS)
-
-
-## Linux, MacOS
-onboarding for reduced.to
-
-### 🥇🥇🥇 Welcome to Contributor onboarding 👋👋👋
+# Contributing to reduced.to 👋👋👋
 
 
 Want to contribute to this project? We ❤️ it!
