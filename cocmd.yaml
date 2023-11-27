@@ -99,7 +99,7 @@ automations:
 
             docker run --name reduced_to_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
             
-        - title: run prisma 💻
+        - title: Run Prisma migration from root folder 💻
           runner: shell
           content: |
             cd reduced.to
@@ -117,15 +117,13 @@ automations:
             else
                 echo "vscode could not be found. open reduced.to in your IDE of choice"
             fi
-        - title: see list of issues
-          runner: link
-          content: https://github.com/origranot/reduced.to/issues
 
         - runner: markdown
           content: |
             ## All Done 🥇🥇🥇
             You're all set up to contribute to Reduced.to. 
             
+            list of issues - https://github.com/origranot/reduced.to/issues  
             Join us on discord - https://discord.gg/PzaBZade
 
       

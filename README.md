@@ -86,17 +86,6 @@ List of frameworks/libraries used to bootstrap the project.
 
 ## 🚀 Getting Started
 
-### Fast onboarding
-
-First, install cocmd [here](https://cocmd.org/docs/intro/).  
-Then run - 
-
-```shell
-cocmd run reduced-to.onboarding --from https://github.com/origranot/reduced.to
-```
-
-(see full list of steps [here](ONBOARDING.md))
-
 
 ### 📃 Prerequisites
 
@@ -113,25 +102,71 @@ List of things you need to run the project locally and how to install them.
 
 ### 💻 Installation
 
-1. [Fork](https://github.com/origranot/reduced.to/fork) / Clone this repository
-2. Install NPM packages
-   ```sh
-   npm install
-   ```
-3. Copy `.example.env` to `.env` and fill it properly (see [Configuration](#-configuration))
-4. Make sure you have a local instance of PostgreSQL running on port 5432. If not, you can run it using docker:
-   ```sh
-   docker run --name reduced_to_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
-   ```
-5. Run Prisma migration from root folder:
-   ```sh
-   npx nx migrate-dev prisma --name=init
-   ```
-6. Run the backend from root folder:
+First, install cocmd [here](https://cocmd.org/docs/intro/).  
+Then run - 
+
+```shell
+cocmd run reduced-to.onboarding --from https://github.com/origranot/reduced.to
+```
+
+#### step-by-step
+
+- install git
+- install github cli
+- install node
+- install docker 🐳
+- fork and clone the repo 🔥
+  <details><summary>script to run</summary>
+
+  ```shell
+  gh auth login
+
+  # Fork the repository
+  gh repo fork origranot/reduced.to
+
+  # clone the forked repo
+  username=$(gh api user --jq '.login')
+  set +e
+  gh repo clone $username/reduced.to
+
+  # add upstream
+  cd reduced.to
+  git remote add upstream git@github.com:origranot/reduced.to.git
+
+  ```
+
+  </details>
+
+- install the project 👩‍💻
+
+  ```shell
+  cd reduced.to
+  echo installing dependencies
+  npm i
+
+  # Copy .example.env to .env and fill it properly
+  cp .example.env .env
+
+  ```
+
+- start local db
+
+  ```shell
+  docker run --name reduced_to_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=reduced_to_db -p 5432:5432 -d postgres
+  ```
+
+- Run Prisma migration from root folder 💻
+  ```shell
+  cd reduced.to
+  npx nx migrate-dev prisma --name=init
+
+  ```
+
+- Run the backend from root folder:
    ```sh
    npx nx serve backend
    ```
-7. Run the frontend from root folder:
+- Run the frontend from root folder:
    ```sh
    npx nx serve frontend
    ```
