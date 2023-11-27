@@ -88,8 +88,8 @@ List of frameworks/libraries used to bootstrap the project.
 
 ### Fast onboarding
 
-First, install cocmd [here](https://cocmd.org/docs/intro/)
-then run - 
+First, install cocmd [here](https://cocmd.org/docs/intro/).  
+Then run - 
 
 ```shell
 cocmd run reduced-to.onboarding --from https://github.com/origranot/reduced.to
