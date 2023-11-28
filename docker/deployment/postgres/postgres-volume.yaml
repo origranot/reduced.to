@@ -1,13 +1,22 @@
-kind: PersistentVolumeClaim
 apiVersion: v1
+kind: PersistentVolume
 metadata:
-  name: postgres-pvc
-  labels:
-    app: postgres
+  name: postgres-pv
 spec:
+  capacity:
+    storage: 10Gi
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 10Gi
+  volumeName: postgres-pv
