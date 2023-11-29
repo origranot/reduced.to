@@ -1,11 +1,11 @@
-import { component$, Slot } from '@builder.io/qwik';
+import { component$, Slot, useVisibleTask$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import jwt_decode from 'jwt-decode';
 import { ACCESS_COOKIE_NAME, refreshTokens, REFRESH_COOKIE_NAME, setTokensAsCookies } from '../shared/auth.service';
 import { Navbar } from '../components/navbar/navbar';
 import { VerifyAlert } from '../components/verify-alert/verify-alert';
 import { ACCEPT_COOKIES_COOKIE_NAME, UseCookiesAlert } from '../components/use-cookies-alert/use-cookies-alert';
-import { Footer } from '../components/footer/footer';
+import { Toaster, useToasterProvider } from '../components/toaster/toaster';
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -41,6 +41,8 @@ export default component$(() => {
   const user = useGetCurrentUser();
   const acceptedCookies = useAcceptCookies();
 
+  useToasterProvider();
+
   return (
     <>
       <Navbar />
@@ -48,6 +50,7 @@ export default component$(() => {
       <main class="flex flex-col h-full">
         <Slot />
       </main>
+      <Toaster position='bottom-right' />
       <UseCookiesAlert visible={acceptedCookies.value !== 'true'} />
     </>
   );

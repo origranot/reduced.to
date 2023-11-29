@@ -2,9 +2,13 @@ import { component$, $ } from '@builder.io/qwik';
 import { Columns, TableServerPagination } from '../../../../components/dashboard/table/table-server-pagination';
 import { DocumentHead } from '@builder.io/qwik-city';
 import { formatDate } from '../../../../lib/date-utils';
+import { useToaster } from '../../../../components/toaster/toaster';
 
 export default component$(() => {
+  const toaster = useToaster();
+
   const columns: Columns = {
+    ignore: { displayName: '', classNames: 'w-1/9' },
     key: { displayName: 'Shortened URL', classNames: 'w-1/4' },
     url: { displayName: 'Destination URL', classNames: 'w-1/4' },
     category: { displayName: 'Category', classNames: 'w-1/4' },
@@ -20,14 +24,24 @@ export default component$(() => {
       displayName: '',
       classNames: 'w-1/4',
       format: $(({ row, value }) => {
-        const deleteReport = $(async () => {
+        const deleteReport = $(async (deleteLink = false) => {
           console.log(row.key);
+          toaster.add({
+            title: 'Link deleted',
+            description: 'The link has been deleted successfully',
+            type: 'warning',
+          });
         });
 
         return (
           <>
-            <button class="btn btn-sm btn-error" onClick$={deleteReport}>
-              Delete
+            <button
+              class="btn btn-sm btn-error"
+              onClick$={async () => {
+                await deleteReport();
+              }}
+            >
+              Delete Link
             </button>
           </>
         );
