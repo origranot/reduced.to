@@ -29,11 +29,28 @@ describe('filterBuilder', () => {
   });
 
   it('should return an array of objects with the correct structure', () => {
-    const fields = ['field1', 'field2'];
+    const fields = {
+      field1: true,
+      field2: true,
+    };
     const filter = 'test';
 
     const result = filterBuilder(fields, filter);
 
     expect(result).toEqual([{ field1: { contains: filter } }, { field2: { contains: filter } }]);
+  });
+
+  it('should return an array of objects with the correct structure with nested fields', () => {
+    const fields = {
+      field1: {
+        field2: true,
+      },
+      field3: true,
+    };
+    const filter = 'test';
+
+    const result = filterBuilder(fields, filter);
+
+    expect(result).toEqual([{ field1: { field2: { contains: filter } } }, { field3: { contains: filter } }]);
   });
 });

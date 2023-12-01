@@ -50,7 +50,7 @@ export interface LinkModalProps {
 }
 
 export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
-  const inputValue = useSignal<string>('');
+  const inputValue = useSignal('');
 
   const action = useCreateLink();
 

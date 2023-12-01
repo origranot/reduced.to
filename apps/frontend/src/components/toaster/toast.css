@@ -1,0 +1,41 @@
+@keyframes leaveAnimation {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes enterAnimation {
+  0% {
+    opacity: 0;
+    transform: var(--start-transform);
+  }
+  100% {
+    opacity: 1;
+    transform: var(--end-transform);
+  }
+}
+
+@media (min-width: 640px) {
+  .animated-enter {
+    --start-transform: translateY(100%);
+    --end-transform: translateY(0);
+    animation: enterAnimation 0.2s ease-out;
+  }
+}
+
+@media (max-width: 639px) {
+  .animated-enter {
+    --start-transform: translateY(-100%);
+    --end-transform: translateY(0);
+    animation: enterAnimation 0.2s ease-out;
+  }
+}
+
+.animated-leave {
+  animation: leaveAnimation 0.4s ease-in;
+}

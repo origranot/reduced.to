@@ -27,7 +27,7 @@ model User {
 
 model Link {
   id             String    @id @default(uuid())
-  key            String
+  key            String    @unique // Unique key of the link
   url            String
   favicon        String?
   password       String?
@@ -36,8 +36,21 @@ model Link {
   description    String?
   expirationTime DateTime?
   createdAt      DateTime  @default(now())
+  Report         Report[]
 
+  @@index(userId)
   @@index(key)
+}
+
+model Report {
+  id        String   @id @default(uuid())
+  link      Link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  linkId    String
+  category  String?
+  createdAt DateTime @default(now())
+
+  @@index(linkId)
+  @@index(category)
 }
 
 enum Role {

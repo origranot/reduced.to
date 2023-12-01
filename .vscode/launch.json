@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug backend",
+      "request": "launch",
+      "type": "node",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["nx", "serve", "backend"],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/apps/backend"
+    }
+  ]
+}
