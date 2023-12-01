@@ -4,12 +4,21 @@ import { HiPlusOutline } from '@qwikest/icons/heroicons';
 import { Columns, TableServerPagination } from '../../components/dashboard/table/table-server-pagination';
 import { LINK_MODAL_ID, LinkModal } from '../../components/dashboard/links/link-modal/link-modal';
 import { formatDate } from '../../lib/date-utils';
+import { useToaster } from '../../components/toaster/toaster';
+import { getLinkFromKey } from '../../components/temporary-links/utils';
 
 export default component$(() => {
   const refetchSignal = useSignal<number>(0);
+  const toaster = useToaster();
 
-  const refetch = $(() => {
+  const onSubmitHandler = $(() => {
     refetchSignal.value++;
+
+    toaster.add({
+      title: 'Link created',
+      description: 'Link created successfully and ready to use!',
+      type: 'info',
+    });
   });
 
   const columns: Columns = {
@@ -17,10 +26,10 @@ export default component$(() => {
       displayName: 'Shortened URL',
       classNames: 'w-1/4',
       format: $(({ value }) => {
-        const url = `https://${process.env.DOMAIN}/${value}`;
+        const url = getLinkFromKey(value as string);
         return (
           <a href={url} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
-            {url}
+            {process.env.DOMAIN}/{value}
           </a>
         );
       }),
@@ -60,7 +69,7 @@ export default component$(() => {
 
   return (
     <>
-      <LinkModal onSubmitHandler={refetch} />
+      <LinkModal onSubmitHandler={onSubmitHandler} />
       <div class="shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl w-full p-5">
         <TableServerPagination endpoint={`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/links`} columns={columns} refetch={refetchSignal}>
           <button class="btn btn-primary" onClick$={() => (document.getElementById(LINK_MODAL_ID) as any).showModal()}>

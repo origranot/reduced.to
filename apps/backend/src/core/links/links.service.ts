@@ -2,17 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { EntityService } from '../entity.service';
 import { Link, Prisma, PrismaService } from '@reduced.to/prisma';
 
-const MODEL_NAME = 'link';
-const FILTER_FIELDS: (keyof Prisma.LinkWhereInput)[] = ['url', 'key'];
-const SELECT_FIELDS: Partial<Record<keyof Prisma.LinkWhereInput, boolean>> = {
-  id: true,
-  url: true,
-  key: true,
-  description: true,
-  expirationTime: true,
-  createdAt: true,
-};
-
 @Injectable()
 export class LinksService extends EntityService<Link> {
   constructor(prismaService: PrismaService) {
@@ -20,15 +9,25 @@ export class LinksService extends EntityService<Link> {
   }
 
   get model(): string {
-    return MODEL_NAME;
+    return 'link';
   }
 
   get selectFields(): Partial<Record<keyof Prisma.LinkWhereInput, boolean>> {
-    return SELECT_FIELDS;
+    return {
+      id: true,
+      url: true,
+      key: true,
+      description: true,
+      expirationTime: true,
+      createdAt: true,
+    };
   }
 
-  get filterFields(): (keyof Prisma.LinkWhereInput)[] {
-    return FILTER_FIELDS;
+  get filterFields(): Partial<Record<keyof Prisma.LinkWhereInput, boolean>> {
+    return {
+      url: true,
+      key: true,
+    };
   }
 
   findBy(opts: Prisma.LinkWhereInput): Promise<Link> {
@@ -37,9 +36,11 @@ export class LinksService extends EntityService<Link> {
     });
   }
 
-  deleteManyBy(opts: Prisma.LinkWhereInput) {
-    return this.prismaService.link.deleteMany({
-      where: opts,
+  delete(id: string): Promise<Link> {
+    return this.prismaService.link.delete({
+      where: {
+        id,
+      },
     });
   }
 }

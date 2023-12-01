@@ -1,7 +1,8 @@
 import Notify from '../../assets/svg/notify.svg?jsx';
-import { component$ } from '@builder.io/qwik';
+import { component$, useSignal, $ } from '@builder.io/qwik';
 import { DocumentHead, Form, globalAction$, z, zod$ } from '@builder.io/qwik-city';
 import { isValidURL, normalizeUrl } from '../../utils';
+import { useToaster } from '../../components/toaster/toaster';
 
 const VALID_CATEGORIES = ['Phishing', 'Malware', 'Child abuse', 'Violence', 'Spam', 'Illegal content', 'Other'];
 
@@ -51,6 +52,15 @@ export const useReport = globalAction$(
 
 export default component$(() => {
   const action = useReport();
+  const toaster = useToaster();
+
+  const linkValue = useSignal('');
+  const categoryRef = useSignal<Element>();
+
+  const clearValues = $(() => {
+    linkValue.value = '';
+    categoryRef.value!.querySelector('option')!.selected = true;
+  });
 
   return (
     <div class="h-[calc(100vh-64px)]">
@@ -63,7 +73,22 @@ export default component$(() => {
             action. Thank you for helping us keep Reduced.to safe.
           </p>
           <div class="divider"></div>
-          <Form action={action} class="form-control">
+          <Form
+            action={action}
+            onSubmitCompleted$={() => {
+              if (action.status !== 200) {
+                return;
+              }
+
+              clearValues();
+
+              toaster.add({
+                title: 'Report submitted',
+                description: 'Report has been submitted successfully!',
+              });
+            }}
+            class="form-control"
+          >
             <label class="join input-group sm:inline-flex block w-full">
               <div class="form-control w-full">
                 <input
@@ -71,6 +96,10 @@ export default component$(() => {
                   type="text"
                   placeholder="reduced.to/example"
                   class="input input-bordered join-item focus:outline-0 w-full sm:!rounded-e-none !rounded-e-lg"
+                  onInput$={(ev: InputEvent) => {
+                    linkValue.value = (ev.target as HTMLInputElement).value;
+                  }}
+                  value={linkValue.value}
                 />
                 {action.value?.fieldErrors?.link && (
                   <label class="label">
@@ -82,6 +111,7 @@ export default component$(() => {
                 <select
                   name="category"
                   class="select join-item select-bordered focus:outline-0 sm:inline-flex block sm:!rounded-none !rounded-lg"
+                  ref={categoryRef}
                 >
                   <option disabled selected>
                     Select a reason

@@ -1,4 +1,4 @@
-import { component$, useContext, useId, useSignal, useStylesScoped$, useTask$ } from '@builder.io/qwik';
+import { component$, useContext, useId, useSignal, useStylesScoped$, useTask$, useVisibleTask$ } from '@builder.io/qwik';
 import { ToasterContext } from './toaster';
 import { HiXMarkOutline } from '@qwikest/icons/heroicons';
 import { flip } from './utils';
@@ -24,9 +24,12 @@ export const Toast = component$((props: ToastParams) => {
   const hovered = useSignal(false);
   const closeClicked = useSignal(false); // Signal to track close button click
 
-  useTask$(({ track }) => {
-    track(() => props.duration);
+  useVisibleTask$(({ track }) => {
     track(() => closeClicked.value);
+
+    setTimeout(() => {
+      closeClicked.value = true;
+    }, props.duration);
 
     const remove = () => {
       flip(toaster.value);
@@ -38,12 +41,9 @@ export const Toast = component$((props: ToastParams) => {
       setTimeout(remove, 300);
     };
 
-    if (!props.duration || closeClicked.value) {
+    if (closeClicked.value) {
       return leave();
     }
-
-    const timeout = setTimeout(leave, props.duration);
-    return () => clearTimeout(timeout);
   });
 
   const toastStyles = getToastStylesByType(props.type!);

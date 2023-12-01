@@ -2,16 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { EntityService } from '../entity.service';
 import { Prisma, PrismaService, User } from '@reduced.to/prisma';
 
-const MODEL_NAME = 'user';
-const FILTER_FIELDS: (keyof Prisma.UserWhereInput)[] = ['email', 'name'];
-const SELECT_FIELDS: Record<string, boolean> = {
-  id: true,
-  name: true,
-  email: true,
-  verified: true,
-  createdAt: true,
-};
-
 @Injectable()
 export class UsersService extends EntityService<User> {
   constructor(prismaService: PrismaService) {
@@ -19,15 +9,24 @@ export class UsersService extends EntityService<User> {
   }
 
   get model(): string {
-    return MODEL_NAME;
+    return 'user';
   }
 
-  get selectFields(): Record<keyof Prisma.UserWhereInput, boolean> {
-    return SELECT_FIELDS;
+  get selectFields(): Partial<Record<keyof Prisma.UserWhereInput, boolean>> {
+    return {
+      id: true,
+      name: true,
+      email: true,
+      verified: true,
+      createdAt: true,
+    };
   }
 
-  get filterFields(): (keyof Prisma.UserWhereInput)[] {
-    return FILTER_FIELDS;
+  get filterFields(): Partial<Record<keyof Prisma.UserWhereInput, boolean>> {
+    return {
+      email: true,
+      name: true,
+    };
   }
 
   async count(where?: Prisma.UserWhereInput): Promise<number> {

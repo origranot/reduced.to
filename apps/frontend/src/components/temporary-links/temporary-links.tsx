@@ -9,7 +9,7 @@ import {
 import { Link, globalAction$, server$ } from '@builder.io/qwik-city';
 import { LuLoader } from '@qwikest/icons/lucide';
 import { copyToClipboard, normalizeUrl } from '../../utils';
-import { getFavicon } from './get-favicon';
+import { getFavicon, getLinkFromKey } from './utils';
 import { QR_CODE_DIALOG_ID, QrCodeDialog } from './qr-code-dialog/qr-code-dialog';
 import { LinkPlaceholder } from './link-placeholder/link-placeholder';
 
@@ -153,68 +153,71 @@ export const TemporaryLinks = component$(() => {
           </button>
         </div>
         <div class="mt-2 grid gap-2">
-          {links?.value.map((link, index) => (
-            <li
-              class="flex max-w-md animate-fade items-center justify-between rounded-md bg-base-100 dark:bg-slate-800 p-3 shadow-lg border border-base-200"
-              key={index}
-            >
-              <div class="flex items-center space-x-3">
-                <img
-                  alt={link?.url}
-                  loading="lazy"
-                  width="20"
-                  height="20"
-                  decoding="async"
-                  data-nimg="1"
-                  class="pointer-events-none h-10 w-10 rounded-full blur-0"
-                  src={link?.favicon}
-                />
-                <div class="text-left">
-                  <a class="font-semibold" href={`${process.env.DOMAIN}/${link?.key}`} target="_blank" rel="noreferrer">
-                    {`${process.env.DOMAIN}/${link?.key}`}
-                  </a>
-                  <p class="text-sm text-gray-400 line-clamp-1 text-left">
-                    {link?.url.length > 30 ? `${link?.url.substring(0, 30)}...` : link?.url}
-                  </p>
+          {links?.value.map((link, index) => {
+            const hrefLink = getLinkFromKey(link?.key);
+
+            return (
+              <li
+                class="flex max-w-md animate-fade items-center justify-between rounded-md bg-base-100 dark:bg-slate-800 p-3 shadow-lg border border-base-200"
+                key={index}
+              >
+                <div class="flex items-center space-x-3">
+                  <img
+                    alt={link?.url}
+                    loading="lazy"
+                    width="20"
+                    height="20"
+                    decoding="async"
+                    data-nimg="1"
+                    class="pointer-events-none h-10 w-10 rounded-full blur-0"
+                    src={link?.favicon}
+                  />
+                  <div class="text-left">
+                    <a class="font-semibold" href={hrefLink} target="_blank" rel="noreferrer">
+                      {process.env.DOMAIN}/{link?.key}
+                    </a>
+                    <p class="text-sm text-gray-400 line-clamp-1 text-left">
+                      {link?.url.length > 30 ? `${link?.url.substring(0, 30)}...` : link?.url}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div class="flex items-center">
-                <button
-                  class="rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-700 focus:outline-none focus:ring focus:border-blue-300 bg-gray-200 dark:bg-gray-600 mr-2 pb-0"
-                  onClick$={async () => {
-                    const url = `${process.env.DOMAIN}/${link?.key}`;
-                    copyToClipboard(normalizeUrl(url));
-                    copiedLinkKey.value = link.key;
-                    setTimeout(() => (copiedLinkKey.value = ''), 2000); // Reset icon after 2 seconds (adjust timing as needed)
-                  }}
-                >
-                  <span class="sr-only">Copy</span>
-                  <label class="swap swap-rotate">
-                    <HiClipboardDocumentOutline class={`${copiedLinkKey.value === link.key ? 'swap-on' : 'swap-off'} h-5 w-5`} />
-                    <HiCheckOutline class={`${copiedLinkKey.value === link.key ? 'swap-off' : 'swap-on'} h-5 w-5`} />
-                  </label>
-                </button>
-                <button
-                  class="rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-700 focus:outline-none focus:ring focus:border-blue-300 bg-gray-200 dark:bg-gray-600 mr-2"
-                  onClick$={() => {
-                    interactedLink.value = link;
-                    (document.getElementById(QR_CODE_DIALOG_ID) as any).showModal();
-                  }}
-                >
-                  <HiQrCodeOutline class="h-5 w-5" />
-                </button>
-                <button
-                  class="rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-700 focus:outline-none focus:ring focus:border-blue-300 bg-gray-200 dark:bg-gray-600"
-                  onClick$={async () => {
-                    deleteLink(index);
-                  }}
-                >
-                  <span class="sr-only">Delete</span>
-                  <HiTrashOutline class="h-5 w-5" />
-                </button>
-              </div>
-            </li>
-          ))}
+                <div class="flex items-center">
+                  <button
+                    class="rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-700 focus:outline-none focus:ring focus:border-blue-300 bg-gray-200 dark:bg-gray-600 mr-2 pb-0"
+                    onClick$={async () => {
+                      copyToClipboard(normalizeUrl(hrefLink));
+                      copiedLinkKey.value = link.key;
+                      setTimeout(() => (copiedLinkKey.value = ''), 2000); // Reset icon after 2 seconds (adjust timing as needed)
+                    }}
+                  >
+                    <span class="sr-only">Copy</span>
+                    <label class="swap swap-rotate">
+                      <HiClipboardDocumentOutline class={`${copiedLinkKey.value === link.key ? 'swap-on' : 'swap-off'} h-5 w-5`} />
+                      <HiCheckOutline class={`${copiedLinkKey.value === link.key ? 'swap-off' : 'swap-on'} h-5 w-5`} />
+                    </label>
+                  </button>
+                  <button
+                    class="rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-700 focus:outline-none focus:ring focus:border-blue-300 bg-gray-200 dark:bg-gray-600 mr-2"
+                    onClick$={() => {
+                      interactedLink.value = link;
+                      (document.getElementById(QR_CODE_DIALOG_ID) as any).showModal();
+                    }}
+                  >
+                    <HiQrCodeOutline class="h-5 w-5" />
+                  </button>
+                  <button
+                    class="rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-700 focus:outline-none focus:ring focus:border-blue-300 bg-gray-200 dark:bg-gray-600"
+                    onClick$={async () => {
+                      deleteLink(index);
+                    }}
+                  >
+                    <span class="sr-only">Delete</span>
+                    <HiTrashOutline class="h-5 w-5" />
+                  </button>
+                </div>
+              </li>
+            );
+          })}
           {[...Array(MAX_NUMBER_OF_LINKS - links.value.length)].map((_, index) => (
             <LinkPlaceholder key={index} opacity={Math.max(1 - (index * 20) / 100, 0.2)} />
           ))}

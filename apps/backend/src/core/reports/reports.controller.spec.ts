@@ -35,6 +35,7 @@ describe('ReportsController', () => {
           provide: LinksService,
           useValue: {
             findBy: jest.fn(),
+            delete: jest.fn(),
           },
         },
       ],
@@ -68,8 +69,8 @@ describe('ReportsController', () => {
 
   describe('GET /reports', () => {
     const MOCKED_REPORTS: Partial<Report>[] = [
-      { id: '1', key: 'abcde', url: 'https://google.com' },
-      { id: '2', key: 'qwert', url: 'https://github.com' },
+      { id: '1', category: 'test' },
+      { id: '2', category: 'test2' },
     ];
 
     const MOCK_FIND_ALL_RESULT: IPaginationResult<Report> = {
@@ -223,15 +224,38 @@ describe('ReportsController', () => {
     });
 
     it('should return 200 if report is deleted successfully', async () => {
-      jest.spyOn(linksService, 'findBy').mockResolvedValue({ url: 'https://google.com' } as any);
+      jest.spyOn(reportsService, 'findById').mockResolvedValue({ link: { id: '1' }, category: 1 } as any);
 
       await request(app.getHttpServer()).delete('/reports/1').expect(200);
     });
 
     it('should return 404 if report is not found', async () => {
-      jest.spyOn(linksService, 'findBy').mockResolvedValue(null);
+      jest.spyOn(reportsService, 'findById').mockResolvedValue(null);
 
       await request(app.getHttpServer()).delete('/reports/1').expect(404);
+    });
+
+    it('should delete link if deleteLink query parameter is set to true', async () => {
+      jest.spyOn(reportsService, 'findById').mockResolvedValue({ link: { id: '1' }, category: 1 } as any);
+
+      await request(app.getHttpServer()).delete('/reports/1?deleteLink=true').expect(200);
+      expect(linksService.delete).toHaveBeenCalledWith('1');
+    });
+
+    it('should not delete link if deleteLink query parameter is not set', async () => {
+      jest.spyOn(reportsService, 'findById').mockResolvedValue({ link: { id: '1' }, category: 1 } as any);
+
+      await request(app.getHttpServer()).delete('/reports/1').expect(200);
+      expect(linksService.delete).not.toHaveBeenCalled();
+      expect(reportsService.delete).toHaveBeenCalled();
+    });
+
+    it('should not delete link if deleteLink query parameter is set to false', async () => {
+      jest.spyOn(reportsService, 'findById').mockResolvedValue({ link: { id: '1' }, category: 1 } as any);
+
+      await request(app.getHttpServer()).delete('/reports/1?deleteLink=false').expect(200);
+      expect(linksService.delete).not.toHaveBeenCalled();
+      expect(reportsService.delete).toHaveBeenCalled();
     });
   });
 });

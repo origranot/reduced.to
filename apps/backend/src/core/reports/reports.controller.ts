@@ -1,8 +1,7 @@
-import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Post, Query, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
+import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { IPaginationResult, calculateSkip } from '../../shared/utils';
-import { Report, Role } from '@reduced.to/prisma';
+import { Link, Report, Role } from '@reduced.to/prisma';
 import { Roles } from '../../shared/decorators';
 import { ReportsService } from './reports.service';
 import { FindAllQueryDto, CreateReportDto } from './dto';
@@ -47,25 +46,22 @@ export class ReportsController {
 
     return this.reportsService.create({
       key,
-      url: response.url,
       category,
     });
   }
 
   @Delete(':id')
   @Roles(Role.ADMIN)
-  async delete(@Query('id') id: string): Promise<Report> {
-    const report = await this.reportsService.findBy({
-      id,
-    });
+  async delete(@Param('id') id: string, @Query('deleteLink') deleteLink?: boolean): Promise<any> {
+    const report = await this.reportsService.findById(id);
 
     if (!report) {
       throw new NotFoundException('This report does not exist.');
     }
 
-    const deleteLink = this.linksService.deleteManyBy({
-      key:
-    })
+    if (deleteLink) {
+      return this.linksService.delete(report.link.id);
+    }
 
     return this.reportsService.delete(id);
   }

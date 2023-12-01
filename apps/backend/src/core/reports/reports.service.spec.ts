@@ -66,8 +66,8 @@ describe('ReportsService', () => {
           take: findAllOptions.limit,
           where: {
             OR: [
-              { url: { contains: findAllOptions.filter } },
-              { key: { contains: findAllOptions.filter } },
+              { link: { key: { contains: findAllOptions.filter } } },
+              { link: { url: { contains: findAllOptions.filter } } },
               { category: { contains: findAllOptions.filter } },
             ],
           },
@@ -107,12 +107,15 @@ describe('ReportsService', () => {
   describe('create', () => {
     it('should call create with correct parameters', async () => {
       const createOptions = {
-        key: 'test',
-        url: 'https://reduced.to/test',
         category: 'test',
+        link: {
+          connect: {
+            key: 'test',
+          },
+        },
       };
 
-      await service.create(createOptions);
+      await service.create({ key: 'test', ...createOptions });
       expect(prismaService.report.create).toHaveBeenCalledWith(
         expect.objectContaining({
           data: createOptions,
