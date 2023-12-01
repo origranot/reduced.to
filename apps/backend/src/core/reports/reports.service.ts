@@ -71,6 +71,7 @@ export class ReportsService extends EntityService<Report> {
 
   isUrlReportable(url: string): boolean {
     const domain = this.config.getConfig().front.domain.replace(/\./g, '\\.');
+    // eslint-disable-next-line no-useless-escape
     const regexPattern = new RegExp(`^https?:\/\/${domain}\/[\\w\\-\\.]+$`);
 
     return regexPattern.test(url);
