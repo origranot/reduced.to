@@ -9,3 +9,14 @@ export const getFavicon = async (url: string) => {
     return UNKNOWN_FAVICON;
   }
 };
+
+export const getLinkFromKey = (key: string) => {
+  const suffix = `${process.env.DOMAIN}/${key}`;
+
+  // This is a temporary solution until we have a better way to handle this, maybe use env file? 🤔
+  if (process.env.DOMAIN === 'localhost') {
+    return `http://${process.env.DOMAIN}:4200/${key}`;
+  }
+
+  return `https://${suffix}`;
+};

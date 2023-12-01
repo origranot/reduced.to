@@ -1,6 +1,7 @@
 import { component$, $, useVisibleTask$ } from '@builder.io/qwik';
 import QRCode from 'qrcode';
 import { HiArrowDownTrayOutline } from '@qwikest/icons/heroicons';
+import { getLinkFromKey } from '../utils';
 
 export const QR_CODE_DIALOG_ID = 'QR_MODAL';
 
@@ -21,7 +22,7 @@ export const QrCodeDialog = component$((props: QrCodeDialogProps) => {
 
   useVisibleTask$(({ track }) => {
     track(() => link);
-    const url = `${process.env.DOMAIN}/${link?.key}`;
+    const url = getLinkFromKey(link.key!);
     generateQRCode(url);
   });
 

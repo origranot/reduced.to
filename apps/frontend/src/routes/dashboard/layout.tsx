@@ -2,7 +2,7 @@ import { component$, Slot, useSignal, $ } from '@builder.io/qwik';
 import { Link, RequestHandler, useLocation } from '@builder.io/qwik-city';
 import { validateAccessToken } from '../../shared/auth.service';
 import { Role, useGetCurrentUser } from '../layout';
-import { LuLayoutDashboard, LuLineChart, LuLink, LuShield, LuSlidersHorizontal, LuUsers } from '@qwikest/icons/lucide';
+import { LuAlertOctagon, LuLayoutDashboard, LuLineChart, LuLink, LuShield, LuSlidersHorizontal, LuUsers } from '@qwikest/icons/lucide';
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   const validAccessToken = await validateAccessToken(cookie);
@@ -72,6 +72,16 @@ export default component$(() => {
                       >
                         <LuUsers class="w-5 h-5" />
                         <span class="font-medium">Users</span>
+                      </Link>
+                    </li>
+                    <li class="py-1 mt-1">
+                      <Link
+                        href="/dashboard/admin/reports"
+                        class={`${location.url.pathname.slice(0, -1) === '/dashboard/admin/reports' ? 'active' : ''}`}
+                        onClick$={toggleDrawer}
+                      >
+                        <LuAlertOctagon class="w-5 h-5" />
+                        <span class="font-medium">Reports</span>
                       </Link>
                     </li>
                   </ul>

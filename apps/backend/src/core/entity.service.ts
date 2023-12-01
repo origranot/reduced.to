@@ -7,7 +7,7 @@ export abstract class EntityService<Entity> {
   constructor(readonly prismaService: PrismaService) {}
 
   abstract get model(): string;
-  abstract get filterFields(): string[];
+  abstract get filterFields(): Record<keyof any, any>;
   abstract get selectFields(): Record<keyof any, boolean>;
 
   findAll = async (options: IFindAllOptions): Promise<IPaginationResult<Entity>> => {
