@@ -7,6 +7,7 @@ import { ReportsService } from './reports.service';
 import { FindAllQueryDto, CreateReportDto } from './dto';
 import { LinksService } from '../links/links.service';
 import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard';
+import { AppCacheService } from '../../cache/cache.service';
 
 @UseGuards(OptionalJwtAuthGuard, RolesGuard)
 @Controller({
@@ -14,7 +15,11 @@ import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard'
   version: '1',
 })
 export class ReportsController {
-  constructor(private readonly reportsService: ReportsService, private readonly linksService: LinksService) {}
+  constructor(
+    private readonly reportsService: ReportsService,
+    private readonly linksService: LinksService,
+    private readonly cacheService: AppCacheService
+  ) {}
 
   @Get()
   @Roles(Role.ADMIN)
@@ -60,6 +65,9 @@ export class ReportsController {
     }
 
     if (deleteLink) {
+      // Should delete the link from the cache as well
+      await this.cacheService.del(report.link?.key);
+
       return this.linksService.delete(report.link.id);
     }
 
