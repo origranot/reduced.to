@@ -3,6 +3,7 @@ import { HiXMarkOutline } from '@qwikest/icons/heroicons';
 import { Form, globalAction$, zod$ } from '@builder.io/qwik-city';
 import { z } from 'zod';
 import { ACCESS_COOKIE_NAME } from '../../../../shared/auth.service';
+import { normalizeUrl } from '../../../../utils';
 
 export const LINK_MODAL_ID = 'link-modal';
 
@@ -15,7 +16,7 @@ const useCreateLink = globalAction$(
         Authorization: `Bearer ${cookie.get(ACCESS_COOKIE_NAME)?.value}`,
       },
       body: JSON.stringify({
-        url,
+        url: normalizeUrl(url),
         expirationTime: null, // forever
       }),
     });
@@ -41,7 +42,9 @@ const useCreateLink = globalAction$(
       .min(1, {
         message: "The url field can't be empty.",
       })
-      .url("The url you've entered is not valid..."),
+      .regex(/^(?:https?:\/\/)?(?:[\w-]+\.)+[a-z]{2,}(?::\d{1,5})?(?:\/\S*)?$/, {
+        message: "The url you've entered is not valid...",
+      }),
   })
 );
 

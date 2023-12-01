@@ -8,6 +8,7 @@ export class AppCacheService {
 
   set = this.cacheManager.set;
   get = this.cacheManager.get;
+  del = this.cacheManager.del;
 
   getCacheManager = this.cacheManager;
 }

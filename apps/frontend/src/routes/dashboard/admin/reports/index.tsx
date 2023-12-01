@@ -101,7 +101,7 @@ export default component$(() => {
 
   return (
     <>
-      <div class="rounded-xl w-full p-5">
+      <div class="shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl w-full p-5">
         <TableServerPagination endpoint={`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/reports`} refetch={refetchSignal} columns={columns} />
       </div>
     </>
