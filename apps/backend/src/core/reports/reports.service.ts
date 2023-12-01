@@ -31,6 +31,14 @@ export class ReportsService extends EntityService<Report> {
     return FILTER_FIELDS;
   }
 
+  findLinkByReportId(id: string): Promise<Report> {
+    return this.prismaService.report.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
   create({ key, url, category }: { key: string; url: string; category: string }): Promise<Report> {
     return this.prismaService.report.create({
       data: {

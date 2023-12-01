@@ -50,7 +50,7 @@ export default component$(() => {
       <main class="flex flex-col h-full">
         <Slot />
       </main>
-      <Toaster position='bottom-right' />
+      <Toaster />
       <UseCookiesAlert visible={acceptedCookies.value !== 'true'} />
     </>
   );

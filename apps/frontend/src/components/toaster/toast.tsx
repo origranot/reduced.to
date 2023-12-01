@@ -1,10 +1,10 @@
-import { component$, useContext, useId, useSignal, useStyles$, useTask$, useVisibleTask$ } from '@builder.io/qwik';
-import styles from './toaster.css?inline';
+import { component$, useContext, useId, useSignal, useStylesScoped$, useTask$ } from '@builder.io/qwik';
 import { ToasterContext } from './toaster';
-import { HiCheckCircleOutline, HiExclamationCircleOutline, HiInformationCircleOutline, HiXMarkOutline } from '@qwikest/icons/heroicons';
+import { HiXMarkOutline } from '@qwikest/icons/heroicons';
 import { flip } from './utils';
+import styles from './toast.css?inline';
 
-export type ToastType = 'error' | 'info' | 'success' | 'warning';
+export type ToastType = 'error' | 'info';
 
 export interface ToastParams {
   id: string;
@@ -12,31 +12,36 @@ export interface ToastParams {
   title?: string;
   description?: string;
   type?: ToastType;
+  class?: string;
 }
 
 export const Toast = component$((props: ToastParams) => {
-  useStyles$(styles);
+  useStylesScoped$(styles);
+
   const { toaster, toasts } = useContext(ToasterContext);
   const itemId = useId();
   const leaving = useSignal(false);
   const hovered = useSignal(false);
-
-  useVisibleTask$(({ track }) => {
-    track(() => hovered.value);
-    console.log(hovered.value);
-  });
+  const closeClicked = useSignal(false); // Signal to track close button click
 
   useTask$(({ track }) => {
     track(() => props.duration);
+    track(() => closeClicked.value);
+
     const remove = () => {
       flip(toaster.value);
       toasts.value = toasts.value.filter((t) => t.id !== props.id);
     };
+
     const leave = () => {
       leaving.value = true;
       setTimeout(remove, 300);
     };
-    if (!props.duration) return leave();
+
+    if (!props.duration || closeClicked.value) {
+      return leave();
+    }
+
     const timeout = setTimeout(leave, props.duration);
     return () => clearTimeout(timeout);
   });
@@ -46,23 +51,21 @@ export const Toast = component$((props: ToastParams) => {
   return (
     <li
       id={itemId}
-      class={`${
-        leaving.value ? 'leave' : ''
+      class={`${props.class && props.class} ${
+        leaving.value ? 'animated-leave' : 'animated-enter'
       } relative flex w-full items-center justify-between space-x-2 border overflow-hidden p-4 rounded-md shadow-sm text-left ${toastStyles}`}
       onMouseEnter$={() => (hovered.value = true)}
       onMouseLeave$={() => (hovered.value = false)}
     >
-      <div class="grid gap-1">
-        <div class="text-sm font-semibold">{props.title}</div>
-        {props.description && <div class="text-sm opacity-90">{props.description}</div>}
+      <div class="grid gap-1 mr-20">
+        {props.title && <span class="text-sm font-semibold">{props.title}</span>}
+        {props.description && <span class="text-sm opacity-90">{props.description}</span>}
       </div>
       {/* Close button */}
       <button
         type="button"
         class={`absolute right-1 top-1 rounded-md p-1 ${hovered.value ? 'opacity-100' : 'opacity-0'} transition-opacity`}
-        onClick$={() => {
-          toasts.value = toasts.value.filter((t) => t.id !== props.id);
-        }}
+        onClick$={() => (closeClicked.value = true)}
       >
         <HiXMarkOutline class="h-4 w-4" />
       </button>
@@ -72,15 +75,9 @@ export const Toast = component$((props: ToastParams) => {
 
 const getToastStylesByType = (type: ToastType) => {
   switch (type) {
-    case 'success':
-      return 'bg-success';
-    case 'warning':
-      return 'bg-warning';
-    case 'info':
-      return 'bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700';
     case 'error':
-      return 'bg-error';
+      return 'bg-error border-error';
     default:
-      return 'bg-info';
+      return 'bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700';
   }
 };

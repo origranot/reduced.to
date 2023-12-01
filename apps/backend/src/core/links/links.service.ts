@@ -36,4 +36,10 @@ export class LinksService extends EntityService<Link> {
       where: opts,
     });
   }
+
+  deleteManyBy(opts: Prisma.LinkWhereInput) {
+    return this.prismaService.link.deleteMany({
+      where: opts,
+    });
+  }
 }

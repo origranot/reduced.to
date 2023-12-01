@@ -55,13 +55,17 @@ export class ReportsController {
   @Delete(':id')
   @Roles(Role.ADMIN)
   async delete(@Query('id') id: string): Promise<Report> {
-    const response = await this.linksService.findBy({
+    const report = await this.reportsService.findBy({
       id,
     });
 
-    if (!response) {
+    if (!report) {
       throw new NotFoundException('This report does not exist.');
     }
+
+    const deleteLink = this.linksService.deleteManyBy({
+      key:
+    })
 
     return this.reportsService.delete(id);
   }

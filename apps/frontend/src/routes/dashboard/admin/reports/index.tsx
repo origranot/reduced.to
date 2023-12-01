@@ -24,12 +24,14 @@ export default component$(() => {
       displayName: '',
       classNames: 'w-1/4',
       format: $(({ row, value }) => {
-        const deleteReport = $(async (deleteLink = false) => {
-          console.log(row.key);
+        const deleteReport = $(async () => {
+          const response = await fetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/reports/${row.id}`, {
+            method: 'DELETE',
+          });
+
           toaster.add({
             title: 'Link deleted',
             description: 'The link has been deleted successfully',
-            type: 'warning',
           });
         });
 
