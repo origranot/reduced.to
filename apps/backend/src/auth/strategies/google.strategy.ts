@@ -20,7 +20,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
     const { name, emails, photos, id } = profile;
 
-    if(!emails[0].verified) {
+    if (!emails[0].verified) {
       return done(new Error('Email is not verified'));
     }
 

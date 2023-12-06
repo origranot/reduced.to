@@ -27,7 +27,7 @@ import { UsersModule } from '../core/users/users.module';
       }),
     }),
     NovuModule,
-    forwardRef(() => UsersModule), // https://docs.nestjs.com/modules#forwardreference
+    forwardRef(() => UsersModule),
   ],
   controllers: [AuthController, ProvidersController],
   providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy, VerifyStrategy, GoogleStrategy, NovuService],

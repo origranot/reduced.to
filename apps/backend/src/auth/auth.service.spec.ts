@@ -122,7 +122,7 @@ describe('AuthService', () => {
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: 'password',
-      provider: undefined
+      provider: undefined,
     };
 
     it('should create a new user with correct data when no prvovider is provided', async () => {
