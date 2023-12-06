@@ -13,16 +13,30 @@ datasource db {
 }
 
 model User {
-  id                String   @id @default(uuid())
+  id                String         @id @default(uuid())
   name              String
-  email             String   @unique
-  password          String
-  role              Role     @default(USER)
-  verified          Boolean  @default(false) // Is the mail verification
-  verificationToken String? // Verification token of the mail
+  email             String         @unique
+  password          String?
+  role              Role           @default(USER)
+  verified          Boolean        @default(false) // Is the mail verification
+  verificationToken String?
   refreshToken      String?
   links             Link[]
-  createdAt         DateTime @default(now())
+  createdAt         DateTime       @default(now())
+  authProviders     AuthProvider[]
+}
+
+enum ProviderType {
+  EMAIL
+  GOOGLE
+}
+
+model AuthProvider {
+  id         String       @id @default(uuid())
+  provider   ProviderType
+  providerId String       @unique
+  user       User         @relation(fields: [userId], references: [id])
+  userId     String
 }
 
 model Link {

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AppConfigService } from '@reduced.to/config';
@@ -11,6 +11,9 @@ import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { VerifyStrategy } from './strategies/verify.strategy';
+import { GoogleStrategy } from './strategies/google.strategy';
+import { ProvidersController } from './providers/providers.controller';
+import { UsersModule } from '../core/users/users.module';
 
 @Module({
   imports: [
@@ -24,9 +27,10 @@ import { VerifyStrategy } from './strategies/verify.strategy';
       }),
     }),
     NovuModule,
+    forwardRef(() => UsersModule),
   ],
-  controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy, VerifyStrategy, NovuService],
+  controllers: [AuthController, ProvidersController],
+  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy, VerifyStrategy, GoogleStrategy, NovuService],
   exports: [AuthService],
 })
 export class AuthModule {}
