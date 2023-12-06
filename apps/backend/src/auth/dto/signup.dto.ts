@@ -1,11 +1,12 @@
-import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 import { Unique } from '../../shared/decorators/unique/unique.decorator';
+import { ProviderType } from '@prisma/client';
 
 export class SignupDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
-  @MaxLength(15)
+  @MaxLength(30)
   name: string;
 
   @IsEmail()
@@ -16,6 +17,10 @@ export class SignupDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(6)
-  @MaxLength(20)
+  @MaxLength(70)
   password: string;
+
+  @IsOptional()
+  @IsString()
+  provider?: ProviderType;
 }

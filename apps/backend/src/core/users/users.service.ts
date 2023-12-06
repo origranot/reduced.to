@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EntityService } from '../entity.service';
 import { Prisma, PrismaService, User } from '@reduced.to/prisma';
+import { UserContext } from '../../auth/interfaces/user-context';
 
 @Injectable()
 export class UsersService extends EntityService<User> {
@@ -31,5 +32,18 @@ export class UsersService extends EntityService<User> {
 
   async count(where?: Prisma.UserWhereInput): Promise<number> {
     return this.prismaService.user.count({ where });
+  }
+
+  async findByEmail(email: string): Promise<UserContext> {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    delete user?.password;
+    delete user?.refreshToken;
+
+    return user;
   }
 }

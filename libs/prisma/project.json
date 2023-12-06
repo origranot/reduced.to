@@ -5,7 +5,7 @@
   "projectType": "library",
   "targets": {
     "generate-types": {
-      "command": "prisma generate --schema=src/schema.prisma",
+      "command": "npx prisma generate --schema=src/schema.prisma",
       "options": {
         "cwd": "libs/prisma"
       }

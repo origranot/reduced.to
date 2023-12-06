@@ -11,11 +11,13 @@ import { IFindAllOptions } from '../entity.service';
 import { SortOrder } from '../../shared/enums/sort-order.enum';
 import { LinksService } from '../links/links.service';
 import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard';
+import { AppCacheService } from '../../cache/cache.service';
 
 describe('ReportsController', () => {
   let app: INestApplication;
   let reportsService: ReportsService;
   let linksService: LinksService;
+  let cacheService: AppCacheService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -36,6 +38,12 @@ describe('ReportsController', () => {
           useValue: {
             findBy: jest.fn(),
             delete: jest.fn(),
+          },
+        },
+        {
+          provide: AppCacheService,
+          useValue: {
+            del: jest.fn(),
           },
         },
       ],
@@ -61,6 +69,7 @@ describe('ReportsController', () => {
 
     reportsService = module.get<ReportsService>(ReportsService);
     linksService = module.get<LinksService>(LinksService);
+    cacheService = module.get<AppCacheService>(AppCacheService);
   });
 
   afterEach(async () => {
@@ -236,10 +245,11 @@ describe('ReportsController', () => {
     });
 
     it('should delete link if deleteLink query parameter is set to true', async () => {
-      jest.spyOn(reportsService, 'findById').mockResolvedValue({ link: { id: '1' }, category: 1 } as any);
+      jest.spyOn(reportsService, 'findById').mockResolvedValue({ link: { id: '1', key: 'some_key' }, category: 1 } as any);
 
       await request(app.getHttpServer()).delete('/reports/1?deleteLink=true').expect(200);
       expect(linksService.delete).toHaveBeenCalledWith('1');
+      expect(cacheService.del).toHaveBeenCalledWith('some_key');
     });
 
     it('should not delete link if deleteLink query parameter is not set', async () => {

@@ -44,6 +44,12 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
         password: process.env.MEMPHIS_PASSWORD,
         accountId: +process.env.MEMPHIS_ACCOUNT_ID,
       },
+      auth: {
+        google: {
+          clientId: process.env.AUTH_GOOGLE_CLIENT_ID,
+          clientSecret: process.env.AUTH_GOOGLE_CLIENT_SECRET,
+        },
+      },
     },
   };
 };
@@ -96,6 +102,13 @@ export interface MemphisConfig {
   accountId: number;
 }
 
+export interface AuthConfig {
+  google: {
+    clientId: string;
+    clientSecret: string;
+  };
+}
+
 export interface Configuration {
   general: GeneralConfig;
   logger: LoggerConfig;
@@ -105,4 +118,5 @@ export interface Configuration {
   jwt: JWTConfig;
   novu: NovuConfig;
   memphis: MemphisConfig;
+  auth: AuthConfig;
 }
