@@ -20,7 +20,9 @@ export class ProvidersController {
 
   @Get('google')
   @UseGuards(GoogleOAuthGuard)
-  async googleLogin() {}
+  async googleLogin() {
+    // Guard will handle the login
+  }
 
   @Get('google/callback')
   @UseGuards(GoogleOAuthGuard)
