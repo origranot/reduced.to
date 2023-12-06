@@ -11,7 +11,6 @@ import { LocalAuthGuard } from './guards/local.guard';
 import { VerifyAuthGuard } from './guards/verify.guard';
 import { UserContext } from './interfaces/user-context';
 import { setAuthCookies } from './utils/cookies';
-import { GoogleOAuthGuard } from './guards/google-oauth.guard';
 
 @Controller({
   path: 'auth',
@@ -61,7 +60,7 @@ export class AuthController {
     return this.authService.refreshTokens(req.user as UserContext);
   }
 
-  @UseGuards(JwtAuthGuard, GoogleOAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('/check-auth')
   checkAuth(@Req() req: Request) {
     return { user: req.user };

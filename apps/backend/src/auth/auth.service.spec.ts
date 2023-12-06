@@ -1,11 +1,12 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Role, User } from '@reduced.to/prisma';
+import { ProviderType, Role, User } from '@reduced.to/prisma';
 import * as bcrypt from 'bcryptjs';
 import { AppConfigModule } from '@reduced.to/config';
 import { PrismaService } from '@reduced.to/prisma';
 import { AuthService } from './auth.service';
+import { SignupDto } from './dto/signup.dto';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -25,6 +26,7 @@ describe('AuthService', () => {
             user: {
               findUnique: jest.fn(),
               update: jest.fn(),
+              create: jest.fn(),
             },
           },
         },
@@ -100,6 +102,58 @@ describe('AuthService', () => {
       expect(prismaService.user.update).toHaveBeenCalledWith({
         where: { email: mockData.email },
         data: { verified: true, verificationToken: null },
+      });
+    });
+  });
+  describe('signup', () => {
+    let createUserSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      // We don't care about the return value, just make sure the correct data is passed to the create method
+      createUserSpy = jest.spyOn(prismaService.user, 'create').mockResolvedValueOnce(null);
+      jest.spyOn(authService['jwtService'], 'sign').mockReturnValueOnce('verification_token');
+    });
+
+    afterEach(() => {
+      createUserSpy.mockClear();
+    });
+
+    const signupDto: SignupDto = {
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      password: 'password',
+      provider: undefined
+    };
+
+    it('should create a new user with correct data when no prvovider is provided', async () => {
+      await authService.signup(signupDto);
+      const createUserParams = createUserSpy.mock.calls[0][0].data;
+
+      expect(createUserParams.name).toBe(signupDto.name);
+      expect(createUserParams.email).toBe(signupDto.email);
+      expect(createUserParams.password).toEqual(expect.any(String)); // Password is hashed
+      expect(createUserParams.role).toBe(Role.USER);
+      expect(createUserParams.verified).toBe(undefined);
+      expect(createUserParams.verificationToken).toEqual(expect.any(String)); // Verification token is generated
+      expect(createUserParams.authProviders).toBeUndefined();
+    });
+
+    it('should create a new user with correct data when a prvovider is provided', async () => {
+      // Set Google as provider
+      signupDto.provider = ProviderType.GOOGLE;
+
+      await authService.signup(signupDto);
+      const createUserParams = createUserSpy.mock.calls[0][0].data;
+
+      expect(createUserParams.name).toBe(signupDto.name);
+      expect(createUserParams.email).toBe(signupDto.email);
+      expect(createUserParams.password).toEqual(expect.any(String)); // Password is hashed provider id
+      expect(createUserParams.role).toBe(Role.USER);
+      expect(createUserParams.verified).toBe(true);
+      expect(createUserParams.verificationToken).toEqual(undefined);
+      expect(createUserParams.authProviders.create).toStrictEqual({
+        provider: signupDto.provider,
+        providerId: signupDto.password,
       });
     });
   });

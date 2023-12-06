@@ -1,11 +1,11 @@
-import { BadRequestException, Controller, Get, Inject, Req, Res, UseGuards, forwardRef } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { BadRequestException, Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { AppConfigService } from '@reduced.to/config';
 import { AuthService } from '../auth.service';
 import { ProviderType } from '@reduced.to/prisma';
 import { UsersService } from '../../core/users/users.service';
 import { setAuthCookies } from '../utils/cookies';
+import { GoogleOAuthGuard } from '../guards/google-oauth.guard';
 
 @Controller({
   path: 'auth/providers',
@@ -19,11 +19,11 @@ export class ProvidersController {
   ) {}
 
   @Get('google')
-  @UseGuards(AuthGuard('google'))
+  @UseGuards(GoogleOAuthGuard)
   async googleLogin() {}
 
   @Get('google/callback')
-  @UseGuards(AuthGuard('google'))
+  @UseGuards(GoogleOAuthGuard)
   async googleLoginCallback(@Req() req: any, @Res() res: Response) {
     if (!req.user) {
       throw new BadRequestException('User is not exists in request');

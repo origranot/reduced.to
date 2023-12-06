@@ -42,6 +42,7 @@ export class UsersService extends EntityService<User> {
     });
 
     delete user?.password;
+    delete user?.refreshToken;
 
     return user;
   }
