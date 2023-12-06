@@ -64,7 +64,7 @@ export class AuthService {
 
     if (signupDto.provider) {
       const authProviders: Prisma.AuthProviderCreateManyUserInput = {
-        providerId: hash, // We pass the providerId as password in the signupDto
+        providerId: signupDto.password, // We use the password field to store the providerId
         provider: signupDto.provider,
       };
 
