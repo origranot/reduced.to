@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AppConfigService } from '@reduced.to/config';
-import { PrismaService, Role } from '@reduced.to/prisma';
+import { Prisma, PrismaService, ProviderType, Role } from '@reduced.to/prisma';
 import * as bcrypt from 'bcryptjs';
 import { SignupDto } from './dto/signup.dto';
 import { UserContext } from './interfaces/user-context';
@@ -45,14 +45,11 @@ export class AuthService {
       email: signupDto.email,
     };
 
-    return this.prisma.user.create({
+    const createOptions = {
       data: {
         ...userInformation,
         password: hash,
         role: Role.USER,
-        verificationToken: this.jwtService.sign(userInformation, {
-          expiresIn: '1d',
-        }),
       },
       select: {
         id: true,
@@ -63,7 +60,28 @@ export class AuthService {
         verificationToken: true,
         verified: true,
       },
-    });
+    };
+
+    if (signupDto.provider) {
+      const authProviders: Prisma.AuthProviderCreateManyUserInput = {
+        providerId: hash, // We pass the providerId as password in the signupDto
+        provider: signupDto.provider,
+      };
+
+      createOptions.data['authProviders'] = {
+        create: authProviders,
+      };
+
+      // If the user is created with a provider, we set the user as verified
+      createOptions.data['verified'] = true;
+    } else {
+      // If the user is not created with a provider, we create a verification token
+      createOptions.data['verificationToken'] = this.jwtService.sign(userInformation, {
+        expiresIn: '1d',
+      });
+    }
+
+    return this.prisma.user.create(createOptions);
   }
 
   async verify(user: UserContext): Promise<{ verified: boolean }> {

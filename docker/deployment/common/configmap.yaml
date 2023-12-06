@@ -47,3 +47,7 @@ data:
   MEMPHIS_USERNAME: 'Get it from https://memphis.dev/'
   MEMPHIS_PASSWORD: 'Get it from https://memphis.dev/'
   MEMPHIS_ACCOUNT_ID: 'Get it from https://memphis.dev/'
+
+  # Auth
+  AUTH_GOOGLE_CLIENT_ID: 'Get it from https://console.cloud.google.com/apis/credentials'
+  AUTH_GOOGLE_CLIENT_SECRET: 'Get it from https://console.cloud.google.com/apis/credentials'

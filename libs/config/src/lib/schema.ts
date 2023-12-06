@@ -33,4 +33,15 @@ export default z.object({
 
   // Novu
   NOVU_API_KEY: z.string().optional(),
+
+  // Memphis
+  MEMPHIS_ENABLE: z.boolean().default(false),
+  MEMPHIS_HOST: z.string(),
+  MEMPHIS_USERNAME: z.string(),
+  MEMPHIS_PASSWORD: z.string(),
+  MEMPHIS_ACCOUNT_ID: z.string(),
+
+  // Auth
+  AUTH_GOOGLE_CLIENT_ID: z.string(),
+  AUTH_GOOGLE_CLIENT_SECRET: z.string(),
 });
