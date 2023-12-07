@@ -24,14 +24,14 @@ describe('setAuthCookies', () => {
       expires: expect.any(Date),
       domain,
       path: '/',
-      sameSite: 'strict',
+      sameSite: 'lax',
       httpOnly: true,
     };
     const expectedRefreshOptions = {
       expires: expect.any(Date),
       domain,
       path: '/',
-      sameSite: 'strict',
+      sameSite: 'lax',
       httpOnly: true,
     };
 
