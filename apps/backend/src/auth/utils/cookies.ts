@@ -9,29 +9,38 @@ export const REFRESH_COOKIE_NAME = 'refreshToken';
 
 export const setAuthCookies = (
   res: Response,
-  rawDomain: string,
+  domain: string,
   tokens: {
     accessToken: string;
     refreshToken: string;
   }
 ) => {
-  const domain = process.env.NODE_ENV === 'production' ? `.${rawDomain}` : rawDomain;
+  setCookie(res, domain, AUTH_COOKIE_NAME, tokens.accessToken, {
+    expires: calculateDateFromTtl(AUTH_COOKIE_EXPIRES),
+  });
+  setCookie(res, domain, REFRESH_COOKIE_NAME, tokens.refreshToken, {
+    expires: calculateDateFromTtl(REFRESH_COOKIE_EXPIRES),
+  });
+  return res;
+};
 
-  res
-    .cookie(AUTH_COOKIE_NAME, tokens.accessToken, {
-      expires: calculateDateFromTtl(AUTH_COOKIE_EXPIRES),
-      domain,
-      path: '/',
-      sameSite: 'strict',
-      httpOnly: true,
-    })
-    .cookie(REFRESH_COOKIE_NAME, tokens.refreshToken, {
-      expires: calculateDateFromTtl(REFRESH_COOKIE_EXPIRES),
-      domain,
-      path: '/',
-      sameSite: 'strict',
-      httpOnly: true,
-    });
+export const setCookie = (
+  res: Response,
+  rawDomain: string,
+  key: string,
+  value: any,
+  opts?: {
+    expires?: Date;
+  }
+) => {
+  const domain = process.env.NODE_ENV === 'production' ? `.${rawDomain}` : rawDomain;
+  res.cookie(key, value, {
+    ...(opts?.expires && { expires: opts.expires }),
+    domain,
+    path: '/',
+    sameSite: 'lax',
+    httpOnly: true,
+  });
 
   return res;
 };

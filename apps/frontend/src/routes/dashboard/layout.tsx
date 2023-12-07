@@ -2,7 +2,7 @@ import { component$, Slot, useSignal, $ } from '@builder.io/qwik';
 import { Link, RequestHandler, useLocation } from '@builder.io/qwik-city';
 import { validateAccessToken } from '../../shared/auth.service';
 import { Role, useGetCurrentUser } from '../layout';
-import { LuAlertOctagon, LuLayoutDashboard, LuLineChart, LuLink, LuShield, LuSlidersHorizontal, LuUsers } from '@qwikest/icons/lucide';
+import { LuAlertOctagon, LuLineChart, LuLink, LuShield, LuSlidersHorizontal, LuUsers } from '@qwikest/icons/lucide';
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   const validAccessToken = await validateAccessToken(cookie);
