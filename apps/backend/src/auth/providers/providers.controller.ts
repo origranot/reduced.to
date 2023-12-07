@@ -4,7 +4,7 @@ import { AppConfigService } from '@reduced.to/config';
 import { AuthService } from '../auth.service';
 import { ProviderType } from '@reduced.to/prisma';
 import { UsersService } from '../../core/users/users.service';
-import { setAuthCookies } from '../utils/cookies';
+import { setAuthCookies, setCookie } from '../utils/cookies';
 import { GoogleOAuthGuard } from '../guards/google-oauth.guard';
 
 @Controller({
@@ -46,7 +46,7 @@ export class ProvidersController {
     const urlPrefix = this.configService.getConfig().general.env === 'production' ? `https://${domain}` : `http://${domain}:4200`;
 
     const tokens = await this.authService.generateTokens(user);
-    res = setAuthCookies(res, domain, tokens);
+    setAuthCookies(res, domain, tokens);
     res.redirect(`${urlPrefix}/dashboard`);
   }
 }
