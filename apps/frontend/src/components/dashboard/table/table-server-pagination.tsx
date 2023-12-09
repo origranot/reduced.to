@@ -35,6 +35,7 @@ export interface TableServerPaginationParams {
   pageSize?: number;
   pageSizeOptions?: number[];
   refetch?: Signal<number>;
+  defaultSort?: Record<string, SortOrder>;
 }
 
 export interface ResponseData {
@@ -98,6 +99,11 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
     track(() => filter.value);
     track(() => sortSignal.value);
     track(() => props.refetch?.value);
+
+    // Default sort if provided and no sort is set yet
+    if (!Object.keys(sortSignal.value).length && props.defaultSort) {
+      sortSignal.value = props.defaultSort;
+    }
 
     // Fetch data
     const result = await fetchTableData({

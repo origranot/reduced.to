@@ -43,7 +43,7 @@ const useCreateLink = globalAction$(
         message: "The url field can't be empty.",
       })
       .regex(/^(?:https?:\/\/)?(?:[\w-]+\.)+[a-z]{2,}(?::\d{1,5})?(?:\/\S*)?$/, {
-        message: "The url you've entered is not valid...",
+        message: "The url you've entered is not valid",
       }),
   })
 );

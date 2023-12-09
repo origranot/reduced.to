@@ -1,5 +1,5 @@
 import { component$, $, useSignal } from '@builder.io/qwik';
-import { Columns, TableServerPagination } from '../../../../components/dashboard/table/table-server-pagination';
+import { Columns, SortOrder, TableServerPagination } from '../../../../components/dashboard/table/table-server-pagination';
 import { DocumentHead } from '@builder.io/qwik-city';
 import { formatDate } from '../../../../lib/date-utils';
 import { useToaster } from '../../../../components/toaster/toaster';
@@ -99,10 +99,17 @@ export default component$(() => {
     },
   };
 
+  const defaultSort = { createdAt: SortOrder.DESC };
+
   return (
     <>
       <div class="shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl w-full p-5">
-        <TableServerPagination endpoint={`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/reports`} refetch={refetchSignal} columns={columns} />
+        <TableServerPagination
+          endpoint={`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/reports`}
+          refetch={refetchSignal}
+          columns={columns}
+          defaultSort={defaultSort}
+        />
       </div>
     </>
   );
