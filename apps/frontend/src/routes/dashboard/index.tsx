@@ -1,7 +1,7 @@
 import { component$, $, useSignal } from '@builder.io/qwik';
 import { DocumentHead } from '@builder.io/qwik-city';
 import { HiPlusOutline } from '@qwikest/icons/heroicons';
-import { Columns, TableServerPagination } from '../../components/dashboard/table/table-server-pagination';
+import { Columns, SortOrder, TableServerPagination } from '../../components/dashboard/table/table-server-pagination';
 import { LINK_MODAL_ID, LinkModal } from '../../components/dashboard/links/link-modal/link-modal';
 import { formatDate } from '../../lib/date-utils';
 import { useToaster } from '../../components/toaster/toaster';
@@ -67,11 +67,18 @@ export default component$(() => {
     },
   };
 
+  const defaultSort = { createdAt: SortOrder.DESC };
+
   return (
     <>
       <LinkModal onSubmitHandler={onSubmitHandler} />
       <div class="shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl w-full p-5">
-        <TableServerPagination endpoint={`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/links`} columns={columns} refetch={refetchSignal}>
+        <TableServerPagination
+          endpoint={`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/links`}
+          columns={columns}
+          defaultSort={defaultSort}
+          refetch={refetchSignal}
+        >
           <button class="btn btn-primary" onClick$={() => (document.getElementById(LINK_MODAL_ID) as any).showModal()}>
             <HiPlusOutline class="h-5 w-5" />
             Create a link

@@ -241,12 +241,7 @@ export default component$(() => {
                     <div>
                       <div class="flex items-center">
                         <div class="flex">
-                          <input
-                            id="policies"
-                            name="policies"
-                            type="checkbox"
-                            class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                          />
+                          <input id="policies" name="policies" type="checkbox" class="checkbox checkbox-sm" />
                         </div>
                         <div class="ms-3">
                           <label for="policies" class="text-sm dark:text-white">

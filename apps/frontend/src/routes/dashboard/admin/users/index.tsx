@@ -1,5 +1,5 @@
 import { component$, useSignal, useVisibleTask$, $ } from '@builder.io/qwik';
-import { Columns, TableServerPagination } from '../../../../components/dashboard/table/table-server-pagination';
+import { Columns, SortOrder, TableServerPagination } from '../../../../components/dashboard/table/table-server-pagination';
 import { DocumentHead } from '@builder.io/qwik-city';
 import { authorizedFetch } from '../../../../shared/auth.service';
 import { StatsCard, StatsCardValue } from '../../../../components/dashboard/stats/stats-card';
@@ -23,6 +23,8 @@ export default component$(() => {
       }),
     },
   };
+
+  const defaultSort = { createdAt: SortOrder.DESC };
 
   const getRegisteredUsers = $(async () => {
     const lastMonthEndDate = new Date();
@@ -99,7 +101,7 @@ export default component$(() => {
         <StatsCard title="Verified Users" data={verifiedUsersSignal} loading={verifiedUsersSignal.value.loading} />
       </div>
       <div class="mt-5 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl w-full p-5">
-        <TableServerPagination endpoint={`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/users`} columns={columns} />
+        <TableServerPagination endpoint={`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/users`} columns={columns} defaultSort={defaultSort} />
       </div>
     </>
   );
