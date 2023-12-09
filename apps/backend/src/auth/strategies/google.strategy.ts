@@ -24,9 +24,11 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       return done(new Error('Email is not verified'));
     }
 
+    const fullName = `${name?.givenName}${name?.familyName ? ` ${name?.familyName}` : ''}`;
+
     const user = {
       email: emails[0].value,
-      fullName: `${name.givenName} ${name.familyName}`,
+      fullName,
       picture: photos[0].value,
       accessToken,
       refreshToken,
