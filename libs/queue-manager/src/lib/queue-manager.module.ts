@@ -1,6 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { AppConfigService } from '@reduced.to/config';
 import { memphis } from 'memphis-dev';
+import { QueueManagerService } from './queue-manager.service';
 
 export const QUEUE_MANAGER_INJECTION_TOKEN = 'QUEUE_MANAGER';
 

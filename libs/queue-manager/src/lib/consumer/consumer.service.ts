@@ -32,7 +32,11 @@ export abstract class ConsumerService implements OnModuleInit {
   private registerEvents() {
     this._consumer.on('message', async (message) => {
       this.logger.debug(`Received message from queue ${this.queueName} for consumer ${this.name}`);
-      this.onMessage(message);
+      await this.onMessage(message);
+    });
+
+    this._consumer.on('error', (err) => {
+      this.logger.error(`Error on consumer ${this.name} for queue ${this.queueName}`, err);
     });
   }
 }
