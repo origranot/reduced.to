@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@reduced.to/prisma';
+import { Prisma, PrismaService } from '@reduced.to/prisma';
 
 @Injectable()
 export class StatsService {
@@ -8,18 +8,29 @@ export class StatsService {
   async addVisit(key: string, opts: { hashedIp: string; ua: string; geo: object }) {
     const { hashedIp, ua, geo } = opts;
 
-    return this.prismaService.visit.create({
-      data: {
-        ip: hashedIp,
-        userAgent: ua,
-        ...(geo && { geo }),
-        link: {
-          connect: {
-            key,
+    try {
+      await this.prismaService.visit.create({
+        data: {
+          ip: hashedIp,
+          userAgent: ua,
+          ...(geo && { geo }),
+          link: {
+            connect: {
+              key,
+            },
           },
         },
-      },
-    });
+      });
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        if (err.code === 'P2025') {
+          // Link record does not exist for the given key (might be a visit to a temporary link)
+          return;
+        }
+
+        throw err;
+      }
+    }
   }
 
   async isUniqueVisit(key: string, hashedIp: string) {
