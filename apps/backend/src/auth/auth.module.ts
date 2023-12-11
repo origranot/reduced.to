@@ -22,7 +22,7 @@ import { UsersModule } from '../core/users/users.module';
     JwtModule.registerAsync({
       inject: [AppConfigService],
       useFactory: (config: AppConfigService) => ({
-        secret: config.getConfig().jwt.accessSecret,
+        secret: config.getConfig().auth.jwt.accessSecret,
         signOptions: { expiresIn: '5m' },
       }),
     }),

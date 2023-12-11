@@ -48,3 +48,16 @@ services:
     depends_on:
       - postgres
       - redis
+
+  tracker:
+    container_name: tracker
+    build:
+      context: ../..
+      dockerfile: apps/tracker/Dockerfile
+    restart: always
+    ports:
+      - '3001:3001'
+    env_file: ../../.env
+    depends_on:
+      - postgres
+      - redis

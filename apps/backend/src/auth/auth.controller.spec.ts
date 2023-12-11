@@ -38,10 +38,13 @@ describe('AuthController', () => {
   const MOCK_TOKENS = { accessToken: 'access_token', refreshToken: 'refresh_token' };
   const MOCK_CONFIG: Partial<Configuration> = {
     front: { domain: 'example.com', apiDomain: 'http://localhost:3000', clientSideApiDomain: 'http://localhost:3000' },
-    general: { env: 'production', backendPort: 3000, frontendPort: 5000 },
-    jwt: {
-      accessSecret: 'secret',
-      refreshSecret: 'secret',
+    general: { env: 'production', backendPort: 3000, frontendPort: 5000, trackerPort: 3001 },
+    auth: {
+      jwt: {
+        accessSecret: 'secret',
+        refreshSecret: 'secret',
+      },
+      google: {} as any,
     },
   };
 

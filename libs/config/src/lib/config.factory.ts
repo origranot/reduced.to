@@ -7,6 +7,7 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
       general: {
         backendPort: +process.env.BACKEND_APP_PORT || 3000,
         frontendPort: +process.env.FRONTEND_APP_PORT || 5173,
+        trackerPort: +process.env.TRACKER_APP_PORT || 3001,
         env: process.env.NODE_ENV || 'development',
       },
       logger: {
@@ -30,10 +31,6 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
         password: process.env.REDIS_PASSWORD || 'password',
         ttl: +process.env.REDIS_TTL || 1000 * 60 * 60 * 24 * 7, // 7 days in ms
       },
-      jwt: {
-        accessSecret: process.env.JWT_ACCESS_SECRET || 'secret',
-        refreshSecret: process.env.JWT_REFRESH_SECRET || 'secret',
-      },
       novu: {
         apiKey: process.env.NOVU_API_KEY,
       },
@@ -45,9 +42,18 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
         accountId: +process.env.MEMPHIS_ACCOUNT_ID,
       },
       auth: {
+        jwt: {
+          accessSecret: process.env.AUTH_JWT_ACCESS_SECRET || 'secret',
+          refreshSecret: process.env.AUTH_JWT_REFRESH_SECRET || 'secret',
+        },
         google: {
           clientId: process.env.AUTH_GOOGLE_CLIENT_ID,
           clientSecret: process.env.AUTH_GOOGLE_CLIENT_SECRET,
+        },
+      },
+      tracker: {
+        stats: {
+          queueName: process.env.TRACKER_STATS_QUEUE_NAME || 'stats',
         },
       },
     },
@@ -57,6 +63,7 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
 export interface GeneralConfig {
   backendPort: number;
   frontendPort: number;
+  trackerPort: number;
   env: string;
 }
 
@@ -85,11 +92,6 @@ export interface RedisConfig {
   ttl: number;
 }
 
-export interface JWTConfig {
-  accessSecret: string;
-  refreshSecret: string;
-}
-
 export interface NovuConfig {
   apiKey: string;
 }
@@ -107,6 +109,16 @@ export interface AuthConfig {
     clientId: string;
     clientSecret: string;
   };
+  jwt: {
+    accessSecret: string;
+    refreshSecret: string;
+  };
+}
+
+export interface TrackerConfig {
+  stats: {
+    queueName: string;
+  };
 }
 
 export interface Configuration {
@@ -115,8 +127,8 @@ export interface Configuration {
   front: FrontConfig;
   rateLimit: RateLimitConfig;
   redis: RedisConfig;
-  jwt: JWTConfig;
   novu: NovuConfig;
   memphis: MemphisConfig;
   auth: AuthConfig;
+  tracker: TrackerConfig;
 }

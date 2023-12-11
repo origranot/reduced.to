@@ -1,10 +1,8 @@
-import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { useContainer } from 'class-validator';
-import cookieParser from 'cookie-parser';
-import { AppModule } from './app.module';
 import { AppConfigService } from '@reduced.to/config';
+import { AppModule } from './app/app.module';
 import { AppLoggerSerivce } from '@reduced.to/logger';
 
 async function bootstrap() {
@@ -16,19 +14,14 @@ async function bootstrap() {
     prefix: 'api/v',
   });
 
-  app.use(cookieParser());
   app.enableCors({ origin: true, credentials: true });
-  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
-  // Enable DI in class-validator
-  useContainer(app.select(AppModule), { fallbackOnErrors: true });
-
-  const port = app.get(AppConfigService).getConfig().general.backendPort;
+  const port = app.get(AppConfigService).getConfig().general.trackerPort;
   const logger = app.get(AppLoggerSerivce);
 
   await app.listen(port);
 
-  logger.log(`Starting backend on port ${port}`);
+  logger.log(`Starting tracker on port ${port}`);
 }
 
 bootstrap();
