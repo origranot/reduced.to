@@ -44,7 +44,7 @@ describe('AuthController', () => {
         accessSecret: 'secret',
         refreshSecret: 'secret',
       },
-      google: {} as any
+      google: {} as any,
     },
   };
 

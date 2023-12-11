@@ -6,9 +6,7 @@
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "target": "node",
@@ -41,20 +39,14 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/tracker/**/*.ts"
-        ]
+        "lintFilePatterns": ["apps/tracker/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/tracker/jest.config.ts",
         "passWithNoTests": true
@@ -67,15 +59,11 @@
       }
     },
     "docker-build": {
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "command": "docker build -f apps/tracker/Dockerfile . -t tracker"
     },
     "push-image-to-registry": {
-      "dependsOn": [
-        "docker-build"
-      ],
+      "dependsOn": ["docker-build"],
       "executor": "nx:run-commands",
       "options": {
         "commands": [
