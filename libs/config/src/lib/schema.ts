@@ -27,10 +27,6 @@ export default z.object({
   REDIS_PASSWORD: z.string(),
   REDIS_TTL: z.string(),
 
-  // Auth
-  JWT_ACCESS_SECRET: z.string(),
-  JWT_REFRESH_SECRET: z.string(),
-
   // Novu
   NOVU_API_KEY: z.string().optional(),
 
@@ -42,6 +38,11 @@ export default z.object({
   MEMPHIS_ACCOUNT_ID: z.string(),
 
   // Auth
+  AUTH_JWT_ACCESS_SECRET: z.string(),
+  AUTH_JWT_REFRESH_SECRET: z.string(),
   AUTH_GOOGLE_CLIENT_ID: z.string(),
   AUTH_GOOGLE_CLIENT_SECRET: z.string(),
+
+  // Tracker
+  TRACKER_STATS_QUEUE_NAME: z.string(),
 });

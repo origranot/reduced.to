@@ -9,7 +9,7 @@ export class VerifyStrategy extends PassportStrategy(Strategy, 'verify') {
     super({
       jwtFromRequest: ExtractJwt.fromHeader('token'),
       ignoreExpiration: false,
-      secretOrKey: appConfigService.getConfig().jwt.accessSecret,
+      secretOrKey: appConfigService.getConfig().auth.jwt.accessSecret,
     });
   }
 

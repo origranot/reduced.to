@@ -51,9 +51,11 @@ model Link {
   expirationTime DateTime?
   createdAt      DateTime  @default(now())
   Report         Report[]
+  clicks         Int       @default(0)
 
   @@index(userId)
   @@index(key)
+  @@index([url, clicks])
 }
 
 model Report {

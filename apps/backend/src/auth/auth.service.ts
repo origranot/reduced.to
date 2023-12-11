@@ -149,7 +149,7 @@ export class AuthService {
   async generateTokens(user: UserContext): Promise<{ accessToken: string; refreshToken: string }> {
     const tokens = {
       accessToken: this.generateToken(user),
-      refreshToken: this.generateToken(user, '7d', this.appConfigService.getConfig().jwt.refreshSecret),
+      refreshToken: this.generateToken(user, '7d', this.appConfigService.getConfig().auth.jwt.refreshSecret),
     };
 
     await this.prisma.user.update({
