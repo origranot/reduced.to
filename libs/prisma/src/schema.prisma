@@ -52,6 +52,7 @@ model Link {
   createdAt      DateTime  @default(now())
   Report         Report[]
   clicks         Int       @default(0)
+  Visit          Visit[]
 
   @@index(userId)
   @@index(key)
@@ -67,6 +68,18 @@ model Report {
 
   @@index(linkId)
   @@index(category)
+}
+
+model Visit {
+  id        String   @id @default(uuid())
+  ip        String // Hashed IP
+  userAgent String?
+  geo       Json?
+  link      Link     @relation(fields: [linkId], references: [id])
+  linkId    String
+  createdAt DateTime @default(now())
+
+  @@index(linkId)
 }
 
 enum Role {
