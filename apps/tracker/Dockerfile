@@ -37,7 +37,7 @@ COPY --from=build /app/libs/ ./libs
 EXPOSE 3001
 
 # Start the application
-CMD sh -c "npx nx migrate-deploy prisma && node backend/main.js"
+CMD sh -c "npx nx migrate-deploy prisma && node tracker/main.js"
 
 
 
