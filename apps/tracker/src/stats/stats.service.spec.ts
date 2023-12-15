@@ -13,14 +13,13 @@ describe('StatsService', () => {
     },
   };
 
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         StatsService,
         {
           provide: PrismaService,
-          useValue: mockPrismaService
+          useValue: mockPrismaService,
         },
       ],
     }).compile();
@@ -35,14 +34,18 @@ describe('StatsService', () => {
 
   describe('addVisit', () => {
     it('should handle PrismaClientKnownRequestError', async () => {
-      const error = new Prisma.PrismaClientKnownRequestError('message', {code: 'P2025', meta: {}, clientVersion: 'v1'});
+      const error = new Prisma.PrismaClientKnownRequestError('message', { code: 'P2025', meta: {}, clientVersion: 'v1' });
       mockPrismaService.visit.create.mockRejectedValue(error);
-      await expect(service.addVisit('testKey', { hashedIp: 'testIp', ua: 'testAgent' })).resolves.toBeUndefined();
+      await expect(
+        service.addVisit('testKey', { hashedIp: 'testIp', ua: 'testAgent', geoLocation: { country: 'United States' } })
+      ).resolves.toBeUndefined();
     });
 
     it('should throw an error for unexpected errors', async () => {
       mockPrismaService.visit.create.mockRejectedValue(new Error('Unexpected error'));
-      await expect(service.addVisit('testKey', { hashedIp: 'testIp', ua: 'testAgent' })).rejects.toThrow('Unexpected error');
+      await expect(
+        service.addVisit('testKey', { hashedIp: 'testIp', ua: 'testAgent', geoLocation: { country: 'United States' } })
+      ).rejects.toThrow('Unexpected error');
     });
   });
 
