@@ -27,9 +27,9 @@ export class StatsService {
           // Link record does not exist for the given key (might be a visit to a temporary link)
           return;
         }
-
-        throw err;
       }
+
+      throw err;
     }
   }
 
