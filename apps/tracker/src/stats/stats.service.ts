@@ -5,15 +5,15 @@ import { Prisma, PrismaService } from '@reduced.to/prisma';
 export class StatsService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async addVisit(key: string, opts: { hashedIp: string; ua: string; geo: object }) {
-    const { hashedIp, ua, geo } = opts;
+  async addVisit(key: string, opts: { hashedIp: string; ua: string; geoLocation?: object }) {
+    const { hashedIp, ua, geoLocation } = opts;
 
     try {
       await this.prismaService.visit.create({
         data: {
           ip: hashedIp,
           userAgent: ua,
-          ...(geo && { geo }),
+          ...(geoLocation && { geo: geoLocation }),
           link: {
             connect: {
               key,
