@@ -5,7 +5,7 @@ import { Prisma, PrismaService } from '@reduced.to/prisma';
 export class StatsService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async addVisit(key: string, opts: { hashedIp: string; ua: string; geoLocation?: object }) {
+  async addVisit(key: string, opts: { hashedIp: string; ua: string; geoLocation: object }) {
     const { hashedIp, ua, geoLocation } = opts;
 
     try {
@@ -13,7 +13,7 @@ export class StatsService {
         data: {
           ip: hashedIp,
           userAgent: ua,
-          ...(geoLocation && { geo: geoLocation }),
+          geo: geoLocation,
           link: {
             connect: {
               key,
@@ -27,9 +27,9 @@ export class StatsService {
           // Link record does not exist for the given key (might be a visit to a temporary link)
           return;
         }
-
-        throw err;
       }
+
+      throw err;
     }
   }
 
