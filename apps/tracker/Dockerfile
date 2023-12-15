@@ -1,47 +1,29 @@
-# --------------------------------------------
-# Dependencies Stage
-# --------------------------------------------
-FROM node:19.2-alpine3.15 as dependencies
+FROM node:lts-alpine as dependencies
 WORKDIR /app
 
+# Install Python for node-gyp
+RUN apk add --no-cache python3 make g++
+
 COPY package*.json ./
-
-RUN apk add --update python3 make g++\
-   && rm -rf /var/cache/apk/*
-
 RUN npm ci
 
-# --------------------------------------------
 # Build Stage
-# --------------------------------------------
-# Intermediate docker image to build the bundle in and install dependencies
-FROM node:19.2-alpine3.15 as build
+FROM node:lts-alpine as build
 WORKDIR /app
 
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
 
-# Run prisma generate & build the bundle in production mode
-RUN npx nx build tracker --prod --skip-nx-cache
+RUN npx nx build tracker --prod --skip-nx-cache \
+    && npm prune --production
 
-# --------------------------------------------
 # Production Stage
-# --------------------------------------------
-FROM node:19.2-alpine3.15 as production
+FROM node:lts-alpine as production
 WORKDIR /app
 
 COPY --from=build /app/dist/apps/tracker ./tracker
 COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/libs/ ./libs
 
 EXPOSE 3001
 
-# Start the application
-CMD sh -c "node tracker/main.js"
-
-
-
-
-
-
-
+CMD ["node", "tracker/main.js"]

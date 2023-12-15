@@ -3,7 +3,6 @@ import { ConsumerService } from '@reduced.to/queue-manager';
 import { AppConfigService } from '@reduced.to/config';
 import { AppLoggerSerivce } from '@reduced.to/logger';
 import { StatsService } from './stats.service';
-import * as geoip from 'geoip-lite';
 import { createHash } from 'node:crypto';
 import { Message } from 'memphis-dev/*';
 
@@ -14,8 +13,13 @@ export class StatsConsumer extends ConsumerService {
   }
 
   async onMessage(message: Message): Promise<void> {
-    const { ip, userAgent, key, url } = message.getDataAsJson() as { ip: string; userAgent: string; key: string; url: string };
-    message.ack();
+    const { ip, userAgent, key, geo, url } = message.getDataAsJson() as {
+      ip: string;
+      userAgent: string;
+      key: string;
+      url: string;
+      geo: string;
+    };
 
     const hashedIp = createHash('sha256').update(ip).digest('hex');
     const isUniqueVisit = await this.statsService.isUniqueVisit(key, hashedIp);
@@ -24,13 +28,20 @@ export class StatsConsumer extends ConsumerService {
       return;
     }
 
-    const geo = geoip.lookup(ip);
+    let geoLocation = null;
+    try {
+      geoLocation = JSON.parse(geo);
+    } catch (err) {
+      this.loggerService.error(`Failed to parse geo location for ${key} with error: ${err.message}`);
+    }
+
     await this.statsService.addVisit(key, {
       hashedIp,
       ua: userAgent,
-      geo,
+      ...(geoLocation?.status === 'success' && geoLocation),
     });
 
+    message.ack();
     this.loggerService.log(`Added unique visit for ${key}`);
   }
 }

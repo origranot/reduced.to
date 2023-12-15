@@ -1,8 +1,6 @@
 node_modules
 dist
 npm-debug.log
-CONTRIBUTE.MD
-README.md
-.gitignore
-LICENSE
+*.md
+.git
 .DS_Store
