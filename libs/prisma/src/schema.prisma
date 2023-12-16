@@ -75,7 +75,7 @@ model Visit {
   ip        String // Hashed IP
   userAgent String?
   geo       Json?
-  link      Link     @relation(fields: [linkId], references: [id])
+  link      Link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
   linkId    String
   createdAt DateTime @default(now())
 
