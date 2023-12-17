@@ -82,7 +82,7 @@
     "bcryptjs": "^2.4.3",
     "cache-manager": "^5.2.3",
     "cache-manager-redis-store": "^3.0.1",
-    "canvas-confetti": "^1.6.0",
+    "canvas-confetti": "^1.9.2",
     "class-validator": "^0.14.0",
     "clsx": "^2.0.0",
     "cookie-parser": "^1.4.6",
