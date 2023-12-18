@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => {
       'process.env.NODE_ENV': JSON.stringify(mode),
     },
     optimizeDeps: {
-      include: ['canvas-confetti'],
+      include: [],
     },
     server: {
       fs: {
