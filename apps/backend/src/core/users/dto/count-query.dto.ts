@@ -1,5 +1,5 @@
-import { IsOptional, IsBoolean, IsDateString, IsString, IsBooleanString, IsDate } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { IsOptional, IsBoolean, IsDate } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
 
 export class CountQueryDto {
   @IsOptional()
@@ -13,6 +13,7 @@ export class CountQueryDto {
   endDate: Date;
 
   @IsOptional()
-  @IsBooleanString()
+  @IsBoolean()
+  @Type(() => Boolean)
   verified: boolean;
 }
