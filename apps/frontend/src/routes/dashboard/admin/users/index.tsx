@@ -13,7 +13,7 @@ export default component$(() => {
   const columns: Columns = {
     name: { displayName: 'Name', classNames: 'w-1/4', sortable: true },
     email: { displayName: 'Email', classNames: 'w-1/4', sortable: true },
-    verified: { displayName: 'Verified', classNames: 'w-1/4' },
+    verified: { displayName: 'Verified', classNames: 'w-1/4', format: $(({ value }) => (value ? "true" : "false")) },
     createdAt: {
       displayName: 'Created At',
       classNames: 'w-1/4',
@@ -39,7 +39,7 @@ export default component$(() => {
     const change = ((totalUsers - usersLastMonth) / usersLastMonth) * 100;
 
     registeredUsersSignal.value = {
-      loading: false,
+      ...registeredUsersSignal.value,
       value: totalUsers.toString(),
       description: <span>{`${Math.abs(change).toFixed(1)}% ${change > 0 ? 'more' : 'less'} than last month`}</span>,
     };
@@ -56,7 +56,7 @@ export default component$(() => {
     const { count } = await response.json();
 
     newUsersSignal.value = {
-      loading: false,
+      ...newUsersSignal.value,
       value: count.toString(),
       description: (
         <span>{`${getMonthName(firstDayOfMonth.getMonth())} ${firstDayOfMonth.getDate()} - ${getMonthName(
@@ -76,7 +76,7 @@ export default component$(() => {
     const change = totalUsers === 0 ? 0 : ((totalUsers - notVerifiedUsersCount) / totalUsers) * 100;
 
     verifiedUsersSignal.value = {
-      loading: false,
+      ...verifiedUsersSignal.value,
       value: verifiedUsersCount.toString(),
       description: <span>{`${Math.abs(change).toFixed(1)}% of the users are verified`}</span>,
     };
@@ -87,17 +87,18 @@ export default component$(() => {
 
     // We are using the registeredUsersSignal.value, so we need to wait for it to be set
     await getVerifiedUsers();
+
+    // Once all data is fetched, set loading to false for all signals
+    registeredUsersSignal.value = { ...registeredUsersSignal.value, loading: false };
+    newUsersSignal.value = { ...newUsersSignal.value, loading: false };
+    verifiedUsersSignal.value = { ...verifiedUsersSignal.value, loading: false };
   });
 
   return (
     <>
       <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 lg:grid-cols-3">
-        <StatsCard
-          title="Registered Users"
-          data={registeredUsersSignal}
-          loading={registeredUsersSignal.value.loading && verifiedUsersSignal?.value.loading}
-        />
-        <StatsCard title="New Users" data={newUsersSignal} loading={newUsersSignal.value.loading && verifiedUsersSignal?.value.loading} />
+        <StatsCard title="Registered Users" data={registeredUsersSignal} loading={registeredUsersSignal.value.loading} />
+        <StatsCard title="New Users" data={newUsersSignal} loading={newUsersSignal.value.loading} />
         <StatsCard title="Verified Users" data={verifiedUsersSignal} loading={verifiedUsersSignal.value.loading} />
       </div>
       <div class="mt-5 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl w-full p-5">
