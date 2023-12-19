@@ -13,7 +13,7 @@ export default component$(() => {
   const columns: Columns = {
     name: { displayName: 'Name', classNames: 'w-1/4', sortable: true },
     email: { displayName: 'Email', classNames: 'w-1/4', sortable: true },
-    verified: { displayName: 'Verified', classNames: 'w-1/4', format: $(({ value }) => (value ? "true" : "false")) },
+    verified: { displayName: 'Verified', classNames: 'w-1/4', format: $(({ value }) => (value ? 'true' : 'false')) },
     createdAt: {
       displayName: 'Created At',
       classNames: 'w-1/4',
