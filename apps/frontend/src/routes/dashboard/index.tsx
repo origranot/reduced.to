@@ -39,7 +39,13 @@ export default component$(() => {
       classNames: 'w-1/4',
       format: $(({ value }) => {
         return (
-          <a href={value} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
+          <a
+            style={'overflow-wrap:anywhere'}
+            href={value}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-blue-500 hover:underline whitespace-pre-line line-clamp-6"
+          >
             {value}
           </a>
         );
