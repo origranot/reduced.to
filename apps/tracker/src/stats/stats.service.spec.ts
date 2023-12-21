@@ -10,6 +10,7 @@ describe('StatsService', () => {
     visit: {
       create: jest.fn(),
       findFirst: jest.fn(),
+      findByURL: jest.fn(),
     },
   };
 
@@ -60,4 +61,19 @@ describe('StatsService', () => {
       await expect(service.isUniqueVisit('testKey', 'testIp')).resolves.toBeFalsy();
     });
   });
+
+  describe('getVisits', () => {
+    it('should return all vists of a specific url', async () => {
+      mockPrismaService.visit.findByURL.mockResolvedValue({});
+      await expect(service.findByURL('testKey', 'testURL')).resolves.toBeTruthy();
+      //probably made a mess here - let me know
+    });
+
+    it('should throw an error for unexpected errors', async () => {
+      mockPrismaService.visit.findByURL.mockRejectedValue(new Error('Unexpected error'));
+      await expect(
+        service.findByURL('testKey', 'testURL')
+      ).rejects.toThrow('Unexpected error');
+    });
+  })
 });
