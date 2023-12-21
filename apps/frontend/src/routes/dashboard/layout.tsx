@@ -38,10 +38,12 @@ export default component$(() => {
             </Link>
           </li>
           <li class="py-1 mt-1">
-            <Link class={`${location.url.pathname.slice(0, -1) === '/dashboard/settings' ? 'active' : ''} !cursor-not-allowed`}>
+            <Link
+              href="/dashboard/settings"
+              class={`${location.url.pathname.slice(0, -1) === '/dashboard/settings' ? 'active' : ''}`}
+            >
               <LuSlidersHorizontal class="w-5 h-5" />
               <span class="justify-between font-medium">Settings</span>
-              <span class="badge badge-primary">Soon</span>
             </Link>
           </li>
           {user.value?.role === Role.ADMIN && (
