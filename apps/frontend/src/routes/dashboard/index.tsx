@@ -64,7 +64,7 @@ export default component$(() => {
       format: $(({ value }) => {
         return formatDate(new Date(value));
       }),
-    },
+    }, //TODO - Add a stats column, redirecting to the stats page of the url.
   };
 
   const defaultSort = { createdAt: SortOrder.DESC };
