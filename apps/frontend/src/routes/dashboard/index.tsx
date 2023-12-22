@@ -38,15 +38,17 @@ export default component$(() => {
       displayName: 'Destination URL',
       classNames: 'w-1/4',
       format: $(({ value }) => {
+        const link = (limit: number) => (value.length > limit ? value.slice(0, limit) + '...' : value);
         return (
           <a
             style={'overflow-wrap:anywhere'}
             href={value}
             target="_blank"
             rel="noopener noreferrer"
-            class="text-blue-500 hover:underline whitespace-pre-line line-clamp-6"
+            data-tip={link(150)}
+            class="tooltip tooltip-bottom text-blue-500 hover:underline whitespace-pre-line text-left"
           >
-            {value}
+            <p class="whitespace-nowrap">{link(30)}</p>
           </a>
         );
       }),
