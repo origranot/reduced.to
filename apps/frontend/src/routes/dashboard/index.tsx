@@ -38,9 +38,17 @@ export default component$(() => {
       displayName: 'Destination URL',
       classNames: 'w-1/4',
       format: $(({ value }) => {
+        const limitLink = (limit: number) => (value.length > limit ? value.slice(0, limit) + '...' : value);
         return (
-          <a href={value} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
-            {value}
+          <a
+            style={'overflow-wrap:anywhere'}
+            href={value}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-tip={limitLink(150)}
+            class="tooltip tooltip-bottom text-blue-500 hover:underline whitespace-pre-line text-left"
+          >
+            <p class="whitespace-nowrap">{limitLink(30)}</p>
           </a>
         );
       }),
