@@ -1,6 +1,6 @@
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { Role, User } from '@reduced.to/prisma';
-import { FindAllQueryDto } from './dto';
+import { FindAllQueryDto, CountQueryDto } from './dto';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
@@ -30,15 +30,11 @@ export class UsersController {
 
   @Get('count')
   @Roles(Role.ADMIN)
-  async count(@Query('startDate') startDate: Date, @Query('endDate') endDate: Date, @Query('verified') verified: boolean) {
-    // Create a filter object based on the query parameters
+  async count(@Query() { startDate, endDate, verified }: CountQueryDto) {
     const filter: Record<string, any> = {};
 
-    if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
-      filter.createdAt = {
-        gte: startDate,
-        lte: endDate,
-      };
+    if (startDate && endDate) {
+      filter.createdAt = { gte: startDate, lte: endDate };
     }
 
     if (typeof verified === 'boolean') {
