@@ -2,7 +2,7 @@ import { component$, $, useSignal } from '@builder.io/qwik';
 import { DocumentHead, Form, Link, globalAction$, z, zod$ } from '@builder.io/qwik-city';
 import { useGetCurrentUser } from '../../layout';
 import { useToaster } from '../../../components/toaster/toaster';
-import { ACCESS_COOKIE_NAME, authorizedFetch, setTokensAsCookies } from '../../../shared/auth.service';
+import { ACCESS_COOKIE_NAME, setTokensAsCookies } from '../../../shared/auth.service';
 import { resizeImage } from '../../../utils/images';
 import { DeleteModal } from '../../../components/dashboard/delete-modal/delete-modal';
 
