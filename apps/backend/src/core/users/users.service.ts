@@ -46,4 +46,13 @@ export class UsersService extends EntityService<User> {
 
     return user;
   }
+
+  async updateById(id: string, data: Prisma.UserUpdateInput): Promise<User> {
+    return this.prismaService.user.update({
+      where: {
+        id,
+      },
+      data,
+    });
+  }
 }

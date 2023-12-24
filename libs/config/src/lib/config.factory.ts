@@ -56,6 +56,13 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
           queueName: process.env.TRACKER_STATS_QUEUE_NAME || 'stats',
         },
       },
+      storage: {
+        enable: process.env.STORAGE_ENABLE === 'true' || false,
+        endpoint: process.env.STORAGE_ENDPOINT,
+        accessKey: process.env.STORAGE_ACCESS_KEY,
+        secretKey: process.env.STORAGE_SECRET_KEY,
+        bucket: process.env.STORAGE_BUCKET_NAME,
+      },
     },
   };
 };
@@ -121,6 +128,14 @@ export interface TrackerConfig {
   };
 }
 
+export interface StorageConfig {
+  enable: boolean;
+  endpoint: string;
+  accessKey: string;
+  secretKey: string;
+  bucket: string;
+}
+
 export interface Configuration {
   general: GeneralConfig;
   logger: LoggerConfig;
@@ -131,4 +146,5 @@ export interface Configuration {
   memphis: MemphisConfig;
   auth: AuthConfig;
   tracker: TrackerConfig;
+  storage: StorageConfig;
 }

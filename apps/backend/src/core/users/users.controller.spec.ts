@@ -10,6 +10,9 @@ import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { IFindAllOptions } from '../entity.service';
 import { SortOrder } from '../../shared/enums/sort-order.enum';
+import { StorageService } from '../../storage/storage.service';
+import { AppLoggerModule } from '@reduced.to/logger';
+import { AuthService } from '../../auth/auth.service';
 
 describe('UsersController', () => {
   let app: INestApplication;
@@ -26,7 +29,7 @@ describe('UsersController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppConfigModule],
+      imports: [AppConfigModule, AppLoggerModule],
       controllers: [UsersController],
       providers: [
         {
@@ -35,6 +38,14 @@ describe('UsersController', () => {
             findAll: jest.fn().mockResolvedValue(MOCK_FIND_ALL_RESULT),
           },
         },
+        {
+          provide: StorageService,
+          useValue: jest.fn(),
+        },
+        {
+          provide: AuthService,
+          useValue: jest.fn(),
+        }
       ],
     })
       .overrideGuard(JwtAuthGuard)

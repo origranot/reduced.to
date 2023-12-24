@@ -35,7 +35,7 @@ model AuthProvider {
   id         String       @id @default(uuid())
   provider   ProviderType
   providerId String       @unique
-  user       User         @relation(fields: [userId], references: [id])
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
 }
 
@@ -45,7 +45,7 @@ model Link {
   url            String
   favicon        String?
   password       String?
-  user           User?     @relation(fields: [userId], references: [id])
+  user           User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String
   description    String?
   expirationTime DateTime?

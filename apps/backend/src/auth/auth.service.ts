@@ -5,12 +5,14 @@ import { Prisma, PrismaService, ProviderType, Role } from '@reduced.to/prisma';
 import * as bcrypt from 'bcryptjs';
 import { SignupDto } from './dto/signup.dto';
 import { UserContext } from './interfaces/user-context';
+import { PROFILE_PICTURE_PREFIX, StorageService } from '../storage/storage.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
+    private readonly storageService: StorageService,
     private readonly appConfigService: AppConfigService
   ) {}
 
@@ -177,6 +179,23 @@ export class AuthService {
     return this.jwtService.sign(payload, {
       ...(expiresIn && { expiresIn }),
       ...(secret && { secret }),
+    });
+  }
+
+  async delete(user: UserContext) {
+    try {
+      await this.storageService.delete(`${PROFILE_PICTURE_PREFIX}/${user.id}`);
+    } catch (error) {
+      // Ignore error
+    }
+    return this.prisma.user.delete({
+      where: {
+        id: user.id,
+      },
+      include: {
+        authProviders: true,
+        links: true,
+      },
     });
   }
 }

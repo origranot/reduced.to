@@ -41,6 +41,7 @@ export default component$(() => {
             <Link
               href="/dashboard/settings"
               class={`${location.url.pathname.slice(0, -1) === '/dashboard/settings' ? 'active' : ''}`}
+              onClick$={toggleDrawer}
             >
               <LuSlidersHorizontal class="w-5 h-5" />
               <span class="justify-between font-medium">Settings</span>
