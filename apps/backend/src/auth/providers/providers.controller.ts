@@ -46,7 +46,10 @@ export class ProvidersController {
     }
 
     if (req.user.picture && this.configService.getConfig().storage.enable) {
-      await this.storageService.uploadImageFromUrl(req.user.picture, `${PROFILE_PICTURE_PREFIX}/${user.id}`);
+      const imagePath = `${PROFILE_PICTURE_PREFIX}/${user.id}`;
+      if (!this.storageService.exists(imagePath)) {
+        await this.storageService.uploadImageFromUrl(req.user.picture, imagePath);
+      }
     }
 
     const domain = this.configService.getConfig().front.domain;
