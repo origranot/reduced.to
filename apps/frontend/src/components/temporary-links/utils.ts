@@ -20,3 +20,14 @@ export const getLinkFromKey = (key: string) => {
 
   return `https://${suffix}`;
 };
+
+export const getStatsLinkFromKey = (key: string) => {
+  const suffix = `${process.env.DOMAIN}/stats/${key}`;
+
+  // Temporary aswell until there will be a permanent solution.
+  if (process.env.DOMAIN === 'localhost') {
+    return `http://${process.env.DOMAIN}:4200/stats/${key}`;
+  }
+
+  return `https://${suffix}`;
+}

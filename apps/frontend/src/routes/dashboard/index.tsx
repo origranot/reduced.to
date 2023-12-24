@@ -5,7 +5,7 @@ import { Columns, SortOrder, TableServerPagination } from '../../components/dash
 import { LINK_MODAL_ID, LinkModal } from '../../components/dashboard/links/link-modal/link-modal';
 import { formatDate } from '../../lib/date-utils';
 import { useToaster } from '../../components/toaster/toaster';
-import { getLinkFromKey } from '../../components/temporary-links/utils';
+import { getLinkFromKey, getStatsLinkFromKey } from '../../components/temporary-links/utils';
 
 export default component$(() => {
   const refetchSignal = useSignal<number>(0);
@@ -64,7 +64,19 @@ export default component$(() => {
       format: $(({ value }) => {
         return formatDate(new Date(value));
       }),
-    }, //TODO - Add a stats column, redirecting to the stats page of the url.
+    },
+    stats: {
+      displayName: 'Stats',
+      classNames: 'w-1/4',
+      format: $(({ value }) => {
+        const url = getStatsLinkFromKey(value as string);
+        return (
+          <a href={url} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
+            Stats Page
+          </a>
+        );
+      }), 
+    } 
   };
 
   const defaultSort = { createdAt: SortOrder.DESC };
