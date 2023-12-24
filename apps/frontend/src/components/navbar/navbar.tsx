@@ -1,4 +1,4 @@
-import { component$, useContext, useSignal, useStylesScoped$} from '@builder.io/qwik';
+import { component$, useContext, useSignal, useStylesScoped$ } from '@builder.io/qwik';
 import { Link, useLocation } from '@builder.io/qwik-city';
 import { GlobalStore } from '../../context';
 import { useGetCurrentUser } from '../../routes/layout';

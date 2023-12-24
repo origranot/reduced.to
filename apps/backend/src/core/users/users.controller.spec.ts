@@ -45,7 +45,7 @@ describe('UsersController', () => {
         {
           provide: AuthService,
           useValue: jest.fn(),
-        }
+        },
       ],
     })
       .overrideGuard(JwtAuthGuard)

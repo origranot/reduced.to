@@ -22,7 +22,7 @@ export class AuthController {
     private readonly prismaService: PrismaService,
     private readonly authService: AuthService,
     private readonly novuService: NovuService,
-    private readonly appConfigService: AppConfigService,
+    private readonly appConfigService: AppConfigService
   ) {}
 
   cookieOptions = {

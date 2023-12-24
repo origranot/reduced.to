@@ -7,10 +7,7 @@
     "build": {
       "executor": "qwik-nx:build",
       "options": {
-        "runSequence": [
-          "frontend:build.client",
-          "frontend:build.ssr"
-        ],
+        "runSequence": ["frontend:build.client", "frontend:build.ssr"],
         "outputPath": "dist/apps/frontend"
       },
       "configurations": {
@@ -41,9 +38,7 @@
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/apps/frontend"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/apps/frontend"],
       "options": {
         "passWithNoTests": true,
         "reportsDirectory": "../../coverage/apps/frontend"
@@ -66,19 +61,13 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/frontend/**/*.{ts,tsx,js,jsx}"
-        ]
+        "lintFilePatterns": ["apps/frontend/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "docker-build": {
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "command": "docker build -f apps/frontend/Dockerfile . -t frontend"
     },
     "push-image-to-registry": {

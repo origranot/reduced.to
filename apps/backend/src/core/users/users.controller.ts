@@ -63,7 +63,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Roles(Role.USER)
   async update(@UserCtx() user: UserContext, @Body() { displayName, profilePicture }: UpdateDto) {
-
     // Update the user's name if 'displayName' is provided
     if (displayName) {
       const updatedUser = await this.usersService.updateById(user.id, { name: displayName });
