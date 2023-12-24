@@ -41,10 +41,17 @@ export const Profile = component$(({ user }: ProfileProps) => {
 });
 
 export const getProfilePictureUrl = async (id: string, name: string) => {
-  const response = await fetch(`${process.env.STORAGE_DOMAIN}/${PROFILE_PICTURE_PREFIX}/${id}`);
-  if (response.ok) {
-    return `${process.env.STORAGE_DOMAIN}/${PROFILE_PICTURE_PREFIX}/${id}?lastModified=${response.headers.get('last-modified')}`;
+  const DEFAULT_URL = `https://ui-avatars.com/api/?name=${name}`;
+  let url = DEFAULT_URL;
+
+  try {
+    const response = await fetch(`${process.env.STORAGE_DOMAIN}/${PROFILE_PICTURE_PREFIX}/${id}`);
+    if (response.ok) {
+      url = `${process.env.STORAGE_DOMAIN}/${PROFILE_PICTURE_PREFIX}/${id}?lastModified=${response.headers.get('last-modified')}`;
+    }
+  } catch (err) {
+    url = DEFAULT_URL;
   }
 
-  return `https://ui-avatars.com/api/?name=${name}`;
+  return url;
 };
