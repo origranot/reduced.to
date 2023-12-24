@@ -65,14 +65,14 @@ describe('StatsService', () => {
   describe('getVisits', () => {
     it('should return all vists of a specific url', async () => {
       mockPrismaService.visit.findByURL.mockResolvedValue({});
-      await expect(service.findByURL('testKey', 'testURL')).resolves.toBeTruthy();
+      await expect(service.findByURL('testURL')).resolves.toBeTruthy();
       //probably made a mess here - let me know
     });
 
     it('should throw an error for unexpected errors', async () => {
       mockPrismaService.visit.findByURL.mockRejectedValue(new Error('Unexpected error'));
       await expect(
-        service.findByURL('testKey', 'testURL')
+        service.findByURL('testURL')
       ).rejects.toThrow('Unexpected error');
     });
   })

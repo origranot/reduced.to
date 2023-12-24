@@ -46,13 +46,12 @@ export class StatsService {
     return visit === null;
   }
 
-  async findByURL(key: string, url: string) {
-    const visits = await this.prismaService.visit.findByURL({
+  async findByURL(key: string) {
+    const visits = await this.prismaService.visit.findFirst({
       where: {
         link: {
           key: key,
         },
-        url: url
       }
     });
     return visits; 
