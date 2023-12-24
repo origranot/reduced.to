@@ -60,7 +60,6 @@ export class UsersController {
   }
 
   @Patch('update')
-  @UseGuards(JwtAuthGuard)
   @Roles(Role.USER)
   async update(@UserCtx() user: UserContext, @Body() { displayName, profilePicture }: UpdateDto) {
     // Update the user's name if 'displayName' is provided
@@ -84,7 +83,6 @@ export class UsersController {
     }
 
     const tokens = await this.authService.generateTokens(user);
-
     return tokens;
   }
 }

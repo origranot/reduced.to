@@ -54,12 +54,12 @@ export const updateProfile = globalAction$(
     console.log(`Start request to ${process.env.API_DOMAIN}/api/v1/users/update`);
 
     const response: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/users/update`, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${cookie.get(ACCESS_COOKIE_NAME)?.value}`,
       },
       body: JSON.stringify(body),
-      method: 'PATCH',
     });
 
     console.log("Response from server", response);
