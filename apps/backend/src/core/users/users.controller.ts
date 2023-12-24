@@ -60,7 +60,7 @@ export class UsersController {
   }
 
   @Patch('update')
-  @Roles(Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   async update(@UserCtx() user: UserContext, @Body() { displayName, profilePicture }: UpdateDto) {
     // Update the user's name if 'displayName' is provided
     if (displayName) {
