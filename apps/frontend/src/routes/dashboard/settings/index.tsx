@@ -1,5 +1,5 @@
 import { component$, $, useSignal } from '@builder.io/qwik';
-import { DocumentHead, Form, Link, globalAction$, routeAction$, z, zod$ } from '@builder.io/qwik-city';
+import { DocumentHead, Form, Link, globalAction$, z, zod$ } from '@builder.io/qwik-city';
 import { useGetCurrentUser } from '../../layout';
 import { useToaster } from '../../../components/toaster/toaster';
 import { ACCESS_COOKIE_NAME, authorizedFetch, setTokensAsCookies } from '../../../shared/auth.service';
@@ -44,14 +44,14 @@ const useDeleteUser = globalAction$(
 );
 
 // Global action to handle profile updates
-export const updateProfile = routeAction$(
+export const updateProfile = globalAction$(
   async ({ displayName, profilePicture }, { fail, cookie }) => {
     const body = {
       displayName,
       ...(profilePicture && { profilePicture }),
     };
 
-    const response = await authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/users/update`, {
+    const response: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/users/update`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${cookie.get(ACCESS_COOKIE_NAME)?.value}`,
