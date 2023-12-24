@@ -163,10 +163,9 @@ export default component$(() => {
     }
 
     try {
-      // Resize and compress the image
       const processedBlob = await resizeImage(file, 300, 300, 0.9);
 
-      // Convert blob to base64
+      // Convert blob to base64 string
       const reader = new FileReader();
       reader.readAsDataURL(processedBlob);
       reader.onloadend = () => {
