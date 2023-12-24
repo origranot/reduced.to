@@ -56,6 +56,20 @@ export class StorageService {
     const data = await this.s3Client.deleteObject(params);
     return data;
   }
+
+  async exists(name: string) {
+    const params: PutObjectCommandInput = {
+      Bucket: this.config.getConfig().storage.bucket,
+      Key: name,
+    };
+
+    try {
+      await this.s3Client.headObject(params);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
 }
 
 export const PROFILE_PICTURE_PREFIX = 'profile-pictures';
