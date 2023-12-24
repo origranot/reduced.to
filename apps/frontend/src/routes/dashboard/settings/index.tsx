@@ -51,6 +51,8 @@ export const updateProfile = globalAction$(
       ...(profilePicture && { profilePicture }),
     };
 
+    console.log(`Start request to ${process.env.API_DOMAIN}/api/v1/users/update`);
+
     const response: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/users/update`, {
       headers: {
         'Content-Type': 'application/json',
@@ -60,7 +62,11 @@ export const updateProfile = globalAction$(
       method: 'PATCH',
     });
 
+    console.log("Response from server", response);
+
     const { accessToken, refreshToken } = await response.json();
+
+    console.log(`accessToken: ${accessToken}`);
 
     if (!response.ok || !accessToken || !refreshToken) {
       return fail(500, {
