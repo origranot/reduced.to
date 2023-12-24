@@ -4,8 +4,9 @@ import { AppConfigService } from '@reduced.to/config';
 import { AuthService } from '../auth.service';
 import { ProviderType } from '@reduced.to/prisma';
 import { UsersService } from '../../core/users/users.service';
-import { setAuthCookies, setCookie } from '../utils/cookies';
+import { setAuthCookies } from '../utils/cookies';
 import { GoogleOAuthGuard } from '../guards/google-oauth.guard';
+import { PROFILE_PICTURE_PREFIX, StorageService } from '../../storage/storage.service';
 
 @Controller({
   path: 'auth/providers',
@@ -15,7 +16,8 @@ export class ProvidersController {
   constructor(
     private readonly configService: AppConfigService,
     private readonly authService: AuthService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private readonly storageService: StorageService
   ) {}
 
   @Get('google')
@@ -38,8 +40,13 @@ export class ProvidersController {
         name: req.user.fullName,
         email: req.user.email,
         password: req.user.providerId,
+        profilePicture: req.user.picture,
         provider: ProviderType.GOOGLE,
       });
+    }
+
+    if (req.user.picture && this.configService.getConfig().storage.enable) {
+      await this.storageService.uploadImageFromUrl(req.user.picture, `${PROFILE_PICTURE_PREFIX}/${user.id}`);
     }
 
     const domain = this.configService.getConfig().front.domain;

@@ -185,6 +185,7 @@ For the minimal configuration you can just rename the `.example.env` files to `.
 - **DOMAIN**: Domain of your frontend app
 - **API_DOMAIN**: Domain of your backend instance (used for server side requests)
 - **CLIENTSIDE_API_DOMAIN**: Domain of your backend instance (used for client side requests)
+- **STORAGE_DOMAIN**=Domain of your bucket (used for storing images)
 
 ###### Redis
 

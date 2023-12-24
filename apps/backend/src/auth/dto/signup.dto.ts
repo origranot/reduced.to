@@ -23,4 +23,8 @@ export class SignupDto {
   @IsOptional()
   @IsString()
   provider?: ProviderType;
+
+  @IsOptional()
+  @IsString()
+  profilePicture?: string;
 }

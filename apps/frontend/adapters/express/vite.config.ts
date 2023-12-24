@@ -2,7 +2,7 @@ import { nodeServerAdapter } from '@builder.io/qwik-city/adapters/node-server/vi
 import { extendConfig } from '@builder.io/qwik-city/vite';
 import baseConfig from '../../vite.config';
 
-export default extendConfig(baseConfig, () => {
+export default extendConfig(baseConfig as any, () => {
   return {
     build: {
       ssr: true,

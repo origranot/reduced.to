@@ -26,6 +26,7 @@ export default defineConfig(({ mode }) => {
       'process.env.DOMAIN': JSON.stringify(env.DOMAIN),
       'process.env.API_DOMAIN': JSON.stringify(env.API_DOMAIN),
       'process.env.CLIENTSIDE_API_DOMAIN': JSON.stringify(env.CLIENTSIDE_API_DOMAIN),
+      'process.env.STORAGE_DOMAIN': JSON.stringify(env.STORAGE_DOMAIN),
       'process.env.NODE_ENV': JSON.stringify(mode),
     },
     optimizeDeps: {

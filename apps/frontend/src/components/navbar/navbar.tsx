@@ -14,9 +14,8 @@ export const Navbar = component$(() => {
   useStylesScoped$(styles);
 
   const globalStore = useContext(GlobalStore);
-  const user = useGetCurrentUser();
   const location = useLocation();
-
+  const user = useGetCurrentUser();
   const showDropdown = useSignal(false);
 
   return (
@@ -29,11 +28,11 @@ export const Navbar = component$(() => {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth={1.5}
+                stroke-width={1.5}
                 stroke="currentColor"
                 class="w-6 h-6"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
               </svg>
             </label>
           </>
@@ -44,8 +43,8 @@ export const Navbar = component$(() => {
       </div>
       <div
         class="block sm:hidden dropdown dropdown-end"
-        onFocusout$={({ relatedTarget }, currentTarget) => {
-          if (relatedTarget instanceof HTMLElement && currentTarget.contains(relatedTarget as Node)) {
+        onFocusout$={({ target }, currentTarget) => {
+          if (target instanceof HTMLElement && currentTarget.contains(target as Node)) {
             return;
           }
 
@@ -115,7 +114,7 @@ export const Navbar = component$(() => {
       </div>
       <div class="sm:flex hidden">
         {user.value ? (
-          <Profile name={user.value?.name} />
+          <Profile user={user} />
         ) : (
           <Link href="/login" class="btn btn-primary btn-sm">
             Login

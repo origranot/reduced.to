@@ -20,6 +20,7 @@ data:
   DOMAIN: 'reduced.to'
   CLIENTSIDE_API_DOMAIN: 'https://reduced.to' # Use this variable while making client-side API calls
   API_DOMAIN: 'http://backend-service:3000' # Use this variable while making server-side API calls
+  STORAGE_DOMAIN: 'Get it from https://cloud.digitalocean.com/spaces'
 
   # DATABASE
   POSTGRES_PORT: '5432'
@@ -53,3 +54,10 @@ data:
 
   # TRACKER
   TRACKER_STATS_QUEUE_NAME: 'stats'
+
+  # STORAGE
+  STORAGE_ENABLE: 'false'
+  STORAGE_ENDPOINT: 'Get it from https://cloud.digitalocean.com/spaces'
+  STORAGE_ACCESS_KEY: 'Get it from https://cloud.digitalocean.com/spaces'
+  STORAGE_SECRET_KEY: 'Get it from https://cloud.digitalocean.com/spaces'
+  STORAGE_BUCKET_NAME: 'Get it from https://cloud.digitalocean.com/spaces'

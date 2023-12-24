@@ -1,12 +1,14 @@
-import { component$, useStylesScoped$ } from '@builder.io/qwik';
+import { Signal, component$, useStylesScoped$ } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
 import styles from './profile.css?inline';
+import { PROFILE_PICTURE_PREFIX } from '../../../shared/auth.service';
+import { UserCtx } from '../../../routes/layout';
 
 interface ProfileProps {
-  name: string;
+  user: Signal<UserCtx>;
 }
 
-export const Profile = component$(({ name }: ProfileProps) => {
+export const Profile = component$(({ user }: ProfileProps) => {
   useStylesScoped$(styles);
 
   return (
@@ -20,7 +22,7 @@ export const Profile = component$(({ name }: ProfileProps) => {
     >
       <label tabIndex={0} class="btn btn-ghost btn-circle avatar">
         <div class="w-8 rounded-full">
-          <img width="64" height="64" src={`https://ui-avatars.com/api/?name=${name}`} />
+          <img height={64} width={64} src={user.value.profilePicture} />
         </div>
       </label>
       <ul tabIndex={0} class="p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-48">
@@ -37,3 +39,12 @@ export const Profile = component$(({ name }: ProfileProps) => {
     </div>
   );
 });
+
+export const getProfilePictureUrl = async (id: string, name: string) => {
+  const response = await fetch(`${process.env.STORAGE_DOMAIN}/${PROFILE_PICTURE_PREFIX}/${id}`);
+  if (response.ok) {
+    return `${process.env.STORAGE_DOMAIN}/${PROFILE_PICTURE_PREFIX}/${id}?lastModified=${response.headers.get('last-modified')}`;
+  }
+
+  return `https://ui-avatars.com/api/?name=${name}`;
+};

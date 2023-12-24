@@ -74,7 +74,7 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "docker build -f apps/frontend/Dockerfile . -t frontend --build-arg DOMAIN={args.domain} --build-arg API_DOMAIN={args.apiDomain} --build-arg CLIENTSIDE_API_DOMAIN={args.clientSideApiDomain}",
+          "docker build -f apps/frontend/Dockerfile . -t frontend --build-arg DOMAIN={args.domain} --build-arg API_DOMAIN={args.apiDomain} --build-arg CLIENTSIDE_API_DOMAIN={args.clientSideApiDomain} --build-arg STORAGE_DOMAIN={args.storageDomain}",
           "docker image tag frontend ghcr.io/{args.repository}/frontend:master",
           "docker push ghcr.io/{args.repository}/frontend:master"
         ],

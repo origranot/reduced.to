@@ -98,3 +98,5 @@ export const refreshTokens = async (refreshToken: string): Promise<{ accessToken
     refreshToken: '',
   };
 };
+
+export const PROFILE_PICTURE_PREFIX = 'profile-pictures';
