@@ -16,6 +16,7 @@ import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { IncomingMessage } from 'node:http';
 import { Http2ServerRequest } from 'node:http2';
+import bodyParser from 'body-parser';
 
 declare global {
   // eslint-disable-next-line
@@ -54,6 +55,8 @@ const app = express();
 // https://expressjs.com/en/starter/static-files.html
 app.use(`/build`, express.static(buildDir, { immutable: true, maxAge: '1y' }));
 app.use(express.static(distDir, { redirect: false }));
+app.use(bodyParser.json({ limit: '5mb' }));
+app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
 
 // Use Qwik City's page and endpoint request handler
 app.use(router);

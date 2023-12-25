@@ -8,8 +8,8 @@ export interface EntriesSelectorProps {
 export const EntriesSelector = component$<EntriesSelectorProps>(({ pageSize, pageSizeOptions }) => {
   const PAGE_SIZE_OPTIONS = pageSizeOptions || [10, 20, 50, 100];
 
-  const handlePageSizeChange = $((event: QwikChangeEvent<HTMLSelectElement>) => {
-    pageSize.value = parseInt(event.target.value, 10);
+  const handlePageSizeChange = $((event: Event) => {
+    pageSize.value = parseInt((event.target as HTMLInputElement).value, 10);
   });
 
   return (

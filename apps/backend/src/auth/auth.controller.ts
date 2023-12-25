@@ -11,6 +11,7 @@ import { LocalAuthGuard } from './guards/local.guard';
 import { VerifyAuthGuard } from './guards/verify.guard';
 import { UserContext } from './interfaces/user-context';
 import { setAuthCookies } from './utils/cookies';
+import { UserCtx } from '../shared/decorators';
 
 @Controller({
   path: 'auth',
@@ -43,7 +44,6 @@ export class AuthController {
   async signup(@Res() res: Response, @Body() signupDto: SignupDto) {
     const user = await this.authService.signup(signupDto);
 
-    // Send verification email to user if in production
     if (this.appConfigService.getConfig().general.env === 'production') {
       await this.novuService.sendVerificationEmail(user);
     }
@@ -103,5 +103,11 @@ export class AuthController {
   @Get('/verified')
   async verified(@Req() req: Request) {
     return this.authService.checkVerification(req.user as UserContext);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/delete')
+  async delete(@UserCtx() user: UserContext) {
+    return this.authService.delete(user);
   }
 }

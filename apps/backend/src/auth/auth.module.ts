@@ -14,6 +14,8 @@ import { VerifyStrategy } from './strategies/verify.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { ProvidersController } from './providers/providers.controller';
 import { UsersModule } from '../core/users/users.module';
+import { StorageModule } from '../storage/storage.module';
+import { StorageService } from '../storage/storage.service';
 
 @Module({
   imports: [
@@ -27,10 +29,11 @@ import { UsersModule } from '../core/users/users.module';
       }),
     }),
     NovuModule,
+    StorageModule,
     forwardRef(() => UsersModule),
   ],
   controllers: [AuthController, ProvidersController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy, VerifyStrategy, GoogleStrategy, NovuService],
+  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy, VerifyStrategy, GoogleStrategy, NovuService, StorageService],
   exports: [AuthService],
 })
 export class AuthModule {}

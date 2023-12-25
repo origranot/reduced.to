@@ -115,7 +115,7 @@ export const TemporaryLinks = component$(() => {
 
   const handleInputKeyPress = $(async (ev: QwikKeyboardEvent<HTMLElement>) => {
     if (ev.key === 'Enter') {
-      ev.nativeEvent?.preventDefault();
+      ev?.preventDefault();
       await addLink();
     }
   });

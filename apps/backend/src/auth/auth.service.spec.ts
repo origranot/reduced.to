@@ -7,6 +7,7 @@ import { AppConfigModule } from '@reduced.to/config';
 import { PrismaService } from '@reduced.to/prisma';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dto/signup.dto';
+import { StorageService } from '../storage/storage.service';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -29,6 +30,10 @@ describe('AuthService', () => {
               create: jest.fn(),
             },
           },
+        },
+        {
+          provide: StorageService,
+          useValue: jest.fn(),
         },
       ],
     }).compile();

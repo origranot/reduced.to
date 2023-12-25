@@ -39,4 +39,4 @@ jobs:
       - name: Build & Push Affected Images to Registry
         id: deploy-images-to-registry
         run: |
-          npx nx affected -t "push-image-to-registry" --repository=${{ github.repository }} --github-sha="$GITHUB_SHA" --apiDomain=${{ secrets.API_DOMAIN }} --clientSideApiDomain=${{ secrets.CLIENTSIDE_API_DOMAIN }} --domain=${{ secrets.DOMAIN }}
+          npx nx affected -t "push-image-to-registry" --repository=${{ github.repository }} --github-sha="$GITHUB_SHA" --apiDomain=${{ secrets.API_DOMAIN }} --clientSideApiDomain=${{ secrets.CLIENTSIDE_API_DOMAIN }} --domain=${{ secrets.DOMAIN }} --storageDomain=${{ secrets.STORAGE_DOMAIN }}
