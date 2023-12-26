@@ -20,6 +20,7 @@ export const Footer = component$(() => {
             <a
               class="inline-flex gap-x-2 text-sm text-gray-500 hover:text-gray-800 dark:text-gray-500 dark:hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
               href="/privacy-policy"
+              target="_blank"
             >
               Privacy Policy
             </a>
