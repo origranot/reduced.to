@@ -57,7 +57,7 @@ export const Toast = component$((props: ToastParams) => {
       onMouseEnter$={() => (hovered.value = true)}
       onMouseLeave$={() => (hovered.value = false)}
     >
-      <div class="grid gap-1 mr-20">
+      <div class="grid gap-1 mr-5">
         {props.title && <span class="text-sm font-semibold">{props.title}</span>}
         {props.description && <span class="text-sm opacity-90">{props.description}</span>}
       </div>
