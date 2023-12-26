@@ -44,11 +44,11 @@ const config = {
       navbar: {
         logo: {
           alt: 'Reduced.to Logo',
-          src: `images/logo.svg`,
-          srcDark: `images/logo-dark.svg`,
+          src: 'images/logo.svg',
+          srcDark: 'images/logo-dark.svg',
           href: 'https://reduced.to',
           target: '_self',
-          width: "70%"
+          width: '70%',
         },
         items: [
           {
