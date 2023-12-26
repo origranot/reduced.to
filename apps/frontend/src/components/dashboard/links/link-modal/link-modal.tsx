@@ -59,6 +59,10 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
 
   const clearValues = $(() => {
     inputValue.value = '';
+
+    if (action.value?.fieldErrors) {
+      action.value.fieldErrors.url = [];
+    }
   });
 
   return (
