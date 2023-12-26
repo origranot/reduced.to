@@ -17,6 +17,10 @@ export const DeleteModal = component$(({ id, type, confirmation, onSubmitHandler
 
   const clearValues = $(() => {
     inputValue.value = '';
+
+    if (action.value?.fieldErrors) {
+      action.value.fieldErrors = [];
+    }
   });
 
   return (
