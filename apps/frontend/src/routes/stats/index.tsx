@@ -38,7 +38,7 @@ export default component$(() => {
     if (deviceChart?.value) {
       Chart.register(...registerables);
       new Chart(deviceChart.value, {
-        type: 'bar', // Change the chart type if needed
+        type: 'pie',
         data: {
           labels: ['Windows', 'Mac', 'iPhone', 'Android'],
           datasets: [
@@ -54,11 +54,6 @@ export default component$(() => {
             title: {
               display: true,
               text: 'Devices that has visited your URL',
-            },
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
             },
           },
           responsive: true,
@@ -88,7 +83,7 @@ export default component$(() => {
           plugins: {
             title: {
               display: true,
-              text: 'Devices that has visited your URL',
+              text: 'Amount of visitors per week',
             },
           },
           scales: {
@@ -128,7 +123,7 @@ export default component$(() => {
           <div style="width: 40%; padding: 32px;">
             <canvas ref={countryChart} id="countryChart"></canvas>
           </div>
-          <div style="width: 50%; padding: 32px;">
+          <div style="width: 40%; padding: 32px;">
             <canvas ref={deviceChart} id="deviceChart"></canvas>
           </div>
         </div>
