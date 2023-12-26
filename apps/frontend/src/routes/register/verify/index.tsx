@@ -18,7 +18,7 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   }
 };
 
-const COUNT = 59;
+const RESEND_DELAY = 59;
 
 export default component$(() => {
   const countdownRef = useSignal<HTMLSpanElement>();
@@ -27,7 +27,7 @@ export default component$(() => {
     isVerified: false,
     loading: true,
     resent: false,
-    count: COUNT,
+    count: RESEND_DELAY,
   });
 
   const user = useGetCurrentUser();
@@ -43,11 +43,14 @@ export default component$(() => {
 
   useTask$(({ track }) => {
     const resent = track(() => store.resent);
-    if (!resent) return;
+    if (!resent) {
+      return;
+    }
     const interval = setInterval(() => {
-      if (store.count > 0) store.count--;
-      else {
-        store.count = COUNT;
+      if (store.count > 0) {
+        store.count--;
+      } else {
+        store.count = RESEND_DELAY;
         store.resent = false;
       }
       countdownRef.value?.style?.setProperty('--value', store.count.toString());
