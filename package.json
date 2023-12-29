@@ -74,7 +74,7 @@
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.2.10",
     "@nestjs/throttler": "^4.2.1",
-    "@novu/node": "^0.21.0",
+    "@novu/node": "^0.22.0",
     "@origranot/ts-logger": "^1.12.0",
     "@prisma/client": "^5.7.1",
     "@qwikest/icons": "^0.0.13",
