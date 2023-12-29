@@ -9,8 +9,8 @@ import { DeleteModal } from '../../../components/dashboard/delete-modal/delete-m
 const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
-const DELETE_MODAL_ID = 'delete-modal';
-const DELETE_CONFIRMATION = 'DELETE';
+export const DELETE_MODAL_ID = 'delete-modal';
+export const DELETE_CONFIRMATION = 'DELETE';
 
 const useDeleteUser = globalAction$(
   async (_, { fail, cookie, redirect }) => {

@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
+import {Controller, Delete, Get, Param, Query, Req, UseGuards} from '@nestjs/common';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { LinksService } from './links.service';
@@ -33,5 +33,12 @@ export class LinksController {
         userId: user?.id,
       },
     });
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN, Role.USER)
+  async delete(@Param('id') id: string): Promise<any> {
+    return this.linksService.delete(id);
   }
 }

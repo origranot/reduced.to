@@ -6,12 +6,13 @@ import { useToaster } from '../../toaster/toaster';
 export interface DeleteModalProps {
   id: string;
   confirmation: string;
+  id_to_delete?: string;
   type: string;
   action: ActionStore<any, any>;
   onSubmitHandler?: () => void;
 }
 
-export const DeleteModal = component$(({ id, type, confirmation, onSubmitHandler, action }: DeleteModalProps) => {
+export const DeleteModal = component$(({ id, type, confirmation, id_to_delete, onSubmitHandler, action }: DeleteModalProps) => {
   const inputValue = useSignal('');
   const toaster = useToaster();
 
@@ -87,6 +88,14 @@ export const DeleteModal = component$(({ id, type, confirmation, onSubmitHandler
                   inputValue.value = (ev.target as HTMLInputElement).value;
                 }}
               />
+              {id_to_delete && <input
+                id="id_to_delete"
+                name="id_to_delete"
+                type="hidden"
+                class="input input-bordered w-full"
+                value={id_to_delete}
+
+              />}
               {action.value?.fieldErrors?.confirmation && (
                 <label class="label">
                   <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors?.confirmation}</span>
