@@ -64,7 +64,7 @@ export default component$(() => {
   const columns: Columns = {
     key: {
       displayName: 'Shortened URL',
-      classNames: 'w-1/4',
+      classNames: 'w-1/5',
       format: $(({value}) => {
         const url = getLinkFromKey(value as string);
         return (
@@ -76,7 +76,7 @@ export default component$(() => {
     },
     url: {
       displayName: 'Destination URL',
-      classNames: 'w-1/4',
+      classNames: 'w-1/5',
       format: $(({value}) => {
         const limitLink = (limit: number) => (value.length > limit ? value.slice(0, limit) + '...' : value);
         return (
@@ -95,7 +95,7 @@ export default component$(() => {
     },
     expirationTime: {
       displayName: 'Expiration Time',
-      classNames: 'w-1/4',
+      classNames: 'w-1/5',
       sortable: true,
       format: $(({value}) => {
         if (!value || value === '') {
@@ -107,7 +107,7 @@ export default component$(() => {
     },
     createdAt: {
       displayName: 'Created At',
-      classNames: 'w-1/4',
+      classNames: 'w-1/5',
       sortable: true,
       format: $(({value}) => {
         return formatDate(new Date(value));
@@ -115,7 +115,7 @@ export default component$(() => {
     },
     id: {
       displayName: 'Action',
-      classNames: 'w-1/4',
+      classNames: 'w-1/5',
       format: $(({value}) => {
         return (
           <div class="dropdown dropdown-bottom ">
