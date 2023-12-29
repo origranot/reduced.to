@@ -1,11 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-service
+  name: postgres-external
 spec:
   selector:
     app: postgres
   ports:
-    - protocol: TCP
+    - name: postgres-external
       port: 5432
       targetPort: 5432
+      nodePort: 30030
+  type: NodePort
