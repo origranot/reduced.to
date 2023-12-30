@@ -1,4 +1,4 @@
-import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik';
+import { component$, useSignal, useStore, useTask$, useVisibleTask$ } from '@builder.io/qwik';
 import { Link, RequestHandler } from '@builder.io/qwik-city';
 import { authorizedFetch, validateAccessToken } from '../../../shared/auth.service';
 import { useGetCurrentUser } from '../../layout';
@@ -8,6 +8,7 @@ export interface Store {
   isVerified: boolean;
   loading: boolean;
   resent: boolean;
+  count: number;
 }
 
 export const onGet: RequestHandler = async ({ cookie, redirect }) => {
@@ -17,11 +18,16 @@ export const onGet: RequestHandler = async ({ cookie, redirect }) => {
   }
 };
 
+const RESEND_DELAY = 59;
+
 export default component$(() => {
+  const countdownRef = useSignal<HTMLSpanElement>();
+
   const store = useStore<Store>({
     isVerified: false,
     loading: true,
     resent: false,
+    count: RESEND_DELAY,
   });
 
   const user = useGetCurrentUser();
@@ -33,6 +39,25 @@ export default component$(() => {
       store.isVerified = verified;
       store.loading = false;
     });
+  });
+
+  useTask$(({ track }) => {
+    const resent = track(() => store.resent);
+    if (!resent) {
+      return;
+    }
+    const interval = setInterval(() => {
+      if (store.count > 0) {
+        store.count--;
+      } else {
+        store.count = RESEND_DELAY;
+        store.resent = false;
+      }
+      countdownRef.value?.style?.setProperty('--value', store.count.toString());
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
   });
 
   return (
@@ -57,18 +82,20 @@ export default component$(() => {
                       if (store.resent) return;
                       await authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/auth/resend`);
                       store.resent = true;
-
-                      setTimeout(() => {
-                        store.resent = false;
-                      }, 5000);
-
                       toaster.add({
                         title: 'Verification email resent',
                         description: 'Please check your email for the verification link.',
                       });
                     }}
                   >
-                    Resend verification email
+                    {store.resent ? (
+                      <span class="countdown font-mono text-2xl">
+                        <span ref={countdownRef} style={{ '--value': 0 }}></span>m
+                        <span ref={countdownRef} style={{ '--value': store.count }}></span>s
+                      </span>
+                    ) : (
+                      'Resend verification email'
+                    )}
                   </button>
                 </div>
               </>
