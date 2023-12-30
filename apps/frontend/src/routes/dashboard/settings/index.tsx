@@ -4,13 +4,10 @@ import { useGetCurrentUser } from '../../layout';
 import { useToaster } from '../../../components/toaster/toaster';
 import { ACCESS_COOKIE_NAME, setTokensAsCookies } from '../../../shared/auth.service';
 import { resizeImage } from '../../../utils/images';
-import { DeleteModal } from '../../../components/dashboard/delete-modal/delete-modal';
+import { DELETE_CONFIRMATION, DELETE_MODAL_ID, DeleteModal } from '../../../components/dashboard/delete-modal/delete-modal';
 
 const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
-
-const DELETE_MODAL_ID = 'delete-modal';
-const DELETE_CONFIRMATION = 'DELETE';
 
 const useDeleteUser = globalAction$(
   async (_, { fail, cookie, redirect }) => {

@@ -40,7 +40,7 @@ export default component$(() => {
   const columns: Columns = {
     ignore: {
       displayName: '',
-      classNames: 'w-1/9',
+      headerClassNames: 'w-1/9',
       format: $(({ row, value }) => {
         return (
           <>
@@ -58,22 +58,22 @@ export default component$(() => {
     },
     key: {
       displayName: 'Shortened URL',
-      classNames: 'w-1/4',
+      headerClassNames: 'w-1/4',
       format: $(({ row }) => {
         return `${process.env.DOMAIN}/${row.link.key}`;
       }),
     },
     url: {
       displayName: 'Destination URL',
-      classNames: 'w-1/4',
+      headerClassNames: 'w-1/4',
       format: $(({ row }) => {
         return row.link.url;
       }),
     },
-    category: { displayName: 'Category', classNames: 'w-1/4' },
+    category: { displayName: 'Category', headerClassNames: 'w-1/4' },
     createdAt: {
       displayName: 'Created At',
-      classNames: 'w-1/4',
+      headerClassNames: 'w-1/4',
       sortable: true,
       format: $(({ value }) => {
         return formatDate(new Date(value));
@@ -81,7 +81,7 @@ export default component$(() => {
     },
     actions: {
       displayName: '',
-      classNames: 'w-1/4',
+      headerClassNames: 'w-1/4',
       format: $(({ row, value }) => {
         return (
           <>

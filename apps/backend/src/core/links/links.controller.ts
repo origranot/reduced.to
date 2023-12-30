@@ -1,11 +1,11 @@
-import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Query, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { LinksService } from './links.service';
 import { IPaginationResult, calculateSkip } from '../../shared/utils';
 import { FindAllQueryDto } from './dto';
 import { Role, Link } from '@reduced.to/prisma';
-import { Roles } from '../../shared/decorators';
+import { Roles, UserCtx } from '../../shared/decorators';
 import { Request } from 'express';
 import { UserContext } from '../../auth/interfaces/user-context';
 
@@ -33,5 +33,21 @@ export class LinksController {
         userId: user?.id,
       },
     });
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN, Role.USER)
+  async delete(@UserCtx() user: UserContext, @Param('id') id: string): Promise<Link> {
+    const link = await this.linksService.findBy({
+      userId: user.id,
+      id,
+    });
+
+    if (!link) {
+      throw new UnauthorizedException();
+    }
+
+    return this.linksService.delete(id);
   }
 }

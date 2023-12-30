@@ -3,15 +3,19 @@ import { HiXMarkOutline } from '@qwikest/icons/heroicons';
 import { ActionStore, Form } from '@builder.io/qwik-city';
 import { useToaster } from '../../toaster/toaster';
 
+export const DELETE_MODAL_ID = 'delete-modal';
+export const DELETE_CONFIRMATION = 'DELETE';
+
 export interface DeleteModalProps {
   id: string;
   confirmation: string;
+  idToDelete?: string;
   type: string;
   action: ActionStore<any, any>;
   onSubmitHandler?: () => void;
 }
 
-export const DeleteModal = component$(({ id, type, confirmation, onSubmitHandler, action }: DeleteModalProps) => {
+export const DeleteModal = component$(({ id, type, confirmation, idToDelete, onSubmitHandler, action }: DeleteModalProps) => {
   const inputValue = useSignal('');
   const toaster = useToaster();
 
@@ -48,6 +52,8 @@ export const DeleteModal = component$(({ id, type, confirmation, onSubmitHandler
               type: 'info',
             });
 
+            (document.getElementById(id) as any).close();
+            clearValues();
             onSubmitHandler && onSubmitHandler();
           }}
           class="modal-box relative p-4 w-full max-w-md max-h-full"
@@ -87,6 +93,9 @@ export const DeleteModal = component$(({ id, type, confirmation, onSubmitHandler
                   inputValue.value = (ev.target as HTMLInputElement).value;
                 }}
               />
+              {idToDelete && (
+                <input id="idToDelete" name="idToDelete" type="hidden" class="input input-bordered w-full" value={idToDelete} />
+              )}
               {action.value?.fieldErrors?.confirmation && (
                 <label class="label">
                   <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors?.confirmation}</span>
