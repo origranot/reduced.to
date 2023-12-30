@@ -41,6 +41,9 @@ export class LinksService extends EntityService<Link> {
       where: {
         id,
       },
+      include: {
+        visit: true,
+      },
     });
   }
 }
