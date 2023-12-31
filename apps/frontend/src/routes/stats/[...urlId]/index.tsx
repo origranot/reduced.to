@@ -1,10 +1,40 @@
 import { component$, useStylesScoped$, useSignal, useVisibleTask$ } from '@builder.io/qwik';
-import { formatDate } from '../../lib/date-utils';
-import animations from '../../assets/css/animations.css?inline';
 import { Chart, registerables } from 'chart.js';
+import { RequestHandler } from '@builder.io/qwik-city';
+
+// const UNKNOWN_URL = '/unknown';
+
+// const isValidUrl = (urlId: string) => {
+//   return urlId && urlId.split('/')[0] !== UNKNOWN_URL.substring(1) && urlId !== 'null';
+// };
+
+// export const onGet: RequestHandler = async ({ params: { urlId }, redirect, clientConn, request, next }) => {
+//   let url = UNKNOWN_URL;
+
+//   if (!isValidUrl(urlId)) {
+//     throw next();
+//   }
+
+//   try {
+//     const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`, {
+//       headers: {
+//         'x-forwarded-for': clientConn.ip || '',
+//         'user-agent': request.headers.get('user-agent') || '',
+//       },
+//     });
+//     console.log(await res.text());
+//     url = (`/stats/${urlId}`);
+
+//     if (res.status !== 200 || !url) {
+//       throw new Error('failed to fetch original url...');
+//     }
+//   } catch (err) {
+//     url = UNKNOWN_URL;
+//   }
+//   throw redirect(302, url);
+// };
 
 export default component$(() => {
-  useStylesScoped$(animations);
   const countryChart = useSignal<HTMLCanvasElement>();
   const deviceChart = useSignal<HTMLCanvasElement>();
   const historyClicksChart = useSignal<HTMLCanvasElement>();

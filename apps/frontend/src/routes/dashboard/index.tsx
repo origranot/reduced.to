@@ -20,7 +20,7 @@ export default component$(() => {
       type: 'info',
     });
   });
-
+  
   const columns: Columns = {
     key: {
       displayName: 'Shortened URL',
@@ -28,7 +28,7 @@ export default component$(() => {
       format: $(({ value }) => {
         const url = getLinkFromKey(value as string);
         return (
-          <a href={url} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
+          <a href={url} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline" id="keyLink">
             {process.env.DOMAIN}/{value}
           </a>
         );
@@ -77,9 +77,9 @@ export default component$(() => {
       displayName: 'Stats',
       classNames: 'w-1/4',
       format: $(({ value }) => {
-        const url = getStatsLinkFromKey(value as string);
+        const statsUrl = getStatsLinkFromKey(value as string);
         return (
-          <a href={url} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
+          <a href={statsUrl} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
             Stats Page
           </a>
         );

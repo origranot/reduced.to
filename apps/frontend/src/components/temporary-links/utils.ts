@@ -1,3 +1,5 @@
+import { debuglog } from "util";
+
 const UNKNOWN_FAVICON = '/images/unkown-favicon.png';
 
 export const getFavicon = async (url: string) => {
