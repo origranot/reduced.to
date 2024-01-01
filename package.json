@@ -87,6 +87,7 @@
     "class-validator": "^0.14.0",
     "clsx": "^2.0.0",
     "cookie-parser": "^1.4.6",
+    "flowbite": "^2.2.1",
     "jwt-decode": "^3.1.2",
     "memphis-dev": "^1.2.2",
     "passport-google-oauth20": "^2.0.0",

@@ -2,37 +2,47 @@ import { component$, useStylesScoped$, useSignal, useVisibleTask$ } from '@build
 import { Chart, registerables } from 'chart.js';
 import { RequestHandler } from '@builder.io/qwik-city';
 
-// const UNKNOWN_URL = '/unknown';
+const UNKNOWN_URL = '/unknown';
 
-// const isValidUrl = (urlId: string) => {
-//   return urlId && urlId.split('/')[0] !== UNKNOWN_URL.substring(1) && urlId !== 'null';
-// };
+const isValidUrl = (urlId: string) => {
+  return urlId && urlId.split('/')[0] !== UNKNOWN_URL.substring(1) && urlId !== 'null';
+};
 
-// export const onGet: RequestHandler = async ({ params: { urlId }, redirect, clientConn, request, next }) => {
-//   let url = UNKNOWN_URL;
+export const onGet: RequestHandler = async ({ params: { urlId }, redirect, clientConn, request, next }) => {
+  if (!isValidUrl(urlId)) {
+    throw redirect(302, UNKNOWN_URL);
+  }
 
-//   if (!isValidUrl(urlId)) {
-//     throw next();
-//   }
+  try {
+    const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`, {
+      headers: {
+        'x-forwarded-for': clientConn.ip || '',
+        'user-agent': request.headers.get('user-agent') || '',
+      },
+    });
+    console.log(await res.text());
+    const url = `/stats/${urlId}`;
 
-//   try {
-//     const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}`, {
-//       headers: {
-//         'x-forwarded-for': clientConn.ip || '',
-//         'user-agent': request.headers.get('user-agent') || '',
-//       },
-//     });
-//     console.log(await res.text());
-//     url = (`/stats/${urlId}`);
+    if (res.status !== 200 || !url) {
+      throw new Error('failed to fetch original url...');
+    }
+  } catch (err) {
+    throw redirect(302, UNKNOWN_URL);
+  }
 
-//     if (res.status !== 200 || !url) {
-//       throw new Error('failed to fetch original url...');
-//     }
-//   } catch (err) {
-//     url = UNKNOWN_URL;
-//   }
-//   throw redirect(302, url);
-// };
+  next();
+};
+
+const fetchVisitData = async (urlId: string) => {
+  try {
+    const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${urlId}/visits`);
+    const visitData = await res.json();
+    return visitData;
+  } catch (error) {
+    console.error('Error fetching visit data:', error);
+    return null;
+  }
+};
 
 export default component$(() => {
   const countryChart = useSignal<HTMLCanvasElement>();

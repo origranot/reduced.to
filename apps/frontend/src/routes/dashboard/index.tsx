@@ -20,7 +20,7 @@ export default component$(() => {
       type: 'info',
     });
   });
-  
+
   const columns: Columns = {
     key: {
       displayName: 'Shortened URL',
@@ -80,11 +80,25 @@ export default component$(() => {
         const statsUrl = getStatsLinkFromKey(value as string);
         return (
           <a href={statsUrl} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
-            Stats Page
+            <svg
+              class="w-6 h-6 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 18 16"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 1v14h16m0-9-3-2-3 5-3-2-3 4"
+              />
+            </svg>
           </a>
         );
-      }), 
-    } 
+      }),
+    },
   };
 
   const defaultSort = { createdAt: SortOrder.DESC };
