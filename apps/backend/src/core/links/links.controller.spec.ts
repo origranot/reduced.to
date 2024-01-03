@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { Link } from '@reduced.to/prisma';
+import { Link, Role } from '@reduced.to/prisma';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
 import { AppConfigModule } from '@reduced.to/config';
 import { RolesGuard } from '../../auth/guards/roles.guard';
@@ -19,9 +19,15 @@ describe('LinksController', () => {
     { id: '1', url: 'https://reduced.to', key: 'nice' },
     { id: '2', url: 'https://google.com', key: 'good' },
   ];
+
   const MOCK_FIND_ALL_RESULT: IPaginationResult<Link> = {
     total: MOCKED_LINKS.length,
     data: MOCKED_LINKS,
+  };
+
+  const MOCK_USER_CONTEXT = {
+    id: '8940dbd3-c7d0-455d-aa37-cb8c380cf461',
+    role: Role.USER,
   };
 
   beforeEach(async () => {
@@ -33,13 +39,17 @@ describe('LinksController', () => {
           provide: LinksService,
           useValue: {
             findAll: jest.fn().mockResolvedValue(MOCK_FIND_ALL_RESULT),
+            findBy: jest.fn().mockResolvedValue(MOCKED_LINKS[0]),
+            delete: jest.fn().mockResolvedValue(MOCKED_LINKS[0]),
           },
         },
       ],
     })
       .overrideGuard(JwtAuthGuard)
       .useValue({
-        canActivate: () => {
+        canActivate: (context) => {
+          const req = context.switchToHttp().getRequest();
+          req.user = MOCK_USER_CONTEXT;
           return true;
         },
       })
@@ -73,7 +83,7 @@ describe('LinksController', () => {
         limit: 100,
         filter: undefined,
         sort: undefined,
-        extraWhereClause: { userId: undefined },
+        extraWhereClause: { userId: expect.anything() },
       });
       expect(response.body).toEqual(MOCK_FIND_ALL_RESULT);
     });
@@ -82,7 +92,7 @@ describe('LinksController', () => {
       const findAllOptions: IFindAllOptions = {
         skip: 10,
         limit: 10,
-        extraWhereClause: { userId: undefined },
+        extraWhereClause: { userId: expect.anything() },
         filter: undefined,
         sort: undefined,
       };
@@ -98,7 +108,7 @@ describe('LinksController', () => {
         limit: 10,
         filter: 'reduced.to',
         sort: undefined,
-        extraWhereClause: { userId: undefined },
+        extraWhereClause: { userId: expect.anything() },
       };
 
       await request(app.getHttpServer()).get('/links?limit=10&page=2&filter=reduced.to').expect(200);
@@ -112,7 +122,7 @@ describe('LinksController', () => {
         limit: 10,
         filter: 'google.com',
         sort: { expirationTime: SortOrder.ASCENDING, createdAt: SortOrder.DESCENDING },
-        extraWhereClause: { userId: undefined },
+        extraWhereClause: { userId: expect.anything() },
       };
 
       await request(app.getHttpServer())
@@ -137,6 +147,50 @@ describe('LinksController', () => {
       await request(app.getHttpServer()).get('/links?sort[invalid]=asc').expect(400);
       await request(app.getHttpServer()).get('/links?sort[invalid]=invalid').expect(400);
       await request(app.getHttpServer()).get('/links?sort=name').expect(400);
+    });
+  });
+
+  describe('DELETE /links/:id', () => {
+    it('should delete the link if the user is authorized and the link exists', async () => {
+      const linkToDelete = MOCKED_LINKS[0];
+      jest.spyOn(linksService, 'findAll').mockResolvedValue(MOCK_FIND_ALL_RESULT);
+      jest.spyOn(linksService, 'findBy').mockResolvedValue(linkToDelete as Link);
+      jest.spyOn(linksService, 'delete').mockResolvedValue(linkToDelete as Link);
+
+      const response = await request(app.getHttpServer()).delete(`/links/${linkToDelete.id}`).expect(200);
+
+      expect(linksService.findBy).toHaveBeenCalledWith({
+        userId: expect.anything(),
+        id: linkToDelete.id,
+      });
+
+      expect(linksService.delete).toHaveBeenCalledWith(linkToDelete.id);
+      expect(response.body).toEqual(linkToDelete);
+    });
+
+    it('should throw an UnauthorizedException if the link does not belong to the user', async () => {
+      jest.spyOn(linksService, 'findBy').mockResolvedValue(null);
+
+      await request(app.getHttpServer()).delete('/links/invalid-link-id').expect(401); // 401 Unauthorized
+
+      expect(linksService.findBy).toHaveBeenCalledWith({
+        userId: expect.anything(),
+        id: 'invalid-link-id',
+      });
+      expect(linksService.delete).not.toHaveBeenCalled();
+    });
+
+    it('should throw an error if the link does not exist', async () => {
+      jest.spyOn(linksService, 'findBy').mockResolvedValue(undefined);
+      jest.spyOn(linksService, 'delete').mockResolvedValue(undefined);
+
+      await request(app.getHttpServer()).delete('/links/non-existent-id').expect(401); // 401 Unauthorized as the link is not found
+
+      expect(linksService.findBy).toHaveBeenCalledWith({
+        userId: expect.anything(),
+        id: 'non-existent-id',
+      });
+      expect(linksService.delete).not.toHaveBeenCalled();
     });
   });
 });

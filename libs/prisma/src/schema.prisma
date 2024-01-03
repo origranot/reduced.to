@@ -52,7 +52,7 @@ model Link {
   createdAt      DateTime  @default(now())
   Report         Report[]
   clicks         Int       @default(0)
-  Visit          Visit[]
+  visit          Visit[]
 
   @@index(userId)
   @@index(key)

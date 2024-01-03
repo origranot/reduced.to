@@ -11,12 +11,12 @@ export default component$(() => {
   const verifiedUsersSignal = useSignal<StatsCardValue>({ loading: true });
 
   const columns: Columns = {
-    name: { displayName: 'Name', classNames: 'w-1/4', sortable: true },
-    email: { displayName: 'Email', classNames: 'w-1/4', sortable: true },
-    verified: { displayName: 'Verified', classNames: 'w-1/4', format: $(({ value }) => (value ? 'true' : 'false')) },
+    name: { displayName: 'Name', headerClassNames: 'w-1/4', sortable: true },
+    email: { displayName: 'Email', headerClassNames: 'w-1/4', sortable: true },
+    verified: { displayName: 'Verified', headerClassNames: 'w-1/4', format: $(({ value }) => (value ? 'true' : 'false')) },
     createdAt: {
       displayName: 'Created At',
-      classNames: 'w-1/4',
+      headerClassNames: 'w-1/4',
       sortable: true,
       format: $(({ value }) => {
         return formatDate(new Date(value));

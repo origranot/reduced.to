@@ -21,7 +21,8 @@ export type PaginationFetcher = ({ limit, page, filter, sort }: PaginationParams
 
 export type OptionalHeader = {
   displayName?: string;
-  classNames?: string;
+  headerClassNames?: string;
+  tdClassNames?: string;
   hide?: boolean;
   sortable?: boolean;
   format?: QRL<(opts: { row: any; value: string }) => JSXNode | string>;
@@ -162,7 +163,7 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
                   {Object.keys(props.columns).map((columnName, idx) => {
                     if (props.columns[columnName].hide) return;
                     return (
-                      <th class={props.columns[columnName].classNames ?? ''} onClick$={sortColumn(columnName)} key={idx}>
+                      <th class={props.columns[columnName].headerClassNames ?? ''} onClick$={sortColumn(columnName)} key={idx}>
                         {props.columns[columnName].displayName ?? columnName}{' '}
                         {props.columns[columnName].sortable &&
                           (!sortSignal.value[columnName] ? (
@@ -203,6 +204,14 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
                         format = props.columns[columnName].format;
                       }
                       return <td key={idx}>{format ? format({ value, row }) : value}</td>;
+                      const value = !rawValue ? '' : rawValue.toString();
+                      const format = props.columns[columnName].format;
+
+                      return (
+                        <td class={props.columns[columnName]?.tdClassNames ?? ''} key={idx}>
+                          {format ? format({ value, row }) : value}
+                        </td>
+                      );
                     })}
                   </tr>
                 ))}
