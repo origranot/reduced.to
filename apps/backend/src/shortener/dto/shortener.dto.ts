@@ -11,6 +11,10 @@ export class ShortenerDto {
 
   @IsString()
   @IsOptional()
+  urlKey?: string;
+
+  @IsString()
+  @IsOptional()
   description?: string;
 
   @IsPositive()

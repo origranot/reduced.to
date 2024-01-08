@@ -4,11 +4,12 @@ import { Form, globalAction$, zod$ } from '@builder.io/qwik-city';
 import { z } from 'zod';
 import { ACCESS_COOKIE_NAME } from '../../../../shared/auth.service';
 import { normalizeUrl } from '../../../../utils';
+import { s } from 'vitest/dist/types-198fd1d9';
 
 export const LINK_MODAL_ID = 'link-modal';
 
 const useCreateLink = globalAction$(
-  async ({ url }, { fail, cookie }) => {
+  async ({ url, urlKey }, { fail, cookie }) => {
     const response: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener`, {
       method: 'POST',
       headers: {
@@ -18,6 +19,7 @@ const useCreateLink = globalAction$(
       body: JSON.stringify({
         url: normalizeUrl(url),
         expirationTime: null, // forever
+        urlKey
       }),
     });
 
@@ -45,6 +47,7 @@ const useCreateLink = globalAction$(
       .regex(/^(?:https?:\/\/)?(?:[\w-]+\.)+[a-z]{2,}(?::\d{1,5})?(?:\/\S*)?$/, {
         message: "The url you've entered is not valid",
       }),
+    urlKey: z.string(),
   })
 );
 
@@ -52,13 +55,15 @@ export interface LinkModalProps {
   onSubmitHandler: () => void;
 }
 
+const initValues = { url: '', urlKey: '' };
+
 export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
-  const inputValue = useSignal('');
+  const inputValue = useSignal({ ...initValues });
 
   const action = useCreateLink();
 
   const clearValues = $(() => {
-    inputValue.value = '';
+    inputValue.value = { ...initValues };
 
     if (action.value?.fieldErrors) {
       action.value.fieldErrors.url = [];
@@ -106,9 +111,24 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                 type="text"
                 placeholder="This should be a very long url..."
                 class="input input-bordered w-full"
-                value={inputValue.value}
+                value={inputValue.value.url}
                 onInput$={(ev: InputEvent) => {
-                  inputValue.value = (ev.target as HTMLInputElement).value;
+                  inputValue.value.url = (ev.target as HTMLInputElement).value;
+                }}
+              />
+              <label class="label">
+                <span class="label-text">
+                  Shortened Key (optional)
+                </span>
+              </label>
+              <input
+                name="urlKey"
+                type="text"
+                placeholder="The reduced.to/<key> you want to use"
+                class="input input-bordered w-full"
+                value={inputValue.value.urlKey}
+                onInput$={(ev: InputEvent) => {
+                  inputValue.value.urlKey = (ev.target as HTMLInputElement).value;
                 }}
               />
               {action.value?.fieldErrors?.url && (
