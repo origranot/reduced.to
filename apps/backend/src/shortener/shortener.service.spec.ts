@@ -304,7 +304,7 @@ describe('ShortenerService', () => {
     it('should create url with correct expiration time', async () => {
       const body = {
         url: ORIGINAL_URL,
-        ttl: 1000 * 60 * 60 * 24, // Day in ms
+        expirationTime: 1000 * 60 * 60 * 24, // Day in ms
       };
       const user = { id: USER_ID } as UserContext;
       const key = 'best_url_shortener';
@@ -315,7 +315,7 @@ describe('ShortenerService', () => {
           key,
           url: body.url,
           userId: user.id,
-          expirationTime: new Date(new Date(FIXED_SYSTEM_TIME).getTime() + body.ttl),
+          expirationTime: new Date(new Date(FIXED_SYSTEM_TIME).getTime() + body.expirationTime),
         },
       });
       expect(result).toEqual(LINK_DB_DATA);
