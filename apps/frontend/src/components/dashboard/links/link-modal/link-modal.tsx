@@ -19,7 +19,7 @@ const useCreateLink = globalAction$(
       body: JSON.stringify({
         url: normalizeUrl(url),
         expirationTime: null, // forever
-        urlKey
+        urlKey,
       }),
     });
 
@@ -117,9 +117,7 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                 }}
               />
               <label class="label">
-                <span class="label-text">
-                  Shortened Key (optional)
-                </span>
+                <span class="label-text">Shortened Key (optional)</span>
               </label>
               <input
                 name="urlKey"
