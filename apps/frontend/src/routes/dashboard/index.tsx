@@ -95,6 +95,14 @@ export default component$(() => {
         return formatDate(new Date(value));
       }),
     },
+    expirationTime: {
+      displayName: 'Expiration Time',
+      headerClassNames: 'flex-grow',
+      sortable: true,
+      format: $(({ value }) => {
+        return value ? formatDate(new Date(value)) : '';
+      }),
+    },
     id: {
       displayName: '',
       headerClassNames: 'w-1/8',
