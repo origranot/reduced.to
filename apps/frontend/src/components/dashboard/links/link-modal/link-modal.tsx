@@ -17,11 +17,6 @@ const useCreateLink = globalAction$(
       url: normalizeUrl(url),
     };
     if (expirationTime) {
-      // for  included the selected date
-      // const ttl = new Date(expirationTime);
-      // ttl.setDate(ttl.getDate() + 1);
-      // body['expirationTime'] = ttl.getTime();
-
       body['expirationTime'] = Date.parse(expirationTime);
     }
     const response: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener`, {

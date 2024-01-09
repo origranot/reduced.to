@@ -139,8 +139,12 @@ export class ShortenerService {
       },
     });
 
-    if (!link || (link?.expirationTime && link.expirationTime < new Date())) {
+    if (!link) {
       return null;
+    }
+    if (link?.expirationTime) {
+      link.expirationTime.setDate(link.expirationTime.getDate() + 1);
+      if (link.expirationTime < new Date()) return null;
     }
     // If the URL has an expiration time, calculate the TTL.
     let expirationTime: number;
