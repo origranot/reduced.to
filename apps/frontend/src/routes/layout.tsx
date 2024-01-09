@@ -54,7 +54,7 @@ export default component$(() => {
     <>
       <Navbar />
       {user.value?.verified === false ? <VerifyAlert /> : ''}
-      <main class="flex flex-col h-full">
+      <main class="flex flex-col h-full pt-[64px]">
         <Slot />
       </main>
       <Toaster />

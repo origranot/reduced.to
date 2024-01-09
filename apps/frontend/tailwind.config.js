@@ -10,6 +10,9 @@ module.exports = {
   },
   theme: {
     extend: {
+      colors: {
+        'dark-modal': '#172139',
+      },
       keyframes: {
         fade: {
           '0%': { opacity: 0, transform: 'translateY(-50px)' },

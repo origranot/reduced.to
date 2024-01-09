@@ -19,7 +19,7 @@ export const Navbar = component$(() => {
   const showDropdown = useSignal(false);
 
   return (
-    <div class="navbar bg-base-100 drop-shadow-md relative z-[40]">
+    <div class="navbar bg-base-100 drop-shadow-md fixed z-[40]">
       <div class="flex-1">
         {location.url.pathname.includes('/dashboard') && ( // Only show the left 3 bars button on the dashboard page
           <>
