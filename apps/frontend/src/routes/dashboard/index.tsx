@@ -5,6 +5,7 @@ import { Columns, SortOrder, TableServerPagination } from '../../components/dash
 import { LINK_MODAL_ID, LinkModal } from '../../components/dashboard/links/link-modal/link-modal';
 import { formatDate } from '../../lib/date-utils';
 import { useToaster } from '../../components/toaster/toaster';
+import { getLinkFromKey, getStatsLinkFromKey } from '../../components/temporary-links/utils';
 import { getLinkFromKey } from '../../components/temporary-links/utils';
 import { DELETE_CONFIRMATION, DELETE_MODAL_ID, DeleteModal } from '../../components/dashboard/delete-modal/delete-modal';
 import { ACCESS_COOKIE_NAME } from '../../shared/auth.service';
@@ -62,7 +63,7 @@ export default component$(() => {
       format: $(({ value }) => {
         const url = getLinkFromKey(value as string);
         return (
-          <a href={url} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
+          <a href={url} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline" id="keyLink">
             {process.env.DOMAIN}/{value}
           </a>
         );
@@ -95,6 +96,29 @@ export default component$(() => {
         return formatDate(new Date(value));
       }),
     },
+    stats: {
+      displayName: 'Stats',
+      classNames: 'w-1/4',
+      format: $(({ value }) => {
+        const statsUrl = getStatsLinkFromKey(value as string);
+        return (
+          <a href={statsUrl} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
+            <svg
+              class="w-6 h-6 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 18 16"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 1v14h16m0-9-3-2-3 5-3-2-3 4"
+              />
+            </svg>
+          </a>
     id: {
       displayName: '',
       headerClassNames: 'w-1/8',

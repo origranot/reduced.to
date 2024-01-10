@@ -1,3 +1,5 @@
+import { debuglog } from "util";
+
 const UNKNOWN_FAVICON = '/images/unkown-favicon.png';
 
 export const getFavicon = async (url: string) => {
@@ -20,3 +22,14 @@ export const getLinkFromKey = (key: string) => {
 
   return `https://${suffix}`;
 };
+
+export const getStatsLinkFromKey = (key: string) => {
+  const suffix = `${process.env.DOMAIN}/stats/${key}`;
+
+  // Temporary aswell until there will be a permanent solution.
+  if (process.env.DOMAIN === 'localhost') {
+    return `http://${process.env.DOMAIN}:4200/stats/${key}`;
+  }
+
+  return `https://${suffix}`;
+}

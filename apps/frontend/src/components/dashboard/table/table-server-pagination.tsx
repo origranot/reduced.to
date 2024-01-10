@@ -196,6 +196,14 @@ export const TableServerPagination = component$((props: TableServerPaginationPar
                       }
 
                       const rawValue = row[columnName];
+                      let value = !rawValue ? '' : rawValue.toString();
+                      let format = props.columns[columnName].format;
+                      if (columnName === 'stats') {
+                        const rawValue = row['key'];
+                        value = !rawValue ? '' : rawValue.toString();
+                        format = props.columns[columnName].format;
+                      }
+                      return <td key={idx}>{format ? format({ value, row }) : value}</td>;
                       const value = !rawValue ? '' : rawValue.toString();
                       const format = props.columns[columnName].format;
 

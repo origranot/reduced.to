@@ -16,16 +16,39 @@ export default component$(() => {
   const user = useGetCurrentUser();
 
   const isDrawerOpen = useSignal(false);
+  const isDrawer2Open = useSignal(false);
   const toggleDrawer = $(() => (isDrawerOpen.value = !isDrawerOpen.value));
-
+  const toggleDrawer2 = $(() => (isDrawer2Open.value = !isDrawer2Open.value));
   return (
     <div class="drawer lg:drawer-open min-h-[calc(100vh-64px)] inline-block sm:grid">
       <input id="drawer" type="checkbox" class="drawer-toggle" checked={isDrawerOpen.value} onChange$={toggleDrawer} />
-      <div class="drawer-content w-100vh m-5">
+      <div class={`drawer-content w-100vh m-5 ${
+        isDrawer2Open.value ? 'drawer-side-open' : 'drawer-side-closed'
+      }`}>
         <Slot />
       </div>
-      <div class="drawer-side absolute">
-        <label for="drawer" class="drawer-overlay"></label>
+      <div class="drawer-side flex">
+      <button class={`text-white font-medium rounded-lg text-sm px-5 py-2.5 mb-2 transition-transform ${
+          isDrawer2Open.value ? '-translate-x-full opacity-0 pointer-events-none' : '-translate-x-full'
+        }`} type="button" data-drawer-target="drawer-disable-body-scrolling" data-drawer-show="drawer-disable-body-scrolling" data-drawer-body-scrolling="false" aria-controls="drawer-disable-body-scrolling" onClick$={toggleDrawer2}>
+      <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+  </svg>
+   </button>
+      </div>
+      <div id="drawer-disable-body-scrolling"
+        class={`drawer-side absolute transition-transform ${
+          isDrawer2Open.value ? '' : '-translate-x-full'
+        }`}
+        aria-labelledby="drawer-disable-body-scrolling-label">
+  <div class="py-4 overflow-y-auto">
+  <button type="button" class="text-gray-400 bg-transparent rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center" onClick$={toggleDrawer2}>
+      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+      </svg>
+      <span class="sr-only">Close menu</span>
+   </button>
+      {/* <label for="drawer" class="drawer-overlay"></label> */}
         <ul class="menu p-4 w-64 text-base-content border-r bg-base-100 dark:border-gray-700 block h-full">
           <li class="py-1 mt-1">
             <Link
@@ -93,7 +116,8 @@ export default component$(() => {
             </>
           )}
         </ul>
+        </div>
       </div>
-    </div>
+      </div>
   );
 });
