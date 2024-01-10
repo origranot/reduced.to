@@ -8,7 +8,7 @@ export interface LinkBlockProps {
   urlKey: string;
   url: string;
   favicon?: string;
-  createdAt: Date;
+  createdAt: string;
 }
 
 export const LinkBlock = component$(({ urlKey, url, favicon, createdAt }: LinkBlockProps) => {
@@ -34,8 +34,8 @@ export const LinkBlock = component$(({ urlKey, url, favicon, createdAt }: LinkBl
           </div>
 
           {/* Second column with the created date */}
-          <div class="items-center justify-end hidden sm:flex col-span-5">
-            <span class="text-xs font-medium text-gray-500">{formatDate(createdAt)}</span>
+          <div class="items-center justify-end hidden sm:flex col-span-5 sm:mr-2">
+            <span class="text-xs font-medium text-gray-500">{formatDate(new Date(createdAt))}</span>
           </div>
 
           {/* Third column with the actions dropdown */}
