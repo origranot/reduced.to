@@ -145,7 +145,7 @@ export default component$(() => {
           </button>
         </div>
       </div>
-      <div ref={linksContainerRef} class="links overflow-y-auto h-screen" style={{ maxHeight: 'calc(100vh - 85px)' }}>
+      <div ref={linksContainerRef} class="links overflow-y-auto h-screen" style={{ maxHeight: 'calc(100vh - 150px)' }}>
         {!linksArray.length && isLoadingData.value ? ( // Only if it's the first load (links are empty)
           <div class="flex items-center justify-center h-40">
             <span class="loading loading-spinner loading-lg"></span>

@@ -19,7 +19,7 @@ export default component$(() => {
   const toggleDrawer = $(() => (isDrawerOpen.value = !isDrawerOpen.value));
 
   return (
-    <div class="drawer lg:drawer-open lg:grid lg:grid-cols-[16rem,1fr] block overflow-hidden">
+    <div class="drawer lg:drawer-open lg:grid lg:grid-cols-[16rem,1fr] block h-[calc(100vh-64px)]">
       <input id="drawer" type="checkbox" class="drawer-toggle" checked={isDrawerOpen.value} onChange$={toggleDrawer} />
       <div class="drawer-side z-[20] lg:pt-0 pt-[64px]">
         <label for="drawer" class="drawer-overlay"></label>
