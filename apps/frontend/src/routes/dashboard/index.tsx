@@ -7,6 +7,8 @@ import { SortOrder } from '../../components/dashboard/table/table-server-paginat
 import { FilterInput } from '../../components/dashboard/table/default-filter';
 import { useToaster } from '../../components/toaster/toaster';
 import { NoData } from '../../components/dashboard/empty-data/no-data';
+import { DELETE_MODAL_ID, DeleteModal } from '../../components/dashboard/delete-modal/delete-modal';
+import { useDeleteLink } from '../../components/dashboard/delete-modal/action';
 
 export default component$(() => {
   const toaster = useToaster();
@@ -22,7 +24,12 @@ export default component$(() => {
   const isLoadingData = useSignal(true);
 
   const linksContainerRef = useSignal<HTMLElement>();
-  const links = useSignal<{ id: string; key: string; url: string; createdAt: string }[]>([]);
+  const linksMap = useSignal(new Map<string, { id: string; key: string; url: string; createdAt: string }>());
+  const linksArray = Array.from(linksMap.value.values());
+
+  // Delete modal
+  const idToDelete = useSignal('');
+  const deleteLinkAction = useDeleteLink();
 
   useVisibleTask$(async ({ track }) => {
     track(() => filter.value);
@@ -33,6 +40,10 @@ export default component$(() => {
     sort.value = {
       createdAt: SortOrder.DESC,
     };
+
+    if (refetch.value) {
+      page.value = 1;
+    }
 
     isLoadingData.value = true;
 
@@ -47,7 +58,17 @@ export default component$(() => {
 
       isLoadingData.value = false;
 
-      links.value = filter.value ? data.data : [...links.value, ...data.data];
+      if ((filter.value && page.value === 1) || refetch.value) {
+        refetch.value = 0;
+        linksMap.value.clear();
+        data.data.forEach((link) => linksMap.value.set(link.key, link));
+      } else {
+        data.data.forEach((link) => {
+          if (!linksMap.value.has(link.key)) {
+            linksMap.value.set(link.key, link);
+          }
+        });
+      }
       total.value = data.total;
     } catch (err) {
       toaster.add({
@@ -99,6 +120,16 @@ export default component$(() => {
 
   return (
     <>
+      <DeleteModal
+        onSubmitHandler={$(() => {
+          refetch.value++;
+        })}
+        idToDelete={idToDelete.value}
+        id={DELETE_MODAL_ID}
+        confirmation="DELETE"
+        type="link"
+        action={deleteLinkAction}
+      />
       <LinkModal onSubmitHandler={onModalSubmit} />
       <div class="flex">
         <FilterInput
@@ -114,15 +145,27 @@ export default component$(() => {
           </button>
         </div>
       </div>
-      <div ref={linksContainerRef} class="links overflow-y-auto" style={{ maxHeight: 'calc(100vh - 150px)' }}>
-        {!links.value.length && isLoadingData.value ? ( // Only if it's the first load (links are empty)
+      <div ref={linksContainerRef} class="links overflow-y-auto h-screen" style={{ maxHeight: 'calc(100vh - 85px)' }}>
+        {!linksArray.length && isLoadingData.value ? ( // Only if it's the first load (links are empty)
           <div class="flex items-center justify-center h-40">
             <span class="loading loading-spinner loading-lg"></span>
           </div>
-        ) : links.value.length ? (
+        ) : linksArray.length ? (
           <>
-            {links.value.map((link) => {
-              return <LinkBlock key={link.key} urlKey={link.key} url={link.url} createdAt={link.createdAt} />;
+            {linksArray.map((link) => {
+              return (
+                <LinkBlock
+                  id={link.id}
+                  key={link.key}
+                  urlKey={link.key}
+                  url={link.url}
+                  createdAt={link.createdAt}
+                  onDelete={$((id: string) => {
+                    idToDelete.value = id;
+                    (document.getElementById('delete-modal') as any).showModal();
+                  })}
+                />
+              );
             })}
             {isLoadingData.value && (
               <div class="flex items-center justify-center h-40">

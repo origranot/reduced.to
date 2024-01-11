@@ -5,18 +5,16 @@ import { HiArrowTopRightOnSquareOutline, HiTrashOutline } from '@qwikest/icons/h
 import { formatDate } from '../../../../lib/date-utils';
 
 export interface LinkBlockProps {
+  id: string;
   urlKey: string;
   url: string;
   favicon?: string;
   createdAt: string;
+  onDelete: (id: string) => void;
 }
 
-export const LinkBlock = component$(({ urlKey, url, favicon, createdAt }: LinkBlockProps) => {
+export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, onDelete }: LinkBlockProps) => {
   const link = getLinkFromKey(urlKey);
-
-  const deleteAction = $(() => {
-    console.log('Delete link');
-  });
 
   return (
     <>
@@ -52,7 +50,9 @@ export const LinkBlock = component$(({ urlKey, url, favicon, createdAt }: LinkBl
                 {
                   name: 'Delete',
                   class: 'text-red-500',
-                  action: deleteAction,
+                  action: $(() => {
+                    onDelete(id);
+                  }),
                   icon: <HiTrashOutline />,
                 },
               ]}
