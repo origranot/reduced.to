@@ -1,4 +1,4 @@
-import { component$, useContext, useSignal, useStylesScoped$ } from '@builder.io/qwik';
+import { component$, useContext, useSignal, useStylesScoped$, $ } from '@builder.io/qwik';
 import { Link, useLocation } from '@builder.io/qwik-city';
 import { GlobalStore } from '../../context';
 import { useGetCurrentUser } from '../../routes/layout';
@@ -9,6 +9,7 @@ import styles from './navbar.css?inline';
 import { Profile } from './profile/profile';
 import { Resources } from './resources/resources';
 import { LuAlertTriangle } from '@qwikest/icons/lucide';
+import { DrawerContext } from '../../routes/context-id';
 
 export const Navbar = component$(() => {
   useStylesScoped$(styles);
@@ -17,13 +18,17 @@ export const Navbar = component$(() => {
   const location = useLocation();
   const user = useGetCurrentUser();
   const showDropdown = useSignal(false);
-
+  
+  const context = useContext(DrawerContext);
+  const isDrawerOpen = context.isDrawerOpen;
+  
+  const toggleDrawer = $(() => (isDrawerOpen.value = !isDrawerOpen.value));
   return (
     <div class="navbar bg-base-100 drop-shadow-md fixed z-[40]">
       <div class="flex-1">
         {location.url.pathname.includes('/dashboard') && ( // Only show the left 3 bars button on the dashboard page
           <>
-            <label for="drawer" class="btn btn-ghost btn-circle lg:hidden">
+            <label for="drawer" class="btn btn-ghost btn-circle" onClick$={() => (toggleDrawer())}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
