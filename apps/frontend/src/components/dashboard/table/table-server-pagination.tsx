@@ -13,8 +13,8 @@ export enum SortOrder {
 export interface PaginationParams {
   limit: number;
   page: number;
-  filter: string;
-  sort: Record<string, SortOrder>;
+  filter?: string;
+  sort?: Record<string, SortOrder>;
 }
 
 export type PaginationFetcher = ({ limit, page, filter, sort }: PaginationParams) => Promise<ResponseData>;

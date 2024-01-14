@@ -19,14 +19,11 @@ export default component$(() => {
   const toggleDrawer = $(() => (isDrawerOpen.value = !isDrawerOpen.value));
 
   return (
-    <div class="drawer lg:drawer-open min-h-[calc(100vh-64px)] inline-block sm:grid">
+    <div class="drawer lg:drawer-open lg:grid lg:grid-cols-[16rem,1fr] block h-[calc(100vh-64px)]">
       <input id="drawer" type="checkbox" class="drawer-toggle" checked={isDrawerOpen.value} onChange$={toggleDrawer} />
-      <div class="drawer-content w-100vh m-5">
-        <Slot />
-      </div>
-      <div class="drawer-side absolute">
+      <div class="drawer-side z-[20] lg:pt-0 pt-[64px] h-screen">
         <label for="drawer" class="drawer-overlay"></label>
-        <ul class="menu p-4 w-64 text-base-content border-r bg-base-100 dark:border-gray-700 block h-full">
+        <ul class="fixed menu p-4 w-64 text-base-content border-r bg-base-100 dark:border-gray-700 h-full">
           <li class="py-1 mt-1">
             <Link
               href="/dashboard"
@@ -93,6 +90,9 @@ export default component$(() => {
             </>
           )}
         </ul>
+      </div>
+      <div class="drawer-content m-5">
+        <Slot />
       </div>
     </div>
   );
