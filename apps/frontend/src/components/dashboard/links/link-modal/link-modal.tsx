@@ -6,6 +6,7 @@ import { ACCESS_COOKIE_NAME } from '../../../../shared/auth.service';
 import { normalizeUrl } from '../../../../utils';
 
 export const LINK_MODAL_ID = 'link-modal';
+
 interface RequestData {
   url: string;
   expirationTime?: string | number;
@@ -59,10 +60,15 @@ const useCreateLink = globalAction$(
 export interface LinkModalProps {
   onSubmitHandler: () => void;
 }
+
 const initValues = { url: '', expirationTime: undefined };
 export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
   const inputValue = useSignal<RequestData>({ ...initValues });
-
+  const isExpirationTimeOpen = useSignal(false);
+  const toggleDrawerExpirationTime = $(() => {
+    isExpirationTimeOpen.value = !isExpirationTimeOpen.value;
+    if (!isExpirationTimeOpen.value) inputValue.value.expirationTime = undefined;
+  });
   const action = useCreateLink();
 
   const clearValues = $(() => {
@@ -129,29 +135,30 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                   <span class={`label-text text-xs text-error text-left`}>{action.value.message}</span>
                 </label>
               )}
-              <label class="label">
-                <span class="label-text">Expiration Time (optional)</span>
-              </label>
-              <input
-                name="expirationTime"
-                type="date"
-                min={new Date().toISOString().split('T')[0]}
-                class="input input-bordered w-full"
-                value={inputValue.value.expirationTime}
-                onInput$={(ev: InputEvent) => {
-                  inputValue.value.expirationTime = (ev.target as HTMLInputElement).value;
-                }}
-              />
             </div>
             <div class="divider pt-4">Optional</div>
 
             <div class="flex flex-col">
               <div class="form-control w-full">
                 <label class="cursor-pointer label">
-                  <span class="label-text">Expiration date</span>
-                  <span class="badge badge-primary">Soon</span>
-                  <input type="checkbox" class="hidden toggle toggle-primary" disabled />
+                  <span class="label-text">Expiration date (optional)</span>
+
+                  <input type="checkbox" checked={isExpirationTimeOpen.value} onChange$={toggleDrawerExpirationTime} class="toggle toggle-primary" />
                 </label>
+                {isExpirationTimeOpen.value ? (
+                  <input
+                    name="expirationTime"
+                    type="date"
+                    min={new Date().toISOString().split('T')[0]}
+                    class="input input-bordered w-full"
+                    value={inputValue.value.expirationTime}
+                    onInput$={(ev: InputEvent) => {
+                      inputValue.value.expirationTime = (ev.target as HTMLInputElement).value;
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
               </div>
               <div class="form-control w-full">
                 <label class="cursor-pointer label">

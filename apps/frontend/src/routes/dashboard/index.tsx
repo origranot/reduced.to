@@ -3,7 +3,7 @@ import { DocumentHead, globalAction$, z, zod$ } from '@builder.io/qwik-city';
 import { HiPlusOutline } from '@qwikest/icons/heroicons';
 import { Columns, SortOrder, TableServerPagination } from '../../components/dashboard/table/table-server-pagination';
 import { LINK_MODAL_ID, LinkModal } from '../../components/dashboard/links/link-modal/link-modal';
-import { formatDate } from '../../lib/date-utils';
+import { formatDate, formatDateDay } from '../../lib/date-utils';
 import { useToaster } from '../../components/toaster/toaster';
 import { getLinkFromKey } from '../../components/temporary-links/utils';
 import { DELETE_CONFIRMATION, DELETE_MODAL_ID, DeleteModal } from '../../components/dashboard/delete-modal/delete-modal';
@@ -100,7 +100,7 @@ export default component$(() => {
       headerClassNames: 'flex-grow',
       sortable: true,
       format: $(({ value }) => {
-        return value ? formatDate(new Date(value)) : '';
+        return value ? formatDateDay(new Date(value)) : '';
       }),
     },
     id: {
