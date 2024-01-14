@@ -81,9 +81,10 @@ export class ShortenerService {
    * Create a short URL based on the provided data.
    * @param {string} url - The original URL.
    * @param {number} ttl The time to live.
+   * @param {number} urlKey The desired url key.
    * @returns {Promise<{ key: string }>} Returns an object containing the newly created key.
    */
-  createShortenedUrl = async (url: string, ttl?: number): Promise<{ key: string }> => {
+  createShortenedUrl = async (url: string, ttl?: number, urlKey = ''): Promise<{ key: string }> => {
     let parsedUrl: URL;
     try {
       parsedUrl = new URL(url);
@@ -98,10 +99,16 @@ export class ShortenerService {
 
     let shortUrl: string;
 
-    do {
-      shortUrl = this.generateKey();
-    } while (!(await this.isKeyAvailable(shortUrl)));
-
+    if (typeof urlKey === 'string' && urlKey.length > 0) {
+      if (!(await this.isKeyAvailable(urlKey))) {
+        throw new BadRequestException('The provided shortened key is already in use');
+      }
+      shortUrl = urlKey;
+    } else {
+      do {
+        shortUrl = this.generateKey();
+      } while (!(await this.isKeyAvailable(shortUrl)));
+    }
     await this.addLinkToCache(parsedUrl.href, shortUrl, ttl);
     return { key: shortUrl };
   };
@@ -163,7 +170,7 @@ export class ShortenerService {
    * @returns {Promise<{ key: string }>} - Returns an object containing the newly created short URL.
    */
   createUsersShortenedUrl = async (user: UserContext, shortenerDto: ShortenerDto): Promise<{ key: string }> => {
-    const { key } = await this.createShortenedUrl(shortenerDto.url, shortenerDto.ttl);
+    const { key } = await this.createShortenedUrl(shortenerDto.url, shortenerDto.ttl, shortenerDto.urlKey);
     await this.createDbUrl(user, shortenerDto, key);
 
     return { key };
