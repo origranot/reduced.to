@@ -24,7 +24,7 @@ export default component$(() => {
   const isLoadingData = useSignal(true);
 
   const linksContainerRef = useSignal<HTMLElement>();
-  const linksMap = useSignal(new Map<string, { id: string; key: string; url: string; createdAt: string , expirationTime?:string}>());
+  const linksMap = useSignal(new Map<string, { id: string; key: string; url: string; createdAt: string; expirationTime?: string }>());
   const linksArray = Array.from(linksMap.value.values());
 
   // Delete modal

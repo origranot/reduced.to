@@ -143,7 +143,12 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                 <label class="cursor-pointer label">
                   <span class="label-text">Expiration date (optional)</span>
 
-                  <input type="checkbox" checked={isExpirationTimeOpen.value} onChange$={toggleDrawerExpirationTime} class="toggle toggle-primary" />
+                  <input
+                    type="checkbox"
+                    checked={isExpirationTimeOpen.value}
+                    onChange$={toggleDrawerExpirationTime}
+                    class="toggle toggle-primary"
+                  />
                 </label>
                 {isExpirationTimeOpen.value ? (
                   <input

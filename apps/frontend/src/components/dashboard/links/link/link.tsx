@@ -2,7 +2,7 @@ import { component$, $ } from '@builder.io/qwik';
 import { getLinkFromKey } from '../../../temporary-links/utils';
 import LinkActionsDropdown from './link-actions-dropdown';
 import { HiArrowTopRightOnSquareOutline, HiTrashOutline } from '@qwikest/icons/heroicons';
-import {formatDate, formatDateDay} from '../../../../lib/date-utils';
+import { formatDate, formatDateDay } from '../../../../lib/date-utils';
 
 export interface LinkBlockProps {
   id: string;
@@ -29,21 +29,17 @@ export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, expi
             <div class="flex flex-col text-left">
               <div class="text-sm font-medium truncate">{link}</div>
               <div class="text-xs font-medium text-gray-500 truncate">{url}</div>
-
             </div>
-
           </div>
-
-
 
           {/* Second column with the created date */}
           <div class="items-center justify-end hidden sm:flex col-span-5 sm:mr-2">
-            {expirationTime&& <div class="flex flex-col justify-start mr-3">
-
-              <span class="text-xs font-medium text-gray-500 mb-1 mt-1">Expiration time</span>
-              <span class="text-xs font-medium text-gray-500">{formatDateDay(new Date(expirationTime))}</span>
-
-            </div>}
+            {expirationTime && (
+              <div class="flex flex-col justify-start mr-3">
+                <span class="text-xs font-medium text-gray-500 mb-1 mt-1">Expiration time</span>
+                <span class="text-xs font-medium text-gray-500">{formatDateDay(new Date(expirationTime))}</span>
+              </div>
+            )}
             <span class="text-xs font-medium text-gray-500">{formatDate(new Date(createdAt))}</span>
           </div>
 
