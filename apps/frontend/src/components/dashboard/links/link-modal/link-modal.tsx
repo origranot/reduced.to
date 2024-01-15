@@ -7,19 +7,18 @@ import { normalizeUrl } from '../../../../utils';
 
 export const LINK_MODAL_ID = 'link-modal';
 
-interface RequestData {
+interface CreateLinkInput {
   url: string;
   expirationTime?: string | number;
 }
 
 const useCreateLink = globalAction$(
   async ({ url, expirationTime }, { fail, cookie }) => {
-    const body: RequestData = {
+    const body: CreateLinkInput = {
       url: normalizeUrl(url),
+      ...(expirationTime && { expirationTime: Date.parse(new Date(expirationTime).toISOString()) }),
     };
-    if (expirationTime) {
-      body['expirationTime'] = Date.parse(expirationTime);
-    }
+
     const response: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener`, {
       method: 'POST',
       headers: {
@@ -63,11 +62,13 @@ export interface LinkModalProps {
 
 const initValues = { url: '', expirationTime: undefined };
 export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
-  const inputValue = useSignal<RequestData>({ ...initValues });
+  const inputValue = useSignal<CreateLinkInput>({ ...initValues });
   const isExpirationTimeOpen = useSignal(false);
   const toggleDrawerExpirationTime = $(() => {
     isExpirationTimeOpen.value = !isExpirationTimeOpen.value;
-    if (!isExpirationTimeOpen.value) inputValue.value.expirationTime = undefined;
+    if (!isExpirationTimeOpen.value) {
+      inputValue.value.expirationTime = undefined;
+    }
   });
   const action = useCreateLink();
 
@@ -141,7 +142,7 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
             <div class="flex flex-col">
               <div class="form-control w-full">
                 <label class="cursor-pointer label">
-                  <span class="label-text">Expiration date (optional)</span>
+                  <span class="label-text">Expiration date </span>
 
                   <input
                     type="checkbox"

@@ -5,7 +5,6 @@ import { PrismaService } from '@reduced.to/prisma';
 import { ShortenerDto } from './dto';
 import { UserContext } from '../auth/interfaces/user-context';
 import { Link } from '@reduced.to/prisma';
-import { calculateDateFromTtl } from '../shared/utils';
 
 @Injectable()
 export class ShortenerService {
@@ -142,13 +141,13 @@ export class ShortenerService {
     if (!link) {
       return null;
     }
-    if (link?.expirationTime) {
-      link.expirationTime.setDate(link.expirationTime.getDate() + 1);
-      if (link.expirationTime < new Date()) return null;
-    }
+
     // If the URL has an expiration time, calculate the TTL.
     let expirationTime: number;
     if (link.expirationTime) {
+      if (new Date(link.expirationTime.getTime()) < new Date()) {
+        return null;
+      }
       expirationTime = link.expirationTime.getTime() - new Date().getTime();
     }
 
