@@ -33,14 +33,17 @@ export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, expi
           </div>
 
           {/* Second column with the created date */}
-          <div class="items-center justify-end hidden sm:flex col-span-5 sm:mr-2">
+          <div class="gap-4 mt-2 items-center justify-end hidden sm:flex col-span-5 sm:mr-2">
             {expirationTime && (
               <div class="flex flex-col justify-start mr-3">
-                <span class="text-xs font-medium text-gray-500 mb-1 mt-1">Expiration time</span>
-                <span class="text-xs font-medium text-gray-500">{formatDateDay(new Date(expirationTime))}</span>
+                <span class="text-xs font-medium  ">{formatDateDay(new Date(expirationTime))}</span>
+                <span class="text-xs font-medium text-gray-500 mb-1 mt-1">Expire At</span>
               </div>
             )}
-            <span class="text-xs font-medium text-gray-500">{formatDate(new Date(createdAt))}</span>
+            <div class="flex flex-col justify-start mr-3">
+              <span class="text-xs font-medium  ">{formatDateDay(new Date(createdAt))}</span>
+              <span class="text-xs font-medium text-gray-500 mb-1 mt-1">Created At</span>
+            </div>
           </div>
 
           {/* Third column with the actions dropdown */}
