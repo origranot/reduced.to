@@ -22,7 +22,7 @@ export default component$(() => {
   return (
     <div class="drawer lg:drawer-open lg:grid lg:grid-cols-[16rem,1fr] block h-[calc(100vh-64px)]">
       <input id="drawer" type="checkbox" class="drawer-toggle" checked={isDrawerOpen.value}/>
-      <div class="drawer-side z-[20] lg:pt-0 pt-[64px] h-screen">
+      <div class="drawer-side z-[20] lg:pt-0 pt-[64px] h-full">
         <label for="drawer" class="drawer-overlay"></label>
         <ul class="fixed menu p-4 w-64 text-base-content border-r bg-base-100 dark:border-gray-700 h-full">
           <li class="py-1 mt-1">
