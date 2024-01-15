@@ -7,18 +7,25 @@ import { normalizeUrl } from '../../../../utils';
 
 export const LINK_MODAL_ID = 'link-modal';
 
+interface CreateLinkInput {
+  url: string;
+  expirationTime?: string | number;
+}
+
 const useCreateLink = globalAction$(
-  async ({ url }, { fail, cookie }) => {
+  async ({ url, expirationTime }, { fail, cookie }) => {
+    const body: CreateLinkInput = {
+      url: normalizeUrl(url),
+      ...(expirationTime && { expirationTime: Date.parse(new Date(expirationTime).toISOString()) }),
+    };
+
     const response: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${cookie.get(ACCESS_COOKIE_NAME)?.value}`,
       },
-      body: JSON.stringify({
-        url: normalizeUrl(url),
-        expirationTime: null, // forever
-      }),
+      body: JSON.stringify(body),
     });
 
     const data: { url: string; key: string; message?: string[]; statusCode?: number } = await response.json();
@@ -35,6 +42,7 @@ const useCreateLink = globalAction$(
     };
   },
   zod$({
+    expirationTime: z.string().optional(),
     url: z
       .string({
         required_error: "The url field can't be empty.",
@@ -52,13 +60,20 @@ export interface LinkModalProps {
   onSubmitHandler: () => void;
 }
 
+const initValues = { url: '', expirationTime: undefined };
 export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
-  const inputValue = useSignal('');
-
+  const inputValue = useSignal<CreateLinkInput>({ ...initValues });
+  const isExpirationTimeOpen = useSignal(false);
+  const toggleDrawerExpirationTime = $(() => {
+    isExpirationTimeOpen.value = !isExpirationTimeOpen.value;
+    if (!isExpirationTimeOpen.value) {
+      inputValue.value.expirationTime = undefined;
+    }
+  });
   const action = useCreateLink();
 
   const clearValues = $(() => {
-    inputValue.value = '';
+    inputValue.value = { ...initValues };
 
     if (action.value?.fieldErrors) {
       action.value.fieldErrors.url = [];
@@ -106,9 +121,9 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                 type="text"
                 placeholder="This should be a very long url..."
                 class="input input-bordered w-full"
-                value={inputValue.value}
+                value={inputValue.value.url}
                 onInput$={(ev: InputEvent) => {
-                  inputValue.value = (ev.target as HTMLInputElement).value;
+                  inputValue.value.url = (ev.target as HTMLInputElement).value;
                 }}
               />
               {action.value?.fieldErrors?.url && (
@@ -127,10 +142,29 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
             <div class="flex flex-col">
               <div class="form-control w-full">
                 <label class="cursor-pointer label">
-                  <span class="label-text">Expiration date</span>
-                  <span class="badge badge-primary">Soon</span>
-                  <input type="checkbox" class="hidden toggle toggle-primary" disabled />
+                  <span class="label-text">Expiration date </span>
+
+                  <input
+                    type="checkbox"
+                    checked={isExpirationTimeOpen.value}
+                    onChange$={toggleDrawerExpirationTime}
+                    class="toggle toggle-primary"
+                  />
                 </label>
+                {isExpirationTimeOpen.value ? (
+                  <input
+                    name="expirationTime"
+                    type="date"
+                    min={new Date().toISOString().split('T')[0]}
+                    class="input input-bordered w-full"
+                    value={inputValue.value.expirationTime}
+                    onInput$={(ev: InputEvent) => {
+                      inputValue.value.expirationTime = (ev.target as HTMLInputElement).value;
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
               </div>
               <div class="form-control w-full">
                 <label class="cursor-pointer label">
