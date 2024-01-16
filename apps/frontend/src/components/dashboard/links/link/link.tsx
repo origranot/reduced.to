@@ -2,7 +2,7 @@ import { component$, $ } from '@builder.io/qwik';
 import { getLinkFromKey } from '../../../temporary-links/utils';
 import LinkActionsDropdown from './link-actions-dropdown';
 import { HiArrowTopRightOnSquareOutline, HiTrashOutline } from '@qwikest/icons/heroicons';
-import { formatDate } from '../../../../lib/date-utils';
+import { formatDate, formatDateDay } from '../../../../lib/date-utils';
 
 export interface LinkBlockProps {
   id: string;
@@ -10,10 +10,11 @@ export interface LinkBlockProps {
   url: string;
   favicon?: string;
   createdAt: string;
+  expirationTime?: string;
   onDelete: (id: string) => void;
 }
 
-export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, onDelete }: LinkBlockProps) => {
+export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, expirationTime, onDelete }: LinkBlockProps) => {
   const link = getLinkFromKey(urlKey);
 
   return (
@@ -32,8 +33,17 @@ export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, onDe
           </div>
 
           {/* Second column with the created date */}
-          <div class="items-center justify-end hidden sm:flex col-span-5 sm:mr-2">
-            <span class="text-xs font-medium text-gray-500">{formatDate(new Date(createdAt))}</span>
+          <div class="gap-4 mt-2 items-center justify-end hidden sm:flex col-span-5 sm:mr-2">
+            {expirationTime && (
+              <div class="flex flex-col justify-start mr-3">
+                <span class="text-xs font-medium  ">{formatDateDay(new Date(expirationTime))}</span>
+                <span class="text-xs font-medium text-gray-500 mb-1 mt-1">Expire At</span>
+              </div>
+            )}
+            <div class="flex flex-col justify-start mr-3">
+              <span class="text-xs font-medium  ">{formatDateDay(new Date(createdAt))}</span>
+              <span class="text-xs font-medium text-gray-500 mb-1 mt-1">Created At</span>
+            </div>
           </div>
 
           {/* Third column with the actions dropdown */}

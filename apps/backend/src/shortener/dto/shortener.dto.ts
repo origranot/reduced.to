@@ -13,9 +13,9 @@ export class ShortenerDto {
   @IsOptional()
   description?: string;
 
-  @IsPositive()
   @IsOptional()
-  ttl?: number;
+  @IsPositive()
+  expirationTime?: number;
 
   @IsBoolean()
   @IsOptional()

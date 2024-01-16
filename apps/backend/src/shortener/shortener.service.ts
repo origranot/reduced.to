@@ -5,7 +5,6 @@ import { PrismaService } from '@reduced.to/prisma';
 import { ShortenerDto } from './dto';
 import { UserContext } from '../auth/interfaces/user-context';
 import { Link } from '@reduced.to/prisma';
-import { calculateDateFromTtl } from '../shared/utils';
 
 @Injectable()
 export class ShortenerService {
@@ -114,8 +113,7 @@ export class ShortenerService {
    * @returns {Promise<any>} Returns the created db URL.
    */
   createDbUrl = async (user: UserContext, shortenerDto: ShortenerDto, key: string): Promise<Link> => {
-    const { url, description, ttl } = shortenerDto;
-
+    const { url, description, expirationTime } = shortenerDto;
     return this.prisma.link.create({
       data: {
         key,
@@ -123,7 +121,7 @@ export class ShortenerService {
         userId: user.id,
         description,
         // If the ttl is provided, set the expiration time to the current time plus the ttl.
-        ...(ttl && { expirationTime: calculateDateFromTtl(ttl) }),
+        ...(expirationTime && { expirationTime: new Date(expirationTime) }),
       },
     });
   };
@@ -140,18 +138,21 @@ export class ShortenerService {
       },
     });
 
-    if (!link || (link?.expirationTime && link.expirationTime < new Date())) {
+    if (!link) {
       return null;
     }
 
     // If the URL has an expiration time, calculate the TTL.
-    let ttl: number;
+    let expirationTime: number;
     if (link.expirationTime) {
-      ttl = link.expirationTime.getTime() - new Date().getTime();
+      if (new Date(link.expirationTime.getTime()) < new Date()) {
+        return null;
+      }
+      expirationTime = link.expirationTime.getTime() - new Date().getTime();
     }
 
     // Add the URL back to the cache to prevent future database calls.
-    this.addLinkToCache(link.url, key, ttl);
+    this.addLinkToCache(link.url, key, expirationTime);
 
     return link.url;
   };
@@ -163,7 +164,7 @@ export class ShortenerService {
    * @returns {Promise<{ key: string }>} - Returns an object containing the newly created short URL.
    */
   createUsersShortenedUrl = async (user: UserContext, shortenerDto: ShortenerDto): Promise<{ key: string }> => {
-    const { key } = await this.createShortenedUrl(shortenerDto.url, shortenerDto.ttl);
+    const { key } = await this.createShortenedUrl(shortenerDto.url, shortenerDto.expirationTime);
     await this.createDbUrl(user, shortenerDto, key);
 
     return { key };
