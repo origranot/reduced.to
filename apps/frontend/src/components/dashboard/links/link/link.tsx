@@ -2,7 +2,7 @@ import { component$, $ } from '@builder.io/qwik';
 import { getLinkFromKey } from '../../../temporary-links/utils';
 import LinkActionsDropdown from './link-actions-dropdown';
 import { HiArrowTopRightOnSquareOutline, HiTrashOutline } from '@qwikest/icons/heroicons';
-import { formatDate, formatDateDay } from '../../../../lib/date-utils';
+import { formatDateDay } from '../../../../lib/date-utils';
 
 export interface LinkBlockProps {
   id: string;

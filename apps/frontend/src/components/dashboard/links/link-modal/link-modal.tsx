@@ -16,7 +16,7 @@ const useCreateLink = globalAction$(
   async ({ url, expirationTime }, { fail, cookie }) => {
     const body: CreateLinkInput = {
       url: normalizeUrl(url),
-      ...(expirationTime && { expirationTime: Date.parse(new Date(expirationTime).toISOString()) }),
+      ...(expirationTime && { expirationTime: Date.parse(new Date(expirationTime).toISOString()) + 23 * 3600 + 3500 }),//add time to include the chosen day
     };
 
     const response: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener`, {
