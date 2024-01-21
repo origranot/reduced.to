@@ -20,9 +20,9 @@ export default component$(() => {
   const isDrawerOpen = context.isDrawerOpen;
 
   return (
-    <div class="drawer lg:drawer-open lg:grid lg:grid-cols-[16rem,1fr] block h-[calc(100vh-64px)]">
+    <div class={`drawer lg:drawer-open  ${isDrawerOpen.value ? 'lg:grid lg:grid-cols-[16rem,1fr] block h-[calc(100vh-64px)]' : 'min-h-[calc(100vh-64px)] inline-block sm:grid'}`}>
       <input id="drawer" type="checkbox" class="drawer-toggle" checked={isDrawerOpen.value}/>
-      <div class="drawer-side z-[20] lg:pt-0 pt-[64px] h-full">
+      <div class="drawer-side z-[20] lg:pt-0 pt-[64px] h-full" style={{ display: isDrawerOpen.value ? '' : 'none'}}>
         <label for="drawer" class="drawer-overlay"></label>
         <ul class="fixed menu p-4 w-64 text-base-content border-r bg-base-100 dark:border-gray-700 h-full">
           <li class="py-1 mt-1">
@@ -92,7 +92,7 @@ export default component$(() => {
           )}
         </ul>
       </div>
-      <div class="drawer-content m-5">
+      <div class="drawer-content" style={{margin: '0.8rem'}}>
         <Slot />
       </div>
     </div>
