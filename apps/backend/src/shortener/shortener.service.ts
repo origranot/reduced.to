@@ -73,16 +73,20 @@ export class ShortenerService {
    */
   addLinkToCache = async (url: string, key: string, ttl?: number) => {
     const minTtl = Math.min(this.appConfigService.getConfig().redis.ttl, ttl);
+    if (minTtl < 0) {
+      return;
+    }
+
     await this.appCacheService.set(key, url, minTtl || this.appConfigService.getConfig().redis.ttl);
   };
 
   /**
    * Create a short URL based on the provided data.
    * @param {string} url - The original URL.
-   * @param {number} ttl The time to live.
+   * @param {number} expirationTime - The expiration time (timestamp) of the shortened URL.
    * @returns {Promise<{ key: string }>} Returns an object containing the newly created key.
    */
-  createShortenedUrl = async (url: string, ttl?: number): Promise<{ key: string }> => {
+  createShortenedUrl = async (url: string, expirationTime?: number): Promise<{ key: string }> => {
     let parsedUrl: URL;
     try {
       parsedUrl = new URL(url);
@@ -100,6 +104,8 @@ export class ShortenerService {
     do {
       shortUrl = this.generateKey();
     } while (!(await this.isKeyAvailable(shortUrl)));
+
+    const ttl = expirationTime ? expirationTime - new Date().getTime() : undefined;
 
     await this.addLinkToCache(parsedUrl.href, shortUrl, ttl);
     return { key: shortUrl };
@@ -120,7 +126,6 @@ export class ShortenerService {
         url,
         userId: user.id,
         description,
-        // If the ttl is provided, set the expiration time to the current time plus the ttl.
         ...(expirationTime && { expirationTime: new Date(expirationTime) }),
       },
     });
