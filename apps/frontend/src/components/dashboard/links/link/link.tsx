@@ -27,8 +27,12 @@ export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, expi
               <img src={favicon || `https://www.google.com/s2/favicons?sz=64&domain_url=${url}`} class="w-8 h-8 rounded-full" />
             </div>
             <div class="flex flex-col text-left">
-              <div class="text-sm font-medium truncate">{link}</div>
-              <div class="text-xs font-medium text-gray-500 truncate">{url}</div>
+              <a href={link} target="_blank" rel="noopener noreferrer" class="text-sm font-medium truncate">
+                {link}
+              </a>
+              <a href={url} target="_blank" rel="noopener noreferrer" class="text-xs mt-1 font-medium text-gray-500 truncate">
+                {url}
+              </a>
             </div>
           </div>
 
