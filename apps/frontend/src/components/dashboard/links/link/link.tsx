@@ -30,7 +30,7 @@ export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, expi
               <a href={link} target="_blank" rel="noopener noreferrer" class="text-sm font-medium truncate">
                 {link}
               </a>
-              <a href={link} target="_blank" rel="noopener noreferrer" class="text-xs mt-1 font-medium text-gray-500 truncate">
+              <a href={url} target="_blank" rel="noopener noreferrer" class="text-xs mt-1 font-medium text-gray-500 truncate">
                 {url}
               </a>
             </div>
