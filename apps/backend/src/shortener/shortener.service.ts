@@ -69,20 +69,20 @@ export class ShortenerService {
    * Add the short url to the cache
    * @param {string} url The original url.
    * @param {string} key The url key.
-   * @param {number} expirationTime The time to live.
+   * @param {number} ttl The time to live.
    */
-  addLinkToCache = async (url: string, key: string, expirationTime?: number) => {
-    const minTtl = Math.min(this.appConfigService.getConfig().redis.ttl, expirationTime);
+  addLinkToCache = async (url: string, key: string, ttl?: number) => {
+    const minTtl = Math.min(this.appConfigService.getConfig().redis.ttl, ttl);
     await this.appCacheService.set(key, url, minTtl || this.appConfigService.getConfig().redis.ttl);
   };
 
   /**
    * Create a short URL based on the provided data.
    * @param {string} url - The original URL.
-   * @param {number} expirationTime The time to live.
+   * @param {number} ttl The time to live.
    * @returns {Promise<{ key: string }>} Returns an object containing the newly created key.
    */
-  createShortenedUrl = async (url: string, expirationTime?: number): Promise<{ key: string }> => {
+  createShortenedUrl = async (url: string, ttl?: number): Promise<{ key: string }> => {
     let parsedUrl: URL;
     try {
       parsedUrl = new URL(url);
@@ -101,7 +101,7 @@ export class ShortenerService {
       shortUrl = this.generateKey();
     } while (!(await this.isKeyAvailable(shortUrl)));
 
-    await this.addLinkToCache(parsedUrl.href, shortUrl, expirationTime);
+    await this.addLinkToCache(parsedUrl.href, shortUrl, ttl);
     return { key: shortUrl };
   };
 
