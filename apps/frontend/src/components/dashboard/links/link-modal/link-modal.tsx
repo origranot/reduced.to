@@ -4,6 +4,7 @@ import { Form, globalAction$, zod$ } from '@builder.io/qwik-city';
 import { z } from 'zod';
 import { ACCESS_COOKIE_NAME } from '../../../../shared/auth.service';
 import { normalizeUrl } from '../../../../utils';
+import { tomorrow } from '../../../../lib/date-utils';
 
 export const LINK_MODAL_ID = 'link-modal';
 
@@ -13,10 +14,19 @@ interface CreateLinkInput {
 }
 
 const useCreateLink = globalAction$(
-  async ({ url, expirationTime }, { fail, cookie }) => {
+  async ({ url, expirationTime, expirationTimeToggle }, { fail, cookie }) => {
+    if (expirationTimeToggle && !expirationTime) {
+      return fail(400, {
+        fieldErrors: {
+          expirationTimeToggle: ['Please select a date for your link to expire.'],
+          url: undefined,
+        },
+      });
+    }
+
     const body: CreateLinkInput = {
       url: normalizeUrl(url),
-      ...(expirationTime && { expirationTime: new Date(`${expirationTime}T23:59:59`).getTime() }), //add time to include the chosen day
+      ...(expirationTime && { expirationTime: new Date(expirationTime).getTime() }),
     };
 
     const response: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener`, {
@@ -42,7 +52,6 @@ const useCreateLink = globalAction$(
     };
   },
   zod$({
-    expirationTime: z.string().optional(),
     url: z
       .string({
         required_error: "The url field can't be empty.",
@@ -53,6 +62,8 @@ const useCreateLink = globalAction$(
       .regex(/^(?:https?:\/\/)?(?:[\w-]+\.)+[a-z]{2,}(?::\d{1,5})?(?:\/\S*)?$/, {
         message: "The url you've entered is not valid",
       }),
+    expirationTime: z.string().optional(),
+    expirationTimeToggle: z.string().optional(),
   })
 );
 
@@ -60,16 +71,18 @@ export interface LinkModalProps {
   onSubmitHandler: () => void;
 }
 
-const initValues = { url: '', expirationTime: undefined };
+const initValues = { url: '', expirationTime: undefined, expirationTimeToggle: undefined };
 export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
   const inputValue = useSignal<CreateLinkInput>({ ...initValues });
   const isExpirationTimeOpen = useSignal(false);
+
   const toggleDrawerExpirationTime = $(() => {
     isExpirationTimeOpen.value = !isExpirationTimeOpen.value;
     if (!isExpirationTimeOpen.value) {
       inputValue.value.expirationTime = undefined;
     }
   });
+
   const action = useCreateLink();
 
   const clearValues = $(() => {
@@ -140,30 +153,33 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
             <div class="divider pt-4">Optional</div>
 
             <div class="flex flex-col">
-              <div class="form-control w-full">
+              <div class="form-control">
                 <label class="cursor-pointer label">
                   <span class="label-text">Expiration date </span>
-
                   <input
                     type="checkbox"
                     checked={isExpirationTimeOpen.value}
                     onChange$={toggleDrawerExpirationTime}
+                    name="expirationTimeToggle"
                     class="toggle toggle-primary"
                   />
                 </label>
-                {isExpirationTimeOpen.value ? (
+                {isExpirationTimeOpen.value && (
                   <input
                     name="expirationTime"
                     type="date"
-                    min={new Date().toISOString().split('T')[0]}
+                    min={tomorrow().toISOString().split('T')[0]}
                     class="input input-bordered w-full"
                     value={inputValue.value.expirationTime}
                     onInput$={(ev: InputEvent) => {
                       inputValue.value.expirationTime = (ev.target as HTMLInputElement).value;
                     }}
                   />
-                ) : (
-                  <></>
+                )}
+                {action.value?.fieldErrors?.expirationTimeToggle && (
+                  <label class="label">
+                    <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.expirationTimeToggle[0]}</span>
+                  </label>
                 )}
               </div>
               <div class="form-control w-full">

@@ -11,3 +11,10 @@ export const formatDate = (date: Date): string => {
 export const formatDateDay = (date: Date): string => {
   return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
 };
+
+export const tomorrow = (): Date => {
+  const date = new Date();
+  date.setDate(date.getDate() + 1);
+
+  return date;
+};
