@@ -13,7 +13,7 @@ export const FilterInput = component$<FilterInputProps>(({ filter, onInput }) =>
       </label>
       <div class="flex items-center ml-3">
         <svg
-          class="w-4 h-4 text-gray-500 dark:text-gray-400 z-10 mr-[-1.25rem] mb-[0.5rem]"
+          class="w-4 h-4 text-gray-400 dark:text-gray-400 z-10 mr-[-1.25rem] mb-[0.5rem]"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

@@ -9,6 +9,7 @@ import { useToaster } from '../../components/toaster/toaster';
 import { NoData } from '../../components/dashboard/empty-data/no-data';
 import { DELETE_MODAL_ID, DeleteModal } from '../../components/dashboard/delete-modal/delete-modal';
 import { useDeleteLink } from '../../components/dashboard/delete-modal/action';
+import { AdvancedFilter } from '../../components/dashboard/table/advanced-filter';
 
 export default component$(() => {
   const toaster = useToaster();
@@ -132,13 +133,16 @@ export default component$(() => {
       />
       <LinkModal onSubmitHandler={onModalSubmit} />
       <div class="flex">
-        <FilterInput
-          filter={filter}
-          onInput={$((ev: InputEvent) => {
-            filter.value = (ev.target as HTMLInputElement).value;
-            page.value = 1; // Reset page number when filter changes
-          })}
-        />
+        <div class="flex">
+          <FilterInput
+            filter={filter}
+            onInput={$((ev: InputEvent) => {
+              filter.value = (ev.target as HTMLInputElement).value;
+              page.value = 1; // Reset page number when filter changes
+            })}
+          />
+          <AdvancedFilter />
+        </div>
         <div class="ml-auto pl-4">
           <button class="btn btn-primary" onClick$={() => (document.getElementById(LINK_MODAL_ID) as any).showModal()}>
             Create
