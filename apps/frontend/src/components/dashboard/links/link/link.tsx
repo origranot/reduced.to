@@ -3,7 +3,6 @@ import { getLinkFromKey } from '../../../temporary-links/utils';
 import LinkActionsDropdown from './link-actions-dropdown';
 import { HiArrowTopRightOnSquareOutline, HiTrashOutline } from '@qwikest/icons/heroicons';
 import { formatDate, formatDateDay } from '../../../../lib/date-utils';
-import { getDomainNameFromUrl } from './utils';
 
 export interface LinkBlockProps {
   id: string;
@@ -26,7 +25,7 @@ export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, expi
           <div class="flex items-center space-x-3 col-span-6">
             <div class="hidden sm:block flex-shrink-0">
               <img
-                alt={getDomainNameFromUrl(url)}
+                alt={new URL(url).hostname}
                 src={favicon || `https://www.google.com/s2/favicons?sz=64&domain_url=${url}`}
                 class="w-8 h-8 rounded-full"
               />
