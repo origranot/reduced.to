@@ -76,7 +76,7 @@
     "@nestjs/throttler": "^4.2.1",
     "@novu/node": "^0.22.0",
     "@origranot/ts-logger": "^1.12.0",
-    "@prisma/client": "^5.7.1",
+    "@prisma/client": "^5.8.0",
     "@qwikest/icons": "^0.0.13",
     "axios": "^1.6.5",
     "bcryptjs": "^2.4.3",
