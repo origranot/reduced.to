@@ -20,13 +20,17 @@ export class LinksController {
   @Get()
   @Roles(Role.ADMIN, Role.USER)
   async findAll(@Req() request: Request, @Query() query: FindAllQueryDto): Promise<IPaginationResult<Link>> {
-    const { page, limit, filter, sort } = query;
+    const { page, limit, filter, sort, maxCreatedAt, minCreatedAt, maxExpirationTime, minExpirationTime } = query;
     const user = request.user as UserContext;
 
     return this.linksService.findAll({
       ...(page && { skip: calculateSkip(page, limit) }), // if page is defined, then calculate skip
       limit,
       filter,
+      maxCreatedAt,
+      minCreatedAt,
+      maxExpirationTime,
+      minExpirationTime,
       sort,
       // Allways add extraWhereClause to the query, so that the user can only see his own links
       extraWhereClause: {

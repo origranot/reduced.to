@@ -22,6 +22,26 @@ export class FindAllQueryDto {
   @MaxLength(30)
   filter?: string;
 
+  @IsString()
+  @IsOptional()
+  @MaxLength(30)
+  minCreatedAt?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(30)
+  maxCreatedAt?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(30)
+  minExpirationTime?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(30)
+  maxExpirationTime?: string;
+
   @Sortable(['expirationTime', 'createdAt'])
   sort?: Record<string, SortOrder>;
 }
