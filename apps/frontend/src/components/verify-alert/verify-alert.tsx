@@ -3,7 +3,7 @@ import { Link } from '@builder.io/qwik-city';
 
 export const VerifyAlert = component$(() => {
   return (
-    <div class="alert alert-warning shadow-lg gap-0.5 sm:gap-4">
+    <div class="alert alert-warning shadow-lg bottom-0 fixed z-20 gap-0.5 sm:gap-4">
       <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
         <path
           stroke-linecap="round"
