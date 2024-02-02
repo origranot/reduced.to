@@ -14,6 +14,10 @@ export interface PaginationParams {
   limit: number;
   page: number;
   filter?: string;
+  minCreatedAt?: string;
+  maxCreatedAt?: string;
+  minExpirationTime?: string;
+  maxExpirationTime?: string;
   sort?: Record<string, SortOrder>;
 }
 
@@ -51,6 +55,22 @@ export const serializeQueryUserPaginationParams = (paginationParams: PaginationP
 
   if (paginationParams.filter) {
     paramsForQuery.set('filter', paginationParams.filter);
+  }
+
+  // Created At
+  if (paginationParams.minCreatedAt) {
+    paramsForQuery.set('minCreatedAt', paginationParams.minCreatedAt);
+  }
+  if (paginationParams.maxCreatedAt) {
+    paramsForQuery.set('maxCreatedAt', paginationParams.maxCreatedAt);
+  }
+
+  //  Expiration date
+  if (paginationParams.minExpirationTime) {
+    paramsForQuery.set('minExpirationTime', paginationParams.minExpirationTime);
+  }
+  if (paginationParams.maxExpirationTime) {
+    paramsForQuery.set('maxExpirationTime', paginationParams.maxExpirationTime);
   }
 
   if (paginationParams.sort) {

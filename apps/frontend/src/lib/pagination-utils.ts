@@ -6,6 +6,10 @@ export interface PaginationParams {
   page: number;
   limit: number;
   filter?: string;
+  minCreatedAt?: string;
+  maxCreatedAt?: string;
+  minExpirationTime?: string;
+  maxExpirationTime?: string;
   sort: Record<string, SortOrder>;
 }
 
@@ -14,8 +18,27 @@ export interface PaginationResult {
   total: number;
 }
 
-export const fetchWithPagination = async ({ url, page, limit, sort, filter }: PaginationParams) => {
-  const queryParams = serializeQueryUserPaginationParams({ page, limit, sort, filter });
+export const fetchWithPagination = async ({
+  url,
+  page,
+  limit,
+  sort,
+  filter,
+  maxCreatedAt,
+  minCreatedAt,
+  minExpirationTime,
+  maxExpirationTime,
+}: PaginationParams) => {
+  const queryParams = serializeQueryUserPaginationParams({
+    page,
+    limit,
+    sort,
+    filter,
+    maxCreatedAt,
+    minCreatedAt,
+    minExpirationTime,
+    maxExpirationTime,
+  });
   const response = await authorizedFetch(`${url}?${queryParams}`);
   const data = (await response.json()) as PaginationResult;
   if (!data || !data.data) {

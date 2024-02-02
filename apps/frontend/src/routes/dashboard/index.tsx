@@ -1,4 +1,4 @@
-import { component$, useSignal, useVisibleTask$, $ } from '@builder.io/qwik';
+import { component$, useSignal, useVisibleTask$, $, useStore } from '@builder.io/qwik';
 import { DocumentHead } from '@builder.io/qwik-city';
 import { LinkBlock } from '../../components/dashboard/links/link/link';
 import { LINK_MODAL_ID, LinkModal } from '../../components/dashboard/links/link-modal/link-modal';
@@ -21,6 +21,18 @@ export default component$(() => {
   const total = useSignal(0);
   const filter = useSignal('');
   const refetch = useSignal(0);
+  const compoundFilter = useStore({
+    createdAt: {
+      min: '',
+      max: '',
+    },
+    expirationTime: {
+      min: '',
+      max: '',
+    },
+    name: '',
+    clicks: null,
+  });
 
   const isLoadingData = useSignal(true);
 
@@ -36,6 +48,10 @@ export default component$(() => {
     track(() => filter.value);
     track(() => refetch.value);
     track(() => page.value);
+    track(() => compoundFilter.createdAt.min);
+    track(() => compoundFilter.createdAt.max);
+    track(() => compoundFilter.expirationTime.min);
+    track(() => compoundFilter.expirationTime.max);
 
     // Default sort order
     sort.value = {
@@ -55,6 +71,10 @@ export default component$(() => {
         limit: limit.value,
         sort: sort.value,
         filter: filter.value,
+        minCreatedAt: compoundFilter.createdAt.min,
+        maxCreatedAt: compoundFilter.createdAt.max,
+        minExpirationTime: compoundFilter.expirationTime.min,
+        maxExpirationTime: compoundFilter.expirationTime.max,
       });
 
       isLoadingData.value = false;
@@ -141,7 +161,13 @@ export default component$(() => {
               page.value = 1; // Reset page number when filter changes
             })}
           />
-          <AdvancedFilter />
+          <AdvancedFilter
+            compoundFilter={compoundFilter}
+            callback={$(() => {
+              refetch.value = 1;
+              page.value = 1;
+            })}
+          />
         </div>
         <div class="ml-auto pl-4">
           <button class="btn btn-primary" onClick$={() => (document.getElementById(LINK_MODAL_ID) as any).showModal()}>
