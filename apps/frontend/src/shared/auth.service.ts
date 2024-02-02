@@ -1,6 +1,7 @@
 import { Cookie } from '@builder.io/qwik-city';
 import jwt_decode from 'jwt-decode';
 import { UserCtx } from '../routes/layout';
+import { validateToken } from '../utils/api';
 
 export const ACCESS_COOKIE_NAME = 'accessToken';
 export const REFRESH_COOKIE_NAME = 'refreshToken';
@@ -33,8 +34,11 @@ export const validateAccessToken = async (cookies: Cookie): Promise<boolean> => 
     setTokensAsCookies(newAccessToken, newRefreshToken, cookies);
     return validateAccessToken(cookies);
   }
-
-  return true;
+  const tokenIsValid = await validateToken(accessToken);
+  if (!tokenIsValid) {
+    setTokensAsCookies('', '', cookies);
+  }
+  return tokenIsValid;
 };
 
 export const setTokensAsCookies = (accessToken: string, refreshToken: string, cookie: Cookie) => {
