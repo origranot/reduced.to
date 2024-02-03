@@ -151,7 +151,6 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
               )}
             </div>
             <div class="divider pt-4">Optional</div>
-
             <div class="flex flex-col">
               <div class="form-control">
                 <label class="cursor-pointer label">
