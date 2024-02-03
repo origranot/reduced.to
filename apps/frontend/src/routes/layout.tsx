@@ -53,9 +53,9 @@ export default component$(() => {
   return (
     <>
       <Navbar />
-      {user.value?.verified === false ? <VerifyAlert /> : ''}
       <main class="flex flex-col h-full pt-[64px]">
         <Slot />
+        {user.value?.verified === false ? <VerifyAlert /> : ''}
       </main>
       <Toaster />
       <UseCookiesAlert visible={acceptedCookies.value !== 'true'} />
