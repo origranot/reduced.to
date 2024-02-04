@@ -30,7 +30,7 @@ export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, expi
                 class="w-8 h-8 rounded-full"
               />
             </div>
-            <div class="flex flex-col text-left">
+            <div class="flex flex-col text-left w-full">
               <a href={link} target="_blank" rel="noopener noreferrer" class="text-sm font-medium truncate">
                 {link}
               </a>
@@ -53,7 +53,6 @@ export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, expi
               <span class="text-xs font-medium text-gray-500 mb-1 mt-1">Created At</span>
             </div>
           </div>
-
           {/* Third column with the actions dropdown */}
           <div class="flex items-center justify-end col-span-6 sm:col-span-1">
             <LinkActionsDropdown
