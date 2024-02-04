@@ -80,4 +80,3 @@ export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, expi
     </>
   );
 });
-
