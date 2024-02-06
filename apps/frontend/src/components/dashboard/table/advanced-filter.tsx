@@ -1,4 +1,4 @@
-import { $, component$, useSignal, useId } from '@builder.io/qwik';
+import { $, component$, useSignal, useId, Signal } from '@builder.io/qwik';
 import { LuFilter } from '@qwikest/icons/lucide';
 
 const filterList = [
@@ -9,6 +9,7 @@ const filterList = [
 ];
 interface AdvancedFilterProps {
   callback: () => void;
+  status: Signal<string>;
   compoundFilter: {
     createdAt: {
       min: string;
@@ -23,15 +24,43 @@ interface AdvancedFilterProps {
   };
 }
 
-export const AdvancedFilter = component$<AdvancedFilterProps>(({ compoundFilter, callback }) => {
+export const AdvancedFilter = component$<AdvancedFilterProps>(({ compoundFilter, callback, status }) => {
   const selectedFilters = useSignal<string[]>([]);
 
   return (
     <>
+      {/* status toggle */}
+      <div class="">
+        <ul class="menu menu-vertical lg:menu-horizontal border input-bordered border-dashed rounded-btn p-1 items-center">
+          <li class="menu-title font-normal text-base">Status</li>
+          <li>
+            <button
+              onClick$={() => {
+                status.value = 'active';
+                callback();
+              }}
+              class={status.value === 'active' ? 'active' : ''}
+            >
+              Active
+            </button>
+          </li>
+          <li class="ml-1">
+            <button
+              onClick$={() => {
+                status.value = 'expired';
+                callback();
+              }}
+              class={status.value === 'expired' ? 'active' : ''}
+            >
+              Expired
+            </button>
+          </li>
+        </ul>
+      </div>
       {/* Filter */}
-      <div class="block mr-3">
+      <div class="block mx-3">
         <div class="dropdown dropdown-hover">
-          <button tabIndex={0} class="btn btn-outline input-bordered flex items-center">
+          <button tabIndex={0} class="btn btn-outline border-dashed input-bordered flex items-center">
             <LuFilter class="w-4 h-4" />
             <p class="font-normal">Filter</p>
           </button>

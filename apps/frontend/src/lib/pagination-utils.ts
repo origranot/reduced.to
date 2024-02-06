@@ -6,6 +6,7 @@ export interface PaginationParams {
   page: number;
   limit: number;
   filter?: string;
+  status?: string;
   minCreatedAt?: string;
   maxCreatedAt?: string;
   minExpirationTime?: string;
@@ -24,6 +25,7 @@ export const fetchWithPagination = async ({
   limit,
   sort,
   filter,
+  status,
   maxCreatedAt,
   minCreatedAt,
   minExpirationTime,
@@ -34,6 +36,7 @@ export const fetchWithPagination = async ({
     limit,
     sort,
     filter,
+    status,
     maxCreatedAt,
     minCreatedAt,
     minExpirationTime,

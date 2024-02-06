@@ -11,7 +11,18 @@ export abstract class EntityService<Entity> {
   abstract get selectFields(): Record<keyof any, boolean>;
 
   findAll = async (options: IFindAllOptions): Promise<IPaginationResult<Entity>> => {
-    const { skip, limit, filter, sort, maxCreatedAt, minCreatedAt, extraWhereClause, maxExpirationTime, minExpirationTime } = options;
+    const {
+      skip,
+      limit,
+      filter,
+      sort,
+      status = 'active', // by default get the active links
+      maxCreatedAt,
+      minCreatedAt,
+      extraWhereClause,
+      maxExpirationTime,
+      minExpirationTime,
+    } = options;
 
     const FILTER_CLAUSE = {};
     const ORDER_BY_CLAUSE = orderByBuilder<Partial<Entity>>(sort as any);
@@ -20,6 +31,11 @@ export abstract class EntityService<Entity> {
       Object.assign(FILTER_CLAUSE, { OR: filterBuilder(this.filterFields, filter) });
     }
 
+    if (status === 'active') {
+      Object.assign(FILTER_CLAUSE, { OR: [{ expirationTime: { gt: new Date().toISOString() } }, { expirationTime: null }] });
+    } else if (status === 'expired') {
+      Object.assign(FILTER_CLAUSE, { expirationTime: { lte: new Date().toISOString() } });
+    }
     // Created at filter
     const CREATED_AT_FILTER = {};
     if (maxCreatedAt && minCreatedAt) {
@@ -90,5 +106,6 @@ export interface IFindAllOptions extends IPaginationOptions {
   minExpirationTime?: string;
   maxExpirationTime?: string;
   sort?: Record<string, SortOrder>;
+  status?: string;
   extraWhereClause?: Record<string, any>;
 }

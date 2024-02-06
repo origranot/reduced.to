@@ -20,6 +20,7 @@ export default component$(() => {
   const limit = useSignal(10);
   const total = useSignal(0);
   const filter = useSignal('');
+  const status = useSignal('active');
   const refetch = useSignal(0);
   const compoundFilter = useStore({
     createdAt: {
@@ -46,6 +47,7 @@ export default component$(() => {
 
   useVisibleTask$(async ({ track }) => {
     track(() => filter.value);
+    track(() => status.value);
     track(() => refetch.value);
     track(() => page.value);
     track(() => compoundFilter.createdAt.min);
@@ -71,6 +73,7 @@ export default component$(() => {
         limit: limit.value,
         sort: sort.value,
         filter: filter.value,
+        status: status.value,
         minCreatedAt: compoundFilter.createdAt.min,
         maxCreatedAt: compoundFilter.createdAt.max,
         minExpirationTime: compoundFilter.expirationTime.min,
@@ -163,6 +166,7 @@ export default component$(() => {
           />
           <AdvancedFilter
             compoundFilter={compoundFilter}
+            status={status}
             callback={$(() => {
               refetch.value = 1;
               page.value = 1;

@@ -1,4 +1,4 @@
-import { IsDefined, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
+import { IsDefined, IsInt, IsOptional, IsString, Max, MaxLength, Min, IsIn } from 'class-validator';
 import { Sortable } from '../../../shared/decorators';
 import { SortOrder } from '../../../shared/enums/sort-order.enum';
 import { Type } from 'class-transformer';
@@ -21,6 +21,12 @@ export class FindAllQueryDto {
   @IsOptional()
   @MaxLength(30)
   filter?: string;
+
+  @IsString()
+  @IsOptional()
+  @IsIn(['active', 'expired'])
+  @MaxLength(30)
+  status: string;
 
   @IsString()
   @IsOptional()

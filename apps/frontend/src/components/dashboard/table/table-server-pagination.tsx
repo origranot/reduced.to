@@ -14,6 +14,7 @@ export interface PaginationParams {
   limit: number;
   page: number;
   filter?: string;
+  status?: string;
   minCreatedAt?: string;
   maxCreatedAt?: string;
   minExpirationTime?: string;
@@ -21,7 +22,7 @@ export interface PaginationParams {
   sort?: Record<string, SortOrder>;
 }
 
-export type PaginationFetcher = ({ limit, page, filter, sort }: PaginationParams) => Promise<ResponseData>;
+export type PaginationFetcher = ({ limit, page, filter, sort, status }: PaginationParams) => Promise<ResponseData>;
 
 export type OptionalHeader = {
   displayName?: string;
@@ -55,6 +56,10 @@ export const serializeQueryUserPaginationParams = (paginationParams: PaginationP
 
   if (paginationParams.filter) {
     paramsForQuery.set('filter', paginationParams.filter);
+  }
+
+  if (paginationParams.status) {
+    paramsForQuery.set('status', paginationParams.status);
   }
 
   // Created At
