@@ -4,10 +4,10 @@ metadata:
   name: letsencrypt-prod
 spec:
   acme:
-    email: acme01@reduced.to
+    email: <YOUR_EMAIL>
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: letsencrypt-issuer-account-key
+      name: letsencrypt-prod
     solvers:
       - http01:
           ingress:

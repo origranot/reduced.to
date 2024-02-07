@@ -6,6 +6,7 @@ metadata:
   name: ingress
   namespace: default
   annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/force-ssl-redirect: 'true' # Enforce HTTPS
   labels:
     app: reduced
@@ -14,7 +15,7 @@ spec:
   tls:
     - hosts:
         - reduced.to
-      secretName: reduced.to-tls # Name of the secret containing the certificate
+      secretName: letsencrypt-prod # Name of the secret containing the certificate
   rules:
     - host: reduced.to
       http:
