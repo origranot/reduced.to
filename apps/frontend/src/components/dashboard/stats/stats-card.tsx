@@ -1,8 +1,8 @@
-import { JSXOutput, Signal, component$ } from '@builder.io/qwik';
+import { JSXNode, Signal, component$ } from '@builder.io/qwik';
 
 export type StatsCardValue = {
   value?: string;
-  description?: JSXOutput;
+  description?: JSXNode<any>;
   loading?: boolean;
 };
 
