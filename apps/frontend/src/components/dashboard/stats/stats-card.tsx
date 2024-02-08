@@ -2,7 +2,7 @@ import { JSXNode, Signal, component$ } from '@builder.io/qwik';
 
 export type StatsCardValue = {
   value?: string;
-  description?: JSXNode;
+  description?: JSXNode<any>;
   loading?: boolean;
 };
 

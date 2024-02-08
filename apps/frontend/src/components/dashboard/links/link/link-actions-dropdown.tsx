@@ -5,7 +5,7 @@ interface LinkActionsDropdownProps {
   url: string;
   actions: {
     name: string;
-    icon: JSXNode;
+    icon: JSXNode<any>;
     class?: string;
     action?: () => any;
     disabled?: boolean;
