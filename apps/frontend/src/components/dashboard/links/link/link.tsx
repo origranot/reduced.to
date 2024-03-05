@@ -1,8 +1,10 @@
 import { component$, $ } from '@builder.io/qwik';
 import { getLinkFromKey } from '../../../temporary-links/utils';
 import LinkActionsDropdown from './link-actions-dropdown';
-import { HiArrowTopRightOnSquareOutline, HiTrashOutline } from '@qwikest/icons/heroicons';
-import { formatDate, formatDateDay } from '../../../../lib/date-utils';
+import { HiArrowTopRightOnSquareOutline, HiClipboardDocumentOutline, HiQrCodeOutline, HiTrashOutline } from '@qwikest/icons/heroicons';
+import { formatDateDay } from '../../../../lib/date-utils';
+import { useToaster } from '../../../toaster/toaster';
+import { copyToClipboard, normalizeUrl } from '../../../../utils';
 
 export interface LinkBlockProps {
   id: string;
@@ -11,11 +13,13 @@ export interface LinkBlockProps {
   favicon?: string;
   createdAt: string;
   expirationTime?: string;
+  onShowQR: () => void;
   onDelete: (id: string) => void;
 }
 
-export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, expirationTime, onDelete }: LinkBlockProps) => {
+export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, expirationTime, onShowQR, onDelete }: LinkBlockProps) => {
   const link = getLinkFromKey(urlKey);
+  const toaster = useToaster();
 
   return (
     <>
@@ -63,6 +67,21 @@ export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, expi
                   icon: <HiArrowTopRightOnSquareOutline />,
                   href: url,
                   target: '_blank',
+                },
+                {
+                  name: 'Copy',
+                  icon: <HiClipboardDocumentOutline />,
+                  action: $(() => {
+                    copyToClipboard(normalizeUrl(url));
+                    toaster.add({ title: 'Success', description: 'copied url to clipboard' });
+                  }),
+                },
+                {
+                  name: 'QR',
+                  icon: <HiQrCodeOutline />,
+                  action: $(() => {
+                    onShowQR();
+                  }),
                 },
                 {
                   name: 'Delete',

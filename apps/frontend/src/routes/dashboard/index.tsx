@@ -9,6 +9,7 @@ import { useToaster } from '../../components/toaster/toaster';
 import { NoData } from '../../components/dashboard/empty-data/no-data';
 import { DELETE_MODAL_ID, DeleteModal } from '../../components/dashboard/delete-modal/delete-modal';
 import { useDeleteLink } from '../../components/dashboard/delete-modal/action';
+import { QR_CODE_DIALOG_ID, QrCodeDialog } from '../../components/temporary-links/qr-code-dialog/qr-code-dialog';
 
 export default component$(() => {
   const toaster = useToaster();
@@ -20,6 +21,7 @@ export default component$(() => {
   const total = useSignal(0);
   const filter = useSignal('');
   const refetch = useSignal(0);
+  const qrLink = useSignal<string | null>(null);
 
   const isLoadingData = useSignal(true);
 
@@ -131,6 +133,7 @@ export default component$(() => {
         action={deleteLinkAction}
       />
       <LinkModal onSubmitHandler={onModalSubmit} />
+      <QrCodeDialog link={{ key: qrLink.value! }} />
       <div class="flex">
         <FilterInput
           filter={filter}
@@ -161,6 +164,10 @@ export default component$(() => {
                   url={link.url}
                   expirationTime={link.expirationTime}
                   createdAt={link.createdAt}
+                  onShowQR={$(() => {
+                    qrLink.value = link.key;
+                    (document.getElementById(QR_CODE_DIALOG_ID) as any).showModal();
+                  })}
                   onDelete={$((id: string) => {
                     idToDelete.value = id;
                     (document.getElementById('delete-modal') as any).showModal();
