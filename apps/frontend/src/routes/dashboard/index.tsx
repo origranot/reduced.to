@@ -1,4 +1,4 @@
-import { component$, useSignal, useVisibleTask$, $ } from '@builder.io/qwik';
+import { component$, useSignal, useVisibleTask$, $, useStore } from '@builder.io/qwik';
 import { DocumentHead } from '@builder.io/qwik-city';
 import { LinkBlock } from '../../components/dashboard/links/link/link';
 import { LINK_MODAL_ID, LinkModal } from '../../components/dashboard/links/link-modal/link-modal';
@@ -9,6 +9,7 @@ import { useToaster } from '../../components/toaster/toaster';
 import { NoData } from '../../components/dashboard/empty-data/no-data';
 import { DELETE_MODAL_ID, DeleteModal } from '../../components/dashboard/delete-modal/delete-modal';
 import { useDeleteLink } from '../../components/dashboard/delete-modal/action';
+import { AdvancedFilter } from '../../components/dashboard/table/advanced-filter';
 
 export default component$(() => {
   const toaster = useToaster();
@@ -19,7 +20,20 @@ export default component$(() => {
   const limit = useSignal(10);
   const total = useSignal(0);
   const filter = useSignal('');
+  const status = useSignal('active');
   const refetch = useSignal(0);
+  const compoundFilter = useStore({
+    createdAt: {
+      min: '',
+      max: '',
+    },
+    expirationTime: {
+      min: '',
+      max: '',
+    },
+    name: '',
+    clicks: null,
+  });
 
   const isLoadingData = useSignal(true);
 
@@ -33,8 +47,13 @@ export default component$(() => {
 
   useVisibleTask$(async ({ track }) => {
     track(() => filter.value);
+    track(() => status.value);
     track(() => refetch.value);
     track(() => page.value);
+    track(() => compoundFilter.createdAt.min);
+    track(() => compoundFilter.createdAt.max);
+    track(() => compoundFilter.expirationTime.min);
+    track(() => compoundFilter.expirationTime.max);
 
     // Default sort order
     sort.value = {
@@ -54,6 +73,11 @@ export default component$(() => {
         limit: limit.value,
         sort: sort.value,
         filter: filter.value,
+        status: status.value,
+        minCreatedAt: compoundFilter.createdAt.min,
+        maxCreatedAt: compoundFilter.createdAt.max,
+        minExpirationTime: compoundFilter.expirationTime.min,
+        maxExpirationTime: compoundFilter.expirationTime.max,
       });
 
       isLoadingData.value = false;
@@ -132,13 +156,23 @@ export default component$(() => {
       />
       <LinkModal onSubmitHandler={onModalSubmit} />
       <div class="flex">
-        <FilterInput
-          filter={filter}
-          onInput={$((ev: InputEvent) => {
-            filter.value = (ev.target as HTMLInputElement).value;
-            page.value = 1; // Reset page number when filter changes
-          })}
-        />
+        <div class="flex">
+          <FilterInput
+            filter={filter}
+            onInput={$((ev: InputEvent) => {
+              filter.value = (ev.target as HTMLInputElement).value;
+              page.value = 1; // Reset page number when filter changes
+            })}
+          />
+          <AdvancedFilter
+            compoundFilter={compoundFilter}
+            status={status}
+            callback={$(() => {
+              refetch.value = 1;
+              page.value = 1;
+            })}
+          />
+        </div>
         <div class="ml-auto pl-4">
           <button class="btn btn-primary" onClick$={() => (document.getElementById(LINK_MODAL_ID) as any).showModal()}>
             Create
