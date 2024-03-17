@@ -26,12 +26,15 @@ export class ShortenerController {
       throw new BadRequestException('Shortened url is wrong or expired');
     }
 
-    // Send an event to the queue to update the shortened url's stats
-    await this.shortenerProducer.publish({
-      ...clientDetails,
-      key,
-      url,
-    });
+    try {
+      await this.shortenerProducer.publish({
+        ...clientDetails,
+        key,
+        url,
+      });
+    } catch (err) {
+      this.logger.error(`Error while publishing shortened url: ${err.message}`);
+    }
 
     return url;
   }
