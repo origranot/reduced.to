@@ -73,7 +73,7 @@ export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, expi
                   icon: <HiClipboardDocumentOutline />,
                   action: $(() => {
                     copyToClipboard(normalizeUrl(url));
-                    toaster.add({ title: 'Success', description: 'copied url to clipboard' });
+                    toaster.add({ title: 'Success', description: 'The url has been copied to the clipboard!' });
                   }),
                 },
                 {
