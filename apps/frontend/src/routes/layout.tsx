@@ -1,4 +1,4 @@
-import { component$, Slot } from '@builder.io/qwik';
+import { component$, Slot, useContextProvider, useSignal } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import jwt_decode from 'jwt-decode';
 import { ACCESS_COOKIE_NAME, refreshTokens, REFRESH_COOKIE_NAME, setTokensAsCookies } from '../shared/auth.service';
@@ -7,6 +7,7 @@ import { VerifyAlert } from '../components/verify-alert/verify-alert';
 import { ACCEPT_COOKIES_COOKIE_NAME, UseCookiesAlert } from '../components/use-cookies-alert/use-cookies-alert';
 import { Toaster, useToasterProvider } from '../components/toaster/toaster';
 import { getProfilePictureUrl } from '../components/navbar/profile/profile';
+import { DrawerContext, DrawerContextType } from './context-id';
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -49,7 +50,11 @@ export default component$(() => {
   const acceptedCookies = useAcceptCookies();
 
   useToasterProvider();
-
+  const isDrawerOpen = useSignal<boolean>(true);
+  const context: DrawerContextType = {
+    isDrawerOpen
+  }
+  useContextProvider(DrawerContext, context);
   return (
     <>
       <Navbar />
