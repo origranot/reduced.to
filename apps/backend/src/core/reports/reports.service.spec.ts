@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaService } from '@reduced.to/prisma';
-import { SortOrder } from '../../shared/enums/sort-order.enum';
-import { IFindAllOptions } from '../entity.service';
-import { ReportsService } from './reports.service';
-import { AppConfigService } from '@reduced.to/config';
+import { PrismaService } from '@rt/prisma';
+import { SortOrder } from '@rt/backend/shared/enums/sort-order.enum';
+import { IFindAllOptions } from '@rt/backend/core/entity.service';
+import { ReportsService } from '@rt/backend/core/reports/reports.service';
+import { AppConfigService } from '@rt/config';
 
 const MOCK_CONFIG = {
   front: {

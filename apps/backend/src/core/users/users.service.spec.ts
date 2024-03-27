@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from './users.service';
-import { PrismaService } from '@reduced.to/prisma';
-import { IFindAllOptions } from '../entity.service';
-import { SortOrder } from '../../shared/enums/sort-order.enum';
+import { UsersService } from '@rt/backend/core/users/users.service';
+import { PrismaService } from '@rt/prisma';
+import { IFindAllOptions } from '@rt/backend/core/entity.service';
+import { SortOrder } from '@rt/backend/shared/enums/sort-order.enum';
 
 describe('UsersService', () => {
   let service: UsersService;

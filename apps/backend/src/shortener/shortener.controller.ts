@@ -1,12 +1,12 @@
 import { BadRequestException, Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
-import { ShortenerDto } from './dto';
-import { ShortenerService } from './shortener.service';
-import { UserContext } from '../auth/interfaces/user-context';
-import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
-import { AppLoggerSerivce } from '@reduced.to/logger';
-import { ShortenerProducer } from './producer/shortener.producer';
-import { ClientDetails, IClientDetails } from '../shared/decorators/client-details/client-details.decorator';
+import { ShortenerDto } from '@rt/backend/shortener/dto';
+import { ShortenerService } from '@rt/backend/shortener/shortener.service';
+import { UserContext } from '@rt/backend/auth/interfaces/user-context';
+import { OptionalJwtAuthGuard } from '@rt/backend/auth/guards/optional-jwt-auth.guard';
+import { AppLoggerSerivce } from '@rt/logger';
+import { ShortenerProducer } from '@rt/backend/shortener/producer/shortener.producer';
+import { ClientDetails, IClientDetails } from '@rt/backend/shared/decorators/client-details/client-details.decorator';
 
 @Controller({
   path: 'shortener',

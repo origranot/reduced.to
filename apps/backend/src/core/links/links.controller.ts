@@ -1,13 +1,13 @@
 import { Controller, Delete, Get, Param, Query, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
-import { RolesGuard } from '../../auth/guards/roles.guard';
-import { LinksService } from './links.service';
-import { IPaginationResult, calculateSkip } from '../../shared/utils';
-import { FindAllQueryDto } from './dto';
-import { Role, Link } from '@reduced.to/prisma';
-import { Roles, UserCtx } from '../../shared/decorators';
+import { JwtAuthGuard } from '@rt/backend/auth/guards/jwt.guard';
+import { RolesGuard } from '@rt/backend/auth/guards/roles.guard';
+import { LinksService } from '@rt/backend/core/links/links.service';
+import { IPaginationResult, calculateSkip } from '@rt/backend/shared/utils';
+import { FindAllQueryDto } from '@rt/backend/core/links/dto';
+import { Role, Link } from '@rt/prisma';
+import { Roles, UserCtx } from '@rt/backend/shared/decorators';
 import { Request } from 'express';
-import { UserContext } from '../../auth/interfaces/user-context';
+import { UserContext } from '@rt/backend/auth/interfaces/user-context';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller({

@@ -1,15 +1,15 @@
 import request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { Link, Role } from '@reduced.to/prisma';
-import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
-import { AppConfigModule } from '@reduced.to/config';
-import { RolesGuard } from '../../auth/guards/roles.guard';
-import { IPaginationResult } from '../../shared/utils';
-import { SortOrder } from '../../shared/enums/sort-order.enum';
-import { LinksService } from './links.service';
-import { LinksController } from './links.controller';
-import { IFindAllOptions } from '../entity.service';
+import { Link, Role } from '@rt/prisma';
+import { JwtAuthGuard } from '@rt/backend/auth/guards/jwt.guard';
+import { AppConfigModule } from '@rt/config';
+import { RolesGuard } from '@rt/backend/auth/guards/roles.guard';
+import { IPaginationResult } from '@rt/backend/shared/utils';
+import { SortOrder } from '@rt/backend/shared/enums/sort-order.enum';
+import { LinksService } from '@rt/backend/core/links/links.service';
+import { LinksController } from '@rt/backend/core/links/links.controller';
+import { IFindAllOptions } from '@rt/backend/core/entity.service';
 
 describe('LinksController', () => {
   let app: INestApplication;

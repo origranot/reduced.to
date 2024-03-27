@@ -1,5 +1,5 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
-import { Unique } from '../../shared/decorators/unique/unique.decorator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { Unique } from '@rt/backend/shared/decorators/unique/unique.decorator';
 import { ProviderType } from '@prisma/client';
 
 export class SignupDto {

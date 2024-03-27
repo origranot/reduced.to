@@ -1,7 +1,7 @@
-import { PrismaService } from '@reduced.to/prisma';
-import { IPaginationOptions, IPaginationResult, orderByBuilder } from '../shared/utils';
-import { SortOrder } from '../shared/enums/sort-order.enum';
-import { filterBuilder } from '../shared/utils';
+import { PrismaService } from '@rt/prisma';
+import { IPaginationOptions, IPaginationResult, orderByBuilder } from '@rt/backend/shared/utils';
+import { SortOrder } from '@rt/backend/shared/enums/sort-order.enum';
+import { filterBuilder } from '@rt/backend/shared/utils';
 
 export abstract class EntityService<Entity> {
   constructor(readonly prismaService: PrismaService) {}

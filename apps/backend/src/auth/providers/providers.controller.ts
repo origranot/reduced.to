@@ -1,12 +1,12 @@
 import { BadRequestException, Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
-import { AppConfigService } from '@reduced.to/config';
-import { AuthService } from '../auth.service';
-import { ProviderType } from '@reduced.to/prisma';
-import { UsersService } from '../../core/users/users.service';
-import { setAuthCookies } from '../utils/cookies';
-import { GoogleOAuthGuard } from '../guards/google-oauth.guard';
-import { PROFILE_PICTURE_PREFIX, StorageService } from '../../storage/storage.service';
+import { AppConfigService } from '@rt/config';
+import { AuthService } from '@rt/backend/auth/auth.service';
+import { ProviderType } from '@rt/prisma';
+import { UsersService } from '@rt/backend/core/users/users.service';
+import { setAuthCookies } from '@rt/backend/auth/utils/cookies';
+import { GoogleOAuthGuard } from '@rt/backend/auth/guards/google-oauth.guard';
+import { PROFILE_PICTURE_PREFIX, StorageService } from '@rt/backend/storage/storage.service';
 
 @Controller({
   path: 'auth/providers',

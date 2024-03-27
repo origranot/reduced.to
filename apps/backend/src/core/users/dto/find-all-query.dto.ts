@@ -1,6 +1,6 @@
 import { IsDefined, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
-import { Sortable } from '../../../shared/decorators';
-import { SortOrder } from '../../../shared/enums/sort-order.enum';
+import { Sortable } from '@rt/backend/shared/decorators';
+import { SortOrder } from '@rt/backend/shared/enums/sort-order.enum';
 import { Type } from 'class-transformer';
 
 export class FindAllQueryDto {

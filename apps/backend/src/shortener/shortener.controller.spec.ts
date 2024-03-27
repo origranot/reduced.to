@@ -1,14 +1,14 @@
-import { AppConfigModule } from '@reduced.to/config';
-import { AppCacheModule } from '../cache/cache.module';
-import { ShortenerService } from './shortener.service';
-import { ShortenerController } from './shortener.controller';
+import { AppConfigModule } from '@rt/config';
+import { AppCacheModule } from '@rt/backend/cache/cache.module';
+import { ShortenerService } from '@rt/backend/shortener/shortener.service';
+import { ShortenerController } from '@rt/backend/shortener/shortener.controller';
 import { Test } from '@nestjs/testing';
-import { ShortenerDto } from './dto';
+import { ShortenerDto } from '@rt/backend/shortener/dto';
 import { Request } from 'express';
-import { AppLoggerModule } from '@reduced.to/logger';
-import { ShortenerProducer } from './producer/shortener.producer';
-import { QueueManagerModule, QueueManagerService } from '@reduced.to/queue-manager';
-import { IClientDetails } from '../shared/decorators/client-details/client-details.decorator';
+import { AppLoggerModule } from '@rt/logger';
+import { ShortenerProducer } from '@rt/backend/shortener/producer/shortener.producer';
+import { QueueManagerModule, QueueManagerService } from '@rt/queue-manager';
+import { IClientDetails } from '@rt/backend/shared/decorators/client-details/client-details.decorator';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;

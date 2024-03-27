@@ -1,7 +1,7 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Cache } from 'cache-manager';
-import { AppCacheService } from './cache.service';
+import { AppCacheService } from '@rt/backend/cache/cache.service';
 
 interface CacheMock extends Cache {
   get: jest.Mock<Promise<any>, [string]>;

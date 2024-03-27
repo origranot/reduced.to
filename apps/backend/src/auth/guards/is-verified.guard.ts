@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { IS_VERFIED_KEY } from '../../shared/decorators/is-verified/is-verified.decorator';
-import { UserContext } from '../interfaces/user-context';
+import { IS_VERFIED_KEY } from '@rt/backend/shared/decorators/is-verified/is-verified.decorator';
+import { UserContext } from '@rt/backend/auth/interfaces/user-context';
 
 @Injectable()
 export class IsVerifiedGuard implements CanActivate {

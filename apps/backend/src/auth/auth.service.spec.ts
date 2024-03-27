@@ -1,13 +1,13 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProviderType, Role, User } from '@reduced.to/prisma';
+import { ProviderType, Role, User } from '@rt/prisma';
 import * as bcrypt from 'bcryptjs';
-import { AppConfigModule } from '@reduced.to/config';
-import { PrismaService } from '@reduced.to/prisma';
-import { AuthService } from './auth.service';
-import { SignupDto } from './dto/signup.dto';
-import { StorageService } from '../storage/storage.service';
+import { AppConfigModule } from '@rt/config';
+import { PrismaService } from '@rt/prisma';
+import { AuthService } from '@rt/backend/auth/auth.service';
+import { SignupDto } from '@rt/backend/auth/dto/signup.dto';
+import { StorageService } from '@rt/backend/storage/storage.service';
 
 describe('AuthService', () => {
   let authService: AuthService;

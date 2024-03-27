@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ShortenerController } from './shortener.controller';
-import { ShortenerService } from './shortener.service';
-import { PrismaModule } from '@reduced.to/prisma';
-import { ShortenerProducer } from './producer/shortener.producer';
-import { QueueManagerModule, QueueManagerService } from '@reduced.to/queue-manager';
+import { ShortenerController } from '@rt/backend/shortener/shortener.controller';
+import { ShortenerService } from '@rt/backend/shortener/shortener.service';
+import { PrismaModule } from '@rt/prisma';
+import { ShortenerProducer } from '@rt/backend/shortener/producer/shortener.producer';
+import { QueueManagerModule, QueueManagerService } from '@rt/queue-manager';
 
 @Module({
   imports: [PrismaModule, QueueManagerModule],

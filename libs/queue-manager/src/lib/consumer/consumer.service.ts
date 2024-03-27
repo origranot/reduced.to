@@ -1,6 +1,6 @@
 import { Inject, OnModuleInit } from '@nestjs/common';
 import { QueueManagerService } from '../queue-manager.service';
-import { AppLoggerSerivce } from '@reduced.to/logger';
+import { AppLoggerSerivce } from '@rt/logger';
 import { Consumer } from 'memphis-dev/*';
 
 export abstract class ConsumerService implements OnModuleInit {

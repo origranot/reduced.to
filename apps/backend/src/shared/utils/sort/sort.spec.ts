@@ -1,5 +1,5 @@
 import { orderByBuilder } from './sort';
-import { SortOrder } from '../../enums/sort-order.enum';
+import { SortOrder } from '@rt/backend/shared/enums/sort-order.enum';
 
 describe('orderByBuilder', () => {
   it('should return undefined if dto is undefined', () => {

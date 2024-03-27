@@ -1,17 +1,17 @@
 import { Body, Controller, Get, Patch, Query, UseGuards } from '@nestjs/common';
-import { Role, User } from '@reduced.to/prisma';
+import { Role, User } from '@rt/prisma';
 import { FindAllQueryDto, CountQueryDto } from './dto';
-import { UsersService } from './users.service';
-import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
-import { RolesGuard } from '../../auth/guards/roles.guard';
-import { Roles, UserCtx } from '../../shared/decorators';
-import { IPaginationResult, calculateSkip } from '../../shared/utils';
-import { UpdateDto } from './dto/update.dto';
-import { UserContext } from '../../auth/interfaces/user-context';
-import { PROFILE_PICTURE_PREFIX, StorageService } from '../../storage/storage.service';
-import { AppLoggerSerivce } from '@reduced.to/logger';
-import { AppConfigService } from '@reduced.to/config';
-import { AuthService } from '../../auth/auth.service';
+import { UsersService } from '@rt/backend/core/users/users.service';
+import { JwtAuthGuard } from '@rt/backend/auth/guards/jwt.guard';
+import { RolesGuard } from '@rt/backend/auth/guards/roles.guard';
+import { Roles, UserCtx } from '@rt/backend/shared/decorators';
+import { IPaginationResult, calculateSkip } from '@rt/backend/shared/utils';
+import { UpdateDto } from '@rt/backend/core/users/dto/update.dto';
+import { UserContext } from '@rt/backend/auth/interfaces/user-context';
+import { PROFILE_PICTURE_PREFIX, StorageService } from '@rt/backend/storage/storage.service';
+import { AppLoggerSerivce } from '@rt/logger';
+import { AppConfigService } from '@rt/config';
+import { AuthService } from '@rt/backend/auth/auth.service';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller({

@@ -1,10 +1,10 @@
 import { Module, forwardRef } from '@nestjs/common';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
-import { PrismaModule } from '@reduced.to/prisma';
-import { AuthModule } from '../../auth/auth.module';
-import { StorageModule } from '../../storage/storage.module';
-import { StorageService } from '../../storage/storage.service';
+import { UsersController } from '@rt/backend/core/users/users.controller';
+import { UsersService } from '@rt/backend/core/users/users.service';
+import { PrismaModule } from '@rt/prisma';
+import { AuthModule } from '@rt/backend/auth/auth.module';
+import { StorageModule } from '@rt/backend/storage/storage.module';
+import { StorageService } from '@rt/backend/storage/storage.service';
 
 @Module({
   imports: [forwardRef(() => AuthModule), PrismaModule, StorageModule],

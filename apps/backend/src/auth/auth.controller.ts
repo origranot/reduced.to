@@ -1,17 +1,17 @@
 import { Body, Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { AppConfigService } from '@reduced.to/config';
-import { NovuService } from '../novu/novu.service';
-import { PrismaService } from '@reduced.to/prisma';
-import { AuthService } from './auth.service';
-import { SignupDto } from './dto/signup.dto';
-import { JwtRefreshAuthGuard } from './guards/jwt-refresh.guard';
-import { JwtAuthGuard } from './guards/jwt.guard';
-import { LocalAuthGuard } from './guards/local.guard';
-import { VerifyAuthGuard } from './guards/verify.guard';
-import { UserContext } from './interfaces/user-context';
-import { setAuthCookies } from './utils/cookies';
-import { UserCtx } from '../shared/decorators';
+import { AppConfigService } from '@rt/config';
+import { NovuService } from '@rt/backend/novu/novu.service';
+import { PrismaService } from '@rt/prisma';
+import { AuthService } from '@rt/backend/auth/auth.service';
+import { SignupDto } from '@rt/backend/auth/dto/signup.dto';
+import { JwtRefreshAuthGuard } from '@rt/backend/auth/guards/jwt-refresh.guard';
+import { JwtAuthGuard } from '@rt/backend/auth/guards/jwt.guard';
+import { LocalAuthGuard } from '@rt/backend/auth/guards/local.guard';
+import { VerifyAuthGuard } from '@rt/backend/auth/guards/verify.guard';
+import { UserContext } from '@rt/backend/auth/interfaces/user-context';
+import { setAuthCookies } from '@rt/backend/auth/utils/cookies';
+import { UserCtx } from '@rt/backend/shared/decorators';
 
 @Controller({
   path: 'auth',

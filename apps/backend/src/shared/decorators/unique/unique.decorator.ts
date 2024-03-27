@@ -6,7 +6,7 @@ import {
   ValidationArguments,
 } from 'class-validator';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@reduced.to/prisma';
+import { PrismaService } from '@rt/prisma';
 
 @ValidatorConstraint({ name: 'Unique', async: true })
 @Injectable()

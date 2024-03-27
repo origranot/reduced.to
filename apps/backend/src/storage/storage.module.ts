@@ -1,7 +1,6 @@
 import { S3 } from '@aws-sdk/client-s3';
 import { Module } from '@nestjs/common';
-import { AppConfigService } from '@reduced.to/config';
-import { StorageService } from './storage.service';
+import { AppConfigService } from '@rt/config';
 
 export const STORAGE_INJECTION_TOKEN = 'STORAGE';
 

@@ -1,4 +1,4 @@
-import { SortOrder } from '../../enums/sort-order.enum';
+import { SortOrder } from '@rt/backend/shared/enums/sort-order.enum';
 
 export const orderByBuilder = <T>(sort: Record<keyof T, SortOrder>): IOrderByResult => {
   if (!sort || !Object.keys(sort).length) {

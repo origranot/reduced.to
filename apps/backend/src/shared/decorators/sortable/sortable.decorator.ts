@@ -6,7 +6,7 @@ import {
   ValidatorConstraintInterface,
   ValidationArguments,
 } from 'class-validator';
-import { SortOrder } from '../../enums/sort-order.enum';
+import { SortOrder } from '@rt/backend/shared/enums/sort-order.enum';
 
 @ValidatorConstraint({ name: 'Sortable', async: true })
 export class SortableConstraint implements ValidatorConstraintInterface {

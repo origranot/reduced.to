@@ -1,10 +1,10 @@
-import { AppCacheService } from '../cache/cache.service';
+import { AppCacheService } from '@rt/backend/cache/cache.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { AppConfigService } from '@reduced.to/config';
-import { PrismaService } from '@reduced.to/prisma';
-import { ShortenerDto } from './dto';
-import { UserContext } from '../auth/interfaces/user-context';
-import { Link } from '@reduced.to/prisma';
+import { AppConfigService } from '@rt/config';
+import { PrismaService } from '@rt/prisma';
+import { ShortenerDto } from '@rt/backend/shortener/dto';
+import { UserContext } from '@rt/backend/auth/interfaces/user-context';
+import { Link } from '@rt/prisma';
 
 @Injectable()
 export class ShortenerService {

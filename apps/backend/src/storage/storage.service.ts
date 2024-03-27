@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { STORAGE_INJECTION_TOKEN } from './storage.module';
+import { STORAGE_INJECTION_TOKEN } from '@rt/backend/storage/storage.module';
 import { PutObjectCommandInput, S3 } from '@aws-sdk/client-s3';
-import { AppConfigService } from '@reduced.to/config';
-import { AppLoggerSerivce } from '@reduced.to/logger';
+import { AppConfigService } from '@rt/config';
+import { AppLoggerSerivce } from '@rt/logger';
 
 @Injectable()
 export class StorageService {

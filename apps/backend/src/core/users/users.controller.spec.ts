@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
-import { User } from '@reduced.to/prisma';
-import { IPaginationResult } from '../../shared/utils';
-import { AppConfigModule } from '@reduced.to/config';
-import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
-import { RolesGuard } from '../../auth/guards/roles.guard';
-import { IFindAllOptions } from '../entity.service';
-import { SortOrder } from '../../shared/enums/sort-order.enum';
-import { StorageService } from '../../storage/storage.service';
-import { AppLoggerModule } from '@reduced.to/logger';
-import { AuthService } from '../../auth/auth.service';
+import { UsersController } from '@rt/backend/core/users/users.controller';
+import { UsersService } from '@rt/backend/core/users/users.service';
+import { User } from '@rt/prisma';
+import { IPaginationResult } from '@rt/backend/shared/utils';
+import { AppConfigModule } from '@rt/config';
+import { JwtAuthGuard } from '@rt/backend/auth/guards/jwt.guard';
+import { RolesGuard } from '@rt/backend/auth/guards/roles.guard';
+import { IFindAllOptions } from '@rt/backend/core/entity.service';
+import { SortOrder } from '@rt/backend/shared/enums/sort-order.enum';
+import { StorageService } from '@rt/backend/storage/storage.service';
+import { AppLoggerModule } from '@rt/logger';
+import { AuthService } from '@rt/backend/auth/auth.service';
 
 describe('UsersController', () => {
   let app: INestApplication;

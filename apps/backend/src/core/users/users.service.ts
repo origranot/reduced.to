@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { EntityService } from '../entity.service';
-import { Prisma, PrismaService, User } from '@reduced.to/prisma';
-import { UserContext } from '../../auth/interfaces/user-context';
+import { EntityService } from '@rt/backend/core/entity.service';
+import { Prisma, PrismaService, User } from '@rt/prisma';
+import { UserContext } from '@rt/backend/auth/interfaces/user-context';
 
 @Injectable()
 export class UsersService extends EntityService<User> {

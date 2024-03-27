@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UserContext } from '../interfaces/user-context';
-import { IsVerifiedGuard } from './is-verified.guard';
+import { UserContext } from '@rt/backend/auth/interfaces/user-context';
+import { IsVerifiedGuard } from '@rt/backend/auth/guards/is-verified.guard';
 
 describe('IsVerfied Guard', () => {
   let guard: IsVerifiedGuard;

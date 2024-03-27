@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ExecutionContext, INestApplication, ValidationPipe } from '@nestjs/common';
 import { agent as supertest, SuperAgentTest } from 'supertest';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { NovuService } from '../novu/novu.service';
-import { PrismaService } from '@reduced.to/prisma';
-import { AppConfigService, Configuration } from '@reduced.to/config';
-import { SignupDto } from './dto/signup.dto';
-import { UserContext } from './interfaces/user-context';
-import { LocalAuthGuard } from './guards/local.guard';
-import { JwtRefreshAuthGuard } from './guards/jwt-refresh.guard';
-import { JwtAuthGuard } from './guards/jwt.guard';
-import { VerifyAuthGuard } from './guards/verify.guard';
-import { UniqueConstraint } from '../shared/decorators/unique/unique.decorator';
+import { AuthController } from '@rt/backend/auth/auth.controller';
+import { AuthService } from '@rt/backend/auth/auth.service';
+import { NovuService } from '@rt/backend/novu/novu.service';
+import { PrismaService } from '@rt/prisma';
+import { AppConfigService, Configuration } from '@rt/config';
+import { SignupDto } from '@rt/backend/auth/dto/signup.dto';
+import { UserContext } from '@rt/backend/auth/interfaces/user-context';
+import { LocalAuthGuard } from '@rt/backend/auth/guards/local.guard';
+import { JwtRefreshAuthGuard } from '@rt/backend/auth/guards/jwt-refresh.guard';
+import { JwtAuthGuard } from '@rt/backend/auth/guards/jwt.guard';
+import { VerifyAuthGuard } from '@rt/backend/auth//guards/verify.guard';
+import { UniqueConstraint } from '@rt/backend/shared/decorators/unique/unique.decorator';
 import { useContainer } from 'class-validator';
 
 describe('AuthController', () => {

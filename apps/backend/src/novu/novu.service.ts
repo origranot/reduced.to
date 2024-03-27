@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Novu } from '@novu/node';
-import { UserContext } from '../auth/interfaces/user-context';
-import { AppConfigService } from '@reduced.to/config';
-import { NOVU_INJECTION_TOKEN } from './novu.module';
-import { Configuration } from '@reduced.to/config';
+import { UserContext } from '@rt/backend/auth/interfaces/user-context';
+import { AppConfigService } from '@rt/config';
+import { NOVU_INJECTION_TOKEN } from '@rt/backend/novu/novu.module';
+import { Configuration } from '@rt/config';
 
 @Injectable()
 export class NovuService {

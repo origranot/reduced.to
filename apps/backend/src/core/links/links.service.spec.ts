@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaService } from '@reduced.to/prisma';
-import { SortOrder } from '../../shared/enums/sort-order.enum';
-import { LinksService } from './links.service';
-import { IFindAllOptions } from '../entity.service';
+import { PrismaService } from '@rt/prisma';
+import { SortOrder } from '@rt/backend/shared/enums/sort-order.enum';
+import { LinksService } from '@rt/backend/core/links/links.service';
+import { IFindAllOptions } from '@rt/backend/core/entity.service';
 
 describe('LinksService', () => {
   let service: LinksService;

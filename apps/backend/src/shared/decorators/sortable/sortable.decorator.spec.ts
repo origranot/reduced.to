@@ -1,6 +1,6 @@
 import { validate } from 'class-validator';
 import { Sortable } from './sortable.decorator';
-import { SortOrder } from '../../enums/sort-order.enum';
+import { SortOrder } from '@rt/backend/shared/enums/sort-order.enum';
 import { BadRequestException } from '@nestjs/common';
 
 class TestDto {

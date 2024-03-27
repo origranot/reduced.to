@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { QueueManagerService } from '../queue-manager.service';
-import { AppConfigService } from '@reduced.to/config';
-import { AppLoggerSerivce } from '@reduced.to/logger';
+import { AppConfigService } from '@rt/config';
+import { AppLoggerSerivce } from '@rt/logger';
 
 export abstract class ProducerService {
   @Inject(AppLoggerSerivce) private readonly logger: AppLoggerSerivce;

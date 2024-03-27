@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from '../../auth/auth.module';
-import { PrismaModule } from '@reduced.to/prisma';
-import { LinksController } from './links.controller';
-import { LinksService } from './links.service';
+import { AuthModule } from '@rt/backend/auth/auth.module';
+import { PrismaModule } from '@rt/prisma';
+import { LinksController } from '@rt/backend/core/links/links.controller';
+import { LinksService } from '@rt/backend/core/links/links.service';
 
 @Module({
   imports: [AuthModule, PrismaModule],

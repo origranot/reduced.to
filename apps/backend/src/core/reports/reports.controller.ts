@@ -1,13 +1,13 @@
 import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Post, Query, UseGuards } from '@nestjs/common';
-import { RolesGuard } from '../../auth/guards/roles.guard';
-import { IPaginationResult, calculateSkip } from '../../shared/utils';
-import { Link, Report, Role } from '@reduced.to/prisma';
-import { Roles } from '../../shared/decorators';
-import { ReportsService } from './reports.service';
-import { FindAllQueryDto, CreateReportDto } from './dto';
-import { LinksService } from '../links/links.service';
-import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard';
-import { AppCacheService } from '../../cache/cache.service';
+import { RolesGuard } from '@rt/backend/auth/guards/roles.guard';
+import { IPaginationResult, calculateSkip } from '@rt/backend/shared/utils';
+import { Report, Role } from '@rt/prisma';
+import { Roles } from '@rt/backend/shared/decorators';
+import { ReportsService } from '@rt/backend/core/reports/reports.service';
+import { FindAllQueryDto, CreateReportDto } from '@rt/backend/core/reports/dto';
+import { LinksService } from '@rt/backend/core/links/links.service';
+import { OptionalJwtAuthGuard } from '@rt/backend/auth/guards/optional-jwt-auth.guard';
+import { AppCacheService } from '@rt/backend/cache/cache.service';
 
 @UseGuards(OptionalJwtAuthGuard, RolesGuard)
 @Controller({

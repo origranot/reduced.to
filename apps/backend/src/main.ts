@@ -2,9 +2,9 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { useContainer } from 'class-validator';
-import { AppModule } from './app.module';
-import { AppConfigService } from '@reduced.to/config';
-import { AppLoggerSerivce } from '@reduced.to/logger';
+import { AppModule } from '@rt/backend/app.module';
+import { AppConfigService } from '@rt/config';
+import { AppLoggerSerivce } from '@rt/logger';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 

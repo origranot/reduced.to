@@ -1,21 +1,21 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { AppConfigService } from '@reduced.to/config';
-import { NovuModule } from '../novu/novu.module';
-import { NovuService } from '../novu/novu.service';
-import { PrismaModule } from '@reduced.to/prisma';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import { LocalStrategy } from './strategies/local.strategy';
-import { VerifyStrategy } from './strategies/verify.strategy';
-import { GoogleStrategy } from './strategies/google.strategy';
+import { AppConfigService } from '@rt/config';
+import { NovuModule } from '@rt/backend/novu/novu.module';
+import { NovuService } from '@rt/backend/novu/novu.service';
+import { PrismaModule } from '@rt/prisma';
+import { AuthController } from '@rt/backend/auth/auth.controller';
+import { AuthService } from '@rt/backend/auth/auth.service';
+import { JwtRefreshStrategy } from '@rt/backend/auth/strategies/jwt-refresh.strategy';
+import { JwtStrategy } from '@rt/backend/auth/strategies/jwt.strategy';
+import { LocalStrategy } from '@rt/backend/auth/strategies/local.strategy';
+import { VerifyStrategy } from '@rt/backend/auth/strategies/verify.strategy';
+import { GoogleStrategy } from '@rt/backend/auth/strategies/google.strategy';
 import { ProvidersController } from './providers/providers.controller';
-import { UsersModule } from '../core/users/users.module';
-import { StorageModule } from '../storage/storage.module';
-import { StorageService } from '../storage/storage.service';
+import { UsersModule } from '@rt/backend/core/users/users.module';
+import { StorageModule } from '@rt/backend/storage/storage.module';
+import { StorageService } from '@rt/backend/storage/storage.service';
 
 @Module({
   imports: [

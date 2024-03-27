@@ -1,11 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AppConfigService } from '@reduced.to/config';
-import { Prisma, PrismaService, ProviderType, Role } from '@reduced.to/prisma';
+import { AppConfigService } from '@rt/config';
+import { Prisma, PrismaService, Role } from '@rt/prisma';
 import * as bcrypt from 'bcryptjs';
-import { SignupDto } from './dto/signup.dto';
-import { UserContext } from './interfaces/user-context';
-import { PROFILE_PICTURE_PREFIX, StorageService } from '../storage/storage.service';
+import { SignupDto } from '@rt/backend/auth/dto/signup.dto';
+import { UserContext } from '@rt/backend/auth/interfaces/user-context';
+import { PROFILE_PICTURE_PREFIX, StorageService } from '@rt/backend/storage/storage.service';
 
 @Injectable()
 export class AuthService {

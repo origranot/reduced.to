@@ -1,5 +1,11 @@
 import { Response } from 'express';
-import { AUTH_COOKIE_EXPIRES, AUTH_COOKIE_NAME, REFRESH_COOKIE_EXPIRES, REFRESH_COOKIE_NAME, setAuthCookies } from './cookies';
+import {
+  AUTH_COOKIE_EXPIRES,
+  AUTH_COOKIE_NAME,
+  REFRESH_COOKIE_EXPIRES,
+  REFRESH_COOKIE_NAME,
+  setAuthCookies,
+} from '@rt/backend/auth/utils/cookies';
 
 describe('setAuthCookies', () => {
   let res: Response;

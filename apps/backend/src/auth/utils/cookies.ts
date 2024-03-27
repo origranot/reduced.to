@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { calculateDateFromTtl } from '../../shared/utils';
+import { calculateDateFromTtl } from '@rt/backend/shared/utils';
 
 export const AUTH_COOKIE_EXPIRES = 5 * 60 * 1000; //5 min
 export const REFRESH_COOKIE_EXPIRES = 7 * 24 * 60 * 60 * 1000; //7 days

@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Injectable } from '@nestjs/common';
-import { AppLoggerModule } from '@reduced.to/logger';
+import { AppLoggerModule } from '@rt/logger';
 import { QueueManagerService } from '../queue-manager.service';
 import { QueueManagerModule } from '../queue-manager.module';
 import { ConsumerService } from './consumer.service';
-import { AppConfigModule } from '@reduced.to/config';
+import { AppConfigModule } from '@rt/config';
 
 jest.mock('../queue-manager.service');
 

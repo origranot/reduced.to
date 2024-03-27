@@ -1,13 +1,13 @@
-import { AppConfigService } from '@reduced.to/config';
-import { ShortenerService } from './shortener.service';
+import { AppConfigService } from '@rt/config';
+import { ShortenerService } from '@rt/backend/shortener/shortener.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppCacheModule } from '../cache/cache.module';
-import { AppCacheService } from '../cache/cache.service';
-import { AppConfigModule } from '@reduced.to/config';
-import { PrismaService } from '@reduced.to/prisma';
-import { ShortenerDto } from './dto';
+import { AppCacheModule } from '@rt/backend/cache/cache.module';
+import { AppCacheService } from '@rt/backend/cache/cache.service';
+import { AppConfigModule } from '@rt/config';
+import { PrismaService } from '@rt/prisma';
+import { ShortenerDto } from '@rt/backend/shortener/dto';
 import { BadRequestException } from '@nestjs/common';
-import { UserContext } from '../auth/interfaces/user-context';
+import { UserContext } from '@rt/backend/auth/interfaces/user-context';
 
 const FIXED_SYSTEM_TIME = '1999-01-01T00:00:00Z';
 

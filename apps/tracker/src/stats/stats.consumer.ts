@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { ConsumerService } from '@reduced.to/queue-manager';
-import { AppConfigService } from '@reduced.to/config';
-import { AppLoggerSerivce } from '@reduced.to/logger';
+import { ConsumerService } from '@rt/queue-manager';
+import { AppConfigService } from '@rt/config';
+import { AppLoggerSerivce } from '@rt/logger';
 import { StatsService } from './stats.service';
 import { createHash } from 'node:crypto';
 import { Message } from 'memphis-dev/*';

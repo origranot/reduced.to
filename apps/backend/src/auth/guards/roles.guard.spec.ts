@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { RolesGuard } from './roles.guard';
-import { Role } from '@reduced.to/prisma';
-import { UserContext } from '../interfaces/user-context';
+import { RolesGuard } from '@rt/backend/auth/guards/roles.guard';
+import { Role } from '@rt/prisma';
+import { UserContext } from '@rt/backend/auth/interfaces/user-context';
 
 describe('Roles Guard', () => {
   let guard: RolesGuard;

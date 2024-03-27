@@ -1,17 +1,17 @@
 import request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ReportsController } from './reports.controller';
-import { ReportsService } from './reports.service';
-import { PrismaService, Report } from '@reduced.to/prisma';
-import { IPaginationResult } from '../../shared/utils';
-import { AppConfigModule } from '@reduced.to/config';
-import { RolesGuard } from '../../auth/guards/roles.guard';
+import { ReportsController } from '@rt/backend/core/reports/reports.controller';
+import { ReportsService } from '@rt/backend/core/reports/reports.service';
+import { PrismaService, Report } from '@rt/prisma';
+import { IPaginationResult } from '@rt/backend/shared/utils';
+import { AppConfigModule } from '@rt/config';
+import { RolesGuard } from '@rt/backend/auth/guards/roles.guard';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { IFindAllOptions } from '../entity.service';
-import { SortOrder } from '../../shared/enums/sort-order.enum';
-import { LinksService } from '../links/links.service';
-import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard';
-import { AppCacheService } from '../../cache/cache.service';
+import { IFindAllOptions } from '@rt/backend/core/entity.service';
+import { SortOrder } from '@rt/backend/shared/enums/sort-order.enum';
+import { LinksService } from '@rt/backend/core/links/links.service';
+import { OptionalJwtAuthGuard } from '@rt/backend/auth/guards/optional-jwt-auth.guard';
+import { AppCacheService } from '@rt/backend/cache/cache.service';
 
 describe('ReportsController', () => {
   let app: INestApplication;

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { ProducerService } from '@reduced.to/queue-manager';
-import { AppConfigService } from '@reduced.to/config';
+import { ProducerService } from '@rt/queue-manager';
+import { AppConfigService } from '@rt/config';
 
 const SHORTENER_PRODUCER_NAME = 'shortener';
 
