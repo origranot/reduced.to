@@ -1,11 +1,11 @@
-import { JSXNode, component$ } from '@builder.io/qwik';
+import { JSXNode, JSXOutput, component$ } from '@builder.io/qwik';
 import { HiEllipsisVerticalOutline } from '@qwikest/icons/heroicons';
 
 interface LinkActionsDropdownProps {
   url: string;
   actions: {
     name: string;
-    icon: JSXNode<any>;
+    icon: JSXOutput;
     class?: string;
     action?: () => any;
     disabled?: boolean;
