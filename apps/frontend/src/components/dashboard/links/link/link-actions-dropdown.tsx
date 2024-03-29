@@ -24,7 +24,7 @@ export default component$((props: LinkActionsDropdownProps) => {
       <ul tabIndex={0} class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-30 text-left">
         {props.actions.map((action) => {
           return (
-            <li>
+            <li key={action.name}>
               <a
                 href={action.href || '#'}
                 target={action.target || '_self'}
