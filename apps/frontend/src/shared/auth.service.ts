@@ -42,7 +42,7 @@ export const setTokensAsCookies = (accessToken: string, refreshToken: string, co
   const domain = isProduction ? `.${process.env.DOMAIN}` : 'localhost';
   cookie.set(ACCESS_COOKIE_NAME, accessToken, {
     path: '/',
-    sameSite: 'lax',
+    sameSite: 'strict',
     domain,
     secure: isProduction,
     httpOnly: true,
@@ -50,13 +50,12 @@ export const setTokensAsCookies = (accessToken: string, refreshToken: string, co
   });
   cookie.set(REFRESH_COOKIE_NAME, refreshToken, {
     path: '/',
-    sameSite: 'lax',
+    sameSite: 'strict',
     domain,
     secure: isProduction,
     httpOnly: true,
     expires: new Date(new Date().getTime() + REFRESH_COOKIE_EXPIRES),
   });
-
 };
 
 export const authorizedFetch = async (url: string, options = {}) => {

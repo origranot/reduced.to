@@ -41,5 +41,6 @@ export const setCookie = (
     sameSite: 'lax',
     httpOnly: true,
   });
+
   return res;
 };

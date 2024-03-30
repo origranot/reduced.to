@@ -15,11 +15,10 @@ spec:
   tls:
     - hosts:
         - reduced.to
-        - www.reduced.to
       secretName: letsencrypt-prod # Name of the secret containing the certificate
   rules:
     - host: reduced.to
-      http: &http
+      http:
         paths:
           - path: /
             pathType: Prefix
@@ -35,5 +34,3 @@ spec:
                 name: backend-service
                 port:
                   number: 3000
-    - host: www.reduced.to
-      http: *http

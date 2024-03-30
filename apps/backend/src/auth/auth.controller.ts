@@ -25,6 +25,12 @@ export class AuthController {
     private readonly appConfigService: AppConfigService
   ) {}
 
+  cookieOptions = {
+    path: '/',
+    sameSite: 'strict',
+    httpOnly: true,
+  } as any;
+
   @UseGuards(LocalAuthGuard)
   @Post('/login')
   async login(@Req() req: Request, @Res() res: Response) {

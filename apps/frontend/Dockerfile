@@ -19,7 +19,6 @@ ARG STORAGE_DOMAIN
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV ORIGIN=https://$DOMAIN
 
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules

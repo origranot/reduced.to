@@ -1,4 +1,4 @@
-import { component$, useSignal, $, PropFunction, useVisibleTask$, QRL, Slot, Signal, JSXNode, JSXOutput } from '@builder.io/qwik';
+import { component$, useSignal, $, PropFunction, useVisibleTask$, QRL, Slot, Signal, JSXNode } from '@builder.io/qwik';
 import { FilterInput } from './default-filter';
 import { authorizedFetch } from '../../../shared/auth.service';
 import { PaginationActions } from './pagination-actions';
@@ -25,7 +25,7 @@ export type OptionalHeader = {
   tdClassNames?: string;
   hide?: boolean;
   sortable?: boolean;
-  format?: QRL<(opts: { row: any; value: string }) => JSXOutput | string>;
+  format?: QRL<(opts: { row: any; value: string }) => JSXNode<any> | string>;
 };
 
 export type Columns = Record<string, OptionalHeader>;
