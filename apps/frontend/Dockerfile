@@ -35,4 +35,4 @@ COPY --from=build /app/node_modules ./node_modules
 
 EXPOSE 5000
 
-CMD ["node", "frontend/server/entry.express.js"]
+CMD ["ORIGIN=$DOMAIN","node", "frontend/server/entry.express.js"]
