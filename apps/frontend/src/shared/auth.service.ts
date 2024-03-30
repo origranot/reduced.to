@@ -57,7 +57,6 @@ export const setTokensAsCookies = (accessToken: string, refreshToken: string, co
     expires: new Date(new Date().getTime() + REFRESH_COOKIE_EXPIRES),
   });
 
-  console.log('Setting cookies', accessToken, "domain", domain, "secure", isProduction);
 };
 
 export const authorizedFetch = async (url: string, options = {}) => {
