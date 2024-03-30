@@ -41,6 +41,6 @@ export const setCookie = (
     sameSite: 'lax',
     httpOnly: true,
   });
-
+  console.log('Setting cookie', key, value, opts?.expires, domain);
   return res;
 };
