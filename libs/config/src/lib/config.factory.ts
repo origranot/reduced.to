@@ -55,9 +55,7 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
         googleSafeBrowsing: {
           apiKey: process.env.SAFE_URL_GOOGLE_SAFE_BROWSING_API_KEY,
         },
-        virusTotal: {
-          apiKey: process.env.SAFE_URL_VIRUS_TOTAL_API_KEY,
-        },
+       enable: process.env.SAFE_URL_ENABLE === 'true' || false,
       },
       tracker: {
         stats: {
@@ -140,6 +138,7 @@ export interface SafeUrlConfig {
   googleSafeBrowsing: {
     apiKey: string;
   };
+  enable: boolean;
 }
 
 export interface StorageConfig {

@@ -39,6 +39,7 @@ export default z.object({
 
   // Safe Url Library
   SAFE_URL_GOOGLE_SAFE_BROWSING_API_KEY: z.string(),
+  SAFE_URL_ENABLE: z.boolean().default(false),
 
   // Auth
   AUTH_JWT_ACCESS_SECRET: z.string(),
