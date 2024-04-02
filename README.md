@@ -200,6 +200,11 @@ For the minimal configuration you can just rename the `.example.env` files to `.
 - **JWT_ACCESS_SECRET**: Jwt secret (used for access tokens)
 - **JWT_REFRESH_SECRET**: Jwt secret (used for refresh tokens)
 
+###### Safe Browsing API
+
+- **SAFE_URL_ENABLE**: Whether to use Google Safe Browsing API or not
+- **SAFE_URL_GOOGLE_SAFE_BROWSING_API_KEY**: Get it from https://developers.google.com/safe-browsing/v4/get-started
+
 ###### Novu
 
 - **NOVU_API_KEY**: Get it from https://novu.co/, you don't need this when running locally (just verify your email from the database)

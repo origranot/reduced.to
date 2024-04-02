@@ -7,6 +7,8 @@ import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import { AppLoggerSerivce } from '@reduced.to/logger';
 import { ShortenerProducer } from './producer/shortener.producer';
 import { ClientDetails, IClientDetails } from '../shared/decorators/client-details/client-details.decorator';
+import { SafeUrlService } from '@reduced.to/safe-url';
+import { AppConfigService } from '@reduced.to/config';
 
 @Controller({
   path: 'shortener',
@@ -14,9 +16,11 @@ import { ClientDetails, IClientDetails } from '../shared/decorators/client-detai
 })
 export class ShortenerController {
   constructor(
+    private readonly configService: AppConfigService,
     private readonly logger: AppLoggerSerivce,
     private readonly shortenerService: ShortenerService,
-    private readonly shortenerProducer: ShortenerProducer
+    private readonly shortenerProducer: ShortenerProducer,
+    private readonly safeUrlService: SafeUrlService
   ) {}
 
   @Get(':key')
@@ -43,6 +47,14 @@ export class ShortenerController {
   @Post()
   async shortener(@Body() shortenerDto: ShortenerDto, @Req() req: Request): Promise<{ key: string }> {
     const user = req.user as UserContext;
+
+    // Check if the url is safe
+    if (this.configService.getConfig().safeUrl.enable) {
+      const isSafeUrl = await this.safeUrlService.isSafeUrl(shortenerDto.url);
+      if (!isSafeUrl) {
+        throw new BadRequestException('This url is not safe to shorten!');
+      }
+    }
 
     if (shortenerDto.temporary) {
       return this.shortenerService.createShortenedUrl(shortenerDto.url);

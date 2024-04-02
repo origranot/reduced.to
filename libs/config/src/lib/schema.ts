@@ -37,6 +37,10 @@ export default z.object({
   MEMPHIS_PASSWORD: z.string(),
   MEMPHIS_ACCOUNT_ID: z.string(),
 
+  // Safe Url Library
+  SAFE_URL_GOOGLE_SAFE_BROWSING_API_KEY: z.string(),
+  SAFE_URL_ENABLE: z.boolean().default(false),
+
   // Auth
   AUTH_JWT_ACCESS_SECRET: z.string(),
   AUTH_JWT_REFRESH_SECRET: z.string(),
