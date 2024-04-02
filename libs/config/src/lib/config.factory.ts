@@ -51,6 +51,14 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
           clientSecret: process.env.AUTH_GOOGLE_CLIENT_SECRET,
         },
       },
+      safeUrl: {
+        googleSafeBrowsing: {
+          apiKey: process.env.SAFE_URL_GOOGLE_SAFE_BROWSING_API_KEY,
+        },
+        virusTotal: {
+          apiKey: process.env.SAFE_URL_VIRUS_TOTAL_API_KEY,
+        },
+      },
       tracker: {
         stats: {
           queueName: process.env.TRACKER_STATS_QUEUE_NAME || 'stats',
@@ -128,6 +136,12 @@ export interface TrackerConfig {
   };
 }
 
+export interface SafeUrlConfig {
+  googleSafeBrowsing: {
+    apiKey: string;
+  };
+}
+
 export interface StorageConfig {
   enable: boolean;
   endpoint: string;
@@ -145,6 +159,7 @@ export interface Configuration {
   novu: NovuConfig;
   memphis: MemphisConfig;
   auth: AuthConfig;
+  safeUrl: SafeUrlConfig;
   tracker: TrackerConfig;
   storage: StorageConfig;
 }
