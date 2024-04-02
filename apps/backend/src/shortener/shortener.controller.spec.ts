@@ -9,6 +9,7 @@ import { AppLoggerModule } from '@reduced.to/logger';
 import { ShortenerProducer } from './producer/shortener.producer';
 import { QueueManagerModule, QueueManagerService } from '@reduced.to/queue-manager';
 import { IClientDetails } from '../shared/decorators/client-details/client-details.decorator';
+import { SafeUrlService } from '@reduced.to/safe-url';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
@@ -25,6 +26,12 @@ describe('ShortenerController', () => {
             getUrl: jest.fn(),
             createUsersShortenedUrl: jest.fn(),
             createShortenedUrl: jest.fn(),
+          },
+        },
+        {
+          provide: SafeUrlService,
+          useValue: {
+            isSafeUrl: jest.fn().mockResolvedValue(true),
           },
         },
         QueueManagerService,
