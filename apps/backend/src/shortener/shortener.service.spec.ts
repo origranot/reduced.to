@@ -74,10 +74,10 @@ describe('ShortenerService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('getLinkFromCache', () => {
+  describe('getLinkDataFromCache', () => {
     it('should return null if short url not found in cache', async () => {
-      const url = await service.getLinkFromCache(KEY);
-      expect(url).toBeNull();
+      const value = await service.getLinkFromCache(KEY);
+      expect(value).toBeNull();
     });
   });
 
@@ -95,28 +95,28 @@ describe('ShortenerService', () => {
 
   describe('addLinkToCache', () => {
     it('should add url to cache store', async () => {
-      await service.addLinkToCache(ORIGINAL_URL, KEY);
+      await service.addLinkToCache(KEY, { url: ORIGINAL_URL, key: KEY });
 
       const keys = await cache.getCacheManager.store.keys();
       expect(keys).toHaveLength(1);
 
-      const url = await service.getLinkFromCache(KEY);
-      expect(url).toBe(ORIGINAL_URL);
+      const value = await service.getLinkFromCache(KEY);
+      expect(value.url).toBe(ORIGINAL_URL);
     });
 
     it('should add url to cache store with correct ttl if ttl is not provided', async () => {
-      await service.addLinkToCache(ORIGINAL_URL, KEY);
-      expect(setRedisKeySpy).toBeCalledWith(KEY, ORIGINAL_URL, config.getConfig().redis.ttl);
+      await service.addLinkToCache(KEY, { url: ORIGINAL_URL, key: KEY });
+      expect(setRedisKeySpy).toBeCalledWith(KEY, { url: ORIGINAL_URL, key: KEY }, config.getConfig().redis.ttl);
     });
 
     it('should add url to cache store with correct ttl if ttl is bigger than default ttl', async () => {
-      await service.addLinkToCache(ORIGINAL_URL, KEY, config.getConfig().redis.ttl + 10000000000);
-      expect(setRedisKeySpy).toBeCalledWith(KEY, ORIGINAL_URL, config.getConfig().redis.ttl);
+      await service.addLinkToCache(KEY, { url: ORIGINAL_URL, key: KEY }, config.getConfig().redis.ttl + 10000000000);
+      expect(setRedisKeySpy).toBeCalledWith(KEY, { url: ORIGINAL_URL, key: KEY }, config.getConfig().redis.ttl);
     });
 
     it('should add url to cache store with correct ttl if ttl is smaller than default ttl', async () => {
-      await service.addLinkToCache(ORIGINAL_URL, KEY, config.getConfig().redis.ttl - 1000);
-      expect(setRedisKeySpy).toBeCalledWith(KEY, ORIGINAL_URL, config.getConfig().redis.ttl - 1000);
+      await service.addLinkToCache(KEY, { url: ORIGINAL_URL, key: KEY }, config.getConfig().redis.ttl - 1000);
+      expect(setRedisKeySpy).toBeCalledWith(KEY, { url: ORIGINAL_URL, key: KEY }, config.getConfig().redis.ttl - 1000);
     });
   });
 
@@ -127,7 +127,7 @@ describe('ShortenerService', () => {
     });
 
     it('should return false because short url is taken', async () => {
-      await service.addLinkToCache(ORIGINAL_URL, KEY);
+      await service.addLinkToCache(KEY, { url: ORIGINAL_URL, key: KEY });
       const isAvailable = await service.isKeyAvailable(KEY);
       expect(isAvailable).toBeFalsy();
     });
@@ -161,8 +161,8 @@ describe('ShortenerService', () => {
 
       const result = await service.getLinkFromDb('good_url');
       expect(addLinkToCache).toBeCalledTimes(1);
-      expect(addLinkToCache).toBeCalledWith(ORIGINAL_URL, 'good_url', undefined);
-      expect(result).toBe(ORIGINAL_URL);
+      expect(addLinkToCache).toBeCalledWith('good_url', { url: ORIGINAL_URL, key: 'good_url' }, undefined);
+      expect(result).toStrictEqual({ url: 'https://github.com/origranot/reduced.to' });
     });
 
     it('should return null if link not found', async () => {
@@ -192,8 +192,12 @@ describe('ShortenerService', () => {
 
       const result = await service.getLinkFromDb('good_url');
       expect(addLinkToCache).toBeCalledTimes(1);
-      expect(addLinkToCache).toBeCalledWith(ORIGINAL_URL, 'good_url', mockedExpirationTime.getTime() - Date.now());
-      expect(result).toBe(ORIGINAL_URL);
+      expect(addLinkToCache).toBeCalledWith(
+        'good_url',
+        { url: ORIGINAL_URL, key: 'good_url' },
+        mockedExpirationTime.getTime() - Date.now()
+      );
+      expect(result).toMatchObject({ url: ORIGINAL_URL });
     });
   });
 
@@ -205,14 +209,14 @@ describe('ShortenerService', () => {
       jest.spyOn(service, 'isUrlAlreadyShortened').mockReturnValue(false);
 
       const body: ShortenerDto = { url: ORIGINAL_URL };
-      const short = await service.createShortenedUrl(body.url);
+      const short = await service.createShortenedUrl(body);
       expect(short).toStrictEqual({ key: 'best' });
     });
 
     it('should throw an error of invalid url', () => {
       const body: ShortenerDto = { url: 'invalid-url' };
       expect(async () => {
-        await service.createShortenedUrl(body.url);
+        await service.createShortenedUrl(body);
       }).rejects.toThrow(BadRequestException);
     });
 
@@ -220,7 +224,7 @@ describe('ShortenerService', () => {
       jest.spyOn(service, 'isUrlAlreadyShortened').mockReturnValue(true);
       const body: ShortenerDto = { url: ORIGINAL_URL };
       try {
-        await service.createShortenedUrl(body.url);
+        await service.createShortenedUrl(body);
         throw new Error('Expected an error to be thrown!');
       } catch (err) {
         expect(err.message).toBe('The URL is already shortened...');
@@ -230,7 +234,7 @@ describe('ShortenerService', () => {
     it('should throw an Invalid URL error if the original URL is not url', async () => {
       const body: ShortenerDto = { url: 'non_url_string' };
       try {
-        await service.createShortenedUrl(body.url);
+        await service.createShortenedUrl(body);
         throw new Error('Expected an error to be thrown!');
       } catch (err) {
         expect(err.message).toBe('Invalid URL');
@@ -243,33 +247,33 @@ describe('ShortenerService', () => {
       jest.spyOn(service, 'addLinkToCache').mockRejectedValue(new Error('Error adding URL to the cache'));
       const body: ShortenerDto = { url: ORIGINAL_URL };
       expect(async () => {
-        await service.createShortenedUrl(body.url);
+        await service.createShortenedUrl(body);
       }).rejects.toThrow();
     });
   });
 
-  describe('getUrl', () => {
+  describe('getLink', () => {
     it('should return original url if it is return form cache', async () => {
-      jest.spyOn(service, 'getLinkFromCache').mockResolvedValue('cached.url');
-      jest.spyOn(service, 'getLinkFromDb').mockResolvedValue('db.url');
+      jest.spyOn(service, 'getLinkFromCache').mockResolvedValue({ url: 'cached.url', key: 'key' });
+      jest.spyOn(service, 'getLinkFromDb').mockResolvedValue({ url: 'db.url', key: 'key' });
 
-      const result = await service.getUrl('shortened_url');
-      expect(result).toBe('cached.url');
+      const result = await service.getLink('shortened_url');
+      expect(result).toStrictEqual({ url: 'cached.url', key: 'key' });
     });
 
     it('should return original url if it is return form db', async () => {
       jest.spyOn(service, 'getLinkFromCache').mockResolvedValue(null);
-      jest.spyOn(service, 'getLinkFromDb').mockResolvedValue('db.url');
+      jest.spyOn(service, 'getLinkFromDb').mockResolvedValue({ url: 'db.url', key: 'key' });
 
-      const result = await service.getUrl('shortened_url');
-      expect(result).toBe('db.url');
+      const result = await service.getLink('shortened_url');
+      expect(result).toStrictEqual({ url: 'db.url', key: 'key' });
     });
 
     it('should return null if url not found', async () => {
       jest.spyOn(service, 'getLinkFromCache').mockResolvedValue(null);
       jest.spyOn(service, 'getLinkFromDb').mockResolvedValue(null);
 
-      const result = await service.getUrl('shortened_url');
+      const result = await service.getLink('shortened_url');
       expect(result).toBeNull();
     });
   });

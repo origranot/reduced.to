@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Post, Query, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { ShortenerDto } from './dto';
 import { ShortenerService } from './shortener.service';
@@ -9,6 +9,12 @@ import { ShortenerProducer } from './producer/shortener.producer';
 import { ClientDetails, IClientDetails } from '../shared/decorators/client-details/client-details.decorator';
 import { SafeUrlService } from '@reduced.to/safe-url';
 import { AppConfigService } from '@reduced.to/config';
+import { Link } from '@prisma/client';
+
+interface LinkResponse extends Partial<Link> {
+  url: string;
+  key: string;
+}
 
 @Controller({
   path: 'shortener',
@@ -24,23 +30,35 @@ export class ShortenerController {
   ) {}
 
   @Get(':key')
-  async findOne(@ClientDetails() clientDetails: IClientDetails, @Param('key') key: string): Promise<string> {
-    const url = await this.shortenerService.getUrl(key);
-    if (!url) {
+  async findOne(
+    @ClientDetails() clientDetails: IClientDetails,
+    @Param('key') key: string,
+    @Query('pw') password = '' // Add optional password query parameter
+  ): Promise<LinkResponse> {
+    const data = await this.shortenerService.getLink(key);
+
+    if (!data) {
       throw new BadRequestException('Shortened url is wrong or expired');
+    }
+
+    if (data.password && (await this.shortenerService.verifyPassword(data.password, password)) === false) {
+      throw new UnauthorizedException('Incorrect password for this url!');
     }
 
     try {
       await this.shortenerProducer.publish({
         ...clientDetails,
-        key,
-        url,
+        key: data.key,
+        url: data.url,
       });
     } catch (err) {
       this.logger.error(`Error while publishing shortened url: ${err.message}`);
     }
 
-    return url;
+    return {
+      url: data.url,
+      key: data.key,
+    };
   }
 
   @UseGuards(OptionalJwtAuthGuard)
@@ -57,7 +75,9 @@ export class ShortenerController {
     }
 
     if (shortenerDto.temporary) {
-      return this.shortenerService.createShortenedUrl(shortenerDto.url);
+      // Temporary links cannot be password protected
+      const { password, ...rest } = shortenerDto;
+      return this.shortenerService.createShortenedUrl(rest);
     }
 
     // Only verified users can create shortened urls
