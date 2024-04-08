@@ -1,4 +1,4 @@
-import { AppConfigModule } from '@reduced.to/config';
+import { AppConfigModule, AppConfigService } from '@reduced.to/config';
 import { AppCacheModule } from '../cache/cache.module';
 import { ShortenerService } from './shortener.service';
 import { ShortenerController } from './shortener.controller';
@@ -10,12 +10,12 @@ import { ShortenerProducer } from './producer/shortener.producer';
 import { QueueManagerModule, QueueManagerService } from '@reduced.to/queue-manager';
 import { IClientDetails } from '../shared/decorators/client-details/client-details.decorator';
 import { SafeUrlService } from '@reduced.to/safe-url';
-import { UnauthorizedException } from '@nestjs/common';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
   let shortenerService: ShortenerService;
   let safeUrlService: SafeUrlService;
+  let configService: AppConfigService;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -34,7 +34,7 @@ describe('ShortenerController', () => {
         {
           provide: SafeUrlService,
           useValue: {
-            isSafeUrl: jest.fn().mockResolvedValue(true),
+            isSafeUrl: jest.fn(),
           },
         },
         QueueManagerService,
@@ -45,6 +45,7 @@ describe('ShortenerController', () => {
     shortenerService = moduleRef.get<ShortenerService>(ShortenerService);
     shortenerController = moduleRef.get<ShortenerController>(ShortenerController);
     safeUrlService = moduleRef.get<SafeUrlService>(SafeUrlService);
+    configService = moduleRef.get<AppConfigService>(AppConfigService);
   });
 
   it('should be defined', () => {
@@ -92,8 +93,20 @@ describe('ShortenerController', () => {
       expect(short).toStrictEqual({ key: 'url.com' });
     });
 
+    it('shoud not check for safe url if safeUrl is set to false', async () => {
+      jest.spyOn(configService, 'getConfig').mockReturnValue({ safeUrl: { enable: false } } as any);
+      const spy = jest.spyOn(safeUrlService, 'isSafeUrl').mockResolvedValue(false);
+
+      const body: ShortenerDto = { url: 'http://malicious-site.com' };
+      const req = { user: { verified: true } } as unknown as Request;
+
+      await shortenerController.shortener(body, req);
+      expect(spy).toHaveBeenCalledTimes(0);
+    });
+
     it('should throw an error when the URL is not safe', async () => {
       jest.spyOn(safeUrlService, 'isSafeUrl').mockResolvedValue(false);
+      jest.spyOn(configService, 'getConfig').mockReturnValue({ safeUrl: { enable: true } } as any);
 
       const body: ShortenerDto = { url: 'http://malicious-site.com' };
       const req = { user: { verified: true } } as unknown as Request;
