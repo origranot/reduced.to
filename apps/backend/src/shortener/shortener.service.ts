@@ -125,13 +125,8 @@ export class ShortenerService {
       ...(expirationTime && { expirationTime: new Date(expirationTime) }),
     };
 
-    if (password) {
-      if (shortenerDto.temporary) {
-        throw new BadRequestException('Temporary links cannot be password protected');
-      }
-
-      const hashedPassword = await this.hashPassword(password);
-      data['password'] = hashedPassword;
+    if (password && shortenerDto.temporary) {
+      throw new BadRequestException('Temporary links cannot be password protected');
     }
 
     return this.prisma.link.create({ data });

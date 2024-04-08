@@ -41,7 +41,6 @@ export class ShortenerController {
       throw new BadRequestException('Shortened url is wrong or expired');
     }
 
-    console.log("Comparing data.password: ", data.password, " with password: ", password)
     if (data.password && (await this.shortenerService.verifyPassword(data.password, password)) === false) {
       throw new UnauthorizedException('Incorrect password for this url!');
     }
@@ -79,6 +78,11 @@ export class ShortenerController {
       // Temporary links cannot be password protected
       const { password, ...rest } = shortenerDto;
       return this.shortenerService.createShortenedUrl(rest);
+    }
+
+    // Hash the password if it exists in the request
+    if (shortenerDto.password) {
+      shortenerDto.password = await this.shortenerService.hashPassword(shortenerDto.password);
     }
 
     // Only verified users can create shortened urls
