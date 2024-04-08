@@ -17,6 +17,10 @@ export class ShortenerDto {
   @IsPositive()
   expirationTime?: number;
 
+  @IsOptional()
+  @IsString()
+  password?: string;
+
   @IsBoolean()
   @IsOptional()
   temporary?: boolean;

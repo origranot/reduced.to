@@ -31,9 +31,9 @@ describe('AppCacheService', () => {
     service = module.get<AppCacheService>(AppCacheService);
   });
 
-  it('should set value to cache', () => {
-    service.set('key', 'value');
-    expect(cache.set).toHaveBeenCalledWith('key', 'value');
+  it('should set value to cache', async () => {
+    await service.set('key', { url: 'value', key: 'key' });
+    expect(cache.set).toHaveBeenCalledWith('key', { url: 'value', key: 'key' }, undefined);
   });
 
   it('should get value from cache', async () => {
@@ -60,11 +60,11 @@ describe('AppCacheService', () => {
   it('should handle rejected promises when setting value to cache', async () => {
     cache.set.mockRejectedValueOnce('error');
     try {
-      await service.set('key', 'value');
+      await service.set('key', { url: 'value', key: 'key' });
     } catch (error) {
       expect(error).toEqual('error');
     }
-    expect(cache.set).toHaveBeenCalledWith('key', 'value');
+    expect(cache.set).toHaveBeenCalledWith('key', { url: 'value', key: 'key' }, undefined);
   });
 
   it('should handle rejected promises when getting value from cache', async () => {
