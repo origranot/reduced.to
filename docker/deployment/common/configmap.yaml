@@ -52,6 +52,10 @@ data:
   AUTH_GOOGLE_CLIENT_ID: 'Get it from https://console.cloud.google.com/apis/credentials'
   AUTH_GOOGLE_CLIENT_SECRET: 'Get it from https://console.cloud.google.com/apis/credentials'
 
+  # SAFE URL
+  SAFE_URL_GOOGLE_SAFE_BROWSING_API_KEY: 'Get it from https://console.cloud.google.com/apis/credentials'
+  SAFE_URL_ENABLE: 'false'
+
   # TRACKER
   TRACKER_STATS_QUEUE_NAME: 'stats'
 

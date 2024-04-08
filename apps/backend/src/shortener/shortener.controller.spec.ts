@@ -1,4 +1,4 @@
-import { AppConfigModule } from '@reduced.to/config';
+import { AppConfigModule, AppConfigService } from '@reduced.to/config';
 import { AppCacheModule } from '../cache/cache.module';
 import { ShortenerService } from './shortener.service';
 import { ShortenerController } from './shortener.controller';
@@ -9,10 +9,13 @@ import { AppLoggerModule } from '@reduced.to/logger';
 import { ShortenerProducer } from './producer/shortener.producer';
 import { QueueManagerModule, QueueManagerService } from '@reduced.to/queue-manager';
 import { IClientDetails } from '../shared/decorators/client-details/client-details.decorator';
+import { SafeUrlService } from '@reduced.to/safe-url';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
   let shortenerService: ShortenerService;
+  let safeUrlService: SafeUrlService;
+  let configService: AppConfigService;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -22,9 +25,16 @@ describe('ShortenerController', () => {
         {
           provide: ShortenerService,
           useValue: {
-            getUrl: jest.fn(),
             createUsersShortenedUrl: jest.fn(),
             createShortenedUrl: jest.fn(),
+            getLink: jest.fn(),
+            verifyPassword: jest.fn(),
+          },
+        },
+        {
+          provide: SafeUrlService,
+          useValue: {
+            isSafeUrl: jest.fn(),
           },
         },
         QueueManagerService,
@@ -34,6 +44,8 @@ describe('ShortenerController', () => {
 
     shortenerService = moduleRef.get<ShortenerService>(ShortenerService);
     shortenerController = moduleRef.get<ShortenerController>(ShortenerController);
+    safeUrlService = moduleRef.get<SafeUrlService>(SafeUrlService);
+    configService = moduleRef.get<AppConfigService>(AppConfigService);
   });
 
   it('should be defined', () => {
@@ -80,23 +92,60 @@ describe('ShortenerController', () => {
       const short = await shortenerController.shortener(body, req);
       expect(short).toStrictEqual({ key: 'url.com' });
     });
+
+    it('shoud not check for safe url if safeUrl is set to false', async () => {
+      jest.spyOn(configService, 'getConfig').mockReturnValue({ safeUrl: { enable: false } } as any);
+      const spy = jest.spyOn(safeUrlService, 'isSafeUrl').mockResolvedValue(false);
+
+      const body: ShortenerDto = { url: 'http://malicious-site.com' };
+      const req = { user: { verified: true } } as unknown as Request;
+
+      await shortenerController.shortener(body, req);
+      expect(spy).toHaveBeenCalledTimes(0);
+    });
+
+    it('should throw an error when the URL is not safe', async () => {
+      jest.spyOn(safeUrlService, 'isSafeUrl').mockResolvedValue(false);
+      jest.spyOn(configService, 'getConfig').mockReturnValue({ safeUrl: { enable: true } } as any);
+
+      const body: ShortenerDto = { url: 'http://malicious-site.com' };
+      const req = { user: { verified: true } } as unknown as Request;
+
+      await expect(shortenerController.shortener(body, req)).rejects.toThrow('This url is not safe to shorten!');
+    });
+
+    it('should not allow temporary links to be password protected', async () => {
+      const KEY = 'url.com';
+      const spy = jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ key: KEY });
+
+      const body: ShortenerDto = { url: 'https://github.com/origranot/reduced.to', temporary: true, password: 'secret' };
+      const req = {} as Request;
+
+      const { password, ...rest } = body;
+
+      const short = await shortenerController.shortener(body, req);
+
+      // Make sure the password is removed from the body before calling the service
+      expect(spy).toHaveBeenCalledWith(rest);
+      expect(short).toStrictEqual({ key: KEY });
+    });
   });
 
   describe('findOne', () => {
     it('should return the original URL when given a valid key', async () => {
-      jest.spyOn(shortenerService, 'getUrl').mockResolvedValue('https://github.com/origranot/reduced.to');
+      jest.spyOn(shortenerService, 'getLink').mockResolvedValue({ url: 'https://github.com/origranot/reduced.to', key: 'best' });
       const key = 'best';
       const clientDetails: IClientDetails = {
         ip: '1.2.3.4',
         userAgent: 'test',
       };
 
-      const url = await shortenerController.findOne(clientDetails, key);
-      expect(url).toBe('https://github.com/origranot/reduced.to');
+      const link = await shortenerController.findOne(clientDetails, key);
+      expect(link).toStrictEqual({ url: 'https://github.com/origranot/reduced.to', key: 'best' });
     });
 
     it('should return an error if the short URL is not found in the database', async () => {
-      jest.spyOn(shortenerService, 'getUrl').mockResolvedValue(null);
+      jest.spyOn(shortenerService, 'getLink').mockResolvedValue(null);
       const key = 'not-found';
       const clientDetails: IClientDetails = {
         ip: '1.2.3.4',
@@ -109,6 +158,35 @@ describe('ShortenerController', () => {
       } catch (err) {
         expect(err.message).toBe('Shortened url is wrong or expired');
       }
+    });
+
+    it('should return the original URL when given a valid key and correct password', async () => {
+      jest
+        .spyOn(shortenerService, 'getLink')
+        .mockResolvedValue({ url: 'https://github.com/origranot/reduced.to', key: 'best', password: 'correct-password' });
+      jest.spyOn(shortenerService, 'verifyPassword').mockResolvedValue(true);
+      const key = 'best';
+      const clientDetails: IClientDetails = {
+        ip: '1.2.3.4',
+        userAgent: 'test',
+      };
+
+      const link = await shortenerController.findOne(clientDetails, key, 'correct-password');
+      expect(link).toStrictEqual({ url: 'https://github.com/origranot/reduced.to', key: 'best' });
+    });
+
+    it('should throw an error if the password is incorrect / missing', async () => {
+      jest
+        .spyOn(shortenerService, 'getLink')
+        .mockResolvedValue({ url: 'https://github.com/origranot/reduced.to', key: 'best', password: 'correct-password' });
+      jest.spyOn(shortenerService, 'verifyPassword').mockResolvedValue(false);
+      const key = 'best';
+      const clientDetails: IClientDetails = {
+        ip: '1.2.3.4',
+        userAgent: 'test',
+      };
+
+      await expect(shortenerController.findOne(clientDetails, key, 'wrong-password')).rejects.toThrow('Incorrect password for this url!');
     });
   });
 });

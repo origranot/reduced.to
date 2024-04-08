@@ -1,4 +1,4 @@
-import { component$, useSignal, $ } from '@builder.io/qwik';
+import { component$, useSignal, $, Signal } from '@builder.io/qwik';
 import { HiXMarkOutline } from '@qwikest/icons/heroicons';
 import { Form, globalAction$, zod$ } from '@builder.io/qwik-city';
 import { z } from 'zod';
@@ -11,22 +11,65 @@ export const LINK_MODAL_ID = 'link-modal';
 interface CreateLinkInput {
   url: string;
   expirationTime?: string | number;
+  passwordProtection?: string;
 }
 
+const CreateLinkInputSchema = z
+  .object({
+    url: z
+      .string({
+        required_error: "The url field can't be empty.",
+      })
+      .min(1, {
+        message: "The url field can't be empty.",
+      })
+      .regex(/^(?:https?:\/\/)?(?:[\w-]+\.)+[a-z]{2,}(?::\d{1,5})?(?:\/\S*)?$/, {
+        message: "The url you've entered is not valid",
+      }),
+    expirationTime: z.string().optional(),
+    expirationTimeToggle: z.string().optional(),
+    passwordProtection: z
+      .string()
+      .min(6, {
+        message: 'Password must be at least 6 characters long.',
+      })
+      .max(25, {
+        message: 'Password must be at most 25 characters long.',
+      })
+      .optional(),
+    passwordProtectionToggle: z.string().optional(),
+  })
+  .refine((data) => !(data.expirationTimeToggle && !data.expirationTime), {
+    message: 'Please select a date for your link to expire.',
+    path: ['expirationTime'],
+  })
+  .refine((data) => !(data.passwordProtectionToggle && !data.passwordProtection), {
+    message: 'Please enter a password for your link.',
+    path: ['passwordProtection'],
+  });
+
+type FieldErrors = Partial<Record<keyof CreateLinkInput, string[]>>;
+
 const useCreateLink = globalAction$(
-  async ({ url, expirationTime, expirationTimeToggle }, { fail, cookie }) => {
+  async ({ url, expirationTime, expirationTimeToggle, passwordProtection, passwordProtectionToggle }, { fail, cookie }) => {
+    const fieldErrors: FieldErrors = {};
+
     if (expirationTimeToggle && !expirationTime) {
-      return fail(400, {
-        fieldErrors: {
-          expirationTimeToggle: ['Please select a date for your link to expire.'],
-          url: undefined,
-        },
-      });
+      fieldErrors.expirationTime = ['Please select a date for your link to expire.'];
+    }
+
+    if (passwordProtectionToggle && !passwordProtection) {
+      fieldErrors.passwordProtection = ['Please enter a password for your link.'];
+    }
+
+    if (Object.keys(fieldErrors).length > 0) {
+      return fail(400, { fieldErrors });
     }
 
     const body: CreateLinkInput = {
       url: normalizeUrl(url),
       ...(expirationTime && { expirationTime: new Date(expirationTime).getTime() }),
+      ...(passwordProtection && { password: passwordProtection }),
     };
 
     const response: Response = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener`, {
@@ -51,45 +94,57 @@ const useCreateLink = globalAction$(
       key: data.key,
     };
   },
-  zod$({
-    url: z
-      .string({
-        required_error: "The url field can't be empty.",
-      })
-      .min(1, {
-        message: "The url field can't be empty.",
-      })
-      .regex(/^(?:https?:\/\/)?(?:[\w-]+\.)+[a-z]{2,}(?::\d{1,5})?(?:\/\S*)?$/, {
-        message: "The url you've entered is not valid",
-      }),
-    expirationTime: z.string().optional(),
-    expirationTimeToggle: z.string().optional(),
-  })
+  zod$(CreateLinkInputSchema)
 );
 
 export interface LinkModalProps {
   onSubmitHandler: () => void;
 }
 
-const initValues = { url: '', expirationTime: undefined, expirationTimeToggle: undefined };
+const initValues = {
+  url: '',
+  expirationTime: undefined,
+  expirationTimeToggle: undefined,
+  passwordProtection: undefined,
+  passwordProtectionToggle: undefined,
+};
 export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
   const inputValue = useSignal<CreateLinkInput>({ ...initValues });
-  const isExpirationTimeOpen = useSignal(false);
 
-  const toggleDrawerExpirationTime = $(() => {
-    isExpirationTimeOpen.value = !isExpirationTimeOpen.value;
-    if (!isExpirationTimeOpen.value) {
-      inputValue.value.expirationTime = undefined;
-    }
-  });
+  // Optional fields
+  const isExpirationTimeOpen = useSignal(false);
+  const isPasswordProtectionOpen = useSignal(false);
 
   const action = useCreateLink();
+
+  const toggleDrawer = $(
+    (
+      signal: Signal<boolean>,
+      resetKey: keyof CreateLinkInput,
+      errorResetKey: keyof Partial<Record<keyof CreateLinkInput, string[]>>,
+      resetValue: any = undefined
+    ) => {
+      signal.value = !signal.value;
+      if (!signal.value && resetKey !== undefined) {
+        // Reset field errors
+        action.value!.fieldErrors![errorResetKey] = [];
+
+        // Reset form values
+        inputValue.value[resetKey] = resetValue;
+      }
+    }
+  );
 
   const clearValues = $(() => {
     inputValue.value = { ...initValues };
 
+    isExpirationTimeOpen.value = false;
+    isPasswordProtectionOpen.value = false;
+
     if (action.value?.fieldErrors) {
-      action.value.fieldErrors.url = [];
+      Object.keys(action.value.fieldErrors).forEach((key) => {
+        action.value!.fieldErrors![key as keyof FieldErrors] = [];
+      });
     }
   });
 
@@ -154,11 +209,11 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
             <div class="flex flex-col">
               <div class="form-control">
                 <label class="cursor-pointer label">
-                  <span class="label-text">Expiration date </span>
+                  <span class="label-text">Expiration date</span>
                   <input
                     type="checkbox"
                     checked={isExpirationTimeOpen.value}
-                    onChange$={toggleDrawerExpirationTime}
+                    onChange$={() => toggleDrawer(isExpirationTimeOpen, 'expirationTime', 'expirationTime', undefined)}
                     name="expirationTimeToggle"
                     class="toggle toggle-primary"
                   />
@@ -175,18 +230,39 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                     }}
                   />
                 )}
-                {action.value?.fieldErrors?.expirationTimeToggle && (
+                {action.value?.fieldErrors?.expirationTime && (
                   <label class="label">
-                    <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.expirationTimeToggle[0]}</span>
+                    <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.expirationTime[0]}</span>
                   </label>
                 )}
               </div>
-              <div class="form-control w-full">
+              <div class="form-control">
                 <label class="cursor-pointer label">
                   <span class="label-text">Password protection</span>
-                  <span class="badge badge-primary">Soon</span>
-                  <input type="checkbox" class="hidden toggle toggle-primary" disabled />
+                  <input
+                    type="checkbox"
+                    checked={isPasswordProtectionOpen.value}
+                    onChange$={() => toggleDrawer(isPasswordProtectionOpen, 'passwordProtection', 'passwordProtection', undefined)}
+                    name="passwordProtectionToggle"
+                    class="toggle toggle-primary"
+                  />
                 </label>
+                {isPasswordProtectionOpen.value && (
+                  <input
+                    name="passwordProtection"
+                    type="password"
+                    class="input input-bordered w-full"
+                    value={inputValue.value.passwordProtection}
+                    onInput$={(ev: InputEvent) => {
+                      inputValue.value.passwordProtection = (ev.target as HTMLInputElement).value;
+                    }}
+                  />
+                )}
+                {action.value?.fieldErrors?.passwordProtection && (
+                  <label class="label">
+                    <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.passwordProtection[0]}</span>
+                  </label>
+                )}
               </div>
             </div>
             <button type="submit" class="btn btn-primary w-1/2 mt-10">

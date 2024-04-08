@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Post, Query, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { ShortenerDto } from './dto';
 import { ShortenerService } from './shortener.service';
@@ -7,6 +7,14 @@ import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import { AppLoggerSerivce } from '@reduced.to/logger';
 import { ShortenerProducer } from './producer/shortener.producer';
 import { ClientDetails, IClientDetails } from '../shared/decorators/client-details/client-details.decorator';
+import { SafeUrlService } from '@reduced.to/safe-url';
+import { AppConfigService } from '@reduced.to/config';
+import { Link } from '@prisma/client';
+
+interface LinkResponse extends Partial<Link> {
+  url: string;
+  key: string;
+}
 
 @Controller({
   path: 'shortener',
@@ -14,26 +22,43 @@ import { ClientDetails, IClientDetails } from '../shared/decorators/client-detai
 })
 export class ShortenerController {
   constructor(
+    private readonly configService: AppConfigService,
     private readonly logger: AppLoggerSerivce,
     private readonly shortenerService: ShortenerService,
-    private readonly shortenerProducer: ShortenerProducer
+    private readonly shortenerProducer: ShortenerProducer,
+    private readonly safeUrlService: SafeUrlService
   ) {}
 
   @Get(':key')
-  async findOne(@ClientDetails() clientDetails: IClientDetails, @Param('key') key: string): Promise<string> {
-    const url = await this.shortenerService.getUrl(key);
-    if (!url) {
+  async findOne(
+    @ClientDetails() clientDetails: IClientDetails,
+    @Param('key') key: string,
+    @Query('pw') password = '' // Add optional password query parameter
+  ): Promise<LinkResponse> {
+    const data = await this.shortenerService.getLink(key);
+
+    if (!data) {
       throw new BadRequestException('Shortened url is wrong or expired');
     }
 
-    // Send an event to the queue to update the shortened url's stats
-    await this.shortenerProducer.publish({
-      ...clientDetails,
-      key,
-      url,
-    });
+    if (data.password && (await this.shortenerService.verifyPassword(data.password, password)) === false) {
+      throw new UnauthorizedException('Incorrect password for this url!');
+    }
 
-    return url;
+    try {
+      await this.shortenerProducer.publish({
+        ...clientDetails,
+        key: data.key,
+        url: data.url,
+      });
+    } catch (err) {
+      this.logger.error(`Error while publishing shortened url: ${err.message}`);
+    }
+
+    return {
+      url: data.url,
+      key: data.key,
+    };
   }
 
   @UseGuards(OptionalJwtAuthGuard)
@@ -41,8 +66,23 @@ export class ShortenerController {
   async shortener(@Body() shortenerDto: ShortenerDto, @Req() req: Request): Promise<{ key: string }> {
     const user = req.user as UserContext;
 
+    // Check if the url is safe
+    if (this.configService.getConfig().safeUrl.enable) {
+      const isSafeUrl = await this.safeUrlService.isSafeUrl(shortenerDto.url);
+      if (!isSafeUrl) {
+        throw new BadRequestException('This url is not safe to shorten!');
+      }
+    }
+
     if (shortenerDto.temporary) {
-      return this.shortenerService.createShortenedUrl(shortenerDto.url);
+      // Temporary links cannot be password protected
+      const { password, ...rest } = shortenerDto;
+      return this.shortenerService.createShortenedUrl(rest);
+    }
+
+    // Hash the password if it exists in the request
+    if (shortenerDto.password) {
+      shortenerDto.password = await this.shortenerService.hashPassword(shortenerDto.password);
     }
 
     // Only verified users can create shortened urls

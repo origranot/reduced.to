@@ -12,6 +12,7 @@ import { copyToClipboard, normalizeUrl } from '../../utils';
 import { getFavicon, getLinkFromKey } from './utils';
 import { QR_CODE_DIALOG_ID, QrCodeDialog } from './qr-code-dialog/qr-code-dialog';
 import { LinkPlaceholder } from './link-placeholder/link-placeholder';
+import { useToaster } from '../toaster/toaster';
 
 const MAX_NUMBER_OF_LINKS = 3;
 
@@ -63,6 +64,7 @@ const getFaviconFromServer = server$(async (url: string) => {
 });
 
 export const TemporaryLinks = component$(() => {
+  const toaster = useToaster();
   const links = useSignal<TempLink[]>([]);
   const input = useSignal('');
   const isInputDisabled = useSignal(false);
@@ -96,6 +98,11 @@ export const TemporaryLinks = component$(() => {
     const { value } = await createTempLink.submit({ url: normalizedUrl });
 
     if (value.failed) {
+      toaster.add({
+        title: 'Error',
+        description: value?.message as string | 'Oops! Something went wrong. Please try again.',
+        type: 'error',
+      });
       newLinkLoading.value = false;
       return;
     }
@@ -110,6 +117,11 @@ export const TemporaryLinks = component$(() => {
     }
 
     newLinkLoading.value = false;
+    toaster.add({
+      title: 'Success',
+      description: 'Your link has been shortened!',
+      type: 'info',
+    });
     saveLinksToLocalStorage(links.value);
   });
 
@@ -124,9 +136,6 @@ export const TemporaryLinks = component$(() => {
     <>
       <QrCodeDialog link={{ key: interactedLink.value?.key }} />
       <div class="mx-auto w-full max-w-md px-2.5 sm:px-0 mb-8">
-        <label class="label">
-          <span class="label-text text-red-400">{createTempLink.value?.message}</span>
-        </label>
         <div
           class={`flex w-full items-center dark:bg-slate-800 rounded-md shadow-lg border border-base-200 p-2 ${
             createTempLink.value?.message ? 'border border-red-500' : ''

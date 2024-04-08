@@ -1,10 +1,11 @@
-import { AppCacheService } from '../cache/cache.service';
+import { AppCacheService, LinkValue } from '../cache/cache.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AppConfigService } from '@reduced.to/config';
 import { PrismaService } from '@reduced.to/prisma';
 import { ShortenerDto } from './dto';
 import { UserContext } from '../auth/interfaces/user-context';
 import { Link } from '@reduced.to/prisma';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class ShortenerService {
@@ -19,12 +20,9 @@ export class ShortenerService {
    * @param {string} key - The key of the shortened URL.
    * @returns {Promise<string|null>} - The original URL if found, otherwise null.
    */
-  getUrl = async (key: string): Promise<string | null> => {
-    const url = await this.getLinkFromCache(key);
-    if (url) {
-      return url;
-    }
-    return this.getLinkFromDb(key);
+  getLink = async (key: string): Promise<LinkValue | null> => {
+    const value = await this.getLinkFromCache(key);
+    return value ? value : this.getLinkFromDb(key);
   };
 
   /**
@@ -32,9 +30,9 @@ export class ShortenerService {
    * @param {string} key - The key of the shortened URL.
    * @returns {Promise<string|null>} - The original URL if found in the cache, otherwise null.
    */
-  getLinkFromCache = async (key: string): Promise<string> => {
-    const url = await this.appCacheService.get(key);
-    return url ? url.toString() : null;
+  getLinkFromCache = async (key: string): Promise<LinkValue> => {
+    const value = await this.appCacheService.get(key);
+    return value ?? null;
   };
 
   /**
@@ -61,32 +59,22 @@ export class ShortenerService {
    * @returns {Promise<boolean>} - True if the shortened URL is available, false otherwise.
    */
   isKeyAvailable = async (shortenedUrl: string): Promise<boolean> => {
-    const url = await this.getUrl(shortenedUrl);
-    return url === null;
+    const value = await this.getLink(shortenedUrl);
+    return value === null;
   };
 
-  /**
-   * Add the short url to the cache
-   * @param {string} url The original url.
-   * @param {string} key The url key.
-   * @param {number} ttl The time to live.
-   */
-  addLinkToCache = async (url: string, key: string, ttl?: number) => {
+  addLinkToCache = async (key: string, value: LinkValue, ttl?: number) => {
     const minTtl = Math.min(this.appConfigService.getConfig().redis.ttl, ttl);
     if (minTtl < 0) {
       return;
     }
 
-    await this.appCacheService.set(key, url, minTtl || this.appConfigService.getConfig().redis.ttl);
+    await this.appCacheService.set(key, value, minTtl || this.appConfigService.getConfig().redis.ttl);
   };
 
-  /**
-   * Create a short URL based on the provided data.
-   * @param {string} url - The original URL.
-   * @param {number} expirationTime - The expiration time (timestamp) of the shortened URL.
-   * @returns {Promise<{ key: string }>} Returns an object containing the newly created key.
-   */
-  createShortenedUrl = async (url: string, expirationTime?: number): Promise<{ key: string }> => {
+  createShortenedUrl = async (dto: ShortenerDto): Promise<{ key: string }> => {
+    const { url, expirationTime, password } = dto;
+
     let parsedUrl: URL;
     try {
       parsedUrl = new URL(url);
@@ -99,16 +87,24 @@ export class ShortenerService {
       throw new BadRequestException(err.message || 'URL is invalid');
     }
 
-    let shortUrl: string;
+    let key: string;
 
     do {
-      shortUrl = this.generateKey();
-    } while (!(await this.isKeyAvailable(shortUrl)));
+      key = this.generateKey();
+    } while (!(await this.isKeyAvailable(key)));
 
     const ttl = expirationTime ? expirationTime - new Date().getTime() : undefined;
 
-    await this.addLinkToCache(parsedUrl.href, shortUrl, ttl);
-    return { key: shortUrl };
+    await this.addLinkToCache(key, { url: parsedUrl.href, key, password }, ttl);
+    return { key };
+  };
+
+  hashPassword = async (password: string): Promise<string> => {
+    return argon2.hash(password);
+  };
+
+  verifyPassword = async (hash: string, password: string): Promise<boolean> => {
+    return argon2.verify(hash, password);
   };
 
   /**
@@ -119,16 +115,21 @@ export class ShortenerService {
    * @returns {Promise<any>} Returns the created db URL.
    */
   createDbUrl = async (user: UserContext, shortenerDto: ShortenerDto, key: string): Promise<Link> => {
-    const { url, description, expirationTime } = shortenerDto;
-    return this.prisma.link.create({
-      data: {
-        key,
-        url,
-        userId: user.id,
-        description,
-        ...(expirationTime && { expirationTime: new Date(expirationTime) }),
-      },
-    });
+    const { url, description, expirationTime, password } = shortenerDto;
+
+    const data = {
+      userId: user.id,
+      key,
+      url,
+      description,
+      ...(expirationTime && { expirationTime: new Date(expirationTime) }),
+    };
+
+    if (password && shortenerDto.temporary) {
+      throw new BadRequestException('Temporary links cannot be password protected');
+    }
+
+    return this.prisma.link.create({ data });
   };
 
   /**
@@ -136,7 +137,7 @@ export class ShortenerService {
    * @param {string} key The key of the shortened URL.
    * @returns {Promise<string|null>} - The original URL if the original URL is found and valid, otherwise null.
    */
-  getLinkFromDb = async (key: string): Promise<string | null> => {
+  getLinkFromDb = async (key: string): Promise<LinkValue | null> => {
     const link = await this.prisma.link.findFirst({
       where: {
         key,
@@ -157,9 +158,9 @@ export class ShortenerService {
     }
 
     // Add the URL back to the cache to prevent future database calls.
-    this.addLinkToCache(link.url, key, expirationTime);
+    this.addLinkToCache(key, { url: link.url, key, password: link.password }, expirationTime);
 
-    return link.url;
+    return link;
   };
 
   /**
@@ -169,7 +170,7 @@ export class ShortenerService {
    * @returns {Promise<{ key: string }>} - Returns an object containing the newly created short URL.
    */
   createUsersShortenedUrl = async (user: UserContext, shortenerDto: ShortenerDto): Promise<{ key: string }> => {
-    const { key } = await this.createShortenedUrl(shortenerDto.url, shortenerDto.expirationTime);
+    const { key } = await this.createShortenedUrl(shortenerDto);
     await this.createDbUrl(user, shortenerDto, key);
 
     return { key };
