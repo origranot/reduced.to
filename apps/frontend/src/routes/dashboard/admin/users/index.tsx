@@ -36,7 +36,7 @@ export default component$(() => {
     ]);
 
     const [{ count: totalUsers }, { count: usersLastMonth }] = await Promise.all(promises.map((response) => response.json()));
-    const change = ((totalUsers - usersLastMonth) / usersLastMonth) * 100;
+    const change = usersLastMonth !== 0 ? ((totalUsers - usersLastMonth) / usersLastMonth) * 100 : totalUsers;
 
     registeredUsersSignal.value = {
       ...registeredUsersSignal.value,

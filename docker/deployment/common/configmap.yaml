@@ -34,7 +34,7 @@ data:
   REDIS_HOST: 'redis-service'
   REDIS_PORT: '6379'
   REDIS_PASSWORD: 'password'
-  REDIS_TTL: '1800' # 30 minutes in seconds (default TTL)
+  REDIS_TTL: '1800000' # 30 minutes in ms (default TTL)
 
   # NOVU - You don't need this when running locally (just verify your email from the database)
   NOVU_API_KEY: 'Get it from https://novu.co/'

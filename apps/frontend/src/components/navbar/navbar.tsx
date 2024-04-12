@@ -37,7 +37,7 @@ export const Navbar = component$(() => {
             </label>
           </>
         )}
-        <Link href="/" class="btn btn-ghost normal-case text-xl">
+        <Link href="/dashboard" class="btn btn-ghost normal-case text-xl">
           Reduced.to
         </Link>
       </div>
@@ -122,10 +122,6 @@ export const Navbar = component$(() => {
         )}
         <div class="divider divider-horizontal"></div>
         <Resources />
-        <div class="divider divider-horizontal"></div>
-        <div class="grid flex-grow place-items-center">
-          <GithubButton />
-        </div>
         <div class="divider divider-horizontal"></div>
         <div class="grid flex-grow place-items-center mr-4">
           <ThemeSwitcher />

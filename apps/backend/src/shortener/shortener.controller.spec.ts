@@ -34,7 +34,7 @@ describe('ShortenerController', () => {
         {
           provide: SafeUrlService,
           useValue: {
-            isSafeUrl: jest.fn(),
+            isSafeUrl: jest.fn().mockResolvedValue(true),
           },
         },
         QueueManagerService,

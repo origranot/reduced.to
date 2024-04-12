@@ -40,7 +40,7 @@ const useTempLink = globalAction$(async ({ url }, { fail }) => {
     body: JSON.stringify({
       url,
       temporary: true,
-      expirationTime: 30 * 60 * 1000, // 30 minutes
+      expirationTime: new Date().getTime() + 30 * 60 * 1000, // 30 minutes
     }),
   });
 
