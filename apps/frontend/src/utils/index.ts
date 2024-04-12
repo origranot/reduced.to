@@ -24,7 +24,6 @@ export const normalizeUrl = (url: string): string => {
   return (regexProtocolExists.test(url) ? '' : 'https://') + url;
 };
 
-
 export const isValidUrl = (url: string) => {
   try {
     new URL(url);

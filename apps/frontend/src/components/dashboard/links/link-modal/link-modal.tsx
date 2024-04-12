@@ -124,7 +124,7 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
     const url = track(() => previewUrl.value);
 
     const debounceTimeout = setTimeout(() => {
-      faviconUrl.value = (url === '' || url === null) ? null : `https://www.google.com/s2/favicons?sz=128&domain=${url}`;
+      faviconUrl.value = url === '' || url === null ? null : `https://www.google.com/s2/favicons?sz=128&domain=${url}`;
     }, 500); // 500ms debounce time
 
     return () => {
