@@ -56,8 +56,11 @@ export class AuthController {
 
   @UseGuards(JwtRefreshAuthGuard)
   @Post('/refresh')
-  async refresh(@Req() req: Request) {
-    return this.authService.refreshTokens(req.user as UserContext);
+  async refresh(@Req() req: Request, @Res() res: Response) {
+    const tokens = await this.authService.refreshTokens(req.user as UserContext);
+    res = setAuthCookies(res, this.appConfigService.getConfig().front.domain, tokens);
+
+    res.send(tokens);
   }
 
   @UseGuards(JwtAuthGuard)

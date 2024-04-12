@@ -1,6 +1,7 @@
 import { Cookie } from '@builder.io/qwik-city';
 import jwt_decode from 'jwt-decode';
 import { UserCtx } from '../routes/layout';
+import { access } from 'fs';
 
 export const ACCESS_COOKIE_NAME = 'accessToken';
 export const REFRESH_COOKIE_NAME = 'refreshToken';
@@ -60,12 +61,20 @@ export const setTokensAsCookies = (accessToken: string, refreshToken: string, co
 
 export const authorizedFetch = async (url: string, options = {}) => {
   const response = await fetch(url, { credentials: 'include', ...options });
+
   if (response.status === 401) {
-    try {
-      return fetch(url, options);
-    } catch (error) {
-      // Handle error refreshing access token
-      console.error('Failed to fetch with authorization token', error);
+    // Attempt to refresh the token
+    const refreshResponse = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/refresh`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+
+    if (refreshResponse.ok) {
+      // Token refreshed successfully, retry the original request
+      return fetch(url, { credentials: 'include', ...options });
+    } else {
+      // Handle failure to refresh the token
+      throw new Error('Session expired. Please log in again.');
     }
   }
 

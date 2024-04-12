@@ -30,7 +30,7 @@ export const LinkBlock = component$(({ id, urlKey, url, favicon, createdAt, expi
             <div class="hidden sm:block flex-shrink-0">
               <img
                 alt={new URL(url).hostname}
-                src={favicon || `https://www.google.com/s2/favicons?sz=64&domain_url=${url}`}
+                src={favicon || `https://www.google.com/s2/favicons?sz=128&domain_url=${url}`}
                 class="w-8 h-8 rounded-full"
               />
             </div>

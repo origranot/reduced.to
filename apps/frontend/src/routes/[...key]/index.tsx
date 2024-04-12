@@ -28,6 +28,8 @@ export const onGet: RequestHandler = async ({ params: { key }, query, redirect, 
       redirectTo = `/password/${key}`;
     } else if (res.status === 200 && data.url) {
       redirectTo = data.url;
+    } else if (res.status === 404) {
+      throw new Error('Shortened URL is wrong or expired');
     } else {
       throw new Error('Failed to fetch original URL');
     }

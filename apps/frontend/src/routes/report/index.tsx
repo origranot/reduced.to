@@ -1,7 +1,7 @@
 import Notify from '../../assets/svg/notify.svg?jsx';
 import { component$, useSignal, $ } from '@builder.io/qwik';
 import { DocumentHead, Form, globalAction$, z, zod$ } from '@builder.io/qwik-city';
-import { isValidURL, normalizeUrl } from '../../utils';
+import { isValidUrl, normalizeUrl } from '../../utils';
 import { useToaster } from '../../components/toaster/toaster';
 
 const VALID_CATEGORIES = ['Phishing', 'Malware', 'Child abuse', 'Violence', 'Spam', 'Illegal content', 'Other'];
@@ -37,7 +37,7 @@ export const useReport = globalAction$(
         required_error: 'This field is required',
       })
       .transform((url) => normalizeUrl(url))
-      .refine((url) => isValidURL(url), {
+      .refine((url) => isValidUrl(url), {
         message: 'Please enter a valid URL',
       }),
     category: z
