@@ -43,13 +43,13 @@ export class MetadataService {
         root.querySelector('meta[name="twitter:description"]')?.getAttribute('content') ||
         '';
 
-      const image =
-        root.querySelector('meta[property="og:image"]')?.getAttribute('content') ||
-        root.querySelector('meta[name="twitter:image"]')?.getAttribute('content') ||
-        root.querySelector('link[rel="image_src"]')?.getAttribute('href') ||
-        root.querySelector('link[rel="icon"]')?.getAttribute('href') ||
-        root.querySelector('link[rel="shortcut icon"]')?.getAttribute('href') ||
-        '';
+      const image = this.getRelativeUrl(urlString, [
+        root.querySelector('meta[property="og:image"]')?.getAttribute('content'),
+        root.querySelector('meta[name="twitter:image"]')?.getAttribute('content'),
+        root.querySelector('link[rel="image_src"]')?.getAttribute('href'),
+        root.querySelector('link[rel="icon"]')?.getAttribute('href'),
+        root.querySelector('link[rel="shortcut icon"]')?.getAttribute('href'),
+      ]);
 
       return { title, description, image, url: urlString, hostname: url.hostname };
     } catch (error) {
@@ -57,11 +57,26 @@ export class MetadataService {
     }
   }
 
-  private isValidUrl = (urlString: string) => {
+  private getRelativeUrl(baseUrl: string, imageUrls: (string | null)[]): string | null {
+    const base = new URL(baseUrl);
+    for (const imageUrl of imageUrls) {
+      if (imageUrl && this.isValidUrl(imageUrl)) {
+        return imageUrl; // Return if the URL is absolute and valid
+      }
+      if (imageUrl) {
+        // Attempt to resolve relative URL
+        return new URL(imageUrl, base).toString();
+      }
+    }
+    return null;
+  }
+
+  private isValidUrl(urlString: string): boolean {
     try {
-      return Boolean(new URL(urlString));
+      new URL(urlString);
+      return true;
     } catch (e) {
       return false;
     }
-  };
+  }
 }

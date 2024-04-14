@@ -6,6 +6,7 @@ import { normalizeUrl } from '../../../../utils';
 import { tomorrow } from '../../../../lib/date-utils';
 import { SocialMediaPreview } from './social-media-preview/social-media-preview';
 import { UNKNOWN_FAVICON } from '../../../temporary-links/utils';
+import { useDebouncer } from '../../../../utils/debouncer';
 
 export const LINK_MODAL_ID = 'link-modal';
 
@@ -120,17 +121,13 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
 
   const action = useCreateLink();
 
-  useVisibleTask$(({ track }) => {
-    const url = track(() => previewUrl.value);
-
-    const debounceTimeout = setTimeout(() => {
-      faviconUrl.value = url === '' || url === null ? null : `https://www.google.com/s2/favicons?sz=128&domain=${url}`;
-    }, 500); // 500ms debounce time
-
-    return () => {
-      clearTimeout(debounceTimeout);
-    };
-  });
+  const debounceUrlInput = useDebouncer(
+    $((input: string) => {
+      faviconUrl.value = input === '' || input === null ? null : `https://www.google.com/s2/favicons?sz=128&domain=${input}`;
+      previewUrl.value = input;
+    }),
+    500
+  );
 
   const toggleOption = $(
     (
@@ -171,7 +168,7 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
     <>
       <dialog
         id={LINK_MODAL_ID}
-        class="fixed inset-0 z-40 m-auto max-h-fit w-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-modal p-0 shadow-xl sm:rounded-2xl max-w-screen-lg"
+        class="modal fixed inset-0 z-40 m-auto max-h-fit w-full border border-gray-400 dark:border-gray-700 bg-white dark:bg-dark-modal p-0 shadow-xl sm:rounded-2xl max-w-screen-lg block h-auto"
       >
         <div class="grid grid-cols-1 md:grid-cols-2 max-h-[95vh] divide-x divide-gray-100 dark:divide-gray-700 overflow-auto md:overflow-hidden">
           <div class="rounded-l-2xl md:max-h-[95vh] flex flex-col">
@@ -203,7 +200,7 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                   value={inputValue.value.url}
                   onInput$={(ev: InputEvent) => {
                     inputValue.value.url = (ev.target as HTMLInputElement).value;
-                    previewUrl.value = inputValue.value.url;
+                    debounceUrlInput(inputValue.value.url);
                   }}
                 />
                 {action.value?.fieldErrors?.url && (

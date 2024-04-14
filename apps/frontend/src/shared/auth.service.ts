@@ -1,7 +1,6 @@
 import { Cookie } from '@builder.io/qwik-city';
 import jwt_decode from 'jwt-decode';
 import { UserCtx } from '../routes/layout';
-import { access } from 'fs';
 
 export const ACCESS_COOKIE_NAME = 'accessToken';
 export const REFRESH_COOKIE_NAME = 'refreshToken';
@@ -13,29 +12,36 @@ export const validateAccessToken = async (cookies: Cookie): Promise<boolean> => 
   const accessToken = cookies.get(ACCESS_COOKIE_NAME)?.value;
   const refreshToken = cookies.get(REFRESH_COOKIE_NAME)?.value;
 
-  if (!accessToken) {
+  // Exit early if no access token and no refresh token are available
+  if (!accessToken && !refreshToken) {
     return false;
   }
 
-  const decodedToken = jwt_decode<UserCtx & { exp: number }>(accessToken);
-  const currentDate = new Date();
+  // Decode the access token if it exists
+  const decodedToken = accessToken ? jwt_decode<UserCtx & { exp: number }>(accessToken) : null;
 
-  if (!decodedToken) {
-    return false;
+  // If the access token is still valid, return true
+  if (decodedToken) {
+    return true;
   }
 
-  // Try to refresh access token if it's expired
-  if (decodedToken.exp * 1000 < currentDate.getTime() && refreshToken) {
-    const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await refreshTokens(refreshToken);
-    if (!newAccessToken) {
-      return false;
+  // If the access token is expired but a refresh token exists, try to refresh
+  if (refreshToken) {
+    try {
+      const refreshedTokens = await refreshTokens(refreshToken);
+      const { accessToken: newAccessToken, refreshToken: newRefreshToken } = refreshedTokens;
+
+      if (newAccessToken) {
+        setTokensAsCookies(newAccessToken, newRefreshToken, cookies);
+        return validateAccessToken(cookies); // Recursively validate the new access token
+      }
+    } catch (error) {
+      console.error('Failed to refresh tokens', error);
     }
-
-    setTokensAsCookies(newAccessToken, newRefreshToken, cookies);
-    return validateAccessToken(cookies);
   }
 
-  return true;
+  // If no valid access token or refresh token, return false
+  return false;
 };
 
 export const setTokensAsCookies = (accessToken: string, refreshToken: string, cookie: Cookie) => {
