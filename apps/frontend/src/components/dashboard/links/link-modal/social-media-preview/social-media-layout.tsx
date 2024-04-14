@@ -12,8 +12,14 @@ interface SocialMediaLayoutProps {
 export const SocialMediaLayout = component$(({ platformName, metadata, loading }: SocialMediaLayoutProps) => {
   const previewMessage = (
     <div class="flex h-[250px] w-full flex-col items-center justify-center space-y-4 dark:bg-gray-100 bg-white">
-      <LuImage class="h-7 w-7 text-gray-400" />
-      <p class="text-sm text-gray-400">Enter a link to generate a preview.</p>
+      {loading ? (
+        <span class="loading loading-spinner loading-md text-gray-400"></span>
+      ) : (
+        <>
+          <LuImage class="h-7 w-7 text-gray-400" />
+          <p class="text-sm text-gray-400">Enter a link to generate a preview.</p>
+        </>
+      )}
     </div>
   );
   const renderLayout = () => {
@@ -41,7 +47,7 @@ export const SocialMediaLayout = component$(({ platformName, metadata, loading }
             ) : (
               previewMessage
             )}
-            <div class="text-left grid gap-1 border-t border-gray-300 dark:bg-white bg-white p-3">
+            <div class="text-left grid gap-1 border-t border-gray-200 bg-gray-300 p-3">
               {metadata.hostname ? (
                 <p class="text-[0.8rem] uppercase text-[#606770]">{metadata.hostname}</p>
               ) : (
