@@ -14,12 +14,14 @@ export class StatsConsumer extends ConsumerService {
   }
 
   async onMessage(_topic: string, _partition: number, message: KafkaMessage) {
-    const { ip, userAgent, key, url } = JSON.parse(message.value.toString()) as {
+    const { ip, userAgent, key } = JSON.parse(message.value.toString()) as {
       ip: string;
       userAgent: string;
       key: string;
       url: string;
     };
+
+    this.loggerService.debug(`Received message for ${key} with ip: ${ip} and user agent: ${userAgent}`);
 
     const hashedIp = createHash('sha256').update(ip).digest('hex');
     const isUniqueVisit = await this.statsService.isUniqueVisit(key, hashedIp);
@@ -31,6 +33,7 @@ export class StatsConsumer extends ConsumerService {
     let geoLocation = null;
     try {
       geoLocation = geoip.lookup(ip);
+      this.loggerService.debug(`Parsed ip ${ip} to geo location: ${JSON.stringify(geoLocation)}`);
     } catch (err) {
       this.loggerService.error(`Failed to parse geo location for ${key} with error: ${err.message}`);
     }
