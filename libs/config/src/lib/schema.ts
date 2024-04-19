@@ -30,12 +30,11 @@ export default z.object({
   // Novu
   NOVU_API_KEY: z.string().optional(),
 
-  // Memphis
-  MEMPHIS_ENABLE: z.boolean().default(false),
-  MEMPHIS_HOST: z.string(),
-  MEMPHIS_USERNAME: z.string(),
-  MEMPHIS_PASSWORD: z.string(),
-  MEMPHIS_ACCOUNT_ID: z.string(),
+  // Kafka
+  KAFKA_ENABLE: z.boolean().default(false),
+  KAFKA_BROKER: z.string(),
+  KAFKA_USERNAME: z.string(),
+  KAFKA_PASSWORD: z.string(),
 
   // Safe Url Library
   SAFE_URL_GOOGLE_SAFE_BROWSING_API_KEY: z.string(),
@@ -48,5 +47,5 @@ export default z.object({
   AUTH_GOOGLE_CLIENT_SECRET: z.string(),
 
   // Tracker
-  TRACKER_STATS_QUEUE_NAME: z.string(),
+  TRACKER_STATS_TOPIC_NAME: z.string(),
 });

@@ -1,42 +1,50 @@
 import { Inject, OnModuleInit } from '@nestjs/common';
 import { QueueManagerService } from '../queue-manager.service';
-import { AppLoggerSerivce } from '@reduced.to/logger';
-import { Consumer } from 'memphis-dev/*';
+import { AppLoggerService } from '@reduced.to/logger';
+import { Consumer, KafkaMessage } from 'kafkajs';
 
 export abstract class ConsumerService implements OnModuleInit {
-  @Inject(AppLoggerSerivce) private readonly logger: AppLoggerSerivce;
+  @Inject(AppLoggerService) private readonly logger: AppLoggerService;
   @Inject(QueueManagerService) private readonly queueManager: QueueManagerService;
 
-  private _consumer: Consumer;
-  constructor(private readonly consumerName: string, private readonly queue: string) {}
+  private consumer: Consumer;
+  constructor(
+    private readonly topic: string,
+    private readonly options?: {
+      groupId: string;
+      consumerName: string;
+    }
+  ) {
+    this.options = {
+      groupId: this.options?.groupId || 'default-group',
+      consumerName: this.options?.consumerName || 'default-consumer',
+    };
+  }
 
   async onModuleInit() {
-    this._consumer = await this.queueManager.client.consumer({
-      stationName: this.queue,
-      consumerName: this.consumerName,
-    });
+    this.consumer = this.queueManager.client.consumer({ groupId: this.options.groupId });
+    await this.consumer.connect();
+    await this.consumer.subscribe({ topic: this.topic });
 
-    this.registerEvents();
+    // Running the consumer
+    await this.consumer
+      .run({
+        eachMessage: async ({ topic, partition, message }) => {
+          await this.onMessage(topic, partition, message);
+        },
+      })
+      .catch((err) => {
+        this.logger.error(`Error on consumer ${this.name} on topic ${this.topic}`, err);
+      });
   }
 
   get name() {
-    return this.consumerName;
+    return this.options.consumerName;
   }
 
-  get queueName() {
-    return this.queue;
+  get topicName() {
+    return this.topic;
   }
 
-  abstract onMessage(message: any): Promise<void>;
-
-  private registerEvents() {
-    this._consumer.on('message', async (message) => {
-      this.logger.debug(`Received message from queue ${this.queueName} for consumer ${this.name}`);
-      await this.onMessage(message);
-    });
-
-    this._consumer.on('error', (err) => {
-      this.logger.error(`Error on consumer ${this.name} for queue ${this.queueName}`, err);
-    });
-  }
+  abstract onMessage(topic: string, partition: number, message: KafkaMessage): Promise<void>;
 }

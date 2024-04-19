@@ -6,16 +6,17 @@ import { QueueManagerModule } from '../queue-manager.module';
 import { ConsumerService } from './consumer.service';
 import { AppConfigModule } from '@reduced.to/config';
 
-jest.mock('../queue-manager.service');
-
 describe('ConsumerService', () => {
   const TEST_CONSUMER_NAME = 'test-consumer';
-  const TEST_QUEUE_NAME = 'test-queue';
+  const TEST_TOPIC_NAME = 'test-topic';
 
   @Injectable()
   class TestConsumerService extends ConsumerService {
     constructor() {
-      super(TEST_CONSUMER_NAME, TEST_QUEUE_NAME);
+      super(TEST_TOPIC_NAME, {
+        groupId: 'test-group',
+        consumerName: TEST_CONSUMER_NAME,
+      });
     }
 
     async onMessage(message: any) {
@@ -43,6 +44,6 @@ describe('ConsumerService', () => {
   });
 
   it('should get the queue name', () => {
-    expect(service.queueName).toBe(TEST_QUEUE_NAME);
+    expect(service.topicName).toBe(TEST_TOPIC_NAME);
   });
 });

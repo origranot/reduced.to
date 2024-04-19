@@ -4,7 +4,7 @@ import { ShortenerDto } from './dto';
 import { ShortenerService } from './shortener.service';
 import { UserContext } from '../auth/interfaces/user-context';
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
-import { AppLoggerSerivce } from '@reduced.to/logger';
+import { AppLoggerService } from '@reduced.to/logger';
 import { ShortenerProducer } from './producer/shortener.producer';
 import { ClientDetails, IClientDetails } from '../shared/decorators/client-details/client-details.decorator';
 import { SafeUrlService } from '@reduced.to/safe-url';
@@ -23,7 +23,7 @@ interface LinkResponse extends Partial<Link> {
 export class ShortenerController {
   constructor(
     private readonly configService: AppConfigService,
-    private readonly logger: AppLoggerSerivce,
+    private readonly logger: AppLoggerService,
     private readonly shortenerService: ShortenerService,
     private readonly shortenerProducer: ShortenerProducer,
     private readonly safeUrlService: SafeUrlService
