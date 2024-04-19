@@ -38,7 +38,7 @@ export class StatsConsumer extends ConsumerService {
     await this.statsService.addVisit(key, {
       hashedIp,
       ua: userAgent,
-      ...(geoLocation?.status === 'success' && { geoLocation }),
+      ...(geoLocation && { geoLocation }),
     });
 
     this.loggerService.log(`Added unique visit for ${key}`);

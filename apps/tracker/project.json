@@ -26,7 +26,8 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "tracker:build"
+        "buildTarget": "tracker:build",
+        "port": 3001
       },
       "configurations": {
         "development": {
