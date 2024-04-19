@@ -3,7 +3,7 @@ import { ConsoleTransport, Logger } from '@origranot/ts-logger';
 import { AppConfigService } from '@reduced.to/config';
 
 @Injectable()
-export class AppLoggerSerivce implements LoggerService {
+export class AppLoggerService implements LoggerService {
   private readonly logger: Logger;
 
   constructor(private readonly config: AppConfigService) {

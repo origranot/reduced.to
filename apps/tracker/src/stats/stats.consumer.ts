@@ -1,24 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { ConsumerService } from '@reduced.to/queue-manager';
 import { AppConfigService } from '@reduced.to/config';
-import { AppLoggerSerivce } from '@reduced.to/logger';
+import { AppLoggerService } from '@reduced.to/logger';
 import { StatsService } from './stats.service';
 import { createHash } from 'node:crypto';
-import { Message } from 'memphis-dev/*';
+import { KafkaMessage } from 'kafkajs';
+import geoip from 'geoip-lite';
 
 @Injectable()
 export class StatsConsumer extends ConsumerService {
-  constructor(config: AppConfigService, private readonly loggerService: AppLoggerSerivce, private readonly statsService: StatsService) {
-    super('tracker', config.getConfig().tracker.stats.queueName);
+  constructor(config: AppConfigService, private readonly loggerService: AppLoggerService, private readonly statsService: StatsService) {
+    super(config.getConfig().tracker.stats.topic);
   }
 
-  async onMessage(message: Message): Promise<void> {
-    const { ip, userAgent, key, geo, url } = message.getDataAsJson() as {
+  async onMessage(_topic: string, _partition: number, message: KafkaMessage) {
+    const { ip, userAgent, key, url } = JSON.parse(message.value.toString()) as {
       ip: string;
       userAgent: string;
       key: string;
       url: string;
-      geo: string;
     };
 
     const hashedIp = createHash('sha256').update(ip).digest('hex');
@@ -30,7 +30,7 @@ export class StatsConsumer extends ConsumerService {
 
     let geoLocation = null;
     try {
-      geoLocation = JSON.parse(geo);
+      geoLocation = geoip.lookup(ip);
     } catch (err) {
       this.loggerService.error(`Failed to parse geo location for ${key} with error: ${err.message}`);
     }
@@ -41,7 +41,6 @@ export class StatsConsumer extends ConsumerService {
       ...(geoLocation?.status === 'success' && { geoLocation }),
     });
 
-    message.ack();
     this.loggerService.log(`Added unique visit for ${key}`);
   }
 }

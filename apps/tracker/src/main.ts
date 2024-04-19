@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppConfigService } from '@reduced.to/config';
 import { AppModule } from './app/app.module';
-import { AppLoggerSerivce } from '@reduced.to/logger';
+import { AppLoggerService } from '@reduced.to/logger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -17,7 +17,7 @@ async function bootstrap() {
   app.enableCors({ origin: true, credentials: true });
 
   const port = app.get(AppConfigService).getConfig().general.trackerPort;
-  const logger = app.get(AppLoggerSerivce);
+  const logger = app.get(AppLoggerService);
 
   await app.listen(port);
 

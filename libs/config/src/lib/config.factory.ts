@@ -34,12 +34,11 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
       novu: {
         apiKey: process.env.NOVU_API_KEY,
       },
-      memphis: {
-        enable: process.env.MEMPHIS_ENABLE === 'true' || false,
-        host: process.env.MEMPHIS_HOST,
-        username: process.env.MEMPHIS_USERNAME,
-        password: process.env.MEMPHIS_PASSWORD,
-        accountId: +process.env.MEMPHIS_ACCOUNT_ID,
+      kafka: {
+        enable: process.env.KAFKA_ENABLE === 'true' || false,
+        broker: process.env.KAFKA_BROKER,
+        username: process.env.KAFKA_USERNAME,
+        password: process.env.KAFKA_PASSWORD,
       },
       auth: {
         jwt: {
@@ -59,7 +58,7 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
       },
       tracker: {
         stats: {
-          queueName: process.env.TRACKER_STATS_QUEUE_NAME || 'stats',
+          topic: process.env.TRACKER_STATS_TOPIC_NAME || 'stats',
         },
       },
       storage: {
@@ -109,12 +108,11 @@ export interface NovuConfig {
   apiKey: string;
 }
 
-export interface MemphisConfig {
+export interface KafkaConfig {
   enable: boolean;
-  host: string;
+  broker: string;
   username: string;
   password: string;
-  accountId: number;
 }
 
 export interface AuthConfig {
@@ -130,7 +128,7 @@ export interface AuthConfig {
 
 export interface TrackerConfig {
   stats: {
-    queueName: string;
+    topic: string;
   };
 }
 
@@ -156,7 +154,7 @@ export interface Configuration {
   rateLimit: RateLimitConfig;
   redis: RedisConfig;
   novu: NovuConfig;
-  memphis: MemphisConfig;
+  kafka: KafkaConfig;
   auth: AuthConfig;
   safeUrl: SafeUrlConfig;
   tracker: TrackerConfig;

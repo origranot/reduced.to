@@ -4,7 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { useContainer } from 'class-validator';
 import { AppModule } from './app.module';
 import { AppConfigService } from '@reduced.to/config';
-import { AppLoggerSerivce } from '@reduced.to/logger';
+import { AppLoggerService } from '@reduced.to/logger';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 
@@ -27,7 +27,7 @@ async function bootstrap() {
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   const port = app.get(AppConfigService).getConfig().general.backendPort;
-  const logger = app.get(AppLoggerSerivce);
+  const logger = app.get(AppLoggerService);
 
   await app.listen(port);
 
