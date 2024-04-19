@@ -24,7 +24,7 @@ export abstract class ConsumerService implements OnModuleInit {
   async onModuleInit() {
     this.consumer = this.queueManager.client.consumer({ groupId: this.options.groupId });
     await this.consumer.connect();
-    await this.consumer.subscribe({ topic: this.topic, fromBeginning: true });
+    await this.consumer.subscribe({ topic: this.topic });
 
     // Running the consumer
     await this.consumer
