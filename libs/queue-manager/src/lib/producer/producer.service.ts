@@ -1,34 +1,50 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { QueueManagerService } from '../queue-manager.service';
 import { AppConfigService } from '@reduced.to/config';
-import { AppLoggerSerivce } from '@reduced.to/logger';
+import { AppLoggerService } from '@reduced.to/logger';
+import { Producer } from 'kafkajs';
 
+@Injectable()
 export abstract class ProducerService {
-  @Inject(AppLoggerSerivce) private readonly logger: AppLoggerSerivce;
+  @Inject(AppLoggerService) private readonly logger: AppLoggerService;
   @Inject(AppConfigService) private readonly config: AppConfigService;
   @Inject(QueueManagerService) private readonly queueManager: QueueManagerService;
 
-  constructor(private readonly producerName: string, private readonly queue: string) {}
+  private producer: Producer;
+  constructor(private readonly producerName: string, private readonly topic: string) {}
+
+  async init() {
+    this.logger.debug(`Initializing ${this.producerName} producer`);
+    this.producer = this.queueManager.client.producer({
+      allowAutoTopicCreation: true,
+    });
+
+    return this.producer.connect();
+  }
+
+  async terminate() {
+    this.logger.debug(`Terminating producer ${this.producerName}`);
+    return this.producer.disconnect();
+  }
 
   get name() {
     return this.producerName;
   }
 
-  get queueName() {
-    return this.queue;
+  get topicName() {
+    return this.topic;
   }
 
   async publish(message: any) {
-    // Do not publish if Memphis is disabled or if we are in test environment
-    if (this.config.getConfig().general.env === 'test' || !this.config.getConfig().memphis.enable) {
+    // Do not publish if Kafka is disabled or if we are in test environment
+    if (this.config.getConfig().general.env === 'test' || !this.config.getConfig().kafka.enable) {
       return;
     }
 
-    this.logger.debug(`Publishing message to ${this.queueName} with producer ${this.producerName}`);
-    return this.queueManager.client.produce({
-      stationName: this.queue,
-      producerName: this.name,
-      message,
+    this.logger.debug(`Publishing message to ${this.topic} with producer ${this.producerName}`);
+    return this.producer.send({
+      topic: this.topic,
+      messages: [{ value: JSON.stringify(message) }],
     });
   }
 }
