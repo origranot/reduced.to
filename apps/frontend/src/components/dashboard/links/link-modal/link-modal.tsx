@@ -271,7 +271,7 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                       <label class="input input-bordered flex items-center gap-2">
                         <input
                           name="passwordProtection"
-                          placeholder="Very secure password..."
+                          placeholder="Very secured password..."
                           type={showPassword.value ? 'text' : 'password'}
                           class="grow dark:bg-slate-900"
                           value={inputValue.value.passwordProtection}
