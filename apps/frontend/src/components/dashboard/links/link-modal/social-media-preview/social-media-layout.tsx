@@ -28,7 +28,7 @@ export const SocialMediaLayout = component$(({ platformName, metadata, loading }
         return (
           <div class="relative overflow-hidden rounded-2xl border border-gray-300 dark:border-gray-600">
             {metadata.image && metadata.image.length > 0 ? (
-              <img src={metadata.image} alt="Preview" class="h-[250px] w-full object-cover" />
+              <img width="1080" height="1080" src={metadata.image} alt="Preview" class="h-[250px] w-full object-cover" />
             ) : (
               previewMessage
             )}
@@ -43,7 +43,7 @@ export const SocialMediaLayout = component$(({ platformName, metadata, loading }
         return (
           <div class="border border-gray-300 dark:border-gray-600">
             {metadata.image && metadata.image.length > 0 ? (
-              <img src={metadata.image} alt="Preview" class="h-[250px] w-full object-cover" />
+              <img width="1080" height="1080" src={metadata.image} alt="Preview" class="h-[250px] w-full object-cover" />
             ) : (
               previewMessage
             )}
@@ -73,7 +73,7 @@ export const SocialMediaLayout = component$(({ platformName, metadata, loading }
         return (
           <div class="overflow-hidden rounded-[2px] shadow-[0_0_0_1px_rgba(0,0,0,0.15),0_2px_3px_rgba(0,0,0,0.2)]">
             {metadata.image && metadata.image.length > 0 ? (
-              <img src={metadata.image} alt="Preview" class="h-[250px] w-full object-cover" />
+              <img width="1080" height="1080" src={metadata.image} alt="Preview" class="h-[250px] w-full object-cover" />
             ) : (
               previewMessage
             )}
