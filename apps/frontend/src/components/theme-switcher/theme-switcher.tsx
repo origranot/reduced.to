@@ -24,7 +24,11 @@ export const setPreference = (theme: ThemePreference) => {
 export const reflectPreference = (theme: ThemePreference) => {
   document.firstElementChild?.setAttribute('data-theme', theme);
   document.firstElementChild?.classList.toggle('dark', theme === DARK_THEME);
+  window.dispatchEvent(new CustomEvent('theme-toggled', { detail: { theme: theme === DARK_THEME ? 'dark' : 'light' } }));
 };
+
+export const getCurrentTheme = () => document.firstElementChild?.getAttribute('data-theme') as ThemePreference;
+export const isDarkMode = () => getCurrentTheme() === DARK_THEME;
 
 export const getColorPreference = (): ThemePreference => {
   if (localStorage.getItem(themeStorageKey)) {

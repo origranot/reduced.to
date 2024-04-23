@@ -26,7 +26,9 @@ export default component$(() => {
   const isLoadingData = useSignal(true);
 
   const linksContainerRef = useSignal<HTMLElement>();
-  const linksMap = useSignal(new Map<string, { id: string; key: string; url: string; createdAt: string; expirationTime?: string }>());
+  const linksMap = useSignal(
+    new Map<string, { id: string; key: string; url: string; createdAt: string; clicks: number; expirationTime?: string }>()
+  );
   const linksArray = Array.from(linksMap.value.values());
 
   // Delete modal
@@ -162,6 +164,7 @@ export default component$(() => {
                   key={link.key}
                   urlKey={link.key}
                   url={link.url}
+                  clicks={link.clicks}
                   expirationTime={link.expirationTime}
                   createdAt={link.createdAt}
                   onShowQR={$(() => {

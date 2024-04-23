@@ -18,7 +18,7 @@ interface LinkActionsDropdownProps {
 export default component$((props: LinkActionsDropdownProps) => {
   return (
     <div class="dropdown dropdown-bottom dropdown-end">
-      <div tabIndex={0} role="button" class="btn btn-ghost btn-circle m-1">
+      <div tabIndex={0} role="button" class="btn btn-ghost btn-sm btn-circle m-1">
         <HiEllipsisVerticalOutline class="w-5 h-5" />
       </div>
       <ul tabIndex={0} class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-30 text-left">

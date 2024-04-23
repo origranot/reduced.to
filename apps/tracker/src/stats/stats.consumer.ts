@@ -30,18 +30,13 @@ export class StatsConsumer extends ConsumerService {
       return;
     }
 
-    let geoLocation = null;
-    try {
-      geoLocation = geoip.lookup(ip);
-      this.loggerService.debug(`Parsed ip ${ip} to geo location: ${JSON.stringify(geoLocation)}`);
-    } catch (err) {
-      this.loggerService.error(`Failed to parse geo location for ${key} with error: ${err.message}`);
-    }
+    const geoLocation = geoip.lookup(ip);
+    this.loggerService.debug(`Parsed ip ${ip} to geo location: ${JSON.stringify(geoLocation)}`);
 
     await this.statsService.addVisit(key, {
       hashedIp,
       ua: userAgent,
-      ...(geoLocation && { geoLocation }),
+      geoLocation,
     });
 
     this.loggerService.log(`Added unique visit for ${key}`);
