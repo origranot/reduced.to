@@ -4,7 +4,7 @@ import { component$, useSignal } from '@builder.io/qwik';
 import { ClicksChart } from '../../../../components/dashboard/analytics/clicks-chart/clicks-chart';
 
 export const useGetAnalytics = routeLoader$(async ({ params: { key }, cookie, redirect }) => {
-  const res = await serverSideFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/analytics/${key}?days=7`, cookie);
+  const res = await serverSideFetch(`${process.env.API_DOMAIN}/api/v1/analytics/${key}?days=7`, cookie);
 
   if (res.status !== 200) {
     throw redirect(302, '/unknown');
