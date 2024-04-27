@@ -18,18 +18,17 @@ export default component$(() => {
     </>
   );
 });
-
 export const head: DocumentHead = {
-  title: 'The FREE Open-Source URL Shortener | Reduced.to',
+  title: 'Reduced.to - Free & Open-Source URL Shortener',
   meta: [
     {
       name: 'title',
-      content: 'Reduced.to | The FREE Open-Source URL Shortener',
+      content: 'Simplify Your Links with Reduced.to | Free & Open-Source URL Shortener',
     },
     {
       name: 'description',
       content:
-        'Reduced.to is the FREE, Modern, and Open-Source URL Shortener. Convert those ugly and long URLs into short, easy to manage links and QR-Codes.',
+        'Transform cumbersome URLs into neat, manageable links with Reduced.to, the free and open-source URL shortener. Perfect for enhancing link sharing and tracking!',
     },
     {
       property: 'og:type',
@@ -41,25 +40,37 @@ export const head: DocumentHead = {
     },
     {
       property: 'og:title',
-      content: 'Reduced.to | The FREE Open-Source URL Shortener',
+      content: 'Simplify Your Links | Reduced.to - Free Open-Source URL Shortener',
     },
     {
       property: 'og:description',
       content:
-        'Reduced.to is the FREE, Modern, and Open-Source URL Shortener. Convert those ugly and long URLs into short, easy to manage links and QR-Codes.',
+        'Discover the ease of managing and tracking your links with Reduced.to, the ultimate free and open-source URL shortener. Start creating clean, concise URLs today!',
+    },
+    {
+      property: 'og:image',
+      content: 'https://reduced.to/images/thumbnail.png',
     },
     {
       property: 'twitter:card',
-      content: 'summary',
+      content: 'summary_large_image',
+    },
+    {
+      property: 'twitter:url',
+      content: 'https://reduced.to',
     },
     {
       property: 'twitter:title',
-      content: 'Reduced.to | The FREE Open-Source URL Shortener',
+      content: 'Simplify Your Links with Reduced.to | Free & Open-Source',
     },
     {
       property: 'twitter:description',
       content:
-        'Reduced.to is the FREE, Modern, and Open-Source URL Shortener. Convert those ugly and long URLs into short, easy to manage links and QR-Codes.',
+        'Transform cumbersome URLs into neat, manageable links with Reduced.to, the free and open-source URL shortener. Perfect for enhancing link sharing and tracking!',
+    },
+    {
+      property: 'twitter:image',
+      content: 'https://reduced.to/images/thumbnail.png',
     },
   ],
 };

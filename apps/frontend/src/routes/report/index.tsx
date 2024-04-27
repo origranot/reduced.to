@@ -67,7 +67,7 @@ export default component$(() => {
       <section class="max-w-xl px-4 sm:py-20 py-5 mx-auto space-y-1">
         <Notify class="h-[400px] sm:block hidden w-1/2 mx-auto mt-[-230px]" />
         <div class="text-left">
-          <h2 class="text-lg font-medium">Report abuse</h2>
+          <h1 class="text-lg font-bold">Report abuse</h1>
           <p class="text-gray-600 dark:text-gray-300">
             If you believe a link violates our terms of service, please report it below. We will review the link and take appropriate
             action. Thank you for helping us keep Reduced.to safe.

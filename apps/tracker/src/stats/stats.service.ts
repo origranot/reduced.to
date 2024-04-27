@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaService } from '@reduced.to/prisma';
+import { PrismaService } from '@reduced.to/prisma';
 
 @Injectable()
 export class StatsService {
@@ -8,41 +8,38 @@ export class StatsService {
   async addVisit(key: string, opts: { hashedIp: string; ua: string; geoLocation: object }) {
     const { hashedIp, ua, geoLocation } = opts;
 
-    try {
-      await this.prismaService.visit.create({
+    return this.prismaService.$transaction(async (prisma) => {
+      const linkExists = await prisma.link.findUnique({
+        where: { key },
+        select: { id: true },
+      });
+
+      if (!linkExists) return; // Early return if link does not exist
+
+      await prisma.visit.create({
         data: {
           ip: hashedIp,
           userAgent: ua,
           geo: geoLocation,
-          link: {
-            connect: {
-              key,
-            },
-          },
+          link: { connect: { key } },
         },
       });
-    } catch (err) {
-      if (err instanceof Prisma.PrismaClientKnownRequestError) {
-        if (err.code === 'P2025') {
-          // Link record does not exist for the given key (might be a visit to a temporary link)
-          return;
-        }
-      }
 
-      throw err;
-    }
+      await prisma.link.update({
+        where: { key },
+        data: { clicks: { increment: 1 } },
+      });
+    });
   }
 
-  async isUniqueVisit(key: string, hashedIp: string) {
-    const visit = await this.prismaService.visit.findFirst({
+  async isUniqueVisit(key: string, hashedIp: string): Promise<boolean> {
+    const count = await this.prismaService.visit.count({
       where: {
         ip: hashedIp,
-        link: {
-          key: key,
-        },
+        link: { key },
       },
     });
 
-    return visit === null;
+    return count === 0;
   }
 }

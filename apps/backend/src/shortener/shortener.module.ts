@@ -8,7 +8,7 @@ import { SafeUrlModule } from '@reduced.to/safe-url';
 @Module({
   imports: [PrismaModule, QueueManagerModule, SafeUrlModule.forRootAsync()],
   controllers: [ShortenerController],
-  providers: [ShortenerService, ShortenerProducer, QueueManagerService],
+  providers: [ShortenerService, QueueManagerService, ShortenerProducer],
   exports: [ShortenerService],
 })
 export class ShortenerModule {}

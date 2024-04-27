@@ -39,12 +39,11 @@ data:
   # NOVU - You don't need this when running locally (just verify your email from the database)
   NOVU_API_KEY: 'Get it from https://novu.co/'
 
-  # Memphis (Event streaming service)
-  MEMPHIS_ENABLE: 'false' # Set this to true if you want to use the event streaming service
-  MEMPHIS_HOST: 'Get it from https://memphis.dev/'
-  MEMPHIS_USERNAME: 'Get it from https://memphis.dev/'
-  MEMPHIS_PASSWORD: 'Get it from https://memphis.dev/'
-  MEMPHIS_ACCOUNT_ID: 'Get it from https://memphis.dev/'
+  # KAFKA (Used for analytics)
+  KAFKA_ENABLE: 'false'
+  KAFKA_BROKER: ''
+  KAFKA_USERNAME: ''
+  KAFKA_PASSWORD: ''
 
   # AUTH
   AUTH_JWT_ACCESS_SECRET: 'abc1234'
@@ -57,7 +56,7 @@ data:
   SAFE_URL_ENABLE: 'false'
 
   # TRACKER
-  TRACKER_STATS_QUEUE_NAME: 'stats'
+  TRACKER_STATS_TOPIC_NAME: 'stats'
 
   # STORAGE
   STORAGE_ENABLE: 'false'

@@ -1,4 +1,4 @@
-import { component$, useSignal, $, Signal, useVisibleTask$ } from '@builder.io/qwik';
+import { component$, useSignal, $, Signal } from '@builder.io/qwik';
 import { Form, globalAction$, zod$ } from '@builder.io/qwik-city';
 import { z } from 'zod';
 import { ACCESS_COOKIE_NAME } from '../../../../shared/auth.service';
@@ -7,6 +7,7 @@ import { tomorrow } from '../../../../lib/date-utils';
 import { SocialMediaPreview } from './social-media-preview/social-media-preview';
 import { UNKNOWN_FAVICON } from '../../../temporary-links/utils';
 import { useDebouncer } from '../../../../utils/debouncer';
+import { LuEye, LuEyeOff } from '@qwikest/icons/lucide';
 
 export const LINK_MODAL_ID = 'link-modal';
 
@@ -118,6 +119,7 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
   // Optional fields
   const isExpirationTimeOpen = useSignal(false);
   const isPasswordProtectionOpen = useSignal(false);
+  const showPassword = useSignal(false);
 
   const action = useCreateLink();
 
@@ -149,6 +151,10 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
     }
   );
 
+  const toggleShowPassword = $(() => {
+    showPassword.value = !showPassword.value;
+  });
+
   const clearValues = $(() => {
     inputValue.value = { ...initValues };
 
@@ -156,6 +162,7 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
     isPasswordProtectionOpen.value = false;
     faviconUrl.value = null;
     previewUrl.value = null;
+    showPassword.value = false;
 
     if (action.value?.fieldErrors) {
       Object.keys(action.value.fieldErrors).forEach((key) => {
@@ -250,21 +257,34 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                       <input
                         type="checkbox"
                         checked={isPasswordProtectionOpen.value}
-                        onChange$={() => toggleOption(isPasswordProtectionOpen, 'passwordProtection', 'passwordProtection', undefined)}
+                        onChange$={() => {
+                          toggleOption(isPasswordProtectionOpen, 'passwordProtection', 'passwordProtection', undefined);
+                          if (!isPasswordProtectionOpen.value) {
+                            showPassword.value = false;
+                          }
+                        }}
                         name="passwordProtectionToggle"
                         class="toggle toggle-primary"
                       />
                     </label>
                     {isPasswordProtectionOpen.value && (
-                      <input
-                        name="passwordProtection"
-                        type="password"
-                        class="input input-bordered w-full"
-                        value={inputValue.value.passwordProtection}
-                        onInput$={(ev: InputEvent) => {
-                          inputValue.value.passwordProtection = (ev.target as HTMLInputElement).value;
-                        }}
-                      />
+                      <label class="input input-bordered flex items-center gap-2">
+                        <input
+                          name="passwordProtection"
+                          placeholder="Very secured password..."
+                          type={showPassword.value ? 'text' : 'password'}
+                          class="grow dark:bg-slate-900"
+                          value={inputValue.value.passwordProtection}
+                          onInput$={(ev: InputEvent) => {
+                            inputValue.value.passwordProtection = (ev.target as HTMLInputElement).value;
+                          }}
+                        />
+                        {showPassword.value ? (
+                          <LuEye class="cursor-pointer text-gray-500 hover:text-gray-700" onClick$={toggleShowPassword} />
+                        ) : (
+                          <LuEyeOff class="cursor-pointer text-gray-500 hover:text-gray-700" onClick$={toggleShowPassword} />
+                        )}
+                      </label>
                     )}
                     {action.value?.fieldErrors?.passwordProtection && (
                       <label class="label">

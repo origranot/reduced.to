@@ -2,14 +2,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import { STORAGE_INJECTION_TOKEN } from './storage.module';
 import { PutObjectCommandInput, S3 } from '@aws-sdk/client-s3';
 import { AppConfigService } from '@reduced.to/config';
-import { AppLoggerSerivce } from '@reduced.to/logger';
+import { AppLoggerService } from '@reduced.to/logger';
 
 @Injectable()
 export class StorageService {
   constructor(
     @Inject(STORAGE_INJECTION_TOKEN) private readonly s3Client: S3,
     private readonly config: AppConfigService,
-    private readonly logger: AppLoggerSerivce
+    private readonly logger: AppLoggerService
   ) {}
 
   async uploadImageFromUrl(imageUrl: string, name: string) {

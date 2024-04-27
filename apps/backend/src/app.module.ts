@@ -14,6 +14,7 @@ import { LinksService } from './core/links/links.service';
 import { LinksModule } from './core/links/links.module';
 import { ReportsModule } from './core/reports/reports.module';
 import { MetadataModule } from './metadata/metadata.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { MetadataModule } from './metadata/metadata.module';
     LinksModule,
     ReportsModule,
     MetadataModule,
+    AnalyticsModule,
   ],
   providers: [
     PrismaService,

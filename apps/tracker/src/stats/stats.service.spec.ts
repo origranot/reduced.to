@@ -7,9 +7,11 @@ describe('StatsService', () => {
   let prismaService: PrismaService;
 
   const mockPrismaService = {
+    $transaction: jest.fn(),
     visit: {
       create: jest.fn(),
       findFirst: jest.fn(),
+      count: jest.fn(),
     },
   };
 
@@ -42,7 +44,7 @@ describe('StatsService', () => {
     });
 
     it('should throw an error for unexpected errors', async () => {
-      mockPrismaService.visit.create.mockRejectedValue(new Error('Unexpected error'));
+      mockPrismaService.$transaction.mockRejectedValue(new Error('Unexpected error'));
       await expect(
         service.addVisit('testKey', { hashedIp: 'testIp', ua: 'testAgent', geoLocation: { country: 'United States' } })
       ).rejects.toThrow('Unexpected error');
@@ -51,12 +53,12 @@ describe('StatsService', () => {
 
   describe('isUniqueVisit', () => {
     it('should return true for a unique visit', async () => {
-      mockPrismaService.visit.findFirst.mockResolvedValue(null);
+      mockPrismaService.visit.count.mockResolvedValue(0);
       await expect(service.isUniqueVisit('testKey', 'testIp')).resolves.toBeTruthy();
     });
 
     it('should return false for a non-unique visit', async () => {
-      mockPrismaService.visit.findFirst.mockResolvedValue({ id: 1 });
+      mockPrismaService.visit.count.mockResolvedValue(1);
       await expect(service.isUniqueVisit('testKey', 'testIp')).resolves.toBeFalsy();
     });
   });

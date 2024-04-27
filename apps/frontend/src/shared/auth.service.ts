@@ -65,6 +65,17 @@ export const setTokensAsCookies = (accessToken: string, refreshToken: string, co
   });
 };
 
+export const serverSideFetch = async (url: string, cookies: Cookie, options = {}) => {
+  const accessToken = cookies.get(ACCESS_COOKIE_NAME)?.value;
+
+  return authorizedFetch(url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    ...options,
+  });
+};
+
 export const authorizedFetch = async (url: string, options = {}) => {
   const response = await fetch(url, { credentials: 'include', ...options });
 
