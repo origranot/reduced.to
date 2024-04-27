@@ -20,7 +20,7 @@ export class AnalyticsService {
 
   async getClicksOverTime(linkId: string, durationDays = 30): Promise<any[]> {
     const fromDate = sub(new Date(), { days: durationDays });
-    const trunc = durationDays === 1 ? 'min' : 'day';
+    const trunc = durationDays === 1 ? 'hour' : 'day';
 
     return this.prismaService.$queryRaw`
       SELECT

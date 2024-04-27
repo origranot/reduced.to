@@ -5,6 +5,7 @@ import { AppLoggerService } from '@reduced.to/logger';
 import { StatsService } from './stats.service';
 import { createHash } from 'node:crypto';
 import { KafkaMessage } from 'kafkajs';
+import { isbot } from 'isbot';
 import geoip from 'geoip-lite';
 
 @Injectable()
@@ -27,6 +28,11 @@ export class StatsConsumer extends ConsumerService {
     const isUniqueVisit = await this.statsService.isUniqueVisit(key, hashedIp);
 
     if (!isUniqueVisit) {
+      return;
+    }
+
+    if (isbot(userAgent)) {
+      this.loggerService.debug(`Bot detected for ${key} and user agent: ${userAgent}, skipping...`);
       return;
     }
 

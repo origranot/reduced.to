@@ -93,6 +93,7 @@
     "clsx": "^2.1.0",
     "cookie-parser": "^1.4.6",
     "geoip-lite": "^1.4.10",
+    "isbot": "^5.1.5",
     "jwt-decode": "^3.1.2",
     "kafkajs": "^2.2.4",
     "node-html-parser": "^6.1.13",

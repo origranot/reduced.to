@@ -146,7 +146,7 @@ export default component$(() => {
         />
         <div class="ml-auto pl-4">
           <button class="btn btn-primary" onClick$={() => (document.getElementById(LINK_MODAL_ID) as any).showModal()}>
-            Create
+            Create a new link
           </button>
         </div>
       </div>

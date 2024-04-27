@@ -93,14 +93,19 @@ export const ClicksChart = component$((props: ClicksChartProps) => {
 });
 
 const updateChartDescription = (chartDescription: Signal<string>, daysDuration: number) => {
-  if (daysDuration === 1) {
-    chartDescription.value = '24 hours';
-  } else if (daysDuration === 7) {
-    chartDescription.value = '7 days';
-  } else if (daysDuration === 30) {
-    chartDescription.value = '30 days';
-  } else if (daysDuration === 365) {
-    chartDescription.value = 'year';
+  switch (daysDuration) {
+    case 1:
+      chartDescription.value = '24 hours';
+      break;
+    case 30:
+      chartDescription.value = '30 days';
+      break;
+    case 365:
+      chartDescription.value = 'year';
+      break;
+    default:
+      chartDescription.value = '7 days';
+      break;
   }
 };
 
