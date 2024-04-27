@@ -19,7 +19,7 @@ export default component$(() => {
   );
 });
 export const head: DocumentHead = {
-  title: 'Simplify Your Links with Reduced.to - Free & Open-Source URL Shortener',
+  title: 'Reduced.to - Free & Open-Source URL Shortener',
   meta: [
     {
       name: 'title',
@@ -49,7 +49,7 @@ export const head: DocumentHead = {
     },
     {
       property: 'og:image',
-      content: 'images/thumbnail.png',
+      content: 'https://reduced.to/images/thumbnail.png',
     },
     {
       property: 'twitter:card',
@@ -70,7 +70,7 @@ export const head: DocumentHead = {
     },
     {
       property: 'twitter:image',
-      content: 'images/thumbnail.png',
+      content: 'https://reduced.to/images/thumbnail.png',
     },
   ],
 };
