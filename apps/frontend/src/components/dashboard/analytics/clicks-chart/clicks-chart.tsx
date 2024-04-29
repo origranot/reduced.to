@@ -55,7 +55,21 @@ export const ClicksChart = component$((props: ClicksChartProps) => {
         },
         tooltip: { x: { format: 'dd MMM yyyy HH:mm' } },
         dataLabels: { enabled: false },
-        grid: { show: false },
+        grid: {
+          show: true,
+          borderColor: isDarkMode() ? '#374151' : '#bfc4cf',
+          strokeDashArray: 5,
+          xaxis: {
+            lines: {
+              show: false,
+            },
+          },
+          yaxis: {
+            lines: {
+              show: true,
+            },
+          },
+        },
         theme: { mode: isDarkMode() ? 'dark' : 'light', palette: 'palette1' },
       };
 
@@ -63,7 +77,12 @@ export const ClicksChart = component$((props: ClicksChartProps) => {
       chartInstance.value!.render();
       window.addEventListener('theme-toggled', (ev) => {
         const theme = (ev as CustomEvent).detail.theme;
-        chartInstance.value!.updateOptions({ theme: { mode: theme, palette: 'palette1' } });
+        chartInstance.value!.updateOptions({
+          theme: { mode: theme, palette: 'palette1' },
+          grid: {
+            borderColor: isDarkMode() ? '#374151' : '#bfc4cf',
+          },
+        });
       });
       isInitialized.value = true;
     } else {
