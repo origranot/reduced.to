@@ -214,7 +214,7 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
     isPasswordProtectionOpen.value = false;
     isUtmBuilderOpen.value = false;
     faviconUrl.value = null;
-    previewUrl.value = null
+    previewUrl.value = null;
     showPassword.value = false;
 
     if (action.value?.fieldErrors) {
