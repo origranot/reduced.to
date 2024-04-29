@@ -1,4 +1,4 @@
-import { IsBoolean, IsOptional, IsPositive, IsString, IsUrl } from 'class-validator';
+import { IsBoolean, IsOptional, IsPositive, IsString, IsUrl, MaxLength } from 'class-validator';
 
 export class ShortenerDto {
   @IsUrl(
@@ -20,6 +20,37 @@ export class ShortenerDto {
   @IsOptional()
   @IsString()
   password?: string;
+
+  // UTM parameters
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  utm_ref?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  utm_source?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  utm_medium?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  utm_campaign?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  utm_term?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  utm_content?: string;
 
   @IsBoolean()
   @IsOptional()
