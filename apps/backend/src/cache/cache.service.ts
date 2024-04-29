@@ -1,13 +1,12 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { Cache } from 'cache-manager';
 
 export interface LinkValue {
   url: string;
   key: string;
   password?: string;
-  utm?: Record<string, string> | Prisma.JsonValue;
+  utm?: Record<string, string>;
 }
 
 @Injectable()
