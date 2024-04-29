@@ -217,6 +217,9 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
     previewUrl.value = null;
     showPassword.value = false;
 
+    // Reset the form input just in case
+    document.getElementById(LINK_MODAL_ID)?.querySelector('form')?.reset();
+
     if (action.value?.fieldErrors) {
       Object.keys(action.value.fieldErrors).forEach((key) => {
         action.value!.fieldErrors![key as keyof FieldErrors] = [];
@@ -263,11 +266,11 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                     debounceUrlInput(inputValue.value.url);
                   }}
                 />
-                {action.value?.fieldErrors?.url && (
+                {action.value?.fieldErrors?.url?.length ? (
                   <label class="label">
                     <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.url[0]}</span>
                   </label>
-                )}
+                ) : null}
                 {action.value?.failed && action.value.message && (
                   <label class="label">
                     <span class={`label-text text-xs text-error text-left`}>{action.value.message}</span>
@@ -298,11 +301,11 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                         }}
                       />
                     )}
-                    {action.value?.fieldErrors?.expirationTime && (
+                    {action.value?.fieldErrors?.expirationTime?.length ? (
                       <label class="label">
                         <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.expirationTime[0]}</span>
                       </label>
-                    )}
+                    ) : null}
                   </div>
                   <div class="form-control">
                     <label class="cursor-pointer label">
@@ -339,11 +342,11 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                         )}
                       </label>
                     )}
-                    {action.value?.fieldErrors?.passwordProtection && (
+                    {action.value?.fieldErrors?.passwordProtection?.length ? (
                       <label class="label">
                         <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.passwordProtection[0]}</span>
                       </label>
-                    )}
+                    ) : null}
                   </div>
                   {/** Add here UTM builder  */}
                   <div class="form-control">
@@ -380,11 +383,11 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                               name="utm_ref"
                               class="input input-bordered w-full"
                             />
-                            {action.value?.fieldErrors?.utm_ref && (
+                            {action.value?.fieldErrors?.utm_ref?.length ? (
                               <label class="label">
                                 <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.utm_ref[0]}</span>
                               </label>
-                            )}
+                            ) : null}
                           </label>
                           <label class="form-control w-full">
                             <div class="label">
@@ -400,11 +403,11 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                               name="utm_source"
                               class="input input-bordered w-full"
                             />
-                            {action.value?.fieldErrors?.utm_source && (
+                            {action.value?.fieldErrors?.utm_source?.length ? (
                               <label class="label">
                                 <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.utm_source[0]}</span>
                               </label>
-                            )}
+                            ) : null}
                           </label>
                         </div>
                         <div class="sm:flex block gap-4">
@@ -422,11 +425,11 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                               name="utm_medium"
                               class="input input-bordered w-full"
                             />
-                            {action.value?.fieldErrors?.utm_medium && (
+                            {action.value?.fieldErrors?.utm_medium?.length ? (
                               <label class="label">
                                 <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.utm_medium[0]}</span>
                               </label>
-                            )}
+                            ) : null}
                           </label>
                           <label class="form-control w-full">
                             <div class="label">
@@ -442,11 +445,11 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                               name="utm_campaign"
                               class="input input-bordered w-full"
                             />
-                            {action.value?.fieldErrors?.utm_campaign && (
+                            {action.value?.fieldErrors?.utm_campaign?.length ? (
                               <label class="label">
                                 <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.utm_campaign[0]}</span>
                               </label>
-                            )}
+                            ) : null}
                           </label>
                         </div>
                         <div class="sm:flex block gap-4">
@@ -464,11 +467,11 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                               name="utm_term"
                               class="input input-bordered w-full"
                             />
-                            {action.value?.fieldErrors?.utm_term && (
+                            {action.value?.fieldErrors?.utm_term?.length ? (
                               <label class="label">
                                 <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.utm_term[0]}</span>
                               </label>
-                            )}
+                            ) : null}
                           </label>
                           <label class="form-control w-full">
                             <div class="label">
@@ -484,11 +487,11 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                               name="utm_content"
                               class="input input-bordered w-full"
                             />
-                            {action.value?.fieldErrors?.utm_content && (
+                            {action.value?.fieldErrors?.utm_content?.length ? (
                               <label class="label">
                                 <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.utm_content[0]}</span>
                               </label>
-                            )}
+                            ) : null}
                           </label>
                         </div>
                       </div>
@@ -498,7 +501,9 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
               </div>
               <button
                 type="submit"
-                class="btn btn-primary md:w-full w-1/2 no-animation md:rounded-none m-auto mb-5 md:mb-0 sm:sticky bottom-0 left-0 sm:mt-0 mt-5"
+                class={`btn btn-primary md:w-full w-1/2 no-animation md:rounded-none m-auto mb-5 md:mb-0 sm:sticky bottom-0 left-0 sm:mt-0 mt-5 ${
+                  inputValue.value.url.length === 0 ? 'cursor-not-allowed btn-disabled' : ''
+                }`}
               >
                 {action.isRunning ? <span class="loading loading-spinner-small"></span> : 'Create'}
               </button>
