@@ -16,6 +16,10 @@ export const createUtmObject = (utmFields: Record<string, string>) => {
 };
 
 export const addUtmParams = (url: string, utm: Record<string, string> | Prisma.JsonValue) => {
+  if (!utm || Object.keys(utm).length === 0) {
+    return url;
+  }
+
   const urlObj = new URL(url);
 
   Object.entries(utm).forEach(([key, value]) => {
