@@ -10,7 +10,7 @@ export const createUtmObject = (utmFields: Record<string, string>) => {
       acc[key] = value;
     }
     return acc;
-  }, {});
+  }, {} as Record<string, string>);
 
   return utm;
 };
