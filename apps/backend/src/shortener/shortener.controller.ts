@@ -10,6 +10,7 @@ import { ClientDetails, IClientDetails } from '../shared/decorators/client-detai
 import { SafeUrlService } from '@reduced.to/safe-url';
 import { AppConfigService } from '@reduced.to/config';
 import { Link } from '@prisma/client';
+import { addUtmParams } from '../shared/utils/utm/utm';
 
 interface LinkResponse extends Partial<Link> {
   url: string;
@@ -56,7 +57,7 @@ export class ShortenerController {
     }
 
     return {
-      url: data.url,
+      url: addUtmParams(data.url, data.utm),
       key: data.key,
     };
   }

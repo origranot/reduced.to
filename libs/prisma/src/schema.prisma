@@ -53,6 +53,7 @@ model Link {
   Report         Report[]
   clicks         Int       @default(0)
   visit          Visit[]
+  utm            Json?
 
   @@index(userId)
   @@index(key)

@@ -6,6 +6,7 @@ import { ShortenerDto } from './dto';
 import { UserContext } from '../auth/interfaces/user-context';
 import { Link } from '@reduced.to/prisma';
 import * as argon2 from 'argon2';
+import { createUtmObject } from '../shared/utils/utm/utm';
 
 @Injectable()
 export class ShortenerService {
@@ -72,7 +73,7 @@ export class ShortenerService {
     await this.appCacheService.set(key, value, minTtl || this.appConfigService.getConfig().redis.ttl);
   };
 
-  createShortenedUrl = async (dto: ShortenerDto): Promise<{ key: string }> => {
+  createShortenedUrl = async (dto: ShortenerDto, utm?: Record<string, string>): Promise<{ key: string }> => {
     const { url, expirationTime, password } = dto;
 
     let parsedUrl: URL;
@@ -95,7 +96,7 @@ export class ShortenerService {
 
     const ttl = expirationTime ? expirationTime - new Date().getTime() : undefined;
 
-    await this.addLinkToCache(key, { url: parsedUrl.href, key, password }, ttl);
+    await this.addLinkToCache(key, { url: parsedUrl.href, key, password, utm }, ttl);
     return { key };
   };
 
@@ -114,7 +115,7 @@ export class ShortenerService {
    * @param {string} key The key of the shortened URL.
    * @returns {Promise<any>} Returns the created db URL.
    */
-  createDbUrl = async (user: UserContext, shortenerDto: ShortenerDto, key: string): Promise<Link> => {
+  createDbUrl = async (user: UserContext, shortenerDto: ShortenerDto, key: string, utm?: Record<string, string>): Promise<Link> => {
     const { url, description, expirationTime, password } = shortenerDto;
 
     const data = {
@@ -123,6 +124,7 @@ export class ShortenerService {
       url,
       description,
       ...(expirationTime && { expirationTime: new Date(expirationTime) }),
+      utm,
     };
 
     if (password && shortenerDto.temporary) {
@@ -158,7 +160,7 @@ export class ShortenerService {
     }
 
     // Add the URL back to the cache to prevent future database calls.
-    this.addLinkToCache(key, { url: link.url, key, password: link.password }, expirationTime);
+    this.addLinkToCache(key, { url: link.url, key, password: link.password, utm: link.utm }, expirationTime);
 
     return link;
   };
@@ -170,8 +172,17 @@ export class ShortenerService {
    * @returns {Promise<{ key: string }>} - Returns an object containing the newly created short URL.
    */
   createUsersShortenedUrl = async (user: UserContext, shortenerDto: ShortenerDto): Promise<{ key: string }> => {
-    const { key } = await this.createShortenedUrl(shortenerDto);
-    await this.createDbUrl(user, shortenerDto, key);
+    const utm = createUtmObject({
+      ref: shortenerDto.utm_ref,
+      utm_source: shortenerDto.utm_source,
+      utm_medium: shortenerDto.utm_medium,
+      utm_campaign: shortenerDto.utm_campaign,
+      utm_term: shortenerDto.utm_term,
+      utm_content: shortenerDto.utm_content,
+    });
+
+    const { key } = await this.createShortenedUrl(shortenerDto, utm);
+    await this.createDbUrl(user, shortenerDto, key, utm);
 
     return { key };
   };
