@@ -6,7 +6,7 @@ import { ShortenerDto } from './dto';
 import { UserContext } from '../auth/interfaces/user-context';
 import { Link } from '@reduced.to/prisma';
 import * as argon2 from 'argon2';
-import { createUtmObject } from '../shared/utils/utm/utm';
+import { createUtmObject } from '@reduced.to/utils';
 
 @Injectable()
 export class ShortenerService {

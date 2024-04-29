@@ -10,7 +10,7 @@ import { ClientDetails, IClientDetails } from '../shared/decorators/client-detai
 import { SafeUrlService } from '@reduced.to/safe-url';
 import { AppConfigService } from '@reduced.to/config';
 import { Link } from '@prisma/client';
-import { addUtmParams } from '../shared/utils/utm/utm';
+import { addUtmParams } from '@reduced.to/utils';
 
 interface LinkResponse extends Partial<Link> {
   url: string;
