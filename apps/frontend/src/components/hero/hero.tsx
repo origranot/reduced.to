@@ -9,16 +9,16 @@ export const Hero = component$(() => {
   return (
     <div class="relative before:absolute before:top-0 before:start-1/2 before:bg-[url('assets/svg/hero/polygon-bg-element-light.svg')] before:bg-no-repeat before:bg-top before:bg-cover before:w-full before:h-full before:-z-[1] before:transform before:-translate-x-1/2 dark:before:bg-[url('assets/svg/hero/polygon-bg-element-dark.svg')]">
       <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10">
-        {/* <!-- Announcement Banner --> */}
+        {/* <!-- Announcement Github Banner --> */}
         <div class="flex justify-center">
           <a
-            class="inline-flex items-center gap-x-2 bg-white border border-gray-200 text-sm text-gray-800 p-1 ps-3 rounded-full hover:border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:hover:border-gray-600 dark:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+            class="inline-flex items-center gap-x-2 bg-white border border-gray-200 text-xs text-gray-600 p-2 px-3 rounded-full hover:border-gray-300 dark:bg-slate-800 dark:border-neutral-700 dark:hover:border-neutral-600 dark:text-neutral-400"
             href="https://github.com/origranot/reduced.to"
             target="_blank"
           >
-            Star us on GitHub!
-            <span class="py-1.5 px-2.5 inline-flex justify-center items-center gap-x-2 rounded-full bg-gray-200 font-semibold text-sm text-gray-600 dark:bg-gray-700 dark:text-gray-400">
-              🌟
+            Don't forget to star us on GitHub!
+            <span class="flex items-center gap-x-1">
+              <span class="border-s border-gray-200 text-blue-600 ps-2 dark:text-blue-500 dark:border-neutral-700">🌟</span>
             </span>
           </a>
         </div>
@@ -71,6 +71,7 @@ export const Hero = component$(() => {
           <a
             class="inline-flex items-center gap-x-1.5 text-sm text-blue-600 decoration-2 hover:underline font-medium"
             href="https://docs.reduced.to"
+            rel="canonical"
             target="_blank"
           >
             Official Documentation

@@ -17,7 +17,9 @@ export class LinksService extends EntityService<Link> {
       id: true,
       url: true,
       key: true,
+      clicks: true,
       description: true,
+      utm: true,
       expirationTime: true,
       createdAt: true,
     };

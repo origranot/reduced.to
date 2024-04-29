@@ -10,6 +10,7 @@ import { NoData } from '../../components/dashboard/empty-data/no-data';
 import { DELETE_MODAL_ID, DeleteModal } from '../../components/dashboard/delete-modal/delete-modal';
 import { useDeleteLink } from '../../components/dashboard/delete-modal/action';
 import { QR_CODE_DIALOG_ID, QrCodeDialog } from '../../components/temporary-links/qr-code-dialog/qr-code-dialog';
+import { addUtmParams } from '@reduced.to/utils';
 
 export default component$(() => {
   const toaster = useToaster();
@@ -26,7 +27,12 @@ export default component$(() => {
   const isLoadingData = useSignal(true);
 
   const linksContainerRef = useSignal<HTMLElement>();
-  const linksMap = useSignal(new Map<string, { id: string; key: string; url: string; createdAt: string; expirationTime?: string }>());
+  const linksMap = useSignal(
+    new Map<
+      string,
+      { id: string; key: string; url: string; createdAt: string; clicks: number; expirationTime?: string; utm?: Record<string, string> }
+    >()
+  );
   const linksArray = Array.from(linksMap.value.values());
 
   // Delete modal
@@ -144,7 +150,7 @@ export default component$(() => {
         />
         <div class="ml-auto pl-4">
           <button class="btn btn-primary" onClick$={() => (document.getElementById(LINK_MODAL_ID) as any).showModal()}>
-            Create
+            Create a new link
           </button>
         </div>
       </div>
@@ -156,12 +162,18 @@ export default component$(() => {
         ) : linksArray.length ? (
           <>
             {linksArray.map((link) => {
+              let url = link.url;
+
+              if (link.utm) {
+                url = addUtmParams(url, link.utm);
+              }
               return (
                 <LinkBlock
                   id={link.id}
                   key={link.key}
                   urlKey={link.key}
-                  url={link.url}
+                  url={url}
+                  clicks={link.clicks}
                   expirationTime={link.expirationTime}
                   createdAt={link.createdAt}
                   onShowQR={$(() => {

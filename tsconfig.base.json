@@ -19,7 +19,8 @@
       "@reduced.to/logger": ["libs/logger/src/index.ts"],
       "@reduced.to/prisma": ["libs/prisma/src/index.ts"],
       "@reduced.to/queue-manager": ["libs/queue-manager/src/index.ts"],
-      "@reduced.to/safe-url": ["libs/safe-url/src/index.ts"]
+      "@reduced.to/safe-url": ["libs/safe-url/src/index.ts"],
+      "@reduced.to/utils": ["libs/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

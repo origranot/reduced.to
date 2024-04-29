@@ -6,6 +6,7 @@ export interface LinkValue {
   url: string;
   key: string;
   password?: string;
+  utm?: Record<string, string>;
 }
 
 @Injectable()

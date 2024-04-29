@@ -27,15 +27,27 @@ export const SocialMediaPreview = component$(({ url }: SocialMediaPreviewProps) 
 
   const loading = useSignal<boolean>(false);
   const prevUrl = useSignal<string | null>(null);
+  const debounceTimeout = useSignal<NodeJS.Timeout | null>(null);
 
   useVisibleTask$(({ track }) => {
     const currentUrl = track(() => url.value);
-    if (prevUrl === null || currentUrl !== prevUrl.value) {
-      const debounceTimeout = setTimeout(async () => {
+    if (currentUrl && currentUrl !== prevUrl.value) {
+      if (debounceTimeout.value) {
+        clearTimeout(debounceTimeout.value);
+      }
+
+      debounceTimeout.value = setTimeout(async () => {
         try {
-          prevUrl.value = currentUrl || '';
+          prevUrl.value = currentUrl;
           loading.value = true;
-          const normalizedUrl = normalizeUrl(currentUrl || '');
+          state.value = {
+            title: null,
+            description: null,
+            image: null,
+            url: null,
+            hostname: null,
+          };
+          const normalizedUrl = normalizeUrl(currentUrl);
           const data = await authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/metadata?url=${normalizedUrl}`);
           const metadata = await data.json();
           state.value = metadata;
@@ -44,11 +56,7 @@ export const SocialMediaPreview = component$(({ url }: SocialMediaPreviewProps) 
         } finally {
           loading.value = false;
         }
-      }, 500); // 500ms debounce time
-
-      return () => {
-        clearTimeout(debounceTimeout);
-      };
+      }, 500); // Reducing debounce time to 500ms
     }
   });
 

@@ -4,12 +4,13 @@ import { ShortenerDto } from './dto';
 import { ShortenerService } from './shortener.service';
 import { UserContext } from '../auth/interfaces/user-context';
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
-import { AppLoggerSerivce } from '@reduced.to/logger';
+import { AppLoggerService } from '@reduced.to/logger';
 import { ShortenerProducer } from './producer/shortener.producer';
 import { ClientDetails, IClientDetails } from '../shared/decorators/client-details/client-details.decorator';
 import { SafeUrlService } from '@reduced.to/safe-url';
 import { AppConfigService } from '@reduced.to/config';
 import { Link } from '@prisma/client';
+import { addUtmParams } from '@reduced.to/utils';
 
 interface LinkResponse extends Partial<Link> {
   url: string;
@@ -23,7 +24,7 @@ interface LinkResponse extends Partial<Link> {
 export class ShortenerController {
   constructor(
     private readonly configService: AppConfigService,
-    private readonly logger: AppLoggerSerivce,
+    private readonly logger: AppLoggerService,
     private readonly shortenerService: ShortenerService,
     private readonly shortenerProducer: ShortenerProducer,
     private readonly safeUrlService: SafeUrlService
@@ -56,7 +57,7 @@ export class ShortenerController {
     }
 
     return {
-      url: data.url,
+      url: addUtmParams(data.url, data.utm),
       key: data.key,
     };
   }

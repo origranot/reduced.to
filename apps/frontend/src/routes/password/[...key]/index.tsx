@@ -1,4 +1,4 @@
-import { Form, routeAction$, routeLoader$, z, zod$ } from '@builder.io/qwik-city';
+import { Form, routeAction$, z, zod$ } from '@builder.io/qwik-city';
 import { component$ } from '@builder.io/qwik';
 import { DocumentHead } from '@builder.io/qwik-city';
 import { ClientConn, RequestHandler } from '@builder.io/qwik-city/middleware/request-handler';
@@ -60,19 +60,33 @@ export default component$(() => {
   return (
     <div class="flex flex-col h-[calc(100vh-64px)]">
       <div class="flex flex-1 content-center justify-center items-center">
-        <div class="w-full max-w-md mx-auto p-6">
+        <div class="w-full max-w-lg mx-auto p-6">
           <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
-            <div class="p-4 sm:p-7">
+            <div class="bg-gray-100 border-b rounded-t-xl py-3 px-4 md:py-4 md:px-5 dark:bg-gray-900 dark:border-gray-700 flex justify-center items-center">
+              <img src="/favicon.png" alt="Reduced.to logo" class="w-10 h-10" />
+              <p class="ml-4 text-xl font-semibold text-gray-800 dark:text-white">Reduced.to</p>
+            </div>
+            <div class="p-4 sm:p-5">
               <div class="text-center">
                 <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Password Required</h1>
+                <p class="mt-4 text-gray-600 dark:text-gray-400">
+                  This short link is password protected, please enter the password to view and redirect to the original URL.
+                </p>
               </div>
               <div class="mt-6">
                 <Form action={action}>
                   <div class="grid gap-y-4">
                     <div>
-                      <input type="password" id="password" name="password" class="py-3 px-4 w-full input input-bordered" required />
+                      <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="py-3 px-4 w-full input input-bordered"
+                        placeholder="Enter password"
+                        required
+                      />
                     </div>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary w-full">
                       {action.isRunning ? <span class="loading loading-spinner-small"></span> : 'Submit'}
                     </button>
                     {(action.value?.failed || action.value?.fieldErrors?.password) && (
