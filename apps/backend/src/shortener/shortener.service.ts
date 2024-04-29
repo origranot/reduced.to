@@ -160,9 +160,9 @@ export class ShortenerService {
     }
 
     // Add the URL back to the cache to prevent future database calls.
-    this.addLinkToCache(key, { url: link.url, key, password: link.password, utm: link.utm }, expirationTime);
+    this.addLinkToCache(key, { url: link.url, key, password: link.password, utm: link.utm as Record<string, string> }, expirationTime);
 
-    return link;
+    return link as LinkValue;
   };
 
   /**

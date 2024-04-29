@@ -1,5 +1,3 @@
-import { Prisma } from '@prisma/client';
-
 export const createUtmObject = (utmFields: Record<string, string>) => {
   if (!utmFields || Object.keys(utmFields).length === 0) {
     return undefined;
@@ -15,7 +13,7 @@ export const createUtmObject = (utmFields: Record<string, string>) => {
   return utm;
 };
 
-export const addUtmParams = (url: string, utm: Record<string, string> | Prisma.JsonValue) => {
+export const addUtmParams = (url: string, utm: Record<string, string>) => {
   if (!utm || Object.keys(utm).length === 0) {
     return url;
   }
