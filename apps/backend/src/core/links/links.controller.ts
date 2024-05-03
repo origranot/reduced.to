@@ -8,6 +8,7 @@ import { Role, Link } from '@reduced.to/prisma';
 import { Roles, UserCtx } from '../../shared/decorators';
 import { Request } from 'express';
 import { UserContext } from '../../auth/interfaces/user-context';
+import { AppCacheService } from '../../cache/cache.service';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller({
@@ -15,7 +16,7 @@ import { UserContext } from '../../auth/interfaces/user-context';
   version: '1',
 })
 export class LinksController {
-  constructor(private readonly linksService: LinksService) {}
+  constructor(private readonly linksService: LinksService, private readonly cacheService: AppCacheService) {}
 
   @Get()
   @Roles(Role.ADMIN, Role.USER)
@@ -28,7 +29,7 @@ export class LinksController {
       limit,
       filter,
       sort,
-      // Allways add extraWhereClause to the query, so that the user can only see his own links
+      // Always add extraWhereClause to the query, so that the user can only see his own links
       extraWhereClause: {
         userId: user?.id,
       },
@@ -47,6 +48,8 @@ export class LinksController {
     if (!link) {
       throw new UnauthorizedException();
     }
+
+    await this.cacheService.del(link.key);
 
     return this.linksService.delete(id);
   }
