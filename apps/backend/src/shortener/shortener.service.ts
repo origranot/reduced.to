@@ -123,6 +123,7 @@ export class ShortenerService {
       key,
       url,
       description,
+      password,
       ...(expirationTime && { expirationTime: new Date(expirationTime) }),
       utm,
     };
