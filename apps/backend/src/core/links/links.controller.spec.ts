@@ -10,6 +10,7 @@ import { SortOrder } from '../../shared/enums/sort-order.enum';
 import { LinksService } from './links.service';
 import { LinksController } from './links.controller';
 import { IFindAllOptions } from '../entity.service';
+import { AppCacheService } from '../../cache/cache.service';
 
 describe('LinksController', () => {
   let app: INestApplication;
@@ -41,6 +42,12 @@ describe('LinksController', () => {
             findAll: jest.fn().mockResolvedValue(MOCK_FIND_ALL_RESULT),
             findBy: jest.fn().mockResolvedValue(MOCKED_LINKS[0]),
             delete: jest.fn().mockResolvedValue(MOCKED_LINKS[0]),
+          },
+        },
+        {
+          provide: AppCacheService,
+          useValue: {
+            del: jest.fn(),
           },
         },
       ],
