@@ -49,8 +49,11 @@ export class LinksController {
       throw new UnauthorizedException();
     }
 
-    await this.cacheService.del(link.key);
+    await Promise.all([
+        this.cacheService.del(link.key),
+        this.linksService.delete(id)
+    ]);
 
-    return this.linksService.delete(id);
+    return link;
   }
 }
