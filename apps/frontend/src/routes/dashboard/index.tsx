@@ -1,4 +1,4 @@
-import { component$, useSignal, useVisibleTask$, $ } from '@builder.io/qwik';
+import { component$, useSignal, useVisibleTask$, $, useStore } from '@builder.io/qwik';
 import { DocumentHead } from '@builder.io/qwik-city';
 import { LinkBlock } from '../../components/dashboard/links/link/link';
 import { LINK_MODAL_ID, LinkModal } from '../../components/dashboard/links/link-modal/link-modal';
@@ -11,6 +11,7 @@ import { DELETE_MODAL_ID, DeleteModal } from '../../components/dashboard/delete-
 import { useDeleteLink } from '../../components/dashboard/delete-modal/action';
 import { QR_CODE_DIALOG_ID, QrCodeDialog } from '../../components/temporary-links/qr-code-dialog/qr-code-dialog';
 import { addUtmParams } from '@reduced.to/utils';
+import { ISortBy, LinkAttribute, SortBy } from '../../components/dashboard/table/sort-by';
 
 export default component$(() => {
   const toaster = useToaster();
@@ -23,6 +24,12 @@ export default component$(() => {
   const filter = useSignal('');
   const refetch = useSignal(0);
   const qrLink = useSignal<string | null>(null);
+
+  // Client sorting
+  const clientSortBy = useStore<ISortBy>({
+    attribute: LinkAttribute.CreatedAt,
+    order: SortOrder.DESC,
+  });
 
   const isLoadingData = useSignal(true);
 
@@ -148,6 +155,19 @@ export default component$(() => {
             page.value = 1; // Reset page number when filter changes
           })}
         />
+        <SortBy
+          sortBy={clientSortBy}
+          onChangeAttribute={$((e: Event) => {
+            clientSortBy.attribute = (e.target as HTMLSelectElement).value as LinkAttribute;
+          })}
+          toggleOrder={$(() => {
+            if (clientSortBy.order === SortOrder.ASC) {
+              clientSortBy.order = SortOrder.DESC;
+            } else {
+              clientSortBy.order = SortOrder.ASC;
+            }
+          })}
+        />
         <div class="ml-auto pl-4">
           <button class="btn btn-primary" onClick$={() => (document.getElementById(LINK_MODAL_ID) as any).showModal()}>
             Create a new link
@@ -161,32 +181,55 @@ export default component$(() => {
           </div>
         ) : linksArray.length ? (
           <>
-            {linksArray.map((link) => {
-              let url = link.url;
+            {linksArray
+              .sort((linkA, linkB) => {
+                let res = 0;
 
-              if (link.utm) {
-                url = addUtmParams(url, link.utm);
-              }
-              return (
-                <LinkBlock
-                  id={link.id}
-                  key={link.key}
-                  urlKey={link.key}
-                  url={url}
-                  clicks={link.clicks}
-                  expirationTime={link.expirationTime}
-                  createdAt={link.createdAt}
-                  onShowQR={$(() => {
-                    qrLink.value = link.key;
-                    (document.getElementById(QR_CODE_DIALOG_ID) as any).showModal();
-                  })}
-                  onDelete={$((id: string) => {
-                    idToDelete.value = id;
-                    (document.getElementById('delete-modal') as any).showModal();
-                  })}
-                />
-              );
-            })}
+                switch (clientSortBy.attribute) {
+                  case LinkAttribute.URL:
+                    res = linkA.url.localeCompare(linkB.url);
+                    break;
+                  case LinkAttribute.Clicks:
+                    res = linkA.clicks - linkB.clicks;
+                    break;
+                  case LinkAttribute.CreatedAt:
+                    res = new Date(linkA.createdAt).getTime() - new Date(linkB.createdAt).getTime();
+                    break;
+                  case LinkAttribute.ExpirationTime:
+                    res = new Date(linkA.expirationTime ?? Date.now()).getTime() - new Date(linkB.expirationTime ?? Date.now()).getTime();
+                    break;
+                  default:
+                    break;
+                }
+
+                return clientSortBy.order === SortOrder.ASC ? -res : res;
+              })
+              .map((link) => {
+                let url = link.url;
+
+                if (link.utm) {
+                  url = addUtmParams(url, link.utm);
+                }
+                return (
+                  <LinkBlock
+                    id={link.id}
+                    key={link.key}
+                    urlKey={link.key}
+                    url={url}
+                    clicks={link.clicks}
+                    expirationTime={link.expirationTime}
+                    createdAt={link.createdAt}
+                    onShowQR={$(() => {
+                      qrLink.value = link.key;
+                      (document.getElementById(QR_CODE_DIALOG_ID) as any).showModal();
+                    })}
+                    onDelete={$((id: string) => {
+                      idToDelete.value = id;
+                      (document.getElementById('delete-modal') as any).showModal();
+                    })}
+                  />
+                );
+              })}
             {isLoadingData.value && (
               <div class="flex items-center justify-center h-40">
                 <span class="loading loading-spinner loading-md"></span>
