@@ -138,7 +138,7 @@ describe('ShortenerController', () => {
       const body: ShortenerDto = { url: 'https://github.com/origranot/reduced.to', key: 'taken' };
       const req = {} as Request;
 
-      await expect(shortenerController.shortener(body, req)).rejects.toThrow('This key is already in use');
+      await expect(shortenerController.shortener(body, req)).rejects.toThrow('This short link already exists');
     });
   });
 
