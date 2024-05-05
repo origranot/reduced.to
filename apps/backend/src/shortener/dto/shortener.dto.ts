@@ -1,4 +1,4 @@
-import { IsBoolean, IsOptional, IsPositive, IsString, IsUrl, MaxLength } from 'class-validator';
+import { IsBoolean, IsOptional, IsPositive, IsString, IsUrl, MaxLength, MinLength } from 'class-validator';
 
 export class ShortenerDto {
   @IsUrl(
@@ -8,6 +8,12 @@ export class ShortenerDto {
     }
   )
   url: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(20)
+  @MinLength(1)
+  key?: string;
 
   @IsString()
   @IsOptional()
