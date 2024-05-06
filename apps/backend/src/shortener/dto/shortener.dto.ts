@@ -12,7 +12,7 @@ export class ShortenerDto {
   @IsOptional()
   @IsString()
   @MaxLength(20)
-  @MinLength(1)
+  @MinLength(4)
   key?: string;
 
   @IsString()
