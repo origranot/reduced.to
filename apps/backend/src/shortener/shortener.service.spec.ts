@@ -250,6 +250,27 @@ describe('ShortenerService', () => {
         await service.createShortenedUrl(body);
       }).rejects.toThrow();
     });
+
+    it('should create a shortened url with a provided key', async () => {
+      jest.spyOn(service, 'isKeyAvailable').mockResolvedValue(true);
+      jest.spyOn(service, 'addLinkToCache').mockResolvedValue(undefined);
+      jest.spyOn(service, 'isUrlAlreadyShortened').mockReturnValue(false);
+
+      const body: ShortenerDto = { url: ORIGINAL_URL, key: 'best' };
+      const short = await service.createShortenedUrl(body);
+      expect(short).toStrictEqual({ key: 'best' });
+    });
+
+    it('should generate a key if no key is provided', async () => {
+      jest.spyOn(service, 'generateKey').mockReturnValue('best');
+      jest.spyOn(service, 'isKeyAvailable').mockResolvedValue(true);
+      jest.spyOn(service, 'addLinkToCache').mockResolvedValue(undefined);
+      jest.spyOn(service, 'isUrlAlreadyShortened').mockReturnValue(false);
+
+      const body: ShortenerDto = { url: ORIGINAL_URL };
+      const short = await service.createShortenedUrl(body);
+      expect(short).toStrictEqual({ key: 'best' });
+    });
   });
 
   describe('getLink', () => {
