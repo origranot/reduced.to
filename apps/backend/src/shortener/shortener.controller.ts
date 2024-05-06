@@ -11,6 +11,7 @@ import { SafeUrlService } from '@reduced.to/safe-url';
 import { AppConfigService } from '@reduced.to/config';
 import { Link } from '@prisma/client';
 import { addUtmParams } from '@reduced.to/utils';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 
 interface LinkResponse extends Partial<Link> {
   url: string;
@@ -29,6 +30,12 @@ export class ShortenerController {
     private readonly shortenerProducer: ShortenerProducer,
     private readonly safeUrlService: SafeUrlService
   ) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Get('random')
+  async random(): Promise<string> {
+    return this.shortenerService.createRandomShortenedUrl();
+  }
 
   @Get(':key')
   async findOne(
@@ -72,6 +79,13 @@ export class ShortenerController {
       const isSafeUrl = await this.safeUrlService.isSafeUrl(shortenerDto.url);
       if (!isSafeUrl) {
         throw new BadRequestException('This url is not safe to shorten!');
+      }
+    }
+
+    if (shortenerDto.key) {
+      const isKeyAvailable = await this.shortenerService.isKeyAvailable(shortenerDto.key);
+      if (!isKeyAvailable) {
+        throw new BadRequestException('This short link already exists');
       }
     }
 

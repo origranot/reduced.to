@@ -1,18 +1,20 @@
 import { component$, useSignal, $, Signal } from '@builder.io/qwik';
 import { Form, globalAction$, zod$ } from '@builder.io/qwik-city';
 import { z } from 'zod';
-import { ACCESS_COOKIE_NAME } from '../../../../shared/auth.service';
+import { ACCESS_COOKIE_NAME, authorizedFetch } from '../../../../shared/auth.service';
 import { normalizeUrl } from '../../../../utils';
 import { tomorrow } from '../../../../lib/date-utils';
 import { SocialMediaPreview } from './social-media-preview/social-media-preview';
 import { UNKNOWN_FAVICON } from '../../../temporary-links/utils';
 import { useDebouncer } from '../../../../utils/debouncer';
-import { LuEye, LuEyeOff } from '@qwikest/icons/lucide';
+import { LuEye, LuEyeOff, LuDices } from '@qwikest/icons/lucide';
+import { sleep } from '@reduced.to/utils';
 
 export const LINK_MODAL_ID = 'link-modal';
 
 interface CreateLinkInput {
   url: string;
+  key: string;
   expirationTime?: string | number;
   passwordProtection?: string;
 
@@ -37,6 +39,11 @@ const CreateLinkInputSchema = z
       .regex(/^(?:https?:\/\/)?(?:[\w-]+\.)+[a-z]{2,}(?::\d{1,5})?(?:\/\S*)?$/, {
         message: "The url you've entered is not valid",
       }),
+    key: z
+      .string()
+      .min(4, { message: 'The short link must be at least 4 characters long.' })
+      .max(20, { message: 'The short link cannot exceed 20 characters.' })
+      .regex(/^[a-zA-Z0-9]+$/, { message: 'The short link can only include letters and numbers.' }),
     expirationTime: z.string().optional(),
     expirationTimeToggle: z.string().optional(),
     passwordProtection: z
@@ -72,6 +79,7 @@ const useCreateLink = globalAction$(
   async (
     {
       url,
+      key,
       expirationTime,
       expirationTimeToggle,
       passwordProtection,
@@ -102,6 +110,7 @@ const useCreateLink = globalAction$(
 
     const body: CreateLinkInput = {
       url: normalizeUrl(url),
+      key,
       ...(expirationTime && { expirationTime: new Date(expirationTime).getTime() }),
       ...(passwordProtection && { password: passwordProtection }),
 
@@ -145,6 +154,7 @@ export interface LinkModalProps {
 
 const initValues = {
   url: '',
+  key: '',
   expirationTime: undefined,
   expirationTimeToggle: undefined,
   passwordProtection: undefined,
@@ -170,6 +180,8 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
   const showPassword = useSignal(false);
   const isUtmBuilderOpen = useSignal(false);
 
+  const isGeneratingRandomKey = useSignal(false);
+
   const action = useCreateLink();
 
   const debounceUrlInput = useDebouncer(
@@ -179,6 +191,19 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
     }),
     500
   );
+
+  const generateRandomKey = $(async () => {
+    if (isGeneratingRandomKey.value) {
+      return;
+    }
+
+    isGeneratingRandomKey.value = true;
+    const response = await authorizedFetch(`${process.env.API_DOMAIN}/api/v1/shortener/random`, 'GET');
+    const key = await response.text();
+    await sleep(700);
+    inputValue.value = { ...inputValue.value, key };
+    isGeneratingRandomKey.value = false;
+  });
 
   const toggleOption = $(
     (signal: Signal<boolean>, resetKey: keyof CreateLinkInput | (keyof CreateLinkInput)[], resetValue: any = undefined) => {
@@ -241,6 +266,7 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
             </div>
             <Form
               action={action}
+              autocomplete="off"
               onSubmitCompleted$={() => {
                 if (action.status !== 200) {
                   return;
@@ -252,25 +278,72 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
               class="flex flex-col h-full overflow-auto"
             >
               <div class="px-4 p-5 flex-grow">
-                <label class="label">
-                  <span class="label-text">Destination URL</span>
-                </label>
-                <input
-                  name="url"
-                  type="text"
-                  placeholder="This should be a very long url..."
-                  class="input input-bordered w-full"
-                  value={inputValue.value.url}
-                  onInput$={(ev: InputEvent) => {
-                    inputValue.value.url = (ev.target as HTMLInputElement).value;
-                    debounceUrlInput(inputValue.value.url);
-                  }}
-                />
-                {action.value?.fieldErrors?.url?.length ? (
+                <div>
                   <label class="label">
-                    <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.url[0]}</span>
+                    <span class="label-text">Destination URL</span>
                   </label>
-                ) : null}
+                  <input
+                    name="url"
+                    type="text"
+                    placeholder="https://github.com/origranot/reduced.to"
+                    class="input input-bordered w-full"
+                    value={inputValue.value.url}
+                    onInput$={(ev: InputEvent) => {
+                      inputValue.value.url = (ev.target as HTMLInputElement).value;
+                      debounceUrlInput(inputValue.value.url);
+
+                      // if the user is typing nad there is no key, generate one
+                      if (inputValue.value.url.length > 0 && inputValue.value.key.length === 0) {
+                        generateRandomKey();
+                      }
+                    }}
+                  />
+                  {action.value?.fieldErrors?.url?.length ? (
+                    <label class="label">
+                      <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.url[0]}</span>
+                    </label>
+                  ) : null}
+                </div>
+
+                <div class="pt-4">
+                  <div class="flex justify-between">
+                    <label class="label">
+                      <span class="label-text">Short link</span>
+                    </label>
+                    <div class="tooltip tooltip-left text-sm" data-tip="Generate a random key">
+                      <div class="mt-2 mr-1 text-gray-500">
+                        {isGeneratingRandomKey.value ? (
+                          <span class="loading loading-spinner-small h-5 w-5" />
+                        ) : (
+                          <LuDices class="hover:text-gray-700 cursor-pointer h-5 w-5" onClick$={generateRandomKey} />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="join w-full">
+                    <select class="select select-bordered join-item">
+                      <option selected>reduced.to</option>
+                    </select>
+                    <div class="w-full">
+                      <input
+                        name="key"
+                        type="text"
+                        class="input input-bordered join-item w-full"
+                        placeholder="git"
+                        value={inputValue.value.key}
+                        onInput$={(ev: InputEvent) => {
+                          inputValue.value.key = (ev.target as HTMLInputElement).value;
+                        }}
+                      />
+                    </div>
+                  </div>
+                  {action.value?.fieldErrors?.key?.length ? (
+                    <label class="label">
+                      <span class={`label-text text-xs text-error text-left`}>{action.value.fieldErrors.key[0]}</span>
+                    </label>
+                  ) : null}
+                </div>
+
                 {action.value?.failed && action.value.message && (
                   <label class="label">
                     <span class={`label-text text-xs text-error text-left`}>{action.value.message}</span>
