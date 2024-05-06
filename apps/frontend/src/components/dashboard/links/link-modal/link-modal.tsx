@@ -198,7 +198,7 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
     }
 
     isGeneratingRandomKey.value = true;
-    const response = await authorizedFetch(`${process.env.API_DOMAIN}/api/v1/shortener/random`, 'GET');
+    const response = await authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/shortener/random`, 'GET');
     const key = await response.text();
     await sleep(700);
     inputValue.value = { ...inputValue.value, key };
