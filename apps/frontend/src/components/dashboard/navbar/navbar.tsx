@@ -1,21 +1,39 @@
-import { component$, useContext, useSignal } from '@builder.io/qwik';
-import { Link } from '@builder.io/qwik-city';
+import { component$, useContext, useSignal, useStylesScoped$ } from '@builder.io/qwik';
+import { Link, useLocation } from '@builder.io/qwik-city';
+import { GlobalStore } from '../../../context';
+import { useGetCurrentUser } from '../../../routes/layout';
+import { DARK_THEME, LIGHT_THEME, setPreference, ThemeSwitcher } from '../../theme-switcher/theme-switcher';
+import { BurgerButton } from './burger-button/burger-button';
+import { Profile } from './profile/profile';
+import { Resources } from './resources/resources';
 import { LuAlertTriangle } from '@qwikest/icons/lucide';
-import { GlobalStore } from '../../context';
-import { useGetCurrentUser } from '../../routes/layout';
-import { BurgerButton } from '../dashboard/navbar/burger-button/burger-button';
-import { DARK_THEME, LIGHT_THEME, ThemeSwitcher, setPreference } from '../theme-switcher/theme-switcher';
-import { Resources } from '../dashboard/navbar/resources/resources';
 
-export const Navbar = component$(() => {
+export const DashboardNavbar = component$(() => {
   const globalStore = useContext(GlobalStore);
+  const location = useLocation();
   const user = useGetCurrentUser();
   const showDropdown = useSignal(false);
 
   return (
     <div class="navbar bg-base-100 drop-shadow-md fixed z-[40]">
       <div class="flex-1">
-        <Link href="/" class="btn btn-ghost normal-case text-xl">
+        {location.url.pathname.includes('/dashboard') && ( // Only show the left 3 bars button on the dashboard page
+          <>
+            <label for="drawer" class="btn btn-ghost btn-circle lg:hidden">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width={1.5}
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            </label>
+          </>
+        )}
+        <Link href="/dashboard" class="btn btn-ghost normal-case text-xl">
           Reduced.to
         </Link>
       </div>
@@ -33,6 +51,31 @@ export const Navbar = component$(() => {
         <BurgerButton buttonTitle="Open" />
         {showDropdown.value && (
           <ul tabIndex={0} class="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4 p-2">
+            <li class={user.value ? 'px-4 py-2' : ''}>
+              {user.value ? (
+                `Welcome ${user.value?.name}!`
+              ) : (
+                <Link href="/login" class="btn-ghost">
+                  Login
+                </Link>
+              )}
+            </li>
+            {user.value && (
+              <>
+                <li class="pr-2 border-black"></li>
+                <li>
+                  <Link href="/dashboard" class="btn-ghost py-2 text-sm justify-between">
+                    Dashboard
+                    <span class="badge badge-primary">New</span>
+                  </Link>
+                  {/* It uses normal redirect inorder to make the signal work as expected */}
+                  <a href="/logout" class="btn-ghost py-2 text-sm">
+                    Logout
+                  </a>
+                </li>
+                <li class="pr-2 border-black"></li>
+              </>
+            )}
             <li>
               <a href="https://github.com/origranot/reduced.to" target="_blank" title="GitHub" class="btn-ghost">
                 Github
@@ -62,26 +105,12 @@ export const Navbar = component$(() => {
                 {globalStore.theme === LIGHT_THEME ? 'Dark' : 'Light'} theme
               </a>
             </li>
-            <li>
-              {user.value ? (
-                <Link href="/dashboard" class="btn-ghost py-2 text-sm justify-between">
-                  Dashboard
-                  <span class="badge badge-primary">New</span>
-                </Link>
-              ) : (
-                <Link href="/login" class="btn-ghost">
-                  Login
-                </Link>
-              )}
-            </li>
           </ul>
         )}
       </div>
       <div class="sm:flex hidden">
         {user.value ? (
-          <Link href="/dashboard" class="btn btn-primary btn-sm">
-            Dashboard
-          </Link>
+          <Profile user={user} />
         ) : (
           <Link href="/login" class="btn btn-primary btn-sm">
             Login
