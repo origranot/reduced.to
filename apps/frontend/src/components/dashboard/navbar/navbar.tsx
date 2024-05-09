@@ -60,22 +60,7 @@ export const DashboardNavbar = component$(() => {
                 </Link>
               )}
             </li>
-            {user.value && (
-              <>
-                <li class="pr-2 border-black"></li>
-                <li>
-                  <Link href="/dashboard" class="btn-ghost py-2 text-sm justify-between">
-                    Dashboard
-                    <span class="badge badge-primary">New</span>
-                  </Link>
-                  {/* It uses normal redirect inorder to make the signal work as expected */}
-                  <a href="/logout" class="btn-ghost py-2 text-sm">
-                    Logout
-                  </a>
-                </li>
-                <li class="pr-2 border-black"></li>
-              </>
-            )}
+            <li class="pr-2 border-black"></li>
             <li>
               <a href="https://github.com/origranot/reduced.to" target="_blank" title="GitHub" class="btn-ghost">
                 Github
@@ -105,6 +90,17 @@ export const DashboardNavbar = component$(() => {
                 {globalStore.theme === LIGHT_THEME ? 'Dark' : 'Light'} theme
               </a>
             </li>
+            {user.value && (
+              <>
+                <li class="pr-2 border-black"></li>
+                <li>
+                  {/* It uses normal redirect inorder to make the signal work as expected */}
+                  <a href="/logout" class="btn-ghost py-2 text-sm">
+                    Logout
+                  </a>
+                </li>
+              </>
+            )}
           </ul>
         )}
       </div>

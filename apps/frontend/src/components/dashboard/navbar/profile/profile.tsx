@@ -27,12 +27,6 @@ export const Profile = component$(({ user }: ProfileProps) => {
       </label>
       <ul tabIndex={0} class="p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-48">
         <li>
-          <Link href="/dashboard" class="justify-between">
-            Dashboard
-            <span class="badge badge-primary">New</span>
-          </Link>
-        </li>
-        <li>
           <Link href="/logout">Logout</Link>
         </li>
       </ul>
