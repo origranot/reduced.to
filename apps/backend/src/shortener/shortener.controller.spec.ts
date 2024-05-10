@@ -29,6 +29,7 @@ describe('ShortenerController', () => {
             createShortenedUrl: jest.fn(),
             getLink: jest.fn(),
             verifyPassword: jest.fn(),
+            isKeyAvailable: jest.fn(),
           },
         },
         {
@@ -128,6 +129,16 @@ describe('ShortenerController', () => {
       // Make sure the password is removed from the body before calling the service
       expect(spy).toHaveBeenCalledWith(rest);
       expect(short).toStrictEqual({ key: KEY });
+    });
+
+    it('should throw an error if the key is already in use', async () => {
+      jest.spyOn(shortenerService, 'createShortenedUrl').mockResolvedValue({ key: 'url.com' });
+      jest.spyOn(shortenerService, 'isKeyAvailable').mockResolvedValue(false);
+
+      const body: ShortenerDto = { url: 'https://github.com/origranot/reduced.to', key: 'taken' };
+      const req = {} as Request;
+
+      await expect(shortenerController.shortener(body, req)).rejects.toThrow('This short link already exists');
     });
   });
 
