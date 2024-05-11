@@ -1,10 +1,10 @@
 import { Global, Module } from '@nestjs/common';
 import { AppConfigModule } from '@reduced.to/config';
 import { AppLoggerModule } from '@reduced.to/logger';
-import { StatsModule } from '../stats/stats.module';
+import { VisitsModule } from '../visits/visits.module';
 
 @Global()
 @Module({
-  imports: [AppConfigModule, AppLoggerModule, StatsModule],
+  imports: [AppConfigModule, AppLoggerModule, VisitsModule],
 })
 export class AppModule {}

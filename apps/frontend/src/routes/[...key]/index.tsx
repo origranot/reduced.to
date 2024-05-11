@@ -17,6 +17,7 @@ export const onGet: RequestHandler = async ({ params: { key }, query, redirect, 
     const res = await fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${key}?pw=${query.get('pw')}`, {
       headers: {
         'x-forwarded-for': clientConn.ip || '',
+        referer: request.headers.get('referer') || '',
         'user-agent': request.headers.get('user-agent') || '',
       },
     });

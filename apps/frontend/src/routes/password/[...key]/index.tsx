@@ -7,6 +7,7 @@ export const getLinkUsingPassword = async (key: string, password: string, client
   return fetch(`${process.env.API_DOMAIN}/api/v1/shortener/${key}?pw=${password}`, {
     headers: {
       'x-forwarded-for': clientConn.ip || '',
+      referer: request.headers.get('referer') || '',
       'user-agent': request.headers.get('user-agent') || '',
     },
   });
