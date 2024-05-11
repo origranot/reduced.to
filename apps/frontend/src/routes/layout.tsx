@@ -1,12 +1,13 @@
 import { component$, Slot } from '@builder.io/qwik';
-import { routeLoader$ } from '@builder.io/qwik-city';
+import { routeLoader$, useLocation } from '@builder.io/qwik-city';
 import jwt_decode from 'jwt-decode';
 import { ACCESS_COOKIE_NAME, refreshTokens, REFRESH_COOKIE_NAME, setTokensAsCookies } from '../shared/auth.service';
-import { Navbar } from '../components/navbar/navbar';
 import { VerifyAlert } from '../components/verify-alert/verify-alert';
 import { ACCEPT_COOKIES_COOKIE_NAME, UseCookiesAlert } from '../components/use-cookies-alert/use-cookies-alert';
 import { Toaster, useToasterProvider } from '../components/toaster/toaster';
-import { getProfilePictureUrl } from '../components/navbar/profile/profile';
+import { getProfilePictureUrl } from '../components/dashboard/navbar/profile/profile';
+import { DashboardNavbar } from '../components/dashboard/navbar/navbar';
+import { Navbar } from '../components/navbar/navbar';
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -47,12 +48,13 @@ export const useAcceptCookies = routeLoader$(({ cookie }) => cookie.get(ACCEPT_C
 export default component$(() => {
   const user = useGetCurrentUser();
   const acceptedCookies = useAcceptCookies();
+  const location = useLocation();
 
   useToasterProvider();
 
   return (
     <>
-      <Navbar />
+      {location.url.pathname.includes('/dashboard') ? <DashboardNavbar /> : <Navbar />}
       <main class="flex flex-col h-full pt-[64px]">
         <Slot />
         {user.value?.verified === false ? <VerifyAlert /> : ''}

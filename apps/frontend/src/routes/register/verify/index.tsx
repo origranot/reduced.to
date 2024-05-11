@@ -105,7 +105,7 @@ export default component$(() => {
                 <p class="mt-2 mb-8">Your account is verified</p>
                 <div class="form-control w-full max-w-xs inline-flex">
                   <br />
-                  <Link href="/" class="btn btn-primary">
+                  <Link href="/dashboard" class="btn btn-primary">
                     Go back
                   </Link>
                 </div>

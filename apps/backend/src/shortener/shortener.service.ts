@@ -74,7 +74,7 @@ export class ShortenerService {
   };
 
   createShortenedUrl = async (dto: ShortenerDto, utm?: Record<string, string>): Promise<{ key: string }> => {
-    const { url, expirationTime, password } = dto;
+    const { url, expirationTime, password, key: providedKey } = dto;
 
     let parsedUrl: URL;
     try {
@@ -88,11 +88,7 @@ export class ShortenerService {
       throw new BadRequestException(err.message || 'URL is invalid');
     }
 
-    let key: string;
-
-    do {
-      key = this.generateKey();
-    } while (!(await this.isKeyAvailable(key)));
+    const key = providedKey || (await this.createRandomShortenedUrl());
 
     const ttl = expirationTime ? expirationTime - new Date().getTime() : undefined;
 
@@ -123,6 +119,7 @@ export class ShortenerService {
       key,
       url,
       description,
+      password,
       ...(expirationTime && { expirationTime: new Date(expirationTime) }),
       utm,
     };
@@ -185,5 +182,15 @@ export class ShortenerService {
     await this.createDbUrl(user, shortenerDto, key, utm);
 
     return { key };
+  };
+
+  createRandomShortenedUrl = async (): Promise<string> => {
+    let key: string;
+
+    do {
+      key = this.generateKey();
+    } while (!(await this.isKeyAvailable(key)));
+
+    return key;
   };
 }
