@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { StatsService } from './stats.service';
+import { VisitsService } from './visits.service';
 import { PrismaService, Prisma } from '@reduced.to/prisma';
 
-describe('StatsService', () => {
-  let service: StatsService;
+describe('VisitsService', () => {
+  let service: VisitsService;
   let prismaService: PrismaService;
 
   const mockPrismaService = {
@@ -18,7 +18,7 @@ describe('StatsService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        StatsService,
+        VisitsService,
         {
           provide: PrismaService,
           useValue: mockPrismaService,
@@ -26,7 +26,7 @@ describe('StatsService', () => {
       ],
     }).compile();
 
-    service = module.get<StatsService>(StatsService);
+    service = module.get<VisitsService>(VisitsService);
     prismaService = module.get<PrismaService>(PrismaService);
   });
 
@@ -39,14 +39,14 @@ describe('StatsService', () => {
       const error = new Prisma.PrismaClientKnownRequestError('message', { code: 'P2025', meta: {}, clientVersion: 'v1' });
       mockPrismaService.visit.create.mockRejectedValue(error);
       await expect(
-        service.addVisit('testKey', { hashedIp: 'testIp', ua: 'testAgent', geoLocation: { country: 'United States' } })
+        service.add('testKey', { hashedIp: 'testIp', ua: 'testAgent', geoLocation: { country: 'United States' } as any })
       ).resolves.toBeUndefined();
     });
 
     it('should throw an error for unexpected errors', async () => {
       mockPrismaService.$transaction.mockRejectedValue(new Error('Unexpected error'));
       await expect(
-        service.addVisit('testKey', { hashedIp: 'testIp', ua: 'testAgent', geoLocation: { country: 'United States' } })
+        service.add('testKey', { hashedIp: 'testIp', ua: 'testAgent', geoLocation: { country: 'United States' } as any })
       ).rejects.toThrow('Unexpected error');
     });
   });
@@ -54,12 +54,12 @@ describe('StatsService', () => {
   describe('isUniqueVisit', () => {
     it('should return true for a unique visit', async () => {
       mockPrismaService.visit.count.mockResolvedValue(0);
-      await expect(service.isUniqueVisit('testKey', 'testIp')).resolves.toBeTruthy();
+      await expect(service.isUnique('testKey', 'testIp')).resolves.toBeTruthy();
     });
 
     it('should return false for a non-unique visit', async () => {
       mockPrismaService.visit.count.mockResolvedValue(1);
-      await expect(service.isUniqueVisit('testKey', 'testIp')).resolves.toBeFalsy();
+      await expect(service.isUnique('testKey', 'testIp')).resolves.toBeFalsy();
     });
   });
 });

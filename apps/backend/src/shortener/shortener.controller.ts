@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Get, Param, Post, Query, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
 import { ShortenerDto } from './dto';
+import { Request } from 'express';
 import { ShortenerService } from './shortener.service';
 import { UserContext } from '../auth/interfaces/user-context';
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
@@ -41,7 +41,8 @@ export class ShortenerController {
   async findOne(
     @ClientDetails() clientDetails: IClientDetails,
     @Param('key') key: string,
-    @Query('pw') password = '' // Add optional password query parameter
+    @Query('pw') password = '', // Add optional password query parameter
+    @Req() req: Request
   ): Promise<LinkResponse> {
     const data = await this.shortenerService.getLink(key);
 
@@ -56,6 +57,7 @@ export class ShortenerController {
     try {
       await this.shortenerProducer.publish({
         ...clientDetails,
+        referer: req.headers.referer,
         key: data.key,
         url: data.url,
       });
