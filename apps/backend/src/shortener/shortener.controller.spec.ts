@@ -151,7 +151,7 @@ describe('ShortenerController', () => {
         userAgent: 'test',
       };
 
-      const link = await shortenerController.findOne(clientDetails, key);
+      const link = await shortenerController.findOne(clientDetails, key, '', {} as Request);
       expect(link).toStrictEqual({ url: 'https://github.com/origranot/reduced.to', key: 'best' });
     });
 
@@ -164,7 +164,7 @@ describe('ShortenerController', () => {
       };
 
       try {
-        await shortenerController.findOne(clientDetails, key);
+        await shortenerController.findOne(clientDetails, key, '', {} as Request);
         throw new Error('Expected an error to be thrown!');
       } catch (err) {
         expect(err.message).toBe('Shortened url is wrong or expired');
@@ -182,7 +182,7 @@ describe('ShortenerController', () => {
         userAgent: 'test',
       };
 
-      const link = await shortenerController.findOne(clientDetails, key, 'correct-password');
+      const link = await shortenerController.findOne(clientDetails, key, 'correct-password', {} as Request);
       expect(link).toStrictEqual({ url: 'https://github.com/origranot/reduced.to', key: 'best' });
     });
 
@@ -197,7 +197,9 @@ describe('ShortenerController', () => {
         userAgent: 'test',
       };
 
-      await expect(shortenerController.findOne(clientDetails, key, 'wrong-password')).rejects.toThrow('Incorrect password for this url!');
+      await expect(shortenerController.findOne(clientDetails, key, 'wrong-password', {} as Request)).rejects.toThrow(
+        'Incorrect password for this url!'
+      );
     });
   });
 });
