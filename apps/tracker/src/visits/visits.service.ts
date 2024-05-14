@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@reduced.to/prisma';
 import uap from 'ua-parser-js';
 import geoip from 'geoip-lite';
+import { capitalize, setToIfUndefined } from '@reduced.to/utils';
 
 @Injectable()
 export class VisitsService {
@@ -28,9 +29,9 @@ export class VisitsService {
           os,
           device,
           geo: geoLocation as object,
-          country: geoLocation?.country,
-          region: geoLocation?.region,
-          city: geoLocation?.city,
+          country: setToIfUndefined(geoLocation?.country, null),
+          region: setToIfUndefined(geoLocation?.region, null),
+          city: setToIfUndefined(geoLocation?.city, null),
           link: { connect: { key } },
         },
       });
@@ -46,9 +47,12 @@ export class VisitsService {
     const parsed = uap(ua);
 
     return {
-      browser: `${parsed.browser.name} ${parsed.browser.version}`,
-      os: `${parsed.os.name} ${parsed.os.version}`,
-      device: `${parsed.device.vendor} ${parsed.device.model}`,
+      browser: setToIfUndefined(parsed.browser.name, null),
+      os: setToIfUndefined(parsed.os.name, null),
+      device: setToIfUndefined(
+        parsed.device.type === undefined || parsed.device.type !== 'mobile' ? 'Desktop' : capitalize(parsed.device.type),
+        null
+      ),
     };
   }
 
