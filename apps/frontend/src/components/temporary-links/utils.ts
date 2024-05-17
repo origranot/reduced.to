@@ -1,4 +1,5 @@
 export const UNKNOWN_FAVICON = '/images/unkown-favicon.png';
+export const UNKNOWN_FAVICON_SMALL = '/images/unkown-favicon-small.png';
 
 export const getFavicon = async (url: string) => {
   const faviconUrl = `https://www.google.com/s2/favicons?sz=128&domain_url=${url}`;

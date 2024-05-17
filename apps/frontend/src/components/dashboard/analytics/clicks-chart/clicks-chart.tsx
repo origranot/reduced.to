@@ -51,7 +51,8 @@ export const ClicksChart = component$((props: ClicksChartProps) => {
         },
         yaxis: {
           title: { text: 'Clicks' },
-          stepSize: 1,
+          min: 0,
+          forceNiceScale: true,
         },
         tooltip: { x: { format: 'dd MMM yyyy HH:mm' } },
         dataLabels: { enabled: false },
@@ -73,17 +74,20 @@ export const ClicksChart = component$((props: ClicksChartProps) => {
         theme: { mode: isDarkMode() ? 'dark' : 'light', palette: 'palette1' },
       };
 
-      chartInstance.value = noSerialize(new ApexCharts(chartRef.value!, options));
-      chartInstance.value!.render();
-      window.addEventListener('theme-toggled', (ev) => {
-        const theme = (ev as CustomEvent).detail.theme;
-        chartInstance.value!.updateOptions({
-          theme: { mode: theme, palette: 'palette1' },
-          grid: {
-            borderColor: isDarkMode() ? '#374151' : '#bfc4cf',
-          },
+      // Ensure the chartRef is available before rendering the chart
+      if (chartRef.value) {
+        chartInstance.value = noSerialize(new ApexCharts(chartRef.value, options));
+        await chartInstance.value!.render();
+        window.addEventListener('theme-toggled', (ev) => {
+          const theme = (ev as CustomEvent).detail.theme;
+          chartInstance.value!.updateOptions({
+            theme: { mode: theme, palette: 'palette1' },
+            grid: {
+              borderColor: isDarkMode() ? '#374151' : '#bfc4cf',
+            },
+          });
         });
-      });
+      }
       isInitialized.value = true;
     } else {
       chartInstance.value.updateOptions({
@@ -105,6 +109,11 @@ export const ClicksChart = component$((props: ClicksChartProps) => {
             <p class="text-base font-normal text-gray-500 dark:text-gray-400">{`Clicks for the last ${chartDescription.value}`}</p>
           </div>
         </div>
+        {!isInitialized.value ? (
+          <div class="flex items-center justify-center min-h-[365px]">
+            <span class="loading loading-spinner loading-lg" />
+          </div>
+        ) : null}
         <div ref={chartRef} class="chart-container" />
       </div>
     </>
@@ -128,7 +137,6 @@ const updateChartDescription = (chartDescription: Signal<string>, daysDuration: 
   }
 };
 
-// Utility function to fetch chart data
 async function fetchChartData(key: string, days: number) {
   try {
     const response = await authorizedFetch(`${process.env.CLIENTSIDE_API_DOMAIN}/api/v1/analytics/${key}?days=${days}`);

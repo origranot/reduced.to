@@ -2,18 +2,31 @@ import { DocumentHead, routeLoader$ } from '@builder.io/qwik-city';
 import { serverSideFetch } from '../../../../shared/auth.service';
 import { component$, useSignal } from '@builder.io/qwik';
 import { ClicksChart } from '../../../../components/dashboard/analytics/clicks-chart/clicks-chart';
+import { CountriesChart } from '../../../../components/dashboard/analytics/contries-chart/countries-chart';
+import { DevicesChart } from '../../../../components/dashboard/analytics/devices-chart/devices-chart';
 
 export const useGetAnalytics = routeLoader$(async ({ params: { key }, cookie, redirect }) => {
-  const res = await serverSideFetch(`${process.env.API_DOMAIN}/api/v1/analytics/${key}?days=7`, cookie);
+  const [clicksResponse, countriesResponse, devicesResponse] = await Promise.all([
+    serverSideFetch(`${process.env.API_DOMAIN}/api/v1/analytics/${key}?days=7`, cookie),
+    serverSideFetch(`${process.env.API_DOMAIN}/api/v1/analytics/${key}/countries?days=7`, cookie),
+    serverSideFetch(`${process.env.API_DOMAIN}/api/v1/analytics/${key}/devices?days=7`, cookie),
+  ]);
 
-  if (res.status !== 200) {
+  if (clicksResponse.status !== 200 || countriesResponse.status !== 200 || devicesResponse.status !== 200) {
     throw redirect(302, '/unknown');
   }
 
-  const data = await res.json();
+  const [clicks, countries, devices] = await Promise.all([clicksResponse.json(), countriesResponse.json(), devicesResponse.json()]);
+
+  const data = { clicksOverTime: clicks, countries, devices };
   return {
     key,
-    data,
+    data: {
+      clicksOverTime: clicks.clicksOverTime,
+      countries: countries.data,
+      devices: devices.data,
+      url: clicks.url,
+    },
   };
 });
 
@@ -54,6 +67,10 @@ export default component$(() => {
         initialData={analytics.value.data.clicksOverTime}
         url={analytics.value.data.url}
       />
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 pt-4">
+        <CountriesChart urlKey={analytics.value.key} daysDuration={daysDuration.value} initialData={analytics.value.data.countries} />
+        <DevicesChart urlKey={analytics.value.key} daysDuration={daysDuration.value} initialData={analytics.value.data.devices} />
+      </div>
     </>
   );
 });
