@@ -2,7 +2,7 @@ import { component$, useSignal, useStylesScoped$, useVisibleTask$ } from '@build
 import { NoData } from '../../empty-data/no-data';
 import { fetchAnalyticsChartData } from '../utils';
 import styles from '../analytics-chart.css?inline';
-import { browserIcons, deviceIcons, osIcons } from './icons';
+import { icons } from './icons';
 import { UNKNOWN_FAVICON_SMALL } from '../../../temporary-links/utils';
 
 interface Device {
@@ -29,24 +29,6 @@ export const DevicesChart = component$((props: DevicesChartProps) => {
     const data = await fetchAnalyticsChartData(props.urlKey, selectedCategory.value, props.daysDuration);
     devices.value = data;
   });
-
-  const getIcon = (item: Device) => {
-    let icon: string | undefined = undefined;
-    const name = item.field.toLowerCase();
-    switch (selectedCategory.value) {
-      case 'devices':
-        icon = deviceIcons[name];
-        break;
-      case 'os':
-        icon = osIcons[name];
-        break;
-      case 'browsers':
-        icon = browserIcons[name];
-        break;
-    }
-
-    return icon || UNKNOWN_FAVICON_SMALL;
-  };
 
   return (
     <div class="relative z-0 h-[400px] dark:bg-slate-800 bg-white px-5 py-5 rounded-lg shadow overflow-hidden">
@@ -90,7 +72,7 @@ export const DevicesChart = component$((props: DevicesChartProps) => {
             <div key={item.field} class="group flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-500/10">
               <div class="relative z-10 flex h-8 w-full max-w-[calc(100%-2rem)] items-center">
                 <div class="z-10 flex items-center space-x-2 px-2">
-                  <img alt={item.field} src={getIcon(item)} class="h-4 w-4" />
+                  <img alt={item.field} src={icons[item.field.toLowerCase()] || UNKNOWN_FAVICON_SMALL} class="h-4 w-4" />
                   <div class="truncate text-sm text-gray-800 dark:text-gray-200 underline-offset-4 group-hover:underline">{item.field}</div>
                 </div>
                 <div

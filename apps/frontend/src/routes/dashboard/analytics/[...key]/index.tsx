@@ -18,7 +18,6 @@ export const useGetAnalytics = routeLoader$(async ({ params: { key }, cookie, re
 
   const [clicks, countries, devices] = await Promise.all([clicksResponse.json(), countriesResponse.json(), devicesResponse.json()]);
 
-  const data = { clicksOverTime: clicks, countries, devices };
   return {
     key,
     data: {

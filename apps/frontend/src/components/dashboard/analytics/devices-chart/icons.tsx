@@ -1,21 +1,16 @@
-export const deviceIcons: Record<string, string> = {
+export const icons: Record<string, string> = {
+  // Devices
   desktop: 'https://faisalman.github.io/ua-parser-js/images/types/default.png',
   mobile: 'https://faisalman.github.io/ua-parser-js/images/types/mobile.png',
-};
 
-export const osIcons: Record<string, string> = {
+  // OS
   windows: '/images/icons/os/windows.png',
   'mac os': '/images/icons/os/macos.png',
   ios: '/images/icons/os/apple.png',
   android: '/images/icons/os/android.png',
   linux: '/images/icons/os/linux.png',
-  chromeoS: 'https://faisalman.github.io/ua-parser-js/images/os/chromeos.png',
-  windowsphone: 'https://faisalman.github.io/ua-parser-js/images/os/windowsphone.png',
-  blacknerry: 'https://faisalman.github.io/ua-parser-js/images/os/blackberry.png',
-  firefoxos: 'https://faisalman.github.io/ua-parser-js/images/os/firefoxos.png',
-};
 
-export const browserIcons: Record<string, string> = {
+  // Browsers
   chrome: '/images/icons/browsers/chrome.png',
   firefox: '/images/icons/browsers/firefox.png',
   facebook: '/images/icons/browsers/facebook.png',
