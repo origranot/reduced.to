@@ -4,7 +4,7 @@ import LinkActionsDropdown from './link-actions-dropdown';
 import { HiArrowTopRightOnSquareOutline, HiClipboardDocumentOutline, HiQrCodeOutline, HiTrashOutline } from '@qwikest/icons/heroicons';
 import { formatDateDay } from '../../../../lib/date-utils';
 import { useToaster } from '../../../toaster/toaster';
-import { copyToClipboard, normalizeUrl } from '../../../../utils';
+import { copyToClipboard } from '../../../../utils';
 import { LuLineChart } from '@qwikest/icons/lucide';
 import { Link } from '@builder.io/qwik-city';
 
@@ -84,7 +84,7 @@ export const LinkBlock = component$(
                     name: 'Copy',
                     icon: <HiClipboardDocumentOutline />,
                     action: $(() => {
-                      copyToClipboard(normalizeUrl(url));
+                      copyToClipboard(getLinkFromKey(urlKey));
                       toaster.add({ title: 'Success', description: 'The url has been copied to the clipboard!' });
                     }),
                   },
