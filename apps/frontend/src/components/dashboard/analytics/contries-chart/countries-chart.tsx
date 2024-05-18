@@ -22,13 +22,16 @@ export const CountriesChart = component$((props: CountriesChartProps) => {
   const selectedCategory = useSignal<'countries' | 'cities'>('countries');
   const searchQuery = useSignal('');
   const locations = useSignal<Location[]>(props.initialData);
+  const isLoading = useSignal(false);
 
   useVisibleTask$(async ({ track }) => {
     track(() => selectedCategory.value);
     track(() => props.daysDuration);
 
+    isLoading.value = true;
     const data = await fetchAnalyticsChartData(props.urlKey, selectedCategory.value, props.daysDuration);
     locations.value = data;
+    isLoading.value = false;
   });
 
   const getCountryCode = (item: Location) => {
@@ -71,36 +74,42 @@ export const CountriesChart = component$((props: CountriesChartProps) => {
         onInput$={(e) => (searchQuery.value = (e.target as HTMLInputElement).value)}
       /> */}
 
-      <div class="flex flex-col gap-1 overflow-y-auto h-[300px] pb-4 scrollbar-hide relative">
-        {filteredData.length === 0 ? (
-          <div class="pt-12">
-            <NoData title="No Data Available" description="No locations to display." />
-          </div>
-        ) : (
-          filteredData.map((item) => {
-            const countryCode = getCountryCode(item);
-            const country = countryLookup.byIso(countryCode);
-            const displayName = selectedCategory.value === 'cities' ? item.field : country?.country || item.field;
-            return (
-              <div key={item.field} class="group flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-500/10">
-                <div class="relative z-10 flex h-8 w-full max-w-[calc(100%-2rem)] items-center">
-                  <div class="z-10 flex items-center space-x-2 px-2">
-                    <img alt={countryCode} src={`https://flag.vercel.app/m/${countryCode}.svg`} class="h-3 w-5" />
-                    <div class="truncate text-sm text-gray-800 dark:text-gray-200 underline-offset-4 group-hover:underline">
-                      {displayName}
+      {isLoading.value ? (
+        <div class="flex items-center justify-center h-[300px]">
+          <span class="loading loading-spinner loading-lg" />
+        </div>
+      ) : (
+        <div class="flex flex-col gap-1 overflow-y-auto h-[300px] pb-4 scrollbar-hide relative">
+          {filteredData.length === 0 ? (
+            <div class="pt-12">
+              <NoData title="No Data Available" description="No locations to display." />
+            </div>
+          ) : (
+            filteredData.map((item) => {
+              const countryCode = getCountryCode(item);
+              const country = countryLookup.byIso(countryCode);
+              const displayName = selectedCategory.value === 'cities' ? item.field : country?.country;
+              return (
+                <div key={item.field} class="group flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-500/10">
+                  <div class="relative z-10 flex h-8 w-full max-w-[calc(100%-2rem)] items-center">
+                    <div class="z-10 flex items-center space-x-2 px-2">
+                      <img alt={countryCode} src={`https://flag.vercel.app/m/${countryCode}.svg`} class="h-3 w-5" />
+                      <div class="truncate text-sm text-gray-800 dark:text-gray-200 underline-offset-4 group-hover:underline">
+                        {displayName}
+                      </div>
                     </div>
+                    <div
+                      class="absolute h-full origin-left rounded-sm bg-green-100 dark:bg-green-500/30"
+                      style={{ width: `${(item.count / filteredData[0].count) * 100}%`, transform: 'scaleX(1)' }}
+                    ></div>
                   </div>
-                  <div
-                    class="absolute h-full origin-left rounded-sm bg-green-100 dark:bg-green-500/30"
-                    style={{ width: `${(item.count / filteredData[0].count) * 100}%`, transform: 'scaleX(1)' }}
-                  ></div>
+                  <p class="z-10 px-2 text-sm text-gray-600 dark:text-gray-200">{item.count}</p>
                 </div>
-                <p class="z-10 px-2 text-sm text-gray-600 dark:text-gray-200">{item.count}</p>
-              </div>
-            );
-          })
-        )}
-      </div>
+              );
+            })
+          )}
+        </div>
+      )}
     </div>
   );
 });
