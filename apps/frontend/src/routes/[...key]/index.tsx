@@ -9,6 +9,8 @@ const isValidKey = (key: string) => {
 export const onGet: RequestHandler = async ({ params: { key }, query, redirect, clientConn, request, next }) => {
   let redirectTo: string | null = null; // Variable to store the redirect target
 
+  console.log("IP", clientConn.ip);
+
   if (!isValidKey(key)) {
     throw next();
   }
