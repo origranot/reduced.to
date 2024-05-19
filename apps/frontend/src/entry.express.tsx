@@ -39,9 +39,11 @@ const { router, notFound } = createQwikCity({
     // We need to override the default getClientConn function to get the client IP address from the request headers (x-forwarded-for or x-real-ip)
     return {
       ip:
-        (request.headers['x-client-ip'] as string) ||
-        (request.headers['x-real-ip'] as string) ||
-        (request.headers['x-forwarded-for'] as string),
+        (request.headers['x-client-ip'] as string) +
+        ',' +
+        (request.headers['x-forwarded-for'] as string) +
+        ',' +
+        (request.headers['x-real-ip'] as string),
       country: undefined,
     };
   },
