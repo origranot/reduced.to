@@ -15,14 +15,13 @@ export class VisitsConsumer extends ConsumerService {
   }
 
   async onMessage(_topic: string, _partition: number, message: KafkaMessage) {
-    const { userAgent, key } = JSON.parse(message.value.toString()) as {
+    const { ip, userAgent, key } = JSON.parse(message.value.toString()) as {
       ip: string;
       userAgent: string;
       key: string;
       url: string;
     };
 
-    const ip = '77.137.77.54';
     this.loggerService.debug(`Received message for ${key} with ip: ${ip} and user agent: ${userAgent}`);
 
     const hashedIp = createHash('sha256').update(ip).digest('hex');
