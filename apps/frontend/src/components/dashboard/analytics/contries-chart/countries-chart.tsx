@@ -89,6 +89,11 @@ export const CountriesChart = component$((props: CountriesChartProps) => {
               const countryCode = getCountryCode(item);
               const country = countryLookup.byIso(countryCode);
               const displayName = selectedCategory.value === 'cities' ? item.field : country?.country;
+
+              if (!displayName) {
+                return null;
+              }
+
               return (
                 <div key={item.field} class="group flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-500/10">
                   <div class="relative z-10 flex h-8 w-full max-w-[calc(100%-2rem)] items-center">
