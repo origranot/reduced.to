@@ -5,9 +5,6 @@ module.exports = {
   content: [join(__dirname, 'src/**/*.{js,ts,jsx,tsx,mdx}')],
   darkMode: 'class',
   mode: 'jit',
-  purge: {
-    content: [join(__dirname, 'src/**/*.{js,ts,jsx,tsx,mdx}')],
-  },
   theme: {
     extend: {
       colors: {
