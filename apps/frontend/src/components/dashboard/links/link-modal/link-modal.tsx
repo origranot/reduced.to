@@ -43,7 +43,9 @@ const CreateLinkInputSchema = z
       .string()
       .min(4, { message: 'The short link must be at least 4 characters long.' })
       .max(20, { message: 'The short link cannot exceed 20 characters.' })
-      .regex(/^[a-zA-Z0-9]+$/, { message: 'The short link can only include letters and numbers.' }),
+      .regex(/^[a-zA-Z0-9-]*$/, {
+        message: 'The short link can only contain letters, numbers, and dashes.',
+      }),
     expirationTime: z.string().optional(),
     expirationTimeToggle: z.string().optional(),
     passwordProtection: z
