@@ -63,8 +63,6 @@ export const setTokensAsCookies = (accessToken: string, refreshToken: string, co
     httpOnly: true,
     expires: new Date(new Date().getTime() + REFRESH_COOKIE_EXPIRES),
   });
-
-  console.log('COOKIE SET SUCCESSFULLY', cookie.getAll());
 };
 
 export const serverSideFetch = async (url: string, cookies: Cookie, options = {}) => {
