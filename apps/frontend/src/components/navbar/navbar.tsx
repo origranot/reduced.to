@@ -1,11 +1,9 @@
 import { component$, useContext, useSignal } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
-import { LuAlertTriangle } from '@qwikest/icons/lucide';
 import { GlobalStore } from '../../context';
 import { useGetCurrentUser } from '../../routes/layout';
 import { BurgerButton } from '../dashboard/navbar/burger-button/burger-button';
 import { DARK_THEME, LIGHT_THEME, ThemeSwitcher, setPreference } from '../theme-switcher/theme-switcher';
-import { Resources } from '../dashboard/navbar/resources/resources';
 
 export const Navbar = component$(() => {
   const globalStore = useContext(GlobalStore);
@@ -14,10 +12,21 @@ export const Navbar = component$(() => {
 
   return (
     <div class="navbar bg-base-100 drop-shadow-md fixed z-[40]">
-      <div class="flex-1">
+      <div class="flex-1 flex items-center">
         <Link href="/" class="btn btn-ghost normal-case text-xl">
           Reduced.to
         </Link>
+        <div class="hidden sm:flex flex-grow justify-start space-x-4 ml-6">
+          <Link href="/features" title="Features" class="btn btn-sm btn-ghost">
+            Features
+          </Link>
+          <Link href="/pricing" title="Pricing" class="btn btn-sm btn-ghost">
+            Pricing
+          </Link>
+          <a href="https://docs.reduced.to" target="_blank" title="Documentation" class="btn btn-sm btn-ghost">
+            Docs
+          </a>
+        </div>
       </div>
       <div
         class="block sm:hidden dropdown dropdown-end"
@@ -34,22 +43,19 @@ export const Navbar = component$(() => {
         {showDropdown.value && (
           <ul tabIndex={0} class="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4 p-2">
             <li>
-              <a href="https://github.com/origranot/reduced.to" target="_blank" title="GitHub" class="btn-ghost">
-                Github
-              </a>
+              <Link href="/features" class="btn-ghost">
+                Features
+              </Link>
+            </li>
+            <li>
+              <Link href="/pricing" class="btn-ghost">
+                Pricing
+              </Link>
             </li>
             <li>
               <a href="https://docs.reduced.to" target="_blank" title="Documentation" class="btn-ghost">
                 Docs
               </a>
-            </li>
-            <li>
-              <Link href="/report" class="btn-ghost py-2 text-sm justify-between">
-                Report a Link
-                <span class="badge badge-warning gap-2">
-                  <LuAlertTriangle />
-                </span>
-              </Link>
             </li>
             <li>
               <a
@@ -62,6 +68,7 @@ export const Navbar = component$(() => {
                 {globalStore.theme === LIGHT_THEME ? 'Dark' : 'Light'} theme
               </a>
             </li>
+            <li class="pr-2 border-black"></li>
             <li>
               {user.value ? (
                 <Link href="/dashboard" class="btn-ghost py-2 text-sm justify-between">
@@ -77,7 +84,7 @@ export const Navbar = component$(() => {
           </ul>
         )}
       </div>
-      <div class="sm:flex hidden">
+      <div class="hidden sm:flex items-center space-x-4">
         {user.value ? (
           <Link href="/dashboard" class="btn btn-primary btn-sm">
             Dashboard
@@ -87,8 +94,6 @@ export const Navbar = component$(() => {
             Login
           </Link>
         )}
-        <div class="divider divider-horizontal"></div>
-        <Resources />
         <div class="divider divider-horizontal"></div>
         <div class="grid flex-grow place-items-center mr-4">
           <ThemeSwitcher />
