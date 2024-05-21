@@ -27,7 +27,7 @@ export class AuthController {
 
   cookieOptions = {
     path: '/',
-    sameSite: 'strict',
+    sameSite: 'lax',
     httpOnly: true,
   } as any;
 
