@@ -25,7 +25,7 @@ export interface UserCtx {
 export const useGetCurrentUser = routeLoader$<UserCtx | null>(async ({ cookie }) => {
   const accessCookie = cookie.get(ACCESS_COOKIE_NAME)?.value;
   const refreshCookie = cookie.get(REFRESH_COOKIE_NAME)?.value;
-  console.log("GOT TOKENS", accessCookie, refreshCookie)
+  console.log('GOT TOKENS', accessCookie, refreshCookie);
 
   let data: UserCtx | null = null;
   if (accessCookie) {
