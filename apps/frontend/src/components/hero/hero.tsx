@@ -7,7 +7,10 @@ export const Hero = component$(() => {
   const user = useGetCurrentUser();
 
   return (
-    <div class="relative before:absolute before:top-0 before:start-1/2 before:bg-[url('assets/svg/hero/polygon-bg-element-light.svg')] before:bg-no-repeat before:bg-top before:bg-cover before:w-full before:h-full before:-z-[1] before:transform before:-translate-x-1/2 dark:before:bg-[url('assets/svg/hero/polygon-bg-element-dark.svg')]">
+    <div
+      id="hero"
+      class="relative before:absolute before:top-0 before:start-1/2 before:bg-[url('assets/svg/hero/polygon-bg-element-light.svg')] before:bg-no-repeat before:bg-top before:bg-cover before:w-full before:h-full before:-z-[1] before:transform before:-translate-x-1/2 dark:before:bg-[url('assets/svg/hero/polygon-bg-element-dark.svg')]"
+    >
       <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10">
         {/* <!-- Announcement Github Banner --> */}
         <div class="flex justify-center">
@@ -28,7 +31,7 @@ export const Hero = component$(() => {
         <div class="mt-5 max-w-2xl text-center mx-auto">
           <h1 class="block font-bold text-gray-800 text-4xl md:text-5xl lg:text-6xl dark:text-gray-200">
             Simplify your
-            <span class="bg-clip-text bg-gradient-to-tl from-blue-600 to-violet-600 text-transparent"> Links</span>
+            <span class="bg-clip-text bg-gradient-to-l from-blue-600 to-violet-600 text-transparent"> Links</span>
           </h1>
         </div>
         {/* <!-- End Title --> */}
