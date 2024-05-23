@@ -1,228 +1,243 @@
-import { $, component$, useSignal } from '@builder.io/qwik';
+import { component$, useContext } from '@builder.io/qwik';
+import { DARK_THEME } from '../theme-switcher/theme-switcher';
+import { GlobalStore } from '../../context';
 
 export const Features = component$(() => {
-  const activeTab = useSignal(1);
-
-  const handleTabClick = $((tabNumber: number) => {
-    activeTab.value = tabNumber;
-  });
-
+  const state = useContext(GlobalStore);
   return (
-    <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
-      <div class="relative p-6 md:p-16">
-        <div class="relative z-10 lg:grid lg:grid-cols-12 lg:gap-16 lg:items-center">
-          <div class="mb-10 lg:mb-0 lg:col-span-6 lg:col-start-8 lg:order-2">
-            <h2 class="text-2xl text-gray-800 font-bold sm:text-3xl dark:text-neutral-200">
-              Fully customizable rules to match your unique needs
+    <section
+      id="features"
+      class="relative bg-gradient-to-b from-white via-slate-300/30 to-white dark:from-slate-900 dark:via-slate-600/30 dark:to-slate-900"
+    >
+      <div class="absolute inset-0 -z-10 h-full w-full dark:bg-[#000000] dark:bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-white bg-[radial-gradient(#5c5959,transparent_1px)] bg-[size:20px_20px]"></div>
+      <div class="relative z-10 py-8 px-4 mx-auto space-y-12 max-w-screen-xl lg:space-y-20 sm:py-16 lg:px-6">
+        <div class="gap-8 items-center lg:grid lg:grid-cols-2 xl:gap-16">
+          <div class="text-gray-800 sm:text-lg dark:text-gray-200">
+            <h1 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-800 dark:text-gray-200">Easily Manage Your Links</h1>
+            <h2 class="mb-8 font-light text-gray-600 dark:text-gray-400">
+              Our dashboard provides a simple and intuitive interface for managing all your shortened links. Organize, edit, and track your
+              links effortlessly with our powerful tools.
             </h2>
-            <p class="mt-2 text-gray-600 dark:text-neutral-400">
-              Our URL shortener allows you to create, manage, and track shortened URLs with ease. Customize the links to match your branding
-              and access detailed analytics for each link.
-            </p>
-
-            <nav class="grid gap-4 mt-5 md:mt-10" aria-label="Tabs" role="tablist">
-              <button
-                type="button"
-                class={`hs-tab-active:bg-white hs-tab-active:shadow-md hs-tab-active:hover:border-transparent text-start hover:bg-gray-200 p-4 md:p-5 rounded-xl dark:hs-tab-active:bg-neutral-700 dark:hover:bg-neutral-700 ${
-                  activeTab.value === 1 ? 'active' : ''
-                }`}
-                id="tabs-with-card-item-1"
-                data-hs-tab="#tabs-with-card-1"
-                aria-controls="tabs-with-card-1"
-                role="tab"
-                onClick$={() => handleTabClick(1)}
-              >
-                <span class="flex">
-                  <svg
-                    class="flex-shrink-0 mt-2 size-6 md:size-7 hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-neutral-200"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M5 5.5A3.5 3.5 0 0 1 8.5 2H12v7H8.5A3.5 3.5 0 0 1 5 5.5z" />
-                    <path d="M12 2h3.5a3.5 3.5 0 1 1 0 7H12V2z" />
-                    <path d="M12 12.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 1 1-7 0z" />
-                    <path d="M5 19.5A3.5 3.5 0 0 1 8.5 16H12v3.5a3.5 3.5 0 1 1-7 0z" />
-                    <path d="M5 12.5A3.5 3.5 0 0 1 8.5 9H12v7H8.5A3.5 3.5 0 0 1 5 12.5z" />
-                  </svg>
-                  <span class="grow ms-6">
-                    <span class="block text-lg font-semibold hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-neutral-200">
-                      Advanced tools
-                    </span>
-                    <span class="block mt-1 text-gray-800 dark:hs-tab-active:text-gray-200 dark:text-neutral-200">
-                      Use Preline thoroughly thought and automated libraries to manage your businesses.
-                    </span>
-                  </span>
-                </span>
-              </button>
-
-              <button
-                type="button"
-                class={`hs-tab-active:bg-white hs-tab-active:shadow-md hs-tab-active:hover:border-transparent text-start hover:bg-gray-200 p-4 md:p-5 rounded-xl dark:hs-tab-active:bg-neutral-700 dark:hover:bg-neutral-700 ${
-                  activeTab.value === 2 ? 'active' : ''
-                }`}
-                id="tabs-with-card-item-2"
-                data-hs-tab="#tabs-with-card-2"
-                aria-controls="tabs-with-card-2"
-                role="tab"
-                onClick$={() => handleTabClick(2)}
-              >
-                <span class="flex">
-                  <svg
-                    class="flex-shrink-0 mt-2 size-6 md:size-7 hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-neutral-200"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="m12 14 4-4" />
-                    <path d="M3.34 19a10 10 0 1 1 17.32 0" />
-                  </svg>
-                  <span class="grow ms-6">
-                    <span class="block text-lg font-semibold hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-neutral-200">
-                      Smart dashboards
-                    </span>
-                    <span class="block mt-1 text-gray-800 dark:hs-tab-active:text-gray-200 dark:text-neutral-200">
-                      Quickly Preline sample components, copy-paste codes, and start right off.
-                    </span>
-                  </span>
-                </span>
-              </button>
-
-              <button
-                type="button"
-                class={`hs-tab-active:bg-white hs-tab-active:shadow-md hs-tab-active:hover:border-transparent text-start hover:bg-gray-200 p-4 md:p-5 rounded-xl dark:hs-tab-active:bg-neutral-700 dark:hover:bg-neutral-700 ${
-                  activeTab.value === 3 ? 'active' : ''
-                }`}
-                id="tabs-with-card-item-3"
-                data-hs-tab="#tabs-with-card-3"
-                aria-controls="tabs-with-card-3"
-                role="tab"
-                onClick$={() => handleTabClick(3)}
-              >
-                <span class="flex">
-                  <svg
-                    class="flex-shrink-0 mt-2 size-6 md:size-7 hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-neutral-200"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-                    <path d="M5 3v4" />
-                    <path d="M19 17v4" />
-                    <path d="M3 5h4" />
-                    <path d="M17 19h4" />
-                  </svg>
-                  <span class="grow ms-6">
-                    <span class="block text-lg font-semibold hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-neutral-200">
-                      Powerful features
-                    </span>
-                    <span class="block mt-1 text-gray-800 dark:hs-tab-active:text-gray-200 dark:text-neutral-200">
-                      Reduce time and effort on building modern look design with Preline only.
-                    </span>
-                  </span>
-                </span>
-              </button>
-            </nav>
-          </div>
-
-          <div class="lg:col-span-6">
-            <div class="relative">
-              <div>
-                <div
-                  id="tabs-with-card-1"
-                  class={`${activeTab.value === 1 ? '' : 'hidden'}`}
-                  role="tabpanel"
-                  aria-labelledby="tabs-with-card-item-1"
-                >
-                  <img
-                    class="shadow-xl shadow-gray-200 rounded-xl dark:shadow-gray-900/20"
-                    src="https://images.unsplash.com/photo-1605629921711-2f6b00c6bbf4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&h=1220&q=80"
-                    alt="Image Description"
-                  />
-                </div>
-
-                <div
-                  id="tabs-with-card-2"
-                  class={`${activeTab.value === 2 ? '' : 'hidden'}`}
-                  role="tabpanel"
-                  aria-labelledby="tabs-with-card-item-2"
-                >
-                  <img
-                    class="shadow-xl shadow-gray-200 rounded-xl dark:shadow-gray-900/20"
-                    src="https://images.unsplash.com/photo-1665686306574-1ace09918530?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&h=1220&q=80"
-                    alt="Image Description"
-                  />
-                </div>
-
-                <div
-                  id="tabs-with-card-3"
-                  class={`${activeTab.value === 3 ? '' : 'hidden'}`}
-                  role="tabpanel"
-                  aria-labelledby="tabs-with-card-item-3"
-                >
-                  <img
-                    class="shadow-xl shadow-gray-200 rounded-xl dark:shadow-gray-900/20"
-                    src="https://images.unsplash.com/photo-1598929213452-52d72f63e307?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&h=1220&q=80"
-                    alt="Image Description"
-                  />
-                </div>
-              </div>
-
-              <div class="hidden absolute top-0 end-0 translate-x-20 md:block lg:translate-x-20">
+            <ul role="list" class="pt-8 my-7 space-y-5 border-t border-gray-300 dark:border-gray-700">
+              <li class="flex space-x-3">
                 <svg
-                  class="w-16 h-auto text-orange-500"
-                  width="121"
-                  height="135"
-                  viewBox="0 0 121 135"
-                  fill="none"
+                  class="flex-shrink-0 w-5 h-5 text-indigo-600 dark:text-indigo-500"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M5 16.4754C11.7688 27.4499 21.2452 57.3224 5 89.0164"
-                    stroke="currentColor"
-                    stroke-width="10"
-                    stroke-linecap="round"
-                  />
-                  <path
-                    d="M33.6761 112.104C44.6984 98.1239 74.2618 57.6776 83.4821 5"
-                    stroke="currentColor"
-                    stroke-width="10"
-                    stroke-linecap="round"
-                  />
-                  <path
-                    d="M50.5525 130C68.2064 127.495 110.731 117.541 116 78.0874"
-                    stroke="currentColor"
-                    stroke-width="10"
-                    stroke-linecap="round"
-                  />
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  ></path>
                 </svg>
+                <span class="text-base font-medium leading-tight text-gray-900 dark:text-white">Comprehensive link management</span>
+              </li>
+              <li class="flex space-x-3">
+                <svg
+                  class="flex-shrink-0 w-5 h-5 text-indigo-600 dark:text-indigo-500"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span class="text-base font-medium leading-tight text-gray-900 dark:text-white">Custom UTM builder</span>
+              </li>
+              <li class="flex space-x-3">
+                <svg
+                  class="flex-shrink-0 w-5 h-5 text-indigo-600 dark:text-indigo-500"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span class="text-base font-medium leading-tight text-gray-900 dark:text-white">Password protected links</span>
+              </li>
+              <li class="flex space-x-3">
+                <svg
+                  class="flex-shrink-0 w-5 h-5 text-indigo-600 dark:text-indigo-500"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span class="text-base font-medium leading-tight text-gray-900 dark:text-white">Branded links</span>
+              </li>
+              <li class="flex space-x-3">
+                <svg
+                  class="flex-shrink-0 w-5 h-5 text-indigo-600 dark:text-indigo-500"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span class="text-base font-medium leading-tight text-gray-900 dark:text-white">User-friendly interface</span>
+              </li>
+              <li class="flex space-x-3">
+                <svg
+                  class="flex-shrink-0 w-5 h-5 text-indigo-600 dark:text-indigo-500"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span class="text-base font-medium leading-tight text-gray-900 dark:text-white">Secure and reliable</span>
+              </li>
+            </ul>
+          </div>
+          {state.theme === DARK_THEME ? (
+            <div class="mockup-browser border border-base-300 hidden mb-4 w-full lg:mb-0 lg:block bg-slate-900">
+              <div class="mockup-browser-toolbar">
+                <div class="input border border-base-300">https://reduced.to/dashboard</div>
               </div>
+              <img
+                class="w-full lg:mb-0 lg:flex rounded-lg"
+                src="/images/features/dashboard-dark.png"
+                height={1200}
+                width={1800}
+                alt="Dashboard feature dark mode preview"
+              />
             </div>
+          ) : (
+            <div class="mockup-browser border border-base-300 hidden mb-4 w-full lg:mb-0 lg:block bg-slate-100">
+              <div class="mockup-browser-toolbar">
+                <div class="input border border-base-300">https://reduced.to/dashboard</div>
+              </div>
+              <img
+                class="hidden mb-4 w-full lg:mb-0 lg:flex rounded-lg"
+                src="/images/features/dashboard.png"
+                height={1200}
+                width={1800}
+                alt="Dashboard feature preview"
+              />
+            </div>
+          )}
+        </div>
+        <div class="gap-8 items-center lg:grid lg:grid-cols-2 xl:gap-16">
+          {state.theme === DARK_THEME ? (
+            <div class="mockup-browser border border-base-300 hidden mb-4 w-full lg:mb-0 lg:block bg-slate-900">
+              <div class="mockup-browser-toolbar">
+                <div class="input border border-base-300">https://reduced.to</div>
+              </div>
+              <img
+                class="hidden mb-4 w-full lg:mb-0 lg:flex rounded-lg"
+                src="/images/features/analytics-dark.png"
+                height={1200}
+                width={1800}
+                alt="Analytics feature dark mode preview"
+              />
+            </div>
+          ) : (
+            <div class="mockup-browser border border-base-300 hidden mb-4 w-full lg:mb-0 lg:block bg-slate-100">
+              <div class="mockup-browser-toolbar">
+                <div class="input border border-base-300">https://reduced.to</div>
+              </div>
+              <img
+                class="hidden mb-4 w-full lg:mb-0 lg:flex rounded-lg"
+                src="/images/features/analytics.png"
+                height={1200}
+                width={1800}
+                alt="Analytics feature preview"
+              />
+            </div>
+          )}
+          <div class="text-gray-800 sm:text-lg dark:text-gray-200">
+            <h1 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-800 dark:text-gray-200">Advanced analytics for your links</h1>
+            <h2 class="mb-8 font-light text-gray-600 dark:text-gray-400">
+              The analytics dashboard provides detailed insights into your link performance. Track clicks, geographic, and devices data to
+              optimize your link management strategy.
+            </h2>
+            <ul role="list" class="pt-8 my-7 space-y-5 border-t border-gray-300 dark:border-gray-700">
+              <li class="flex space-x-3">
+                <svg
+                  class="flex-shrink-0 w-5 h-5 text-indigo-600 dark:text-indigo-500"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span class="text-base font-medium leading-tight text-gray-900 dark:text-white">Dynamic reports and dashboards</span>
+              </li>
+              <li class="flex space-x-3">
+                <svg
+                  class="flex-shrink-0 w-5 h-5 text-indigo-600 dark:text-indigo-500"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span class="text-base font-medium leading-tight text-gray-900 dark:text-white">Comprehensive analytics</span>
+              </li>
+              <li class="flex space-x-3">
+                <svg
+                  class="flex-shrink-0 w-5 h-5 text-indigo-600 dark:text-indigo-500"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span class="text-base font-medium leading-tight text-gray-900 dark:text-white">Real-time data</span>
+              </li>
+              <li class="flex space-x-3">
+                <svg
+                  class="flex-shrink-0 w-5 h-5 text-indigo-600 dark:text-indigo-500"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span class="text-base font-medium leading-tight text-gray-900 dark:text-white">Detailed insights</span>
+              </li>
+            </ul>
           </div>
         </div>
-
-        <div class="absolute inset-0 grid grid-cols-12 size-full">
-          <div class="col-span-full lg:col-span-7 lg:col-start-6 bg-gray-100 w-full h-5/6 rounded-xl sm:h-3/4 lg:h-full dark:bg-neutral-800"></div>
-        </div>
       </div>
-    </div>
+    </section>
   );
 });
