@@ -49,7 +49,7 @@ export const setTokensAsCookies = (accessToken: string, refreshToken: string, co
   const domain = isProduction ? `.${process.env.DOMAIN}` : 'localhost';
   cookie.set(ACCESS_COOKIE_NAME, accessToken, {
     path: '/',
-    sameSite: 'strict',
+    sameSite: 'lax',
     domain,
     secure: isProduction,
     httpOnly: true,
@@ -57,7 +57,7 @@ export const setTokensAsCookies = (accessToken: string, refreshToken: string, co
   });
   cookie.set(REFRESH_COOKIE_NAME, refreshToken, {
     path: '/',
-    sameSite: 'strict',
+    sameSite: 'lax',
     domain,
     secure: isProduction,
     httpOnly: true,
