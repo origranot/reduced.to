@@ -137,7 +137,7 @@ export const TemporaryLinks = component$(() => {
       <QrCodeDialog link={{ key: interactedLink.value?.key }} />
       <div class="mx-auto w-full max-w-md px-2.5 sm:px-0 mb-8">
         <div
-          class={`flex w-full items-center dark:bg-slate-800 rounded-md shadow-lg border border-base-200 p-2 ${
+          class={`flex w-full items-center dark:bg-slate-800 rounded-md shadow-lg bg-base-100 border border-base-200 p-2 ${
             createTempLink.value?.message ? 'border border-red-500' : ''
           } ${isInputDisabled.value ? 'bg-gray-200 cursor-not-allowed border-none' : ''}`}
         >
