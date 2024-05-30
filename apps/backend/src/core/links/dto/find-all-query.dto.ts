@@ -1,4 +1,4 @@
-import { IsDefined, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
+import { IsDefined, IsInt, IsOptional, IsString, Max, MaxLength, Min, IsIn } from 'class-validator';
 import { Sortable } from '../../../shared/decorators';
 import { SortOrder } from '../../../shared/enums/sort-order.enum';
 import { Type } from 'class-transformer';
@@ -21,6 +21,32 @@ export class FindAllQueryDto {
   @IsOptional()
   @MaxLength(30)
   filter?: string;
+
+  @IsString()
+  @IsOptional()
+  @IsIn(['active', 'expired'])
+  @MaxLength(30)
+  status: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(30)
+  minCreatedAt?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(30)
+  maxCreatedAt?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(30)
+  minExpirationTime?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(30)
+  maxExpirationTime?: string;
 
   @Sortable(['expirationTime', 'createdAt'])
   sort?: Record<string, SortOrder>;

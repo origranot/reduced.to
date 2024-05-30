@@ -57,7 +57,12 @@ describe('ReportsService', () => {
         skip: 5,
         limit: 10,
         filter: 'test',
-        sort: {},
+        sort: undefined,
+        minCreatedAt: '',
+        maxCreatedAt: '',
+        minExpirationTime: '',
+        maxExpirationTime: '',
+        status: '',
       };
 
       await service.findAll(findAllOptions);

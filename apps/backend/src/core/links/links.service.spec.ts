@@ -42,7 +42,12 @@ describe('LinksService', () => {
         skip: 5,
         limit: 10,
         filter: 'test',
-        sort: {},
+        sort: undefined,
+        minCreatedAt: '',
+        maxCreatedAt: '',
+        minExpirationTime: '',
+        maxExpirationTime: '',
+        status: '',
       };
 
       await service.findAll(findAllOptions);
@@ -92,7 +97,12 @@ describe('LinksService', () => {
         skip: 5,
         limit: 10,
         filter: 'test',
-        sort: {},
+        sort: undefined,
+        minCreatedAt: '',
+        maxCreatedAt: '',
+        minExpirationTime: '',
+        maxExpirationTime: '',
+        status: '',
         extraWhereClause: {
           userId: 'test',
         },
