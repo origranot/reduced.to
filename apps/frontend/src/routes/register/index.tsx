@@ -248,7 +248,7 @@ export default component$(() => {
                             I accept the{' '}
                             <a
                               class="text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                              href="/privacy-policy"
+                              href="/terms"
                               target="_blank"
                             >
                               Terms and Conditions

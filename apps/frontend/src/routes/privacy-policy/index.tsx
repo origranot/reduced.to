@@ -99,7 +99,7 @@ export default component$(() => {
 
       <h2 class="text-lg font-bold mt-10 mb-2">Contacting us</h2>
       <p class="pb-8 leading-relaxed dark:text-gray-300">
-        If you have any questions or concerns regarding this Privacy Policy, please contact us at our{' '}
+        If you have any questions or concerns regarding this Privacy Policy, please contact at our email ori@reduced.to or at our{' '}
         <a class="underline" href="https://github.com/origranot/reduced.to">
           Github
         </a>
