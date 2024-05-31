@@ -17,7 +17,7 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["nx", "serve", "tracker"],
       "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}/apps/tracker"
+      "cwd": "${workspaceFolder}"
     }
   ]
 }

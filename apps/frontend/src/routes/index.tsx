@@ -13,12 +13,10 @@ export default component$(() => {
 
   return (
     <>
-      <div>
-        <Background />
-        <Hero />
-        <TemporaryLinks />
-        <Footer />
-      </div>
+      <Background />
+      <Hero />
+      <TemporaryLinks />
+      <Footer />
     </>
   );
 });

@@ -83,6 +83,13 @@ export class AuthService {
       });
     }
 
+    createOptions.data['usage'] = {
+      create: {
+        linksCount: 0,
+        clicksCount: 0,
+      },
+    };
+
     return this.prisma.user.create(createOptions);
   }
 

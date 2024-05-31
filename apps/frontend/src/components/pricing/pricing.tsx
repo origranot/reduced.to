@@ -19,9 +19,9 @@ const plans: Record<Plan, PlanDetails> = {
     monthlyPrice: 0,
     annualPrice: 0,
     features: {
-      LINKS_COUNT: { value: '10/month', descriptionOnCard: '10 new links/mo', showInCard: true },
+      LINKS_COUNT: { value: '5/month', descriptionOnCard: '5 new links/mo', showInCard: true },
       LINKS_CLICKS: { value: 'Unlimited' },
-      TRACKED_CLICKS: { value: '500/month', descriptionOnCard: '500 tracked clicks/mo', showInCard: true },
+      TRACKED_CLICKS: { value: '250/month', descriptionOnCard: '250 tracked clicks/mo', showInCard: true },
       ANALYTICS_REPORTS: { value: '7 days analytics', showInCard: true },
       UTM_BUILDER: { value: true },
     },
@@ -29,7 +29,7 @@ const plans: Record<Plan, PlanDetails> = {
   Pro: fillPlanFeatures({
     name: 'Pro',
     monthlyPrice: 9,
-    annualPrice: 7,
+    annualPrice: 7.5,
     features: {
       LINKS_COUNT: { value: '500/month', descriptionOnCard: '500 new links/mo', showInCard: true },
       LINKS_CLICKS: { value: 'Unlimited' },
@@ -79,7 +79,7 @@ export const Pricing = component$(() => {
   return (
     <div class="px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
       <div class="mx-auto text-center mb-10 lg:mb-14">
-        <h2 class="text-2xl font-bold md:text-4xl md:leading-tight text-gray-800 dark:text-gray-200">Pricing</h2>
+        <h2 class="font-bold text-3xl sm:text-5xl md:leading-tight text-gray-800 dark:text-gray-200">Pricing</h2>
         <p class="mt-1 text-gray-600 dark:text-gray-400">Whatever your status, our offers evolve according to your needs.</p>
       </div>
 
@@ -157,8 +157,8 @@ export const Pricing = component$(() => {
         ))}
       </div>
 
-      <div class="mt-12">
-        <h3 class="text-2xl font-bold text-center text-gray-800 dark:text-gray-200">Plans Comparison</h3>
+      <div class="mt-12 max-w-[85rem] mx-auto">
+        <h3 class="text-2xl md:text-4xl font-bold text-center text-gray-800 dark:text-gray-200">Plans Comparison</h3>
         <div class="overflow-x-scroll md:overflow-x-visible w-full mt-6 rounded-lg shadow-lg border border-gray-200 dark:border-neutral-700">
           <table class="table-fixed overflow-scroll w-full bg-white dark:bg-gray-900">
             <thead>
@@ -206,7 +206,7 @@ export const Pricing = component$(() => {
                     </div>
                   </td>
                   {Object.entries(plans).map(([planKey, plan]) => (
-                    <td class="p-4 text-center text-gray-600 dark:text-neutral-400" key={planKey}>
+                    <td class="p-4 text-center text-gray-600 dark:text-neutral-400 dark:bg-slate-900" key={planKey}>
                       {plan.features[featureKey]?.value ? (
                         typeof plan.features[featureKey]?.value === 'boolean' ? (
                           <span class="text-center">

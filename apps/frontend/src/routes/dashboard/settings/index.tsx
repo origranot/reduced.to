@@ -1,10 +1,13 @@
-import { component$, $, useSignal } from '@builder.io/qwik';
-import { DocumentHead, Form, Link, globalAction$, z, zod$ } from '@builder.io/qwik-city';
+import { component$, $, useSignal, Resource, useVisibleTask$, NoSerialize, noSerialize } from '@builder.io/qwik';
+import { DocumentHead, Form, Link, globalAction$, z, zod$, routeLoader$ } from '@builder.io/qwik-city';
 import { useGetCurrentUser } from '../../layout';
 import { useToaster } from '../../../components/toaster/toaster';
-import { ACCESS_COOKIE_NAME, setTokensAsCookies } from '../../../shared/auth.service';
+import { ACCESS_COOKIE_NAME, serverSideFetch, setTokensAsCookies } from '../../../shared/auth.service';
 import { resizeImage } from '../../../utils/images';
 import { DELETE_CONFIRMATION, DELETE_MODAL_ID, DeleteModal } from '../../../components/dashboard/delete-modal/delete-modal';
+import { capitalizeFirstLetter } from '../../../utils/strings';
+import { formatRenewalDate } from '../../../lib/date-utils';
+import * as Paddle from '@paddle/paddle-js';
 
 const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
@@ -130,6 +133,16 @@ export const updateProfile = globalAction$(
   })
 );
 
+export const useBillingInfo = routeLoader$(async ({ cookie }) => {
+  const response = await serverSideFetch(`${process.env.API_DOMAIN}/api/v1/billing/info`, cookie);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch billing info');
+  }
+
+  return response.json();
+});
+
 export default component$(() => {
   const updateProfileAction = updateProfile();
   const user = useGetCurrentUser();
@@ -137,6 +150,16 @@ export default component$(() => {
   const profilePicture = useSignal(user.value?.profilePicture);
   const displayName = useSignal(user.value?.name);
   const deleteAction = useDeleteUser();
+  const billingInfo = useBillingInfo();
+  const paddle = useSignal<NoSerialize<Paddle.Paddle | undefined>>(undefined);
+
+  useVisibleTask$(async () => {
+    paddle.value = noSerialize(
+      await Paddle.initializePaddle({
+        token: 'e8448cbe308648b13dd07e8a97d6e703',
+      })
+    );
+  });
 
   const onUploadProfilePicture = $(async (event: Event) => {
     const file = (event.target as HTMLInputElement).files![0];
@@ -289,6 +312,105 @@ export default component$(() => {
           </div>
         </Form>
         <div class="divider py-3"></div>
+        <div class="block sm:grid grid-cols-3 gap-4">
+          <div>
+            <div class="font-bold">Billing</div>
+            <span class="text-sm text-gray-500">Manage your billing information</span>
+          </div>
+          <div class="pt-4 sm:pt-0 col-span-2 w-full md:w-2/3 xl:w-1/3">
+            <Resource
+              value={billingInfo}
+              onPending={() => <span>Loading...</span>}
+              onResolved={(billingInfo) => {
+                const linkUsagePercentage = (billingInfo.usage.currentLinkCount / billingInfo.limits.linksCount) * 100;
+                const clicksUsagePercentage = (billingInfo.usage.currentTrackedClicks / billingInfo.limits.trackedClicks) * 100;
+
+                const getProgressBarClass = (percentage: number) => {
+                  if (percentage >= 90) return 'bg-red-500';
+                  if (percentage >= 70) return 'bg-yellow-500';
+                  return 'bg-blue-500';
+                };
+
+                return (
+                  <div>
+                    <div class="flex justify-between items-center">
+                      <div class="flex items-center">
+                        <h2 class="text-lg font-bold mr-2">{capitalizeFirstLetter(billingInfo.plan)}</h2>
+                        {billingInfo.plan === 'FREE' && (
+                          <div class="relative flex items-center">
+                            <div class="absolute inline-flex h-2 w-2 rounded-full bg-green-500"></div>
+                            <div class="absolute inline-flex h-2 w-2 rounded-full bg-green-500 opacity-75 animate-ping"></div>
+                          </div>
+                        )}
+                      </div>
+                      {billingInfo.plan !== 'FREE' ? (
+                        <button class="btn btn-sm btn-error">Cancel Plan</button>
+                      ) : (
+                        <button
+                          class="btn btn-sm btn-primary"
+                          onClick$={$(() => {
+                            paddle.value?.Checkout.open({
+                              settings: {
+                                displayMode: 'overlay',
+                                theme: 'light',
+                                locale: 'en',
+                              },
+                              items: [
+                                {
+                                  priceId: '69543',
+                                  quantity: 1,
+                                },
+                              ],
+                            });
+                          })}
+                        >
+                          Upgrade Plan
+                        </button>
+                      )}
+                    </div>
+                    {billingInfo.billingCycle && (
+                      <div class="mb-4 text-gray-500">
+                        <span class="text-sm">Renews on {formatRenewalDate(new Date(billingInfo.billingCycle.nextBillingDate))}</span>
+                      </div>
+                    )}
+                    <div class="mb-4">
+                      <div class="flex justify-between">
+                        <span class="block text-sm font-semibold mb-1">Links Created</span>
+                        <span class="text-sm font-bold">
+                          {billingInfo.usage.currentLinkCount} / {billingInfo.limits.linksCount}{' '}
+                          <span class="text-xs font-normal text-gray-400">({linkUsagePercentage}%)</span>
+                        </span>
+                      </div>
+                      <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+                        <div
+                          class={`h-2.5 rounded-full ${getProgressBarClass(linkUsagePercentage)}`}
+                          style={{ width: `${linkUsagePercentage > 100 ? 100 : linkUsagePercentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div class="mb-4">
+                      <div class="flex justify-between">
+                        <span class="block text-sm font-semibold mb-1">Tracked Clicks</span>
+                        <span class="text-sm font-bold">
+                          {billingInfo.usage.currentTrackedClicks} / {billingInfo.limits.trackedClicks}{' '}
+                          <span class="text-xs font-normal text-gray-400">({clicksUsagePercentage}%)</span>
+                        </span>
+                      </div>
+                      <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+                        <div
+                          class={`h-2.5 rounded-full ${getProgressBarClass(clicksUsagePercentage)}`}
+                          style={{ width: `${clicksUsagePercentage > 100 ? 100 : clicksUsagePercentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }}
+            />
+          </div>
+        </div>
+        <div class="divider py-3"></div>
+
         <div class="block sm:grid grid-cols-3 gap-4">
           <div>
             <div class="font-bold">Delete account</div>

@@ -15,6 +15,8 @@ import { LinksModule } from './core/links/links.module';
 import { ReportsModule } from './core/reports/reports.module';
 import { MetadataModule } from './metadata/metadata.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { BillingModule } from './billing/billing.module';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -33,8 +35,10 @@ import { AnalyticsModule } from './analytics/analytics.module';
     UsersModule,
     LinksModule,
     ReportsModule,
+    BillingModule,
     MetadataModule,
     AnalyticsModule,
+    TasksModule, // Should be imported only once to avoid multiple instances
   ],
   providers: [
     PrismaService,
