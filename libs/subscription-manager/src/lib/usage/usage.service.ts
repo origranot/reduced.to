@@ -36,8 +36,9 @@ export class UsageService {
   async runOnAllActiveUsers(callback: (userId: string) => Promise<void>): Promise<void> {
     const pageSize = 1000;
     let page = 1;
+    let hasMoreUsers = true;
 
-    while (true) {
+    while (hasMoreUsers) {
       try {
         const users = await this.prismaService.user.findMany({
           where: {
@@ -50,7 +51,10 @@ export class UsageService {
           take: pageSize,
         });
 
-        if (users.length === 0) break;
+        if (users.length === 0) {
+          hasMoreUsers = false;
+          break;
+        }
 
         for (const user of users) {
           await callback(user.id);
