@@ -177,6 +177,7 @@ For the minimal configuration you can just rename the `.example.env` files to `.
 - **RATE_LIMIT_COUNT**: Number of requests within the ttl
 
 ###### Paddle - (Payment Gateway - https://www.paddle.com/ - Optional)
+
 - **PADDLE_ENABLE**: Wethter to enable Paddle or not
 - **PADDLE_WEBHOOK_KEY**: Get it from your Paddle account
 - **PADDLE_SECRET_KEY**: Get it from your Paddle account
@@ -223,16 +224,16 @@ If you want to change your plan on developemnt (Assuming you have a local instan
 
 1. Register locally on the app.
 2. Go to your database and create a new row in the `Subscription` table:
-    - `id`: 1
-    - `userId`: (you can find your user id in the `User` table)
-    - `plan`: (FREE / PRO / BUSINESS)
-    - `status`: active
-    - `endDate`: Choose a date in the future
-    - `scheduledToBeCancelled`: false
-    - `endDate`: empty (NULL)
-    - `nextBilledAt`: empty (NULL)
-    - `createdAt`: current date
-    - `updatedAt`: current date
+   - `id`: 1
+   - `userId`: (you can find your user id in the `User` table)
+   - `plan`: (FREE / PRO / BUSINESS)
+   - `status`: active
+   - `endDate`: Choose a date in the future
+   - `scheduledToBeCancelled`: false
+   - `endDate`: empty (NULL)
+   - `nextBilledAt`: empty (NULL)
+   - `createdAt`: current date
+   - `updatedAt`: current date
 3. Relogin to the app (refresh the JWT token)
 4. You can now access the premium features.
 
