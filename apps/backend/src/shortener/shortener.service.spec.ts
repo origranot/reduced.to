@@ -8,6 +8,7 @@ import { PrismaService } from '@reduced.to/prisma';
 import { ShortenerDto } from './dto';
 import { BadRequestException } from '@nestjs/common';
 import { UserContext } from '../auth/interfaces/user-context';
+import { UsageService } from '@reduced.to/subscription-manager';
 
 const FIXED_SYSTEM_TIME = '1999-01-01T00:00:00Z';
 
@@ -51,6 +52,13 @@ describe('ShortenerService', () => {
               findFirst: jest.fn(),
             },
           }),
+        },
+        {
+          provide: UsageService,
+          useValue: {
+            isEligibleToCreateLink: jest.fn().mockResolvedValue(true),
+            incrementLinksCount: jest.fn(),
+          },
         },
       ],
     }).compile();

@@ -12,6 +12,8 @@ import { AppConfigService } from '@reduced.to/config';
 import { Link } from '@prisma/client';
 import { addUtmParams } from '@reduced.to/utils';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { UsageService } from '@reduced.to/subscription-manager';
+import { GuardFields } from './guards/feature.guard';
 
 interface LinkResponse extends Partial<Link> {
   url: string;
@@ -28,7 +30,8 @@ export class ShortenerController {
     private readonly logger: AppLoggerService,
     private readonly shortenerService: ShortenerService,
     private readonly shortenerProducer: ShortenerProducer,
-    private readonly safeUrlService: SafeUrlService
+    private readonly safeUrlService: SafeUrlService,
+    private readonly usageService: UsageService
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -73,7 +76,7 @@ export class ShortenerController {
 
   @UseGuards(OptionalJwtAuthGuard)
   @Post()
-  async shortener(@Body() shortenerDto: ShortenerDto, @Req() req: Request): Promise<{ key: string }> {
+  async shortener(@GuardFields() @Body() shortenerDto: ShortenerDto, @Req() req: Request): Promise<{ key: string }> {
     const user = req.user as UserContext;
 
     // Check if the url is safe
@@ -97,14 +100,19 @@ export class ShortenerController {
       return this.shortenerService.createShortenedUrl(rest);
     }
 
+    // Only verified users can create shortened urls
+    if (!user?.verified) {
+      throw new BadRequestException('You must be verified in to create a shortened url');
+    }
+
     // Hash the password if it exists in the request
     if (shortenerDto.password) {
       shortenerDto.password = await this.shortenerService.hashPassword(shortenerDto.password);
     }
 
-    // Only verified users can create shortened urls
-    if (!user?.verified) {
-      throw new BadRequestException('You must be verified in to create a shortened url');
+    const isEligibleToCreateLink = await this.usageService.isEligibleToCreateLink(user.id);
+    if (!isEligibleToCreateLink) {
+      throw new BadRequestException('You have reached your link creation limit');
     }
 
     this.logger.log(`User ${user.id} is creating a shortened url for ${shortenerDto.url}`);

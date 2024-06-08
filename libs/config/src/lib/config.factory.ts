@@ -15,6 +15,11 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
           threshold: LOG_LEVEL[process.env.LOGGER_CONSOLE_THRESHOLD] || LOG_LEVEL.INFO,
         },
       },
+      paddle: {
+        enable: process.env.PADDLE_ENABLE === 'true' || false,
+        secret: process.env.PADDLE_SECRET_KEY,
+        webhookSecret: process.env.PADDLE_WEBHOOK_KEY,
+      },
       front: {
         domain: process.env.DOMAIN || 'localhost',
         clientSideApiDomain: process.env.CLIENTSIDE_API_DOMAIN || 'http://localhost:3000',
@@ -24,6 +29,7 @@ export const configFactory: ConfigFactory<{ config: Configuration }> = () => {
         ttl: +process.env.RATE_LIMIT_TTL || 60,
         limit: +process.env.RATE_LIMIT_COUNT || 10,
       },
+
       redis: {
         enable: process.env.REDIS_ENABLE === 'true' || false,
         host: process.env.REDIS_HOST || 'localhost',
@@ -147,6 +153,12 @@ export interface StorageConfig {
   bucket: string;
 }
 
+export interface PaddleConfig {
+  enable?: boolean;
+  secret: string;
+  webhookSecret: string;
+}
+
 export interface Configuration {
   general: GeneralConfig;
   logger: LoggerConfig;
@@ -159,4 +171,5 @@ export interface Configuration {
   safeUrl: SafeUrlConfig;
   tracker: TrackerConfig;
   storage: StorageConfig;
+  paddle: PaddleConfig;
 }

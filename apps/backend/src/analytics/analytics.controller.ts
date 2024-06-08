@@ -4,8 +4,9 @@ import { UserCtx } from '../shared/decorators';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { UserContext } from '../auth/interfaces/user-context';
 import { PrismaService } from '@reduced.to/prisma';
+import { RestrictDays } from './analytics.guard';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RestrictDays)
 @Controller('analytics')
 export class AnalyticsController {
   constructor(private readonly analyticsService: AnalyticsService, private readonly prismaService: PrismaService) {}

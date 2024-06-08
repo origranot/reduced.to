@@ -34,17 +34,28 @@ export class UsersService extends EntityService<User> {
     return this.prismaService.user.count({ where });
   }
 
-  async findByEmail(email: string): Promise<UserContext> {
+  async findUserContextByEmail(email: string): Promise<UserContext> {
     const user = await this.prismaService.user.findUnique({
       where: {
         email,
       },
+      include: {
+        subscription: true,
+      },
     });
+
+    // We want to return undefined if user is not found
+    if (!user) {
+      return undefined;
+    }
 
     delete user?.password;
     delete user?.refreshToken;
 
-    return user;
+    return {
+      ...user,
+      plan: user?.subscription?.plan || 'FREE',
+    };
   }
 
   async updateById(id: string, data: Prisma.UserUpdateInput): Promise<User> {

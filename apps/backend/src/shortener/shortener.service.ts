@@ -7,13 +7,15 @@ import { UserContext } from '../auth/interfaces/user-context';
 import { Link } from '@reduced.to/prisma';
 import * as argon2 from 'argon2';
 import { createUtmObject } from '@reduced.to/utils';
+import { UsageService } from '@reduced.to/subscription-manager';
 
 @Injectable()
 export class ShortenerService {
   constructor(
     private readonly appCacheService: AppCacheService,
     private readonly prisma: PrismaService,
-    private readonly appConfigService: AppConfigService
+    private readonly appConfigService: AppConfigService,
+    private readonly usageService: UsageService
   ) {}
 
   /**
@@ -127,8 +129,8 @@ export class ShortenerService {
     if (password && shortenerDto.temporary) {
       throw new BadRequestException('Temporary links cannot be password protected');
     }
-
-    return this.prisma.link.create({ data });
+    const [_, createdLink] = await Promise.all([this.usageService.incrementLinksCount(user.id), this.prisma.link.create({ data })]);
+    return createdLink;
   };
 
   /**

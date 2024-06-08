@@ -1,6 +1,6 @@
 import { globalAction$, z, zod$ } from '@builder.io/qwik-city';
-import { ACCESS_COOKIE_NAME } from '../../../shared/auth.service';
-import { DELETE_CONFIRMATION } from './delete-modal';
+import { ACCESS_COOKIE_NAME } from '../../../../shared/auth.service';
+import { DELETE_CONFIRMATION } from '../../generic-modal/generic-modal';
 
 export const useDeleteLink = globalAction$(
   async ({ idToDelete }, { fail, cookie }) => {
@@ -15,7 +15,7 @@ export const useDeleteLink = globalAction$(
     const data = await response.json();
 
     if (response.status !== 200) {
-      return fail(data?.statusCode || 500, {
+      return fail(500, {
         message: data?.message,
       });
     }

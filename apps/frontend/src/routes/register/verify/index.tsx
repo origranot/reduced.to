@@ -59,7 +59,15 @@ export default component$(() => {
       clearInterval(interval);
     };
   });
-
+  const urlOverride = useSignal<string | null>(null);
+  useVisibleTask$(() => {
+    const onboarding = window.localStorage.getItem('onboarding');
+    if (!onboarding) return;
+    if (onboarding.length > 1) {
+      urlOverride.value = '/dashboard/settings#' + onboarding;
+      window.localStorage.setItem('onboarding', '');
+    }
+  });
   return (
     <div class="flex flex-col h-[calc(100vh-64px)]">
       <div class="flex flex-1 content-center justify-center items-center">
@@ -105,7 +113,7 @@ export default component$(() => {
                 <p class="mt-2 mb-8">Your account is verified</p>
                 <div class="form-control w-full max-w-xs inline-flex">
                   <br />
-                  <Link href="/dashboard" class="btn btn-primary">
+                  <Link href={urlOverride.value || '/dashboard'} class="btn btn-primary">
                     Go back
                   </Link>
                 </div>

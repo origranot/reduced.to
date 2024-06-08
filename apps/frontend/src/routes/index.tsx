@@ -5,7 +5,7 @@ import styles from './index.css?inline';
 import { Hero } from '../components/hero/hero';
 import { Footer } from '../components/footer/footer';
 import { TemporaryLinks } from '../components/temporary-links/temporary-links';
-import { Features } from '../components/features/features';
+import { Background } from '../components/background/background';
 
 export default component$(() => {
   useStylesScoped$(animations);
@@ -13,9 +13,9 @@ export default component$(() => {
 
   return (
     <>
+      <Background />
       <Hero />
       <TemporaryLinks />
-      <Features />
       <Footer />
     </>
   );

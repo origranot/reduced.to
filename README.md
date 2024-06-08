@@ -176,6 +176,11 @@ For the minimal configuration you can just rename the `.example.env` files to `.
 - **RATE_LIMIT_TTL**: Rate limit TTL (time to live)
 - **RATE_LIMIT_COUNT**: Number of requests within the ttl
 
+###### Paddle - (Payment Gateway - https://www.paddle.com/ - Optional)
+- **PADDLE_ENABLE**: Wethter to enable Paddle or not
+- **PADDLE_WEBHOOK_KEY**: Get it from your Paddle account
+- **PADDLE_SECRET_KEY**: Get it from your Paddle account
+
 ###### Logger
 
 - **LOGGER_CONSOLE_THRESHOLD**: Threshold level of the console transporter.
@@ -183,6 +188,7 @@ For the minimal configuration you can just rename the `.example.env` files to `.
 ###### Frontend
 
 - **DOMAIN**: Domain of your frontend app
+- **PUBLIC_PADDLE_KEY**: Get it from your Paddle account (Not needed when running locally)
 - **API_DOMAIN**: Domain of your backend instance (used for server side requests)
 - **CLIENTSIDE_API_DOMAIN**: Domain of your backend instance (used for client side requests)
 - **STORAGE_DOMAIN**=Domain of your bucket (used for storing images)
@@ -210,6 +216,25 @@ For the minimal configuration you can just rename the `.example.env` files to `.
 - **NOVU_API_KEY**: Get it from https://novu.co/, you don't need this when running locally (just verify your email from the database)
 
 Happy Hacking !
+
+### Change my plan on development
+
+If you want to change your plan on developemnt (Assuming you have a local instance of PostgreSQL running on port 5432 and you don't have Paddle configured):
+
+1. Register locally on the app.
+2. Go to your database and create a new row in the `Subscription` table:
+    - `id`: 1
+    - `userId`: (you can find your user id in the `User` table)
+    - `plan`: (FREE / PRO / BUSINESS)
+    - `status`: active
+    - `endDate`: Choose a date in the future
+    - `scheduledToBeCancelled`: false
+    - `endDate`: empty (NULL)
+    - `nextBilledAt`: empty (NULL)
+    - `createdAt`: current date
+    - `updatedAt`: current date
+3. Relogin to the app (refresh the JWT token)
+4. You can now access the premium features.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

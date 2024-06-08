@@ -16,6 +16,7 @@ import { ProvidersController } from './providers/providers.controller';
 import { UsersModule } from '../core/users/users.module';
 import { StorageModule } from '../storage/storage.module';
 import { StorageService } from '../storage/storage.service';
+import { BillingModule } from '../billing/billing.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { StorageService } from '../storage/storage.service';
     }),
     NovuModule,
     StorageModule,
+    forwardRef(() => BillingModule),
     forwardRef(() => UsersModule),
   ],
   controllers: [AuthController, ProvidersController],

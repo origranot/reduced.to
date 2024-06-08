@@ -14,6 +14,7 @@
     "skipLibCheck": true,
     "incremental": true,
     "isolatedModules": true,
+    "experimentalDecorators": true,
     "outDir": "tmp",
     "noEmit": true,
     "types": ["node", "vite/client", "vitest"]

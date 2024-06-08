@@ -7,8 +7,8 @@ import { SortOrder } from '../../components/dashboard/table/table-server-paginat
 import { FilterInput } from '../../components/dashboard/table/default-filter';
 import { useToaster } from '../../components/toaster/toaster';
 import { NoData } from '../../components/dashboard/empty-data/no-data';
-import { DELETE_MODAL_ID, DeleteModal } from '../../components/dashboard/delete-modal/delete-modal';
-import { useDeleteLink } from '../../components/dashboard/delete-modal/action';
+import { DELETE_MODAL_ID, GenericModal } from '../../components/dashboard/generic-modal/generic-modal';
+import { useDeleteLink } from '../../components/dashboard/links/link/use-delete-link';
 import { QR_CODE_DIALOG_ID, QrCodeDialog } from '../../components/temporary-links/qr-code-dialog/qr-code-dialog';
 import { addUtmParams } from '@reduced.to/utils';
 
@@ -128,11 +128,12 @@ export default component$(() => {
 
   return (
     <>
-      <DeleteModal
+      <GenericModal
         onSubmitHandler={$(() => {
           refetch.value++;
         })}
         idToDelete={idToDelete.value}
+        operationType="delete"
         id={DELETE_MODAL_ID}
         confirmation="DELETE"
         type="link"

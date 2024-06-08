@@ -3,11 +3,16 @@ import { qwikCity } from '@builder.io/qwik-city/vite';
 import { defineConfig, loadEnv } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { qwikNxVite } from 'qwik-nx/plugins';
+import path from 'path';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-
   return {
+    resolve: {
+      alias: {
+        '@reduced.to/subscription-manager': path.resolve(__dirname, '../../libs/subscription-manager/src/static'),
+      },
+    },
     cacheDir: '../../node_modules/.vite/apps/frontend',
     plugins: [
       qwikNxVite(),
@@ -23,6 +28,7 @@ export default defineConfig(({ mode }) => {
       tsconfigPaths({ root: '../../' }),
     ],
     define: {
+      'process.env.PUBLIC_PADDLE_KEY': JSON.stringify(env.PUBLIC_PADDLE_KEY),
       'process.env.DOMAIN': JSON.stringify(env.DOMAIN),
       'process.env.API_DOMAIN': JSON.stringify(env.API_DOMAIN),
       'process.env.CLIENTSIDE_API_DOMAIN': JSON.stringify(env.CLIENTSIDE_API_DOMAIN),
