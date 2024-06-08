@@ -10,7 +10,6 @@ import {
 } from '@paddle/paddle-node-sdk';
 import { AppConfigService } from '@reduced.to/config';
 import { AppLoggerService } from '@reduced.to/logger';
-import { UsersService } from '../core/users/users.service';
 
 @Injectable()
 export class BillingService implements OnModuleInit {
@@ -21,7 +20,7 @@ export class BillingService implements OnModuleInit {
     private readonly prisma: PrismaService,
     private readonly appConfigService: AppConfigService,
     private readonly logger: AppLoggerService,
-    private readonly usageService: UsageService
+    private readonly usageService: UsageService,
   ) {
     const { paddle, general } = this.appConfigService.getConfig();
     this.enabled = paddle.enable;
