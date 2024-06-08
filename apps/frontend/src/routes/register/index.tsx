@@ -120,13 +120,6 @@ export default component$(() => {
 
   const action = useRegister();
 
-  useVisibleTask$(() => {
-    const url = window.location.href;
-    if (!url.includes('#')) return;
-    const [_, token] = url.split('#');
-    window.localStorage.setItem('onboarding', token);
-  });
-
   return (
     <div class="flex flex-col h-[calc(100vh-64px)]">
       <div class="flex flex-1 content-center justify-center items-center">
