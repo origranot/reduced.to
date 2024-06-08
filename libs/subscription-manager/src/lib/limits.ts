@@ -131,9 +131,9 @@ const PRO_PLAN: Plan = {
   },
   MONTHLY_PRICE: 9,
   YEARLY_PRICE: 90,
-  PADDLE_PLAN_ID: 'pro_01hz1n5gnw3mgtv7whqszxm13b',
-  PADDLE_YEARLY_PRICE_ID: 'pri_01hz1nbnrf8fadhh0k3qr2y8c7',
-  PADDLE_MONTHLY_PRICE_ID: 'pri_01hz1n789t5sghzzn2vjw3qgr3',
+  PADDLE_PLAN_ID: 'pro_01hzvm0mb71zk0905we6ar99p4',
+  PADDLE_YEARLY_PRICE_ID: 'pri_01hzvm27c3qdgkrtkcsxkwy461',
+  PADDLE_MONTHLY_PRICE_ID: 'pri_01hzvm1pbcy8zfeygzrt56vwmh',
 };
 
 const BUSINESS_PLAN: Plan = {
@@ -162,9 +162,9 @@ const BUSINESS_PLAN: Plan = {
   },
   MONTHLY_PRICE: 30,
   YEARLY_PRICE: 300,
-  PADDLE_PLAN_ID: 'pro_01hz1n9qjsn64g8kk68ex60sq6',
-  PADDLE_YEARLY_PRICE_ID: 'pri_01hz1nc8qy3pwn5tx2d5bfc7ab',
-  PADDLE_MONTHLY_PRICE_ID: 'pri_01hz1naabytns9mpr57zz4c7zh',
+  PADDLE_PLAN_ID: 'pro_01hzvm2etgk8fjb92ej6dgjrdc',
+  PADDLE_YEARLY_PRICE_ID: 'pri_01hzvm39s39nh5m9mwg4dewxw5',
+  PADDLE_MONTHLY_PRICE_ID: 'pri_01hzw1dg677v5f4nsbjc4djx6k',
 };
 
 export const PLAN_LEVELS: Record<string, Plan> = {
