@@ -29,7 +29,7 @@ export const BillingCard = component$(
         <h4 class="font-medium text-lg text-gray-800 dark:text-neutral-200">{plan.DISPLAY_NAME}</h4>
         <span class="mt-7 font-bold text-5xl text-gray-800 dark:text-neutral-200">
           {billing === 'yearly' ? `$${plan.YEARLY_PRICE}` : `$${plan.MONTHLY_PRICE}`}
-          <span class="text-sm font-normal dark:text-gray-400 text-gray-600"> / month</span>
+          <span class="text-sm font-normal dark:text-gray-400 text-gray-600"> / {billing === 'yearly' ? 'year' : 'month'}</span>
         </span>
         <p class="mt-2 text-sm text-gray-500 dark:text-neutral-500">{plan.MONTHLY_PRICE <= 0 ? 'Forever free' : `Billed ${billing}`}</p>
 
