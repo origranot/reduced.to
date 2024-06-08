@@ -8,8 +8,8 @@ export class TasksService {
 
   @Cron('0 0 1 * *') // Runs at midnight on the first day of every month
   async handleCron() {
-    await this.usageService.runOnAllActiveUsers(async (user) => {
-      await this.usageService.resetUsage(user.id);
+    await this.usageService.runOnAllActiveUsers(async (id) => {
+      await this.usageService.resetUsage(id);
     });
   }
 }

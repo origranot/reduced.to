@@ -33,31 +33,34 @@ export class UsageService {
     });
   }
 
-  async runOnAllActiveUsers(
-    callback: (
-      user: User & {
-        subscription: Subscription;
-        usage: Usage;
-      }
-    ) => void
-  ) {
+  async runOnAllActiveUsers(callback: (userId: string) => Promise<void>): Promise<void> {
     const pageSize = 1000;
     let page = 1;
-    for (;;) {
-      const users = await this.prismaService.user.findMany({
-        where: {
-          verified: true,
-        },
-        include: {
-          subscription: true,
-          usage: true,
-        },
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-      });
-      if (users.length === 0) break;
-      for (const user of users) callback(user);
-      page++;
+
+    while (true) {
+      try {
+        const users = await this.prismaService.user.findMany({
+          where: {
+            verified: true,
+          },
+          select: {
+            id: true,
+          },
+          skip: (page - 1) * pageSize,
+          take: pageSize,
+        });
+
+        if (users.length === 0) break;
+
+        for (const user of users) {
+          await callback(user.id);
+        }
+
+        page++;
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        break;
+      }
     }
   }
 
