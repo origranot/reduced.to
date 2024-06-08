@@ -30,7 +30,7 @@ export class BillingService implements OnModuleInit {
     }
 
     this.paddleClient = new Paddle(paddle.secret, {
-      environment: general.env === 'development' ? Environment.sandbox : Environment.sandbox,
+      environment: general.env === 'development' ? Environment.sandbox : Environment.production,
     });
   }
 
