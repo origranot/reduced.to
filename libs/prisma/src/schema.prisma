@@ -18,12 +18,57 @@ model User {
   email             String         @unique
   password          String?
   role              Role           @default(USER)
-  verified          Boolean        @default(false) // Is the mail verification
+  verified          Boolean        @default(false)
   verificationToken String?
   refreshToken      String?
   links             Link[]
   createdAt         DateTime       @default(now())
   authProviders     AuthProvider[]
+  subscription      Subscription?
+  usage             Usage?
+
+  @@index(email)
+  @@index(verificationToken)
+}
+
+model Subscription {
+  id                     String    @id @default(uuid()) // Same id as in Paddle
+  user                   User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                 String    @unique
+  plan                   Plan
+  status                 String // e.g., 'active', 'cancelled'
+  startDate              DateTime  @default(now())
+  scheduledToBeCancelled Boolean   @default(false)
+  endDate                DateTime?
+  nextBilledAt           DateTime?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  @@index(userId)
+  @@index(plan)
+  @@index(status)
+  @@index(startDate)
+  @@index(endDate)
+}
+
+model Usage {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String   @unique
+  linksCount  Int      @default(0)
+  linksLimit  Int      @default(5)
+  clicksCount Int      @default(0)
+  clicksLimit Int      @default(250)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index(userId)
+}
+
+enum Plan {
+  FREE
+  PRO
+  BUSINESS
 }
 
 enum ProviderType {
@@ -58,6 +103,8 @@ model Link {
   @@index(userId)
   @@index(key)
   @@index([url, clicks])
+  @@index(createdAt)
+  @@index(expirationTime)
 }
 
 model Report {
@@ -69,6 +116,7 @@ model Report {
 
   @@index(linkId)
   @@index(category)
+  @@index(createdAt)
 }
 
 model Visit {
@@ -88,6 +136,11 @@ model Visit {
   createdAt DateTime @default(now())
 
   @@index(linkId)
+  @@index(ip)
+  @@index(country)
+  @@index(region)
+  @@index(city)
+  @@index(createdAt)
 }
 
 enum Role {

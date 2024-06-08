@@ -17,6 +17,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       scope: ['email', 'profile'],
     });
   }
+
   async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
     const { name, emails, photos, id } = profile;
 
@@ -34,6 +35,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       refreshToken,
       providerId: id,
     };
+
     done(null, user);
   }
 }

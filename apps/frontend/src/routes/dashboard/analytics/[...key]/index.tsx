@@ -4,6 +4,9 @@ import { component$, useSignal } from '@builder.io/qwik';
 import { ClicksChart } from '../../../../components/dashboard/analytics/clicks-chart/clicks-chart';
 import { CountriesChart } from '../../../../components/dashboard/analytics/contries-chart/countries-chart';
 import { DevicesChart } from '../../../../components/dashboard/analytics/devices-chart/devices-chart';
+import { useGetCurrentUser } from '../../../layout';
+import { PLAN_LEVELS } from '@reduced.to/subscription-manager';
+import { LuLock } from '@qwikest/icons/lucide';
 
 export const useGetAnalytics = routeLoader$(async ({ params: { key }, cookie, redirect }) => {
   const [clicksResponse, countriesResponse, devicesResponse] = await Promise.all([
@@ -32,6 +35,35 @@ export const useGetAnalytics = routeLoader$(async ({ params: { key }, cookie, re
 export default component$(() => {
   const daysDuration = useSignal(7);
   const analytics = useGetAnalytics();
+  const user = useGetCurrentUser();
+  const plan = PLAN_LEVELS[user.value?.plan || 'FREE'];
+
+  const timeframes = [
+    {
+      label: 'Last 24 hours',
+      value: 1,
+    },
+    {
+      label: 'Last 7 days',
+      value: 7,
+    },
+    {
+      label: 'Last 30 days',
+      value: 30,
+    },
+    {
+      label: 'Last year',
+      value: 365,
+    },
+  ].map((frame) => {
+    const maxDays = plan.FEATURES.ANALYTICS.value || 1;
+    if (frame.value <= maxDays) return frame;
+
+    return {
+      ...frame,
+      disabled: true,
+    };
+  }) as { label: string; value: number; disabled?: boolean }[];
 
   return (
     <>
@@ -44,20 +76,21 @@ export default component$(() => {
           </p>
         </div>
         <div class="flex my-auto">
-          <select
-            class="select select-bordered max-w-xs"
-            value={daysDuration.value}
-            onChange$={(event) => {
-              daysDuration.value = parseInt((event.target as HTMLSelectElement).value, 10);
-            }}
-          >
-            <option value={1}>Last 24 hours</option>
-            <option selected value={7}>
-              Last 7 days
-            </option>
-            <option value={30}>Last 30 days</option>
-            <option value={365}>Last year</option>
-          </select>
+          <div class="relative">
+            <select
+              class="select select-bordered max-w-xs"
+              value={daysDuration.value}
+              onChange$={(event) => {
+                daysDuration.value = parseInt((event.target as HTMLSelectElement).value, 10);
+              }}
+            >
+              {timeframes.map((frame) => (
+                <option value={frame.value} disabled={frame.disabled}>
+                  {`${frame.label} ${frame.disabled ? `(Locked)` : ''}`}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
       <ClicksChart

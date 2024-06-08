@@ -70,6 +70,7 @@ export const serverSideFetch = async (url: string, cookies: Cookie, options = {}
 
   return authorizedFetch(url, {
     headers: {
+      contentType: 'application/json',
       Authorization: `Bearer ${accessToken}`,
     },
     ...options,
@@ -81,6 +82,7 @@ export const authorizedFetch = async (url: string, options = {}) => {
 
   if (response.status === 401) {
     // Attempt to refresh the token
+    console.debug('Attempt to refresh the token');
     const refreshResponse = await fetch(`${process.env.API_DOMAIN}/api/v1/auth/refresh`, {
       method: 'POST',
       credentials: 'include',
@@ -110,6 +112,7 @@ export const refreshTokens = async (refreshToken: string): Promise<{ accessToken
 
     if (res.ok) {
       const { accessToken, refreshToken } = await res.json();
+
       return {
         accessToken,
         refreshToken,

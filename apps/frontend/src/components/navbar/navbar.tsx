@@ -11,34 +11,18 @@ export const Navbar = component$(() => {
   const showDropdown = useSignal(false);
 
   return (
-    <div class="navbar bg-base-100 drop-shadow-md fixed z-[40] lg:px-20">
+    <div class="navbar bg-base-100 drop-shadow-md dark:shadow-slate-700 shadow-sm fixed z-[40] lg:px-20">
       <div class="flex-1 flex items-center">
-        <Link
-          class="btn btn-ghost normal-case text-xl"
-          onClick$={(event) => {
-            event.preventDefault();
-            const heroSection = document.getElementById('hero');
-            if (heroSection) {
-              heroSection.scrollIntoView({ behavior: 'smooth' });
-            }
-          }}
-        >
+        <a href="/" class="btn btn-ghost normal-case text-xl">
           Reduced.to
-        </Link>
+        </a>
         <div class="hidden sm:flex flex-grow justify-start space-x-4 ml-6">
-          <Link
-            title="Features"
-            class="btn btn-sm btn-ghost"
-            onClick$={(event) => {
-              event.preventDefault();
-              const featuresSection = document.getElementById('features');
-              if (featuresSection) {
-                featuresSection.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-          >
+          <a title="Features" href="/features" class="btn btn-sm btn-ghost">
             Features
-          </Link>
+          </a>
+          <a title="Pricing" href="/pricing" class="btn btn-sm btn-ghost">
+            Pricing
+          </a>
           <a href="https://docs.reduced.to" target="_blank" title="Documentation" class="btn btn-sm btn-ghost">
             Docs
           </a>
@@ -59,16 +43,7 @@ export const Navbar = component$(() => {
         {showDropdown.value && (
           <ul tabIndex={0} class="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4 p-2">
             <li>
-              <Link
-                class="btn-ghost"
-                onClick$={(event) => {
-                  event.preventDefault();
-                  const featuresSection = document.getElementById('features');
-                  if (featuresSection) {
-                    featuresSection.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-              >
+              <Link href="/features" class="btn-ghost">
                 Features
               </Link>
             </li>

@@ -10,6 +10,7 @@ import { ShortenerProducer } from './producer/shortener.producer';
 import { QueueManagerModule, QueueManagerService } from '@reduced.to/queue-manager';
 import { IClientDetails } from '../shared/decorators/client-details/client-details.decorator';
 import { SafeUrlService } from '@reduced.to/safe-url';
+import { UsageService } from '@reduced.to/subscription-manager';
 
 describe('ShortenerController', () => {
   let shortenerController: ShortenerController;
@@ -36,6 +37,12 @@ describe('ShortenerController', () => {
           provide: SafeUrlService,
           useValue: {
             isSafeUrl: jest.fn().mockResolvedValue(true),
+          },
+        },
+        {
+          provide: UsageService,
+          useValue: {
+            isEligibleToCreateLink: jest.fn().mockResolvedValue(true),
           },
         },
         QueueManagerService,

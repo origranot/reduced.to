@@ -1,10 +1,15 @@
-import { component$, $, useSignal } from '@builder.io/qwik';
-import { DocumentHead, Form, Link, globalAction$, z, zod$ } from '@builder.io/qwik-city';
+import { component$, $, useSignal, Resource, useVisibleTask$, NoSerialize, noSerialize } from '@builder.io/qwik';
+import { DocumentHead, Form, Link, globalAction$, z, zod$, routeLoader$ } from '@builder.io/qwik-city';
 import { useGetCurrentUser } from '../../layout';
 import { useToaster } from '../../../components/toaster/toaster';
-import { ACCESS_COOKIE_NAME, setTokensAsCookies } from '../../../shared/auth.service';
+import { ACCESS_COOKIE_NAME, serverSideFetch, setTokensAsCookies } from '../../../shared/auth.service';
 import { resizeImage } from '../../../utils/images';
-import { DELETE_CONFIRMATION, DELETE_MODAL_ID, DeleteModal } from '../../../components/dashboard/delete-modal/delete-modal';
+import { DELETE_CONFIRMATION, DELETE_MODAL_ID, GenericModal } from '../../../components/dashboard/generic-modal/generic-modal';
+import { capitalizeFirstLetter } from '../../../utils/strings';
+import { formatRenewalDate } from '../../../lib/date-utils';
+import * as Paddle from '@paddle/paddle-js';
+import { RESUME_CONFIRMATION, RESUME_PLAN_MODAL_ID, useResumePlan } from './billing/use-resume-plan';
+import { PLAN_MODAL_ID, PlanModal } from '../../../components/dashboard/plan-modal/plan-modal';
 
 const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
@@ -22,7 +27,7 @@ const useDeleteUser = globalAction$(
     const data = await response.json();
 
     if (response.status !== 200) {
-      return fail(data?.statusCode || 500, {
+      return fail(500, {
         message: data?.message,
       });
     }
@@ -130,6 +135,16 @@ export const updateProfile = globalAction$(
   })
 );
 
+export const useBillingInfo = routeLoader$(async ({ cookie }) => {
+  const response = await serverSideFetch(`${process.env.API_DOMAIN}/api/v1/billing/info`, cookie);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch billing info');
+  }
+
+  return response.json();
+});
+
 export default component$(() => {
   const updateProfileAction = updateProfile();
   const user = useGetCurrentUser();
@@ -137,6 +152,23 @@ export default component$(() => {
   const profilePicture = useSignal(user.value?.profilePicture);
   const displayName = useSignal(user.value?.name);
   const deleteAction = useDeleteUser();
+  const resumePlanAction = useResumePlan();
+  const billingInfo = useBillingInfo();
+  const paddle = useSignal<NoSerialize<Paddle.Paddle | undefined>>(undefined);
+
+  useVisibleTask$(async () => {
+    const publicKey = import.meta.env.PUBLIC_PADDLE_KEY;
+    if (!publicKey) {
+      return;
+    }
+
+    paddle.value = noSerialize(
+      await Paddle.initializePaddle({
+        token: publicKey,
+        environment: import.meta.env.DEV ? 'sandbox' : 'production',
+      })
+    );
+  });
 
   const onUploadProfilePicture = $(async (event: Event) => {
     const file = (event.target as HTMLInputElement).files![0];
@@ -180,7 +212,15 @@ export default component$(() => {
 
   return (
     <>
-      <DeleteModal id={DELETE_MODAL_ID} confirmation="DELETE" type="account" action={deleteAction} />
+      <PlanModal paddle={paddle.value} id={PLAN_MODAL_ID} />
+      <GenericModal id={DELETE_MODAL_ID} confirmation="DELETE" operationType="delete" type="account" action={deleteAction} />
+      <GenericModal
+        id={RESUME_PLAN_MODAL_ID}
+        confirmation={RESUME_CONFIRMATION}
+        operationType="resume"
+        type="subscription"
+        action={resumePlanAction}
+      />
       <div class="shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl w-full p-5 text-left">
         <Form
           action={updateProfileAction}
@@ -289,6 +329,106 @@ export default component$(() => {
           </div>
         </Form>
         <div class="divider py-3"></div>
+        <div class="block sm:grid grid-cols-3 gap-4">
+          <div>
+            <div class="font-bold">Billing</div>
+            <span class="text-sm text-gray-500">Manage your billing information</span>
+          </div>
+          <div class="pt-4 sm:pt-0 col-span-2 w-full md:w-2/3 sm:w-full">
+            <Resource
+              value={billingInfo}
+              onPending={() => <span>Loading...</span>}
+              onResolved={(billingInfo) => {
+                const { usage, limits, scheduledToBeCancelled } = billingInfo;
+                const linkUsagePercentage = (usage.currentLinkCount / limits.linksCount) * 100;
+                const clicksUsagePercentage = (usage.currentTrackedClicks / limits.trackedClicks) * 100;
+
+                const getProgressBarClass = (percentage: number) => {
+                  if (percentage >= 90) return 'bg-red-500';
+                  if (percentage >= 70) return 'bg-yellow-500';
+                  return 'bg-blue-500';
+                };
+                const pingColor = scheduledToBeCancelled ? 'bg-yellow-500' : 'bg-green-500';
+                return (
+                  <div>
+                    <div class="flex justify-between items-center">
+                      <div class="flex items-center">
+                        <h2 class="text-lg font-bold mr-2">{capitalizeFirstLetter(billingInfo.plan)}</h2>
+                        <div class="relative flex items-center">
+                          <div class={`absolute inline-flex h-2 w-2 rounded-full ${pingColor}`}></div>
+                          <div class={`absolute inline-flex h-2 w-2 rounded-full ${pingColor} opacity-75 animate-ping`}></div>
+                        </div>
+                      </div>
+                      <div class="flex w-full justify-end gap-x-4">
+                        {scheduledToBeCancelled ? (
+                          <button
+                            class="btn btn-sm btn-primary"
+                            onClick$={$(() => {
+                              (document.getElementById(RESUME_PLAN_MODAL_ID) as any).showModal();
+                            })}
+                          >
+                            Resume subscription
+                          </button>
+                        ) : (
+                          <button
+                            class="btn btn-sm btn-primary"
+                            onClick$={$(() => {
+                              (document.getElementById(PLAN_MODAL_ID) as any).showModal();
+                            })}
+                          >
+                            {billingInfo.plan === 'FREE' ? 'Upgrade plan' : 'Change plan'}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    {billingInfo.endDate || billingInfo.nextBillingAt ? (
+                      <div class="mb-4 text-gray-500">
+                        <span class="text-sm">
+                          {scheduledToBeCancelled ? 'Scheduled to be cancelled' : 'Renews on'} on{' '}
+                          {formatRenewalDate(new Date(billingInfo.nextBillingAt))}
+                        </span>
+                      </div>
+                    ) : (
+                      <div class="mb-4"></div>
+                    )}
+                    <div class="mb-4">
+                      <div class="flex justify-between">
+                        <span class="block text-sm font-semibold mb-1">Links Created</span>
+                        <span class="text-sm font-bold">
+                          {billingInfo.usage.currentLinkCount} / {billingInfo.limits.linksCount}{' '}
+                          <span class="text-xs font-normal text-gray-400">({linkUsagePercentage}%)</span>
+                        </span>
+                      </div>
+                      <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+                        <div
+                          class={`h-2.5 rounded-full ${getProgressBarClass(linkUsagePercentage)}`}
+                          style={{ width: `${linkUsagePercentage > 100 ? 100 : linkUsagePercentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div class="mb-4">
+                      <div class="flex justify-between">
+                        <span class="block text-sm font-semibold mb-1">Tracked Clicks</span>
+                        <span class="text-sm font-bold">
+                          {billingInfo.usage.currentTrackedClicks} / {billingInfo.limits.trackedClicks}{' '}
+                          <span class="text-xs font-normal text-gray-400">({clicksUsagePercentage}%)</span>
+                        </span>
+                      </div>
+                      <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+                        <div
+                          class={`h-2.5 rounded-full ${getProgressBarClass(clicksUsagePercentage)}`}
+                          style={{ width: `${clicksUsagePercentage > 100 ? 100 : clicksUsagePercentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }}
+            />
+          </div>
+        </div>
+        <div class="divider py-3"></div>
+
         <div class="block sm:grid grid-cols-3 gap-4">
           <div>
             <div class="font-bold">Delete account</div>

@@ -9,12 +9,14 @@ import { UNKNOWN_FAVICON } from '../../../temporary-links/utils';
 import { useDebouncer } from '../../../../utils/debouncer';
 import { LuEye, LuEyeOff, LuDices } from '@qwikest/icons/lucide';
 import { sleep } from '@reduced.to/utils';
+import { useGetCurrentUser } from '../../../../../../frontend/src/routes/layout';
+import { ConditionalWrapper, getRequiredFeatureLevel } from '../../plan-wrapper';
 
 export const LINK_MODAL_ID = 'link-modal';
 
 interface CreateLinkInput {
   url: string;
-  key: string;
+  key?: string;
   expirationTime?: string | number;
   passwordProtection?: string;
 
@@ -41,11 +43,26 @@ const CreateLinkInputSchema = z
       }),
     key: z
       .string()
-      .min(4, { message: 'The short link must be at least 4 characters long.' })
       .max(20, { message: 'The short link cannot exceed 20 characters.' })
       .regex(/^[a-zA-Z0-9-]*$/, {
         message: 'The short link can only contain letters, numbers, and dashes.',
-      }),
+      })
+      .optional()
+      .refine(
+        (val) => {
+          if (!val?.length) {
+            return true;
+          }
+          if (val?.length && val?.length < 4) {
+            return false;
+          }
+
+          return true;
+        },
+        {
+          message: 'The short link must be at least 4 characters long.',
+        }
+      ),
     expirationTime: z.string().optional(),
     expirationTimeToggle: z.string().optional(),
     passwordProtection: z
@@ -112,7 +129,7 @@ const useCreateLink = globalAction$(
 
     const body: CreateLinkInput = {
       url: normalizeUrl(url),
-      key,
+      ...(key && { key: key }),
       ...(expirationTime && { expirationTime: new Date(expirationTime).getTime() }),
       ...(passwordProtection && { password: passwordProtection }),
 
@@ -134,10 +151,10 @@ const useCreateLink = globalAction$(
       body: JSON.stringify(body),
     });
 
-    const data: { url: string; key: string; message?: string[]; statusCode?: number } = await response.json();
+    const data: { url: string; key: string; message?: string[] } = await response.json();
 
     if (response.status !== 201) {
-      return fail(data?.statusCode || 500, {
+      return fail(500, {
         message: data?.message || 'There was an error creating your link. Please try again.',
       });
     }
@@ -172,9 +189,13 @@ const initValues = {
   utm_content: undefined,
 };
 export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
+  const user = useGetCurrentUser();
   const inputValue = useSignal<CreateLinkInput>({ ...initValues });
   const faviconUrl = useSignal<string | null>(null);
   const previewUrl = useSignal<string | null>(null);
+
+  // Short key input field
+  const requiredLevelToCustomShortLink = useSignal<null | string>(getRequiredFeatureLevel(user.value?.plan || 'FREE', 'CUSTOM_SHORT_KEY'));
 
   // Optional fields
   const isExpirationTimeOpen = useSignal(false);
@@ -195,7 +216,7 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
   );
 
   const generateRandomKey = $(async () => {
-    if (isGeneratingRandomKey.value) {
+    if (requiredLevelToCustomShortLink.value || isGeneratingRandomKey.value) {
       return;
     }
 
@@ -207,28 +228,18 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
     isGeneratingRandomKey.value = false;
   });
 
-  const toggleOption = $(
-    (signal: Signal<boolean>, resetKey: keyof CreateLinkInput | (keyof CreateLinkInput)[], resetValue: any = undefined) => {
-      signal.value = !signal.value;
-      if (!signal.value && resetKey !== undefined) {
-        // Reset field errors
-
-        if (Array.isArray(resetKey)) {
-          resetKey.forEach((key) => {
-            inputValue.value[key] = resetValue;
-            if (action.value?.fieldErrors![key]) {
-              action.value.fieldErrors[key] = [];
-            }
-          });
-        } else {
-          if (action.value?.fieldErrors![resetKey]) {
-            action.value.fieldErrors[resetKey] = [];
-          }
-          inputValue.value[resetKey] = resetValue;
+  const toggleOption = $((signal: Signal<boolean>, resetKeys: (keyof CreateLinkInput)[], resetValue: any = undefined) => {
+    signal.value = !signal.value;
+    if (!signal.value && resetKeys !== undefined) {
+      // Reset field errors
+      resetKeys.forEach((key) => {
+        inputValue.value[key] = resetValue;
+        if (action.value?.fieldErrors![key]) {
+          action.value.fieldErrors[key] = [];
         }
-      }
+      });
     }
-  );
+  });
 
   const toggleShowPassword = $(() => {
     showPassword.value = !showPassword.value;
@@ -295,7 +306,7 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                       debounceUrlInput(inputValue.value.url);
 
                       // if the user is typing nad there is no key, generate one
-                      if (inputValue.value.url.length > 0 && inputValue.value.key.length === 0) {
+                      if (inputValue.value.url.length > 0 && inputValue.value.key?.length === 0) {
                         generateRandomKey();
                       }
                     }}
@@ -312,25 +323,29 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                     <label class="label">
                       <span class="label-text">Short link</span>
                     </label>
-                    <div class="tooltip tooltip-left text-sm" data-tip="Generate a random key">
-                      <div class="mt-2 mr-1 text-gray-500">
-                        {isGeneratingRandomKey.value ? (
-                          <span class="loading loading-spinner-small h-5 w-5" />
-                        ) : (
-                          <LuDices class="hover:text-gray-700 cursor-pointer h-5 w-5" onClick$={generateRandomKey} />
-                        )}
+                    {requiredLevelToCustomShortLink.value ? (
+                      <ConditionalWrapper access="CUSTOM_SHORT_KEY" cs="mr-[1.7rem]" />
+                    ) : (
+                      <div class="tooltip tooltip-left text-sm" data-tip="Generate a random key">
+                        <div class="mt-2 mr-1 text-gray-500">
+                          {isGeneratingRandomKey.value ? (
+                            <span class="loading loading-spinner-small h-5 w-5" />
+                          ) : (
+                            <LuDices class={`hover:text-gray-700 cursor-pointer h-5 w-5`} onClick$={generateRandomKey} />
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                   <div class="join w-full">
-                    <select class="select select-bordered join-item">
+                    <select class={`select select-bordered join-item ${requiredLevelToCustomShortLink.value ? 'select-disabled' : ''}`}>
                       <option selected>reduced.to</option>
                     </select>
                     <div class="w-full">
                       <input
                         name="key"
                         type="text"
-                        class="input input-bordered join-item w-full"
+                        class={`input input-bordered join-item w-full ${requiredLevelToCustomShortLink.value ? 'input-disabled' : ''}`}
                         placeholder="git"
                         value={inputValue.value.key}
                         onInput$={(ev: InputEvent) => {
@@ -345,7 +360,6 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                     </label>
                   ) : null}
                 </div>
-
                 {action.value?.failed && action.value.message && (
                   <label class="label">
                     <span class={`label-text text-xs text-error text-left`}>{action.value.message}</span>
@@ -356,13 +370,15 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                   <div class="form-control">
                     <label class="cursor-pointer label">
                       <span class="label-text">Expiration date</span>
-                      <input
-                        type="checkbox"
-                        checked={isExpirationTimeOpen.value}
-                        onChange$={() => toggleOption(isExpirationTimeOpen, 'expirationTime', undefined)}
-                        name="expirationTimeToggle"
-                        class="toggle toggle-primary"
-                      />
+                      <ConditionalWrapper access="LINK_EXPIRATION">
+                        <input
+                          type="checkbox"
+                          checked={isExpirationTimeOpen.value}
+                          onChange$={() => toggleOption(isExpirationTimeOpen, ['expirationTime'], undefined)}
+                          name="expirationTimeToggle"
+                          class="toggle toggle-primary"
+                        />
+                      </ConditionalWrapper>
                     </label>
                     {isExpirationTimeOpen.value && (
                       <input
@@ -385,18 +401,20 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                   <div class="form-control">
                     <label class="cursor-pointer label">
                       <span class="label-text">Password protection</span>
-                      <input
-                        type="checkbox"
-                        checked={isPasswordProtectionOpen.value}
-                        onChange$={() => {
-                          toggleOption(isPasswordProtectionOpen, 'passwordProtection', undefined);
-                          if (!isPasswordProtectionOpen.value) {
-                            showPassword.value = false;
-                          }
-                        }}
-                        name="passwordProtectionToggle"
-                        class="toggle toggle-primary"
-                      />
+                      <ConditionalWrapper access="PASSWORD_PROTECTION">
+                        <input
+                          type="checkbox"
+                          checked={isPasswordProtectionOpen.value}
+                          onChange$={() => {
+                            toggleOption(isPasswordProtectionOpen, ['passwordProtection'], undefined);
+                            if (!isPasswordProtectionOpen.value) {
+                              showPassword.value = false;
+                            }
+                          }}
+                          name="passwordProtectionToggle"
+                          class="toggle toggle-primary"
+                        />
+                      </ConditionalWrapper>
                     </label>
                     {isPasswordProtectionOpen.value && (
                       <label class="input input-bordered flex items-center gap-2">
@@ -427,19 +445,21 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
                   <div class="form-control">
                     <label class="cursor-pointer label">
                       <span class="label-text">UTM Builder</span>
-                      <input
-                        type="checkbox"
-                        checked={isUtmBuilderOpen.value}
-                        onChange$={() => {
-                          toggleOption(
-                            isUtmBuilderOpen,
-                            ['utm_ref', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'],
-                            undefined
-                          );
-                        }}
-                        name="utmBuilderToggle"
-                        class="toggle toggle-primary"
-                      />
+                      <ConditionalWrapper access="UTM_BUILDER">
+                        <input
+                          type="checkbox"
+                          checked={isUtmBuilderOpen.value}
+                          onChange$={() => {
+                            toggleOption(
+                              isUtmBuilderOpen,
+                              ['utm_ref', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'],
+                              undefined
+                            );
+                          }}
+                          name="utmBuilderToggle"
+                          class="toggle toggle-primary"
+                        />
+                      </ConditionalWrapper>
                     </label>
                     {isUtmBuilderOpen.value && (
                       <div class="px-4">
@@ -577,7 +597,7 @@ export const LinkModal = component$(({ onSubmitHandler }: LinkModalProps) => {
               <button
                 type="submit"
                 class={`btn btn-primary md:w-full w-1/2 no-animation md:rounded-none m-auto mb-5 md:mb-0 sm:sticky bottom-0 left-0 sm:mt-0 mt-5 ${
-                  inputValue.value.url.length === 0 ? 'cursor-not-allowed btn-disabled' : ''
+                  inputValue.value.url.length === 0 ? '!cursor-not-allowed btn-disabled !bg-opacity-100 !bg-gray-300 dark:!bg-gray-700' : ''
                 }`}
               >
                 {action.isRunning ? <span class="loading loading-spinner-small"></span> : 'Create'}

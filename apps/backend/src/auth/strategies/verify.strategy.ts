@@ -17,6 +17,6 @@ export class VerifyStrategy extends PassportStrategy(Strategy, 'verify') {
     if (!payload) {
       throw new UnauthorizedException();
     }
-    return { name: payload.name, email: payload.email };
+    return { name: payload.name, email: payload.email, plan: payload.plan };
   }
 }

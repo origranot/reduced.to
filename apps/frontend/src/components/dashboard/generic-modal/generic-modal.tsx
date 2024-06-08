@@ -5,17 +5,20 @@ import { useToaster } from '../../toaster/toaster';
 
 export const DELETE_MODAL_ID = 'delete-modal';
 export const DELETE_CONFIRMATION = 'DELETE';
+export const CANCEL_CONFIRMATION = 'CANCEL';
+export const RESUME_CONFIRMATION = 'RESUME';
 
-export interface DeleteModalProps {
+export interface ModalProps {
   id: string;
   confirmation: string;
   idToDelete?: string;
   type: string;
   action: ActionStore<any, any>;
+  operationType: 'delete' | 'cancel' | 'resume';
   onSubmitHandler?: () => void;
 }
 
-export const DeleteModal = component$(({ id, type, confirmation, idToDelete, onSubmitHandler, action }: DeleteModalProps) => {
+export const GenericModal = component$(({ id, type, confirmation, idToDelete, onSubmitHandler, action, operationType }: ModalProps) => {
   const inputValue = useSignal('');
   const toaster = useToaster();
 
@@ -26,6 +29,30 @@ export const DeleteModal = component$(({ id, type, confirmation, idToDelete, onS
       action.value.fieldErrors = [];
     }
   });
+
+  let successMessage: string;
+  switch (operationType) {
+    case 'delete':
+      successMessage = `Your ${type} has been deleted successfully.`;
+      break;
+    case 'cancel':
+      successMessage = `Your ${type} has been canceled successfully.`;
+      break;
+    case 'resume':
+      successMessage = `Your ${type} has been resumed successfully.`;
+      break;
+  }
+
+  const operationText = operationType === 'delete' ? 'delete' : operationType === 'cancel' ? 'cancel' : 'resume';
+  const errorMessage = `Something went wrong while ${operationText}ing your ${type}. Please try again later.`;
+  const confirmationMessage =
+    operationType === 'delete'
+      ? `This action cannot be undone. This will permanently delete your ${type}.`
+      : operationType === 'cancel'
+      ? `You will still be able to use your ${type} until the end of the current billing period.`
+      : `This will revert your scheduled cancellation and your subscription will remain active.`;
+
+  const buttonClass = operationType === 'delete' ? 'btn-error' : operationType === 'cancel' ? 'btn-error' : 'btn-warning';
 
   return (
     <>
@@ -40,7 +67,7 @@ export const DeleteModal = component$(({ id, type, confirmation, idToDelete, onS
             if (action.value?.failed && action.value.message) {
               toaster.add({
                 title: 'Error',
-                description: `Something went wrong while deleting your ${type}. Please try again later.`,
+                description: errorMessage,
                 type: 'error',
               });
               return;
@@ -48,7 +75,7 @@ export const DeleteModal = component$(({ id, type, confirmation, idToDelete, onS
 
             toaster.add({
               title: 'Success',
-              description: `Your ${type} has been deleted successfully.`,
+              description: successMessage,
               type: 'info',
             });
 
@@ -75,8 +102,7 @@ export const DeleteModal = component$(({ id, type, confirmation, idToDelete, onS
           <div class="px-4 md:p-5">
             <div class="pt-1 text-left">
               <p class="dark:text-gray-300">
-                You are about to delete your {type}. This action cannot be undone. This will permanently delete your {type} and all of its
-                data associated with it.
+                You are about to {operationText} your {type}. {confirmationMessage}
               </p>
               <label class="label">
                 <span class="label-text dark:text-gray-500">
@@ -102,8 +128,14 @@ export const DeleteModal = component$(({ id, type, confirmation, idToDelete, onS
                 </label>
               )}
             </div>
-            <button type="submit" class="btn btn-error w-full mt-5">
-              {action.isRunning ? <span class="loading loading-spinner-small"></span> : <span>I understand, delete my {type}</span>}
+            <button type="submit" class={`btn ${buttonClass} w-full mt-5 ${action.isRunning ? 'btn-disabled' : ''}`}>
+              {action.isRunning ? (
+                <span class="loading loading-spinner-small"></span>
+              ) : (
+                <span>
+                  I understand, {operationText} my {type}
+                </span>
+              )}
             </button>
           </div>
         </Form>

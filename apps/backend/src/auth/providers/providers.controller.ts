@@ -33,7 +33,7 @@ export class ProvidersController {
       throw new BadRequestException('User is not exists in request');
     }
 
-    let user = await this.usersService.findByEmail(req.user.email);
+    let user = await this.usersService.findUserContextByEmail(req.user.email);
 
     if (!user) {
       user = await this.authService.signup({

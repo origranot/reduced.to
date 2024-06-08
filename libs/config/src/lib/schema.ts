@@ -1,5 +1,7 @@
 import { z } from 'zod';
 export default z.object({
+  PADDLE_SECRET_KEY: z.string(),
+
   // General
   BACKEND_APP_PORT: z.string(),
   FRONTEND_APP_PORT: z.string(),

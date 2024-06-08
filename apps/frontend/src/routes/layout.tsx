@@ -1,5 +1,5 @@
 import { component$, Slot } from '@builder.io/qwik';
-import { routeLoader$, useLocation } from '@builder.io/qwik-city';
+import { routeAction$, routeLoader$, useLocation } from '@builder.io/qwik-city';
 import jwt_decode from 'jwt-decode';
 import { ACCESS_COOKIE_NAME, refreshTokens, REFRESH_COOKIE_NAME, setTokensAsCookies } from '../shared/auth.service';
 import { VerifyAlert } from '../components/verify-alert/verify-alert';
@@ -8,6 +8,7 @@ import { Toaster, useToasterProvider } from '../components/toaster/toaster';
 import { getProfilePictureUrl } from '../components/dashboard/navbar/profile/profile';
 import { DashboardNavbar } from '../components/dashboard/navbar/navbar';
 import { Navbar } from '../components/navbar/navbar';
+import { retry } from 'rxjs';
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -18,6 +19,7 @@ export interface UserCtx {
   name: string;
   email: string;
   role: Role;
+  plan: string;
   verified: boolean;
   profilePicture: string;
 }

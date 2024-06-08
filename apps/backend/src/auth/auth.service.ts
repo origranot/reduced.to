@@ -6,6 +6,7 @@ import * as bcrypt from 'bcryptjs';
 import { SignupDto } from './dto/signup.dto';
 import { UserContext } from './interfaces/user-context';
 import { PROFILE_PICTURE_PREFIX, StorageService } from '../storage/storage.service';
+import { BillingService } from '../billing/billing.service';
 
 @Injectable()
 export class AuthService {
@@ -13,13 +14,17 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
     private readonly storageService: StorageService,
-    private readonly appConfigService: AppConfigService
+    private readonly appConfigService: AppConfigService,
+    private readonly billingService: BillingService
   ) {}
 
   async validateUser(email: string, password: string) {
     const user = await this.prisma.user.findUnique({
       where: {
         email,
+      },
+      include: {
+        subscription: true,
       },
     });
     if (!user) {
@@ -28,8 +33,11 @@ export class AuthService {
 
     const verified = await bcrypt.compare(password, user.password);
     if (verified) {
-      const { password, ...result } = user;
-      return result;
+      const { ...result } = user;
+      return {
+        ...result,
+        plan: user.subscription?.plan || 'FREE',
+      };
     }
 
     return null;
@@ -83,7 +91,15 @@ export class AuthService {
       });
     }
 
-    return this.prisma.user.create(createOptions);
+    createOptions.data['usage'] = {
+      create: {
+        linksCount: 0,
+        clicksCount: 0,
+      },
+    };
+
+    const createdUser = await this.prisma.user.create(createOptions);
+    return createdUser;
   }
 
   async verify(user: UserContext): Promise<{ verified: boolean }> {
@@ -172,6 +188,7 @@ export class AuthService {
       email: user.email,
       name: user.name,
       role: user.role,
+      plan: user.plan || 'FREE',
       verified: user.verified,
       iss: 'reduced.to',
     };
@@ -182,12 +199,32 @@ export class AuthService {
     });
   }
 
-  async delete(user: UserContext) {
+  async delete(userCtx: UserContext) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userCtx.id,
+      },
+      include: {
+        subscription: true,
+      },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const promises: any[] = [this.storageService.delete(`${PROFILE_PICTURE_PREFIX}/${user.id}`)];
+
+    if (user.subscription) {
+      promises.push(this.billingService.cancelSubscription(user.id));
+    }
+
     try {
-      await this.storageService.delete(`${PROFILE_PICTURE_PREFIX}/${user.id}`);
+      await Promise.all(promises);
     } catch (error) {
       // Ignore error
     }
+
     return this.prisma.user.delete({
       where: {
         id: user.id,
