@@ -10,6 +10,7 @@ import { SignupDto } from './dto/signup.dto';
 import { StorageService } from '../storage/storage.service';
 import { BillingModule } from '../billing/billing.module';
 import { AppLoggerModule } from '@reduced.to/logger';
+import { BillingService } from '../billing/billing.service';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -19,7 +20,7 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppConfigModule, AppLoggerModule, BillingModule],
+      imports: [AppConfigModule, AppLoggerModule],
       providers: [
         AuthService,
         JwtService,
@@ -32,6 +33,10 @@ describe('AuthService', () => {
               create: jest.fn(),
             },
           },
+        },
+        {
+          provide: BillingService,
+          useValue: jest.fn(),
         },
         {
           provide: StorageService,
