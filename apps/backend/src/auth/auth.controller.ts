@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards
 import { Request, Response } from 'express';
 import { AppConfigService } from '@reduced.to/config';
 import { NovuService } from '../novu/novu.service';
-import { PrismaService } from '@reduced.to/prisma';
+import { Plan, PrismaService, Subscription } from '@reduced.to/prisma';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dto/signup.dto';
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh.guard';
@@ -57,7 +57,19 @@ export class AuthController {
   @UseGuards(JwtRefreshAuthGuard)
   @Post('/refresh')
   async refresh(@Req() req: Request, @Res() res: Response) {
-    const tokens = await this.authService.refreshTokens(req.user as UserContext);
+    const userContext = req.user as UserContext;
+    let subscription: Subscription;
+    try {
+      subscription = await this.prismaService.subscription.findFirst({
+        where: {
+          userId: userContext.id,
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+    const newContext = { ...userContext, plan: subscription?.plan || Plan.FREE };
+    const tokens = await this.authService.refreshTokens(newContext);
     res = setAuthCookies(res, this.appConfigService.getConfig().front.domain, tokens);
 
     res.send(tokens);

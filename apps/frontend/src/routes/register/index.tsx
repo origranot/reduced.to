@@ -1,5 +1,5 @@
-import { component$, useStore } from '@builder.io/qwik';
-import { DocumentHead, Form, Link, RequestHandler, globalAction$, z, zod$ } from '@builder.io/qwik-city';
+import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik';
+import { DocumentHead, Form, Link, RequestHandler, globalAction$, useLocation, z, zod$ } from '@builder.io/qwik-city';
 import { setTokensAsCookies, validateAccessToken } from '../../shared/auth.service';
 
 interface RegisterStore {
@@ -40,6 +40,7 @@ export const useRegister = globalAction$(
     setTokensAsCookies(accessToken, refreshToken, cookie);
 
     // Redirect using location header instead of redirect becuase we need to reload the routeLoader to get the new user data
+
     headers.set('location', '/register/verify');
 
     return {
@@ -248,7 +249,7 @@ export default component$(() => {
                             I accept the{' '}
                             <a
                               class="text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                              href="/privacy-policy"
+                              href="/terms"
                               target="_blank"
                             >
                               Terms and Conditions

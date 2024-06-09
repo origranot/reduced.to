@@ -7,15 +7,12 @@ export const Hero = component$(() => {
   const user = useGetCurrentUser();
 
   return (
-    <div
-      id="hero"
-      class="relative before:absolute before:top-0 before:start-1/2 before:bg-[url('assets/svg/hero/polygon-bg-element-light.svg')] before:bg-no-repeat before:bg-top before:bg-cover before:w-full before:h-full before:-z-[1] before:transform before:-translate-x-1/2 dark:before:bg-[url('assets/svg/hero/polygon-bg-element-dark.svg')]"
-    >
-      <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10">
+    <div class="pt-24 pb-10">
+      <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 mt-[-40px]">
         {/* <!-- Announcement Github Banner --> */}
         <div class="flex justify-center">
           <a
-            class="inline-flex items-center gap-x-2 bg-white border border-gray-200 text-xs text-gray-600 p-2 px-3 rounded-full hover:border-gray-300 dark:bg-slate-800 dark:border-neutral-700 dark:hover:border-neutral-600 dark:text-neutral-400"
+            class="inline-flex items-center gap-x-2 bg-white z-10 border border-gray-600 text-xs text-gray-600 p-2 px-3 rounded-full hover:border-gray-900 dark:bg-slate-900 dark:border-neutral-700 dark:hover:border-neutral-600 dark:text-slate-200"
             href="https://github.com/origranot/reduced.to"
             target="_blank"
           >
@@ -29,7 +26,7 @@ export const Hero = component$(() => {
 
         {/* <!-- Title --> */}
         <div class="mt-5 max-w-2xl text-center mx-auto">
-          <h1 class="block font-bold text-gray-800 text-4xl md:text-5xl lg:text-6xl dark:text-gray-200">
+          <h1 class="z-10 relative font-bold text-gray-800 text-4xl md:text-5xl lg:text-6xl dark:text-gray-200">
             Simplify your
             <span class="bg-clip-text bg-gradient-to-l from-blue-600 to-violet-600 text-transparent"> Links</span>
           </h1>

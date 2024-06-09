@@ -5,8 +5,9 @@ import { PrismaModule } from '@reduced.to/prisma';
 import { ShortenerProducer } from './producer/shortener.producer';
 import { QueueManagerModule, QueueManagerService } from '@reduced.to/queue-manager';
 import { SafeUrlModule } from '@reduced.to/safe-url';
+import { UsageModule } from '@reduced.to/subscription-manager';
 @Module({
-  imports: [PrismaModule, QueueManagerModule, SafeUrlModule.forRootAsync()],
+  imports: [PrismaModule, QueueManagerModule, SafeUrlModule.forRootAsync(), UsageModule],
   controllers: [ShortenerController],
   providers: [ShortenerService, QueueManagerService, ShortenerProducer],
   exports: [ShortenerService],

@@ -39,8 +39,12 @@ export const CountriesChart = component$((props: CountriesChartProps) => {
   };
 
   const filteredData = locations.value.filter((item) => {
-    const country = countryLookup.byIso(getCountryCode(item));
-    return country && country.country.toLowerCase().includes(searchQuery.value.toLowerCase());
+    try {
+      const country = countryLookup.byIso(getCountryCode(item));
+      return country && country.country.toLowerCase().includes(searchQuery.value.toLowerCase());
+    } catch (e) {
+      // Do nothing
+    }
   });
 
   return (

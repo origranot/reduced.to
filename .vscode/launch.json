@@ -8,7 +8,7 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["nx", "serve", "backend"],
       "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}"
+      "cwd": "${workspaceFolder}/apps/backend"
     },
     {
       "name": "Debug tracker",

@@ -12,13 +12,6 @@ export class VisitsService {
     const { hashedIp, ua, geoLocation } = opts;
 
     return this.prismaService.$transaction(async (prisma) => {
-      const linkExists = await prisma.link.findUnique({
-        where: { key },
-        select: { id: true },
-      });
-
-      if (!linkExists) return; // Early return if link does not exist
-
       const { browser, os, device } = await this.parseUa(ua);
 
       await prisma.visit.create({

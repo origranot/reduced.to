@@ -13,11 +13,17 @@ data:
   RATE_LIMIT_TTL: '60'
   RATE_LIMIT_COUNT: '100'
 
+  # PADDLE - (Payment Gateway)
+  PADDLE_ENABLE: 'false'
+  PADDLE_WEBHOOK_KEY: 'pld_test_webhook_key'
+  PADDLE_SECRET_KEY: 'secret_key'
+
   # LOGGER
   LOGGER_CONSOLE_THRESHOLD: 'INFO' # DEBUG, INFO, WARN, ERROR, FATAL
 
   # FRONTEND
   DOMAIN: 'reduced.to'
+  PUBLIC_PADDLE_KEY: 'test_public_key'
   CLIENTSIDE_API_DOMAIN: 'https://reduced.to' # Use this variable while making client-side API calls
   API_DOMAIN: 'http://backend-service:3000' # Use this variable while making server-side API calls
   STORAGE_DOMAIN: 'Get it from https://cloud.digitalocean.com/spaces'
