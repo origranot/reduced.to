@@ -35,8 +35,7 @@ export const Hero = component$(() => {
 
         <div class="mt-5 max-w-3xl text-center mx-auto">
           <p class="text-lg text-gray-600 dark:text-gray-400">
-            Your go-to URL shortener, provides a streamlined approach to link sharing. We empower you to manage your links effortlessly.
-            Explore our user-friendly dashboard and robust analytics to enhance your link management experience.
+            Effortless link management with a user-friendly dashboard and robust analytics.
           </p>
         </div>
 
