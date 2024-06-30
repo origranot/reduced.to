@@ -1,3 +1,0 @@
-controller:
-  extraArgs:
-    default-ssl-certificate: 'default/letsencrypt-prod'

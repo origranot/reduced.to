@@ -1,13 +1,11 @@
-# Make sure to enable proxy protocol in the ingress controller:
-# For those who use DigitalOcean, https://docs.digitalocean.com/support/how-do-i-enable-proxy-protocol-when-my-load-balancer-sends-requests-to-the-nginx-ingress-controller/
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress
+  name: reduced-ingress
   namespace: default
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true' # Enforce HTTPS
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    kubernetes.io/ingress.class: "nginx"
   labels:
     app: reduced
 spec:
