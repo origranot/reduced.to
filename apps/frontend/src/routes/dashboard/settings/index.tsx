@@ -340,8 +340,8 @@ export default component$(() => {
               onPending={() => <span>Loading...</span>}
               onResolved={(billingInfo) => {
                 const { usage, limits, scheduledToBeCancelled } = billingInfo;
-                const linkUsagePercentage = (usage.currentLinkCount / limits.linksCount) * 100;
-                const clicksUsagePercentage = (usage.currentTrackedClicks / limits.trackedClicks) * 100;
+                const linkUsagePercentage = ((usage.currentLinkCount / limits.linksCount) * 100).toPrecision(3);
+                const clicksUsagePercentage = ((usage.currentTrackedClicks / limits.trackedClicks) * 100).toPrecision(3);
 
                 const getProgressBarClass = (percentage: number) => {
                   if (percentage >= 90) return 'bg-red-500';
