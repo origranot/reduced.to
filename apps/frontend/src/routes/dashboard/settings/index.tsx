@@ -396,7 +396,7 @@ export default component$(() => {
                         <span class="block text-sm font-semibold mb-1">Links Created</span>
                         <span class="text-sm font-bold">
                           {billingInfo.usage.currentLinkCount} / {billingInfo.limits.linksCount}{' '}
-                          <span class="text-xs font-normal text-gray-400">({linkUsagePercentage}%)</span>
+                          <span class="text-xs font-normal text-gray-400">({linkUsagePercentage.toPrecision(3)}%)</span>
                         </span>
                       </div>
                       <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
@@ -411,7 +411,7 @@ export default component$(() => {
                         <span class="block text-sm font-semibold mb-1">Tracked Clicks</span>
                         <span class="text-sm font-bold">
                           {billingInfo.usage.currentTrackedClicks} / {billingInfo.limits.trackedClicks}{' '}
-                          <span class="text-xs font-normal text-gray-400">({clicksUsagePercentage}%)</span>
+                          <span class="text-xs font-normal text-gray-400">({clicksUsagePercentage.toPrecision(3)}%)</span>
                         </span>
                       </div>
                       <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
