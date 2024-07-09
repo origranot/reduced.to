@@ -13,7 +13,7 @@ export const Hero = component$(() => {
         <div class="flex justify-center">
           <a
             class="inline-flex items-center gap-x-2 bg-white z-10 border border-gray-600 text-xs text-gray-600 p-2 px-3 rounded-full hover:border-gray-900 dark:bg-slate-900 dark:border-neutral-700 dark:hover:border-neutral-600 dark:text-slate-200"
-            href="https://github.com/origranot/reduced.to"
+            href="https://reduced.to/git"
             target="_blank"
           >
             Don't forget to star us on GitHub!
