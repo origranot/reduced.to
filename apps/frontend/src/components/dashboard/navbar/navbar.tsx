@@ -62,7 +62,7 @@ export const DashboardNavbar = component$(() => {
             </li>
             <li class="pr-2 border-black"></li>
             <li>
-              <a href="https://github.com/origranot/reduced.to" target="_blank" title="GitHub" class="btn-ghost">
+              <a href="https://reduced.to/git" target="_blank" title="GitHub" class="btn-ghost">
                 Github
               </a>
             </li>
