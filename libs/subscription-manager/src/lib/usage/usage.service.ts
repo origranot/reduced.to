@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService, User, Subscription, Usage } from '@reduced.to/prisma';
+import { PrismaService } from '@reduced.to/prisma';
 import { PLAN_LEVELS } from '../limits';
 
 @Injectable()
@@ -23,9 +23,11 @@ export class UsageService {
     });
   }
 
-  async resetUsage(userId: string) {
-    return this.prismaService.usage.update({
-      where: { userId },
+  async resetUsage(userIds: string[]) {
+    return this.prismaService.usage.updateMany({
+      where: {
+        userId: { in: userIds },
+      },
       data: {
         clicksCount: 0,
         linksCount: 0,
@@ -33,8 +35,7 @@ export class UsageService {
     });
   }
 
-  async runOnAllActiveUsers(callback: (userId: string) => Promise<void>): Promise<void> {
-    const pageSize = 1000;
+  async runOnAllActiveUsers(batchSize: number, callback: (userIds: string[]) => Promise<void>): Promise<void> {
     let page = 1;
     let hasMoreUsers = true;
 
@@ -47,8 +48,8 @@ export class UsageService {
           select: {
             id: true,
           },
-          skip: (page - 1) * pageSize,
-          take: pageSize,
+          skip: (page - 1) * batchSize,
+          take: batchSize,
         });
 
         if (users.length === 0) {
@@ -56,9 +57,8 @@ export class UsageService {
           break;
         }
 
-        for (const user of users) {
-          await callback(user.id);
-        }
+        const userIds = users.map((user) => user.id);
+        await callback(userIds);
 
         page++;
       } catch (error) {
