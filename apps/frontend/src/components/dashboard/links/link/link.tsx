@@ -108,17 +108,17 @@ export const LinkBlock = component$(
             </div>
           </div>
           <div class="gap-4 mt-2 flex items-center justify-between sm:hidden">
+            <div class="flex justify-start items-center gap-1 ml-3">
+              <span class="text-xs font-medium text-gray-500 mb-1 mt-1">Created At</span>
+              <span class="text-xs font-medium  ">{formatDateDay(new Date(createdAt))}</span>
+            </div>
+
             {expirationTime && (
-              <div class="flex justify-start items-center gap-1 ml-3">
+              <div class="flex justify-start items-center gap-1 mr-3">
                 <span class="text-xs font-medium text-gray-500 mb-1 mt-1">Expire At</span>
                 <span class="text-xs font-medium  ">{formatDateDay(new Date(expirationTime))}</span>
               </div>
             )}
-
-            <div class="flex justify-start items-center gap-1 mx-3">
-              <span class="text-xs font-medium text-gray-500 mb-1 mt-1">Created At</span>
-              <span class="text-xs font-medium  ">{formatDateDay(new Date(createdAt))}</span>
-            </div>
           </div>
         </div>
       </>
