@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tracker-service
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: tracker
+  ports:
+    - protocol: TCP
+      port: {{ required "Tracker port has to be defined" .Values.tracker.port }}
+      targetPort: {{ required "Tracker port has to be defined" .Values.tracker.port }}

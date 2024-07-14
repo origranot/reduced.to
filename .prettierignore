@@ -1,3 +1,6 @@
 .prettierignore
 .docusaurus/
 /.nx/cache
+
+# Ignore chart files
+/docker/k8s/**/*.yaml

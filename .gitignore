@@ -31,6 +31,7 @@ node_modules
 /.sass-cache
 /connect.lock
 /coverage
+/.early.coverage
 /libpeerconnection.log
 npm-debug.log
 yarn-error.log

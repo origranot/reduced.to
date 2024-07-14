@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: {{ .Values.namespace }}
+  annotations:
+    keel.sh/policy: force
+    keel.sh/trigger: poll
+spec:
+  replicas: {{ .Values.frontend.replicas }}
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: {{ .Values.frontend.image }}
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: reduced-configmap
+          ports:
+            - containerPort: {{ .Values.shared_configmap.FRONTEND_APP_PORT | int }}
+          {{- if .Values.frontend.resources }}
+          resources: {{ .Values.frontend.resources | toYaml | nindent 12 }}
+          {{- else }}
+          resources: {{ .Values.default_resources | toYaml | nindent 12 }}
+          {{- end }}

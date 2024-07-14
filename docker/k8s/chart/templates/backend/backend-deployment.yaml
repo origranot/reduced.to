@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: {{ .Values.namespace }}
+  annotations:
+    keel.sh/policy: force
+    keel.sh/trigger: poll
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: {{ .Values.backend.image }}
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: reduced-configmap
+          ports:
+            - containerPort: {{ .Values.backend.port | int }}
+          {{- if .Values.backend.resources }}
+          resources: {{ .Values.backend.resources | toYaml | nindent 12 }}
+          {{- else }}
+          resources: {{ .Values.default_resources | toYaml | nindent 12 }}
+          {{- end }}

@@ -1,0 +1,103 @@
+# values.yaml
+
+namespace: reduced-to # Namespace for the application
+backend_port: &backend_port 3000 # Port for backend application
+frontend_port: &frontend_port 5000 # Port for frontend application
+tracker_port: &tracker_port 3001 # Port for tracker application
+postgres_port: &postgres_port 5432 # Port for PostgreSQL database
+redis_port: &redis_port 6379 # Port for Redis database
+
+tls:
+  issuer: 'letsencrypt-prod' # TLS issuer
+  secret_name: 'letsencrypt-prod' # TLS secret name
+
+default_resources:
+  requests:
+    memory: '256Mi' # Default memory request for deployments
+    cpu: '100m' # Default CPU request for deployments
+  limits:
+    memory: '1024Mi' # Default memory limit for deployments
+    cpu: '500m' # Default CPU limit for deployments
+
+backend:
+  replicas: 1
+  image: 'ghcr.io/origranot/reduced.to/backend:master'
+  port: *backend_port
+
+frontend:
+  replicas: 1
+  image: 'ghcr.io/origranot/reduced.to/frontend:master'
+  port: *frontend_port
+
+tracker:
+  replicas: 1
+  image: 'ghcr.io/origranot/reduced.to/tracker:master'
+  port: *tracker_port
+
+shared_configmap:
+  # General application settings
+  BACKEND_APP_PORT: *backend_port # Port for backend application
+  FRONTEND_APP_PORT: *frontend_port # Port for frontend application
+  TRACKER_APP_PORT: *tracker_port # Port for tracker application
+  NODE_ENV: 'production' # Node environment
+
+  # Rate limiting settings
+  RATE_LIMIT_TTL: '60' # Time to live for rate limit (seconds)
+  RATE_LIMIT_COUNT: '100' # Number of allowed requests per TTL
+
+  # Paddle payment gateway settings
+  PADDLE_ENABLE: 'false' # Enable/disable Paddle integration
+  PADDLE_WEBHOOK_KEY: 'pld_test_webhook_key' # Paddle webhook key
+  PADDLE_SECRET_KEY: 'secret_key' # Paddle secret key
+
+  # Logger settings
+  LOGGER_CONSOLE_THRESHOLD: 'INFO' # Log level for console output (DEBUG, INFO, WARN, ERROR, FATAL)
+
+  # Frontend settings
+  DOMAIN: 'reduced.to' # Domain for the frontend application
+  PUBLIC_PADDLE_KEY: 'test_public_key' # Public key for Paddle integration
+  CLIENTSIDE_API_DOMAIN: 'https://reduced.to' # Client-side API domain
+  STORAGE_DOMAIN: 'Get it from https://cloud.digitalocean.com/spaces' # Storage domain
+
+  # Database settings
+  POSTGRES_PORT: *postgres_port # Port for PostgreSQL database
+  POSTGRES_DB: 'reduced_to_db' # PostgreSQL database name
+  POSTGRES_USER: 'postgres' # PostgreSQL username
+  POSTGRES_PASSWORD: 'postgres' # PostgreSQL password
+  DATABASE_URL: 'postgresql://postgres:postgres@postgres-service:5432/reduced_to_db' # Database connection URL
+
+  # Redis settings
+  REDIS_ENABLE: 'false' # Enable/disable Redis integration
+  REDIS_HOST: 'redis-service' # Redis host
+  REDIS_PORT: *redis_port # Redis port
+  REDIS_PASSWORD: 'password' # Redis password
+  REDIS_TTL: '1800000' # Redis TTL (milliseconds)
+
+  # Novu settings (for email verification)
+  NOVU_API_KEY: 'Get it from https://novu.co/' # Novu API key
+
+  # Kafka settings (used for analytics)
+  KAFKA_ENABLE: 'false' # Enable/disable Kafka integration
+  KAFKA_BROKER: '' # Kafka broker
+  KAFKA_USERNAME: '' # Kafka username
+  KAFKA_PASSWORD: '' # Kafka password
+
+  # Authentication settings
+  AUTH_JWT_ACCESS_SECRET: 'abc1234' # JWT access secret
+  AUTH_JWT_REFRESH_SECRET: 'abc1234' # JWT refresh secret
+  AUTH_GOOGLE_CLIENT_ID: 'Get it from https://console.cloud.google.com/apis/credentials' # Google client ID
+  AUTH_GOOGLE_CLIENT_SECRET: 'Get it from https://console.cloud.google.com/apis/credentials' # Google client secret
+
+  # Safe URL settings
+  SAFE_URL_GOOGLE_SAFE_BROWSING_API_KEY: 'Get it from https://console.cloud.google.com/apis/credentials' # Google Safe Browsing API key
+  SAFE_URL_ENABLE: 'false' # Enable/disable Safe URL check
+
+  # Tracker settings
+  TRACKER_STATS_TOPIC_NAME: 'stats' # Kafka topic name for tracker stats
+
+  # Storage settings
+  STORAGE_ENABLE: 'false' # Enable/disable storage integration
+  STORAGE_ENDPOINT: 'Get it from https://cloud.digitalocean.com/spaces' # Storage endpoint
+  STORAGE_ACCESS_KEY: 'Get it from https://cloud.digitalocean.com/spaces' # Storage access key
+  STORAGE_SECRET_KEY: 'Get it from https://cloud.digitalocean.com/spaces' # Storage secret key
+  STORAGE_BUCKET_NAME: 'Get it from https://cloud.digitalocean.com/spaces' # Storage bucket name
