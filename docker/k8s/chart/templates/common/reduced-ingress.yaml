@@ -2,9 +2,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: reduced-ingress
-  namespace: default
+  namespace: {{ .Values.namespace }}
   annotations:
-    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+    cert-manager.io/cluster-issuer: {{ required "TLS issuer has to be defined" .Values.tls.issuer }}
     kubernetes.io/ingress.class: 'nginx'
   labels:
     app: reduced
@@ -12,10 +12,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - reduced.to
-      secretName: letsencrypt-prod # Name of the secret containing the certificate
+        - {{ .Values.shared_configmap.DOMAIN }}
+      secretName: {{ required "TLS secret has to be defined" .Values.tls.secret_name }}
   rules:
-    - host: reduced.to
+    - host: {{ .Values.shared_configmap.DOMAIN }}
       http:
         paths:
           - path: /

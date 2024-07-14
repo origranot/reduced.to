@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: {{ required "Backend port has to be defined" .Values.backend.port }}
+      targetPort: {{ required "Backend port has to be defined" .Values.backend.port }}
+  type: 'ClusterIP'

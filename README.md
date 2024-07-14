@@ -157,6 +157,18 @@ npx nx run-many -t docker-build
   docker compose -f docker/local/docker-compose.yml -p reduced-to up
   ```
 
+### ☸ Deployment
+  
+You can deploy the app to a Kubernetes cluster by installing the [Helm](https://helm.sh/) chart.
+
+1. Navigate to the `chart` directory (/docker/k8s/chart)
+2. Update the values in the `values.yaml` file
+3. Run the following command to deploy the app to your cluster:
+
+```sh
+helm install reduced-to . --namespace reduced-to --create-namespace
+```
+
 ### 👷 Configuration
 
 For the minimal configuration you can just rename the `.example.env` files to `.env`.

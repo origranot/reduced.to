@@ -1,6 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
-import { IoLogoDocker } from '@qwikest/icons/ionicons';
+import { SiHelm } from '@qwikest/icons/simpleicons';
 import { useGetCurrentUser } from '../../routes/layout';
 
 export const Hero = component$(() => {
@@ -61,8 +61,8 @@ export const Hero = component$(() => {
             target="_blank"
             class="flex justify-center items-center gap-x-2 p-2 ps-3 text-sm font-mono rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 sm:w-auto w-2/3 h-10"
           >
-            Self-Hosted Deployment
-            <IoLogoDocker class="h-5 w-5" />
+            <span>Deploy with Helm</span>
+            <SiHelm class="h-5 w-5" />
           </a>
         </div>
         {/* <!-- End Buttons --> */}

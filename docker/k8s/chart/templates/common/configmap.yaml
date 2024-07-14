@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: reduced-configmap
+  namespace: {{ .Values.namespace }}
+data:
+{{- range $key, $value := .Values.shared_configmap }}
+  {{ $key }}: {{ $value | quote }}
+{{- end }}
+  API_DOMAIN: "http://backend-service:{{ .Values.backend.port }}"
+

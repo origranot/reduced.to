@@ -2,13 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tracker-deployment
+  namespace: {{ .Values.namespace }}
   annotations:
     # force policy will ensure that deployment is updated
     # even when tag is unchanged (latest remains)
     keel.sh/policy: force
     keel.sh/trigger: poll # <-- actively query registry, otherwise defaults to webhooks
 spec:
-  replicas: 1
+  replicas: {{ .Values.tracker.replicas }}
   selector:
     matchLabels:
       app: tracker
@@ -19,17 +20,15 @@ spec:
     spec:
       containers:
         - name: tracker
-          image: ghcr.io/origranot/reduced.to/tracker:master
+          image: {{ .Values.tracker.image }}
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: reduced-configmap
           ports:
-            - containerPort: 3000
-          resources:
-            requests:
-              memory: '256Mi'
-              cpu: '100m'
-            limits:
-              memory: '1024Mi'
-              cpu: '500m'
+            - containerPort: {{ required "Tracker port has to be defined" .Values.tracker.port }}
+          {{- if .Values.tracker.resources }}
+          resources: {{ .Values.tracker.resources | toYaml | nindent 12 }}
+          {{- else }}
+          resources: {{ .Values.default_resources | toYaml | nindent 12 }}
+          {{- end }}

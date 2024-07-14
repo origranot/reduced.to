@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgres-statefulset
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: 1
   selector:
@@ -19,7 +20,7 @@ spec:
             - configMapRef:
                 name: reduced-configmap
           ports:
-            - containerPort: 5432
+            - containerPort: {{ required "Postgres port has to be defined" .Values.postgres_port }}
           volumeMounts:
             - name: postgres-pv-claim
               mountPath: /var/lib/postgresql/data

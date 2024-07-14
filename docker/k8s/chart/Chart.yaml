@@ -1,0 +1,9 @@
+apiVersion: v2
+name: reduced.to
+version: 0.1.0
+description: A Helm chart for Kubernetes
+
+dependencies:
+  - name: keel
+    version: 1.0.3
+    repository: https://charts.keel.sh
