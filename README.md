@@ -158,7 +158,7 @@ npx nx run-many -t docker-build
   ```
 
 ### ☸ Deployment
-  
+
 You can deploy the app to a Kubernetes cluster by installing the [Helm](https://helm.sh/) chart.
 
 1. Navigate to the `chart` directory (/docker/k8s/chart)
