@@ -4,7 +4,7 @@
     "module": "commonjs"
   },
   "files": [],
-  "include": [],
+  "include": ["./src"],
   "references": [
     {
       "path": "./tsconfig.lib.json"
