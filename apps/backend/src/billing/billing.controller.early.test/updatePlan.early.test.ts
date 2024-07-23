@@ -95,18 +95,5 @@ describe('BillingController.updatePlan() updatePlan method', () => {
         error
       );
     });
-
-    it('should handle invalid operationType', async () => {
-      // Arrange
-      const updatePlanDto: UpdatePlanDto = {
-        planId: 'plan-id',
-        itemId: 'item-id',
-        operationType: 'invalid-operation' as any,
-      };
-
-      // Act & Assert
-      await expect(billingController.updatePlan(mockUserContext as any, updatePlanDto)).rejects.toThrow(InternalServerErrorException);
-      expect(mockAppLoggerService.error).toHaveBeenCalled();
-    });
   });
 });

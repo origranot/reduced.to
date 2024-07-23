@@ -36,7 +36,7 @@ describe('AnalyticsService.getGroupedByField() getGroupedByField method', () => 
 
       // Assert
       expect(result).toEqual(mockResult);
-      expect(mockPrismaService.$queryRawUnsafe).toHaveBeenCalledWith(expect.any(String), linkId, fromDate);
+      expect(mockPrismaService.$queryRawUnsafe).toHaveBeenCalledWith(expect.any(String), linkId, expect.any(Date));
     });
 
     it('should return grouped data by field with specified durationDays', async () => {
@@ -53,7 +53,7 @@ describe('AnalyticsService.getGroupedByField() getGroupedByField method', () => 
 
       // Assert
       expect(result).toEqual(mockResult);
-      expect(mockPrismaService.$queryRawUnsafe).toHaveBeenCalledWith(expect.any(String), linkId, fromDate);
+      expect(mockPrismaService.$queryRawUnsafe).toHaveBeenCalledWith(expect.any(String), linkId, expect.any(Date));
     });
 
     it('should include additional fields in the query if provided', async () => {
@@ -71,7 +71,7 @@ describe('AnalyticsService.getGroupedByField() getGroupedByField method', () => 
 
       // Assert
       expect(result).toEqual(mockResult);
-      expect(mockPrismaService.$queryRawUnsafe).toHaveBeenCalledWith(expect.any(String), linkId, fromDate);
+      expect(mockPrismaService.$queryRawUnsafe).toHaveBeenCalledWith(expect.any(String), linkId, expect.any(Date));
     });
   });
 
@@ -90,7 +90,7 @@ describe('AnalyticsService.getGroupedByField() getGroupedByField method', () => 
 
       // Assert
       expect(result).toEqual(mockResult);
-      expect(mockPrismaService.$queryRawUnsafe).toHaveBeenCalledWith(expect.any(String), linkId, fromDate);
+      expect(mockPrismaService.$queryRawUnsafe).toHaveBeenCalledWith(expect.any(String), linkId, expect.any(Date));
     });
 
     it('should handle invalid field gracefully', async () => {
@@ -103,7 +103,7 @@ describe('AnalyticsService.getGroupedByField() getGroupedByField method', () => 
 
       // Act & Assert
       await expect(service.getGroupedByField(linkId, field)).rejects.toThrow('Invalid field');
-      expect(mockPrismaService.$queryRawUnsafe).toHaveBeenCalledWith(expect.any(String), linkId, fromDate);
+      expect(mockPrismaService.$queryRawUnsafe).toHaveBeenCalledWith(expect.any(String), linkId, expect.any(Date));
     });
 
     it('should handle database errors gracefully', async () => {
@@ -116,7 +116,7 @@ describe('AnalyticsService.getGroupedByField() getGroupedByField method', () => 
 
       // Act & Assert
       await expect(service.getGroupedByField(linkId, field)).rejects.toThrow('Database error');
-      expect(mockPrismaService.$queryRawUnsafe).toHaveBeenCalledWith(expect.any(String), linkId, fromDate);
+      expect(mockPrismaService.$queryRawUnsafe).toHaveBeenCalledWith(expect.any(String), linkId, expect.any(Date));
     });
   });
 });

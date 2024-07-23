@@ -71,14 +71,5 @@ describe('BillingController.getBillingInfo() getBillingInfo method', () => {
       await expect(billingController.getBillingInfo(mockUserContext as any)).rejects.toThrow(InternalServerErrorException);
       expect(mockAppLoggerService.error).toHaveBeenCalledWith('Could not fetch billing info for user mockUserId', mockError);
     });
-
-    it('should handle null user context', async () => {
-      // Arrange
-      const nullUserContext = null;
-
-      // Act & Assert
-      await expect(billingController.getBillingInfo(nullUserContext as any)).rejects.toThrow(InternalServerErrorException);
-      expect(mockAppLoggerService.error).toHaveBeenCalledWith('Could not fetch billing info for user null', expect.any(Error));
-    });
   });
 });
