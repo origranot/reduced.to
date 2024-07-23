@@ -9,7 +9,7 @@ export class RestrictDays implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user = request.user as UserContext;
     const plan = user.plan || 'FREE';
-    const planConfig = PLAN_LEVELS[plan] || PLAN_LEVELS["FREE"];
+    const planConfig = PLAN_LEVELS[plan] || PLAN_LEVELS['FREE'];
     const maxDays = planConfig.FEATURES.ANALYTICS.value;
     const query = request.query;
 

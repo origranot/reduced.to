@@ -39,7 +39,7 @@ describe('AnalyticsService.getClicksOverTime() getClicksOverTime method', () => 
 
       // Assert
       expect(result).toEqual(expectedResult);
-      expect(mockPrismaService.$queryRaw).toHaveBeenCalledWith(expect.any(Array), "day", linkId, fromDate);
+      expect(mockPrismaService.$queryRaw).toHaveBeenCalledWith(expect.any(Array), 'day', linkId, fromDate);
     });
 
     it('should default to 30 days if durationDays is not provided', async () => {
@@ -58,7 +58,7 @@ describe('AnalyticsService.getClicksOverTime() getClicksOverTime method', () => 
 
       // Assert
       expect(result).toEqual(expectedResult);
-      expect(mockPrismaService.$queryRaw).toHaveBeenCalledWith(expect.any(Array), "day", linkId, fromDate);
+      expect(mockPrismaService.$queryRaw).toHaveBeenCalledWith(expect.any(Array), 'day', linkId, fromDate);
     });
   });
 
@@ -77,7 +77,7 @@ describe('AnalyticsService.getClicksOverTime() getClicksOverTime method', () => 
 
       // Assert
       expect(result).toEqual(expectedResult);
-      expect(mockPrismaService.$queryRaw).toHaveBeenCalledWith(expect.any(Array), "day", linkId, fromDate);
+      expect(mockPrismaService.$queryRaw).toHaveBeenCalledWith(expect.any(Array), 'day', linkId, fromDate);
     });
 
     it('should handle a duration of 1 day correctly', async () => {
@@ -97,7 +97,7 @@ describe('AnalyticsService.getClicksOverTime() getClicksOverTime method', () => 
 
       // Assert
       expect(result).toEqual(expectedResult);
-      expect(mockPrismaService.$queryRaw).toHaveBeenCalledWith(expect.any(Array), "hour", linkId, fromDate);
+      expect(mockPrismaService.$queryRaw).toHaveBeenCalledWith(expect.any(Array), 'hour', linkId, fromDate);
     });
 
     it('should handle invalid linkId gracefully', async () => {
@@ -114,7 +114,7 @@ describe('AnalyticsService.getClicksOverTime() getClicksOverTime method', () => 
 
       // Assert
       expect(result).toEqual(expectedResult);
-      expect(mockPrismaService.$queryRaw).toHaveBeenCalledWith(expect.any(Array), "day", linkId, fromDate);
+      expect(mockPrismaService.$queryRaw).toHaveBeenCalledWith(expect.any(Array), 'day', linkId, fromDate);
     });
 
     it('should handle PrismaService errors gracefully', async () => {
@@ -127,7 +127,7 @@ describe('AnalyticsService.getClicksOverTime() getClicksOverTime method', () => 
 
       // Act & Assert
       await expect(analyticsService.getClicksOverTime(linkId, durationDays)).rejects.toThrow('PrismaService error');
-      expect(mockPrismaService.$queryRaw).toHaveBeenCalledWith(expect.any(Array), "day", linkId, fromDate);
+      expect(mockPrismaService.$queryRaw).toHaveBeenCalledWith(expect.any(Array), 'day', linkId, fromDate);
     });
   });
 });
