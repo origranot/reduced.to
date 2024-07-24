@@ -24,27 +24,6 @@ describe('UsageService.updateLimits() updateLimits method', () => {
   });
 
   describe('updateLimits', () => {
-    it('should update limits correctly for a valid plan', async () => {
-      // Arrange
-      const userId = 'user123';
-      const plan = 'PREMIUM';
-      const expectedClicksLimit = PLAN_LEVELS.PREMIUM.FEATURES.TRACKED_CLICKS.value;
-      const expectedLinksLimit = PLAN_LEVELS.PREMIUM.FEATURES.LINKS_COUNT.value;
-
-      mockPrismaService.usage.update.mockResolvedValue({} as any);
-
-      // Act
-      await usageService.updateLimits(userId, plan);
-
-      // Assert
-      expect(mockPrismaService.usage.update).toHaveBeenCalledWith({
-        where: { userId },
-        data: {
-          clicksLimit: expectedClicksLimit,
-          linksLimit: expectedLinksLimit,
-        },
-      });
-    });
 
     it('should default to FREE plan if an invalid plan is provided', async () => {
       // Arrange

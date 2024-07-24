@@ -4,11 +4,11 @@ import { filterBuilder } from '../filter';
 
 // Mock classes
 class MockNestedObject {
-  public name: string = 'Hi';
+  public name = 'Hi';
 }
 
 class MockPerson {
-  public age: number = 5;
+  public age = 5;
   public nestedObjectProperty: MockNestedObject = new MockNestedObject();
 }
 

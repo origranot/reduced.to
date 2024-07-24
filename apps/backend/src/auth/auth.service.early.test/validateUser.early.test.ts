@@ -79,6 +79,7 @@ describe('AuthService.validateUser() validateUser method', () => {
         email: 'test@example.com',
         password: hashedPassword,
         plan: 'PREMIUM',
+        subscription: { plan: 'PREMIUM' },
       });
     });
   });

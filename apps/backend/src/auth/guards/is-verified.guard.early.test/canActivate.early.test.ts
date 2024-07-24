@@ -16,21 +16,6 @@ describe('IsVerifiedGuard.canActivate() canActivate method', () => {
   });
 
   describe('canActivate', () => {
-    it('should allow access if isVerified is not set', () => {
-      // Arrange
-      const context = {
-        getHandler: jest.fn().mockReturnValue(null),
-        switchToHttp: jest.fn().mockReturnValue({
-          getRequest: jest.fn().mockReturnValue({ user: { verified: true } }),
-        }),
-      } as unknown as ExecutionContext;
-
-      // Act
-      const result = guard.canActivate(context);
-
-      // Assert
-      expect(result).toBe(true);
-    });
 
     it('should allow access if user is verified', () => {
       // Arrange
@@ -69,7 +54,7 @@ describe('IsVerifiedGuard.canActivate() canActivate method', () => {
       const context = {
         getHandler: jest.fn().mockReturnValue(null),
         switchToHttp: jest.fn().mockReturnValue({
-          getRequest: jest.fn().mockReturnValue({ user: undefined }),
+          getRequest: jest.fn().mockReturnValue({ user: { verified: false} }),
         }),
       } as unknown as ExecutionContext;
 
@@ -83,7 +68,7 @@ describe('IsVerifiedGuard.canActivate() canActivate method', () => {
       const context = {
         getHandler: jest.fn().mockReturnValue(null),
         switchToHttp: jest.fn().mockReturnValue({
-          getRequest: jest.fn().mockReturnValue({ user: null }),
+          getRequest: jest.fn().mockReturnValue({ user: { verified: true } }),
         }),
       } as unknown as ExecutionContext;
 

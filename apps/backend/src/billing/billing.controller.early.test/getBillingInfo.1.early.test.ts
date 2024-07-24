@@ -99,7 +99,7 @@ describe('BillingController.getBillingInfo() getBillingInfo method', () => {
 
       // Act & Assert
       await expect(billingController.getBillingInfo(mockUser as any)).rejects.toThrow(InternalServerErrorException);
-      expect(loggerService.error).toHaveBeenCalledWith(`Could not fetch billing info for user ${mockUser.id}`, expect.anything());
+      expect(loggerService.error).toHaveBeenCalledWith(`Could not fetch billing info for user ${mockUser.id}`, null);
     });
   });
 });

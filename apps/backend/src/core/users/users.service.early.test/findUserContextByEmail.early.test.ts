@@ -1,5 +1,6 @@
 // Unit tests for: findUserContextByEmail
 
+import { Subscription } from 'rxjs';
 import { UsersService } from '../users.service';
 
 class MockSubscription {
@@ -50,6 +51,7 @@ describe('UsersService.findUserContextByEmail() findUserContextByEmail method', 
         verified: mockUser.verified,
         createdAt: mockUser.createdAt,
         plan: mockUser.subscription.plan,
+        subscription: mockUser.subscription,
       });
     });
 

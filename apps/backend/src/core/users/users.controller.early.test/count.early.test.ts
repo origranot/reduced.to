@@ -80,7 +80,11 @@ describe('UsersController.count() count method', () => {
 
     it('should return the count of users when only verified is provided', async () => {
       // Arrange
-      const query: CountQueryDto = { verified: false };
+      const query: CountQueryDto = {
+        verified: false,
+        startDate: undefined,
+        endDate: undefined
+      };
       mockUsersService.count.mockResolvedValue(10 as any);
 
       // Act
@@ -93,7 +97,11 @@ describe('UsersController.count() count method', () => {
 
     it('should return the count of users when no filters are provided', async () => {
       // Arrange
-      const query: CountQueryDto = {};
+      const query: CountQueryDto = {
+        startDate: undefined,
+        endDate: undefined,
+        verified: false
+      };
       mockUsersService.count.mockResolvedValue(20 as any);
 
       // Act
@@ -101,12 +109,15 @@ describe('UsersController.count() count method', () => {
 
       // Assert
       expect(result).toEqual({ count: 20 });
-      expect(mockUsersService.count).toHaveBeenCalledWith({});
+      expect(mockUsersService.count).toHaveBeenCalledWith({ verified: false });
     });
 
     it('should handle the case when startDate is after endDate', async () => {
       // Arrange
-      const query: CountQueryDto = { startDate: new Date('2023-12-31'), endDate: new Date('2023-01-01') };
+      const query: CountQueryDto = {
+        startDate: new Date('2023-12-31'), endDate: new Date('2023-01-01'),
+        verified: false
+      };
       mockUsersService.count.mockResolvedValue(0 as any);
 
       // Act
@@ -114,12 +125,16 @@ describe('UsersController.count() count method', () => {
 
       // Assert
       expect(result).toEqual({ count: 0 });
-      expect(mockUsersService.count).toHaveBeenCalledWith({ createdAt: { gte: query.startDate, lte: query.endDate } });
+      expect(mockUsersService.count).toHaveBeenCalledWith({ createdAt: { gte: query.startDate, lte: query.endDate }, verified: false });
     });
 
     it('should handle the case when verified is not a boolean', async () => {
       // Arrange
-      const query: CountQueryDto = { verified: null as any };
+      const query: CountQueryDto = {
+        verified: null as any,
+        startDate: undefined,
+        endDate: undefined
+      };
       mockUsersService.count.mockResolvedValue(15 as any);
 
       // Act
@@ -132,7 +147,10 @@ describe('UsersController.count() count method', () => {
 
     it('should handle errors thrown by the usersService.count method', async () => {
       // Arrange
-      const query: CountQueryDto = { startDate: new Date('2023-01-01'), endDate: new Date('2023-12-31') };
+      const query: CountQueryDto = {
+        startDate: new Date('2023-01-01'), endDate: new Date('2023-12-31'),
+        verified: false
+      };
       mockUsersService.count.mockRejectedValue(new Error('Service error'));
 
       // Act & Assert

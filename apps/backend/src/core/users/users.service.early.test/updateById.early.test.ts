@@ -24,7 +24,13 @@ describe('UsersService.updateById() updateById method', () => {
       // Arrange
       const userId = '123';
       const updateData: Prisma.UserUpdateInput = { name: 'New Name' };
-      const updatedUser: User = { id: userId, name: 'New Name', email: 'test@example.com', verified: true, createdAt: new Date() };
+      const updatedUser: User = {
+        id: userId, name: 'New Name', email: 'test@example.com', verified: true, createdAt: new Date(),
+        password: '',
+        role: 'USER',
+        verificationToken: '',
+        refreshToken: ''
+      };
 
       mockPrismaService.user.update.mockResolvedValue(updatedUser as any);
 
@@ -60,7 +66,13 @@ describe('UsersService.updateById() updateById method', () => {
       // Arrange
       const userId = '123';
       const updateData: Prisma.UserUpdateInput = {};
-      const updatedUser: User = { id: userId, name: 'Old Name', email: 'test@example.com', verified: true, createdAt: new Date() };
+      const updatedUser: User = {
+        id: userId, name: 'Old Name', email: 'test@example.com', verified: true, createdAt: new Date(),
+        password: '',
+        role: 'USER',
+        verificationToken: '',
+        refreshToken: ''
+      };
 
       mockPrismaService.user.update.mockResolvedValue(updatedUser as any);
 

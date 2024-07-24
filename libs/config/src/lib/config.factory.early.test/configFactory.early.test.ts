@@ -139,7 +139,7 @@ describe('configFactory() configFactory method', () => {
             backendPort: 3000,
             frontendPort: 5173,
             trackerPort: 3001,
-            env: 'development',
+            env: 'test',
           },
           logger: {
             console: {

@@ -42,14 +42,14 @@ describe('setAuthCookies() setAuthCookies method', () => {
       // Assert
       expect(res.cookie).toHaveBeenCalledWith(AUTH_COOKIE_NAME, mockTokens.accessToken, {
         expires: accessTokenExpiry,
-        domain: `.${mockDomain}`,
+        domain: `${mockDomain}`,
         path: '/',
         sameSite: 'lax',
         httpOnly: true,
       });
       expect(res.cookie).toHaveBeenCalledWith(REFRESH_COOKIE_NAME, mockTokens.refreshToken, {
         expires: refreshTokenExpiry,
-        domain: `.${mockDomain}`,
+        domain: `${mockDomain}`,
         path: '/',
         sameSite: 'lax',
         httpOnly: true,
@@ -75,14 +75,14 @@ describe('setAuthCookies() setAuthCookies method', () => {
       // Assert
       expect(res.cookie).toHaveBeenCalledWith(AUTH_COOKIE_NAME, emptyTokens.accessToken, {
         expires: accessTokenExpiry,
-        domain: `.${mockDomain}`,
+        domain: `${mockDomain}`,
         path: '/',
         sameSite: 'lax',
         httpOnly: true,
       });
       expect(res.cookie).toHaveBeenCalledWith(REFRESH_COOKIE_NAME, emptyTokens.refreshToken, {
         expires: refreshTokenExpiry,
-        domain: `.${mockDomain}`,
+        domain: `${mockDomain}`,
         path: '/',
         sameSite: 'lax',
         httpOnly: true,
@@ -106,14 +106,14 @@ describe('setAuthCookies() setAuthCookies method', () => {
       // Assert
       expect(res.cookie).toHaveBeenCalledWith(AUTH_COOKIE_NAME, undefinedTokens.accessToken, {
         expires: accessTokenExpiry,
-        domain: `.${mockDomain}`,
+        domain: `${mockDomain}`,
         path: '/',
         sameSite: 'lax',
         httpOnly: true,
       });
       expect(res.cookie).toHaveBeenCalledWith(REFRESH_COOKIE_NAME, undefinedTokens.refreshToken, {
         expires: refreshTokenExpiry,
-        domain: `.${mockDomain}`,
+        domain: `${mockDomain}`,
         path: '/',
         sameSite: 'lax',
         httpOnly: true,

@@ -76,7 +76,10 @@ describe('UsersController.update() update method', () => {
 
     it('should upload profile picture if provided', async () => {
       // Arrange
-      const updateDto: UpdateDto = { profilePicture: 'data:image/png;base64,abc123' };
+      const updateDto: UpdateDto = {
+        profilePicture: 'data:image/png;base64,abc123',
+        displayName: ''
+      };
       mockAuthService.generateTokens.mockResolvedValue({ accessToken: 'token' });
 
       // Act
@@ -92,7 +95,10 @@ describe('UsersController.update() update method', () => {
     it('should not upload profile picture if storage is disabled', async () => {
       // Arrange
       mockAppConfigService.getConfig.mockReturnValue({ storage: { enable: false } });
-      const updateDto: UpdateDto = { profilePicture: 'data:image/png;base64,abc123' };
+      const updateDto: UpdateDto = {
+        profilePicture: 'data:image/png;base64,abc123',
+        displayName: ''
+      };
 
       // Act
       await usersController.update(userContext as any, updateDto);
@@ -103,7 +109,10 @@ describe('UsersController.update() update method', () => {
 
     it('should handle errors during profile picture upload', async () => {
       // Arrange
-      const updateDto: UpdateDto = { profilePicture: 'data:image/png;base64,abc123' };
+      const updateDto: UpdateDto = {
+        profilePicture: 'data:image/png;base64,abc123',
+        displayName: ''
+      };
       mockStorageService.uploadImage.mockRejectedValue(new Error('Upload failed'));
       mockAuthService.generateTokens.mockResolvedValue({ accessToken: 'token' });
 
@@ -116,7 +125,9 @@ describe('UsersController.update() update method', () => {
 
     it('should not update if displayName is not provided', async () => {
       // Arrange
-      const updateDto: UpdateDto = {};
+      const updateDto: UpdateDto = {
+        displayName: ''
+      };
       mockAuthService.generateTokens.mockResolvedValue({ accessToken: 'token' });
 
       // Act

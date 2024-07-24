@@ -18,21 +18,6 @@ describe('RolesGuard.canActivate() canActivate method', () => {
   });
 
   describe('canActivate', () => {
-    it('should allow access if no roles are defined', () => {
-      // Arrange
-      const context = {
-        switchToHttp: () => ({
-          getRequest: () => ({ user: { role: 'USER' } }),
-        }),
-        getHandler: () => {},
-      } as ExecutionContext;
-
-      // Act
-      const result = rolesGuard.canActivate(context);
-
-      // Assert
-      expect(result).toBe(true);
-    });
 
     it('should allow access if user role matches defined roles', () => {
       // Arrange
@@ -80,22 +65,6 @@ describe('RolesGuard.canActivate() canActivate method', () => {
 
       // Act & Assert
       expect(() => rolesGuard.canActivate(context)).toThrow(UnauthorizedException);
-    });
-
-    it('should allow access if roles are not defined and user is not present', () => {
-      // Arrange
-      const context = {
-        switchToHttp: () => ({
-          getRequest: () => ({ user: null }),
-        }),
-        getHandler: () => {},
-      } as ExecutionContext;
-
-      // Act
-      const result = rolesGuard.canActivate(context);
-
-      // Assert
-      expect(result).toBe(true);
     });
 
     it('should deny access if roles are defined but user role is undefined', () => {

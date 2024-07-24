@@ -72,7 +72,7 @@ describe('BillingService.getBillingInfo() getBillingInfo method', () => {
         createdAt: new Date(),
         subscription: {
           id: 'sub-123',
-          plan: Plan.PREMIUM,
+          plan: Plan.PRO,
           startDate: new Date(),
           endDate: new Date(),
           nextBilledAt: new Date(),
@@ -92,14 +92,14 @@ describe('BillingService.getBillingInfo() getBillingInfo method', () => {
       // Assert
       expect(result).toEqual({
         id: 'sub-123',
-        plan: Plan.PREMIUM,
+        plan: Plan.PRO,
         startDate: mockUser.subscription.startDate,
         endDate: mockUser.subscription.endDate,
         scheduledToBeCancelled: false,
         nextBillingAt: mockUser.subscription.nextBilledAt,
         limits: {
-          linksCount: PLAN_LEVELS[Plan.PREMIUM].FEATURES.LINKS_COUNT.value,
-          trackedClicks: PLAN_LEVELS[Plan.PREMIUM].FEATURES.TRACKED_CLICKS.value,
+          linksCount: PLAN_LEVELS[Plan.PRO].FEATURES.LINKS_COUNT.value,
+          trackedClicks: PLAN_LEVELS[Plan.PRO].FEATURES.TRACKED_CLICKS.value,
         },
         usage: {
           currentLinkCount: 5,
@@ -181,14 +181,14 @@ describe('BillingService.getBillingInfo() getBillingInfo method', () => {
       // Assert
       expect(result).toEqual({
         id: 'sub-789',
-        plan: Plan.BASIC,
+        plan: Plan.FREE,
         startDate: mockUser.subscription.startDate,
         endDate: mockUser.subscription.endDate,
         scheduledToBeCancelled: false,
         nextBillingAt: mockUser.subscription.nextBilledAt,
         limits: {
-          linksCount: PLAN_LEVELS[Plan.BASIC].FEATURES.LINKS_COUNT.value,
-          trackedClicks: PLAN_LEVELS[Plan.BASIC].FEATURES.TRACKED_CLICKS.value,
+          linksCount: PLAN_LEVELS[Plan.FREE].FEATURES.LINKS_COUNT.value,
+          trackedClicks: PLAN_LEVELS[Plan.FREE].FEATURES.TRACKED_CLICKS.value,
         },
         usage: {
           currentLinkCount: 0,

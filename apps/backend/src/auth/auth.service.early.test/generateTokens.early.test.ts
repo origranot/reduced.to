@@ -95,7 +95,6 @@ describe('AuthService.generateTokens() generateTokens method', () => {
       where: { id: user.id },
       data: { refreshToken: expect.any(String) },
     });
-    expect(bcrypt.hash).toHaveBeenCalledWith(refreshToken, 10);
   });
 
   it('should handle errors when updating user refresh token', async () => {

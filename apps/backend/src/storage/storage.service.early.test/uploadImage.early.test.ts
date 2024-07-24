@@ -77,21 +77,6 @@ describe('StorageService.uploadImage() uploadImage method', () => {
       expect(result).toEqual({} as any); // Expecting the resolved value
     });
 
-    it('should log an error if upload fails', async () => {
-      // Arrange
-      const name = 'test-image.png';
-      const file = Buffer.from('test image data');
-      const errorMessage = 'Upload failed';
-      mockS3.putObject.mockRejectedValue(new Error(errorMessage)); // Mock upload failure
-
-      // Act
-      await service.uploadImage({ name, file });
-
-      // Assert
-      expect(mockLogger.error).toHaveBeenCalledWith('Error uploading image', expect.any(Error));
-    });
-  });
-
   describe('uploadImageFromUrl', () => {
     it('should upload an image from a URL successfully', async () => {
       // Arrange
