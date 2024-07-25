@@ -1,4 +1,4 @@
-FROM node:lts-alpine as dependencies
+FROM node:20.15.1-alpine3.20 as dependencies
 WORKDIR /app
 
 # Install Python for node-gyp
@@ -8,7 +8,7 @@ COPY package*.json ./
 RUN npm ci
 
 # Build Stage
-FROM node:lts-alpine as build
+FROM node:20.15.1-alpine3.20 as build
 WORKDIR /app
 
 COPY . .
@@ -18,7 +18,7 @@ COPY --from=dependencies /app/node_modules ./node_modules
 RUN npx nx build backend --prod --skip-nx-cache
 
 # Production Stage
-FROM node:lts-alpine as production
+FROM node:20.15.1-alpine3.20 as production
 WORKDIR /app
 
 COPY --from=build /app/dist/apps/backend ./backend
