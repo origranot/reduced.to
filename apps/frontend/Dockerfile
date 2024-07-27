@@ -1,4 +1,4 @@
-FROM node:lts-alpine as dependencies
+FROM node:20.15.1-alpine3.20 as dependencies
 WORKDIR /app
 
 # Install Python for node-gyp
@@ -8,7 +8,7 @@ COPY package*.json ./
 RUN npm ci
 
 # Build Stage
-FROM node:lts-alpine as build
+FROM node:20.15.1-alpine3.20 as build
 WORKDIR /app
 
 # Arguments passed from docker-compose.yml / workflow
@@ -28,7 +28,7 @@ RUN npx nx build frontend --prod --skip-nx-cache \
     && npm prune --production
 
 # Production Stage
-FROM node:lts-alpine as production
+FROM node:20.15.1-alpine3.20 as production
 WORKDIR /app
 
 COPY --from=build /app/dist/apps/frontend ./frontend
