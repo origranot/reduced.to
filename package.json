@@ -83,7 +83,7 @@
     "@nestjs/throttler": "^4.2.1",
     "@novu/node": "^0.24.1",
     "@origranot/ts-logger": "^1.12.0",
-    "@paddle/paddle-js": "^1.1.1",
+    "@paddle/paddle-js": "^1.2.0",
     "@paddle/paddle-node-sdk": "^1.4.1",
     "@prisma/client": "^5.17.0",
     "@qwikest/icons": "^0.0.13",
