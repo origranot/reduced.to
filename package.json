@@ -91,7 +91,7 @@
     "axios": "^1.7.4",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
-    "cache-manager": "^5.7.2",
+    "cache-manager": "^5.7.6",
     "cache-manager-redis-store": "^3.0.1",
     "class-validator": "^0.14.1",
     "clsx": "^2.1.1",
