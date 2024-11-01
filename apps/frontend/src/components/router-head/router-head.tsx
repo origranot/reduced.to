@@ -28,6 +28,12 @@ export const RouterHead = component$(() => {
       />
       <script async defer src="https://buttons.github.io/buttons.js"></script>
 
+      <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5391393465846541"
+        crossOrigin="anonymous"
+      ></script>
+
       {head.meta.map((m) => (
         <meta key={m.key} {...m} />
       ))}
