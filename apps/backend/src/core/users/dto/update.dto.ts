@@ -1,4 +1,4 @@
-import { IsBase64, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class UpdateDto {
   @IsOptional()

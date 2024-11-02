@@ -88,7 +88,7 @@ export const updateProfile = globalAction$(
         message: 'Display name must be less than 25 characters',
       }),
     profilePicture: z
-      .any()
+      .string()
       .optional()
       .transform((value) => {
         // If value is not base 64 return undefined
