@@ -62,7 +62,6 @@
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
     "typescript": "~5.1.3",
-    "undici": "^5.28.4",
     "vite": "^4.5.5",
     "vite-tsconfig-paths": "~4.2.0",
     "vitest": "~0.32.0"
@@ -113,6 +112,7 @@
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0",
     "ua-parser-js": "^1.0.38",
+    "undici": "^6.20.1",
     "zod": "^3.23.8"
   }
 }
