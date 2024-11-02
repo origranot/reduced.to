@@ -29,6 +29,69 @@ interface CreateLinkInput {
   utm_content?: string;
 }
 
+const CreateLinkInputSchema = z
+  .object({
+    url: z
+      .string({
+        required_error: "The url field can't be empty.",
+      })
+      .min(1, {
+        message: "The url field can't be empty.",
+      })
+      .regex(/^(?:https?:\/\/)?(?:[\w-]+\.)+[a-z]{2,}(?::\d{1,5})?(?:\/\S*)?$/, {
+        message: "The url you've entered is not valid",
+      }),
+    key: z
+      .string()
+      .max(20, { message: 'The short link cannot exceed 20 characters.' })
+      .regex(/^[a-zA-Z0-9-]*$/, {
+        message: 'The short link can only contain letters, numbers, and dashes.',
+      })
+      .optional()
+      .refine(
+        (val) => {
+          if (!val?.length) {
+            return true;
+          }
+          if (val?.length && val?.length < 4) {
+            return false;
+          }
+
+          return true;
+        },
+        {
+          message: 'The short link must be at least 4 characters long.',
+        }
+      ),
+    expirationTime: z.string().optional(),
+    expirationTimeToggle: z.string().optional(),
+    passwordProtection: z
+      .string()
+      .min(6, {
+        message: 'Password must be at least 6 characters long.',
+      })
+      .max(25, {
+        message: 'Password must be at most 25 characters long.',
+      })
+      .optional(),
+    passwordProtectionToggle: z.string().optional(),
+    utmBuilderToggle: z.string().optional(),
+    utm_ref: z.string().max(100, { message: 'Referral (ref) must be at most 100 characters long' }).optional(),
+    utm_source: z.string().max(100, { message: 'UTM Source must be at most 100 characters long' }).optional(),
+    utm_medium: z.string().max(100, { message: 'UTM Medium must be at most 100 characters long' }).optional(),
+    utm_campaign: z.string().max(100, { message: 'UTM Campaign must be at most 100 characters long' }).optional(),
+    utm_term: z.string().max(100, { message: 'UTM Term must be at most 100 characters long' }).optional(),
+    utm_content: z.string().max(100, { message: 'UTM Content must be at most 100 characters long' }).optional(),
+  })
+  .refine((data) => !(data.expirationTimeToggle && !data.expirationTime), {
+    message: 'Please select a date for your link to expire.',
+    path: ['expirationTime'],
+  })
+  .refine((data) => !(data.passwordProtectionToggle && !data.passwordProtection), {
+    message: 'Please enter a password for your link.',
+    path: ['passwordProtection'],
+  });
+
 type FieldErrors = Partial<Record<keyof CreateLinkInput, string[]>>;
 
 const useCreateLink = globalAction$(
@@ -101,70 +164,7 @@ const useCreateLink = globalAction$(
       key: data.key,
     };
   },
-  zod$((z) =>
-    z
-      .object({
-        url: z
-          .string({
-            required_error: "The url field can't be empty.",
-          })
-          .min(1, {
-            message: "The url field can't be empty.",
-          })
-          .regex(/^(?:https?:\/\/)?(?:[\w-]+\.)+[a-z]{2,}(?::\d{1,5})?(?:\/\S*)?$/, {
-            message: "The url you've entered is not valid",
-          }),
-        key: z
-          .string()
-          .max(20, { message: 'The short link cannot exceed 20 characters.' })
-          .regex(/^[a-zA-Z0-9-]*$/, {
-            message: 'The short link can only contain letters, numbers, and dashes.',
-          })
-          .optional()
-          .refine(
-            (val) => {
-              if (!val?.length) {
-                return true;
-              }
-              if (val?.length && val?.length < 4) {
-                return false;
-              }
-
-              return true;
-            },
-            {
-              message: 'The short link must be at least 4 characters long.',
-            }
-          ),
-        expirationTime: z.string().optional(),
-        expirationTimeToggle: z.string().optional(),
-        passwordProtection: z
-          .string()
-          .min(6, {
-            message: 'Password must be at least 6 characters long.',
-          })
-          .max(25, {
-            message: 'Password must be at most 25 characters long.',
-          })
-          .optional(),
-        passwordProtectionToggle: z.string().optional(),
-        utmBuilderToggle: z.string().optional(),
-        utm_ref: z.string().max(100, { message: 'Referral (ref) must be at most 100 characters long' }).optional(),
-        utm_source: z.string().max(100, { message: 'UTM Source must be at most 100 characters long' }).optional(),
-        utm_medium: z.string().max(100, { message: 'UTM Medium must be at most 100 characters long' }).optional(),
-        utm_campaign: z.string().max(100, { message: 'UTM Campaign must be at most 100 characters long' }).optional(),
-        utm_term: z.string().max(100, { message: 'UTM Term must be at most 100 characters long' }).optional(),
-        utm_content: z.string().max(100, { message: 'UTM Content must be at most 100 characters long' }).optional(),
-      })
-      .refine((data) => !(data.expirationTimeToggle && !data.expirationTime), {
-        message: 'Please select a date for your link to expire.',
-        path: ['expirationTime'],
-      })
-      .refine((data) => !(data.passwordProtectionToggle && !data.passwordProtection), {
-        message: 'Please enter a password for your link.',
-        path: ['passwordProtection'],
-      })
-  )
+  zod$(CreateLinkInputSchema)
 );
 
 export interface LinkModalProps {

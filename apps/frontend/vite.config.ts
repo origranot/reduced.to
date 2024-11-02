@@ -2,6 +2,7 @@ import { qwikVite } from '@builder.io/qwik/optimizer';
 import { qwikCity } from '@builder.io/qwik-city/vite';
 import { defineConfig, loadEnv } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import { qwikNxVite } from 'qwik-nx/plugins';
 import path from 'path';
 
 export default defineConfig(({ mode }) => {
@@ -14,6 +15,7 @@ export default defineConfig(({ mode }) => {
     },
     cacheDir: '../../node_modules/.vite/apps/frontend',
     plugins: [
+      qwikNxVite(),
       qwikCity(),
       qwikVite({
         client: {
