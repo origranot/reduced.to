@@ -85,7 +85,7 @@
     "@origranot/ts-logger": "^1.12.0",
     "@paddle/paddle-js": "^1.2.3",
     "@paddle/paddle-node-sdk": "^1.4.1",
-    "@prisma/client": "^5.17.0",
+    "@prisma/client": "^5.21.1",
     "@qwikest/icons": "^0.0.13",
     "argon2": "^0.40.3",
     "axios": "^1.7.4",
