@@ -70,7 +70,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.688.0",
     "@docusaurus/core": "^2.4.1",
-    "@docusaurus/preset-classic": "^2.4.1",
+    "@docusaurus/preset-classic": "^3.5.0",
     "@mdx-js/react": "^1.6.22",
     "@nestjs/cache-manager": "^2.2.2",
     "@nestjs/common": "^10.4.4",
