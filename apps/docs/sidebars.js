@@ -15,6 +15,7 @@
 const sidebars = {
   tutorialSidebar: [
     'overview',
+    'getting-started',
     {
       type: 'category',
       label: 'API',
